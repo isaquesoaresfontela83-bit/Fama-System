@@ -1,0 +1,27 @@
+{
+  "version": "7",
+  "dialect": "sqlite",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "6",
+      "when": 1788479887027,
+      "tag": "0000_crazy_nitro",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1788542190461,
+      "tag": "0001_fresh_sugar_man",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1788860519518,
+      "tag": "0002_foamy_roland_deschain",
+      "breakpoints": true
+    }
+  ]
+}
