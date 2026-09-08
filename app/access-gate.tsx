@@ -2,6 +2,8 @@
 
 import { ArrowRight, CalendarDays, FileSignature, ShieldCheck, Sparkles } from "lucide-react";
 
+import { ThemeToggle } from "@/app/theme-toggle";
+
 export function AccessGate({ signInPath }: { signInPath: string }) {
   return <main className="public-page">
     <nav className="public-nav">
@@ -9,7 +11,7 @@ export function AccessGate({ signInPath }: { signInPath: string }) {
         <span className="brand-mark" aria-hidden="true"><img src="/fama-piscinas-mark.png" alt="" /></span>
         <div><strong>Fama System</strong><small>Fama Piscinas · Gestão inteligente</small></div>
       </div>
-      <a className="public-login" href={signInPath} target="_top">Entrar</a>
+      <div className="public-nav-actions"><ThemeToggle /><a className="public-login" href={signInPath} target="_top">Entrar</a></div>
     </nav>
 
     <section className="public-hero">

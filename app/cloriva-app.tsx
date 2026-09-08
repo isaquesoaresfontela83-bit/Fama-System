@@ -55,6 +55,7 @@ import { Label } from "@/components/ui/label";
 import { NativeSelect, NativeSelectOption } from "@/components/ui/native-select";
 import { Progress } from "@/components/ui/progress";
 import { Separator } from "@/components/ui/separator";
+import { ThemeToggle } from "@/app/theme-toggle";
 import {
   Sheet,
   SheetContent,
@@ -386,7 +387,7 @@ export function FamaSystemApp({ organizations, currentUser, signOutPath }: { org
     <SidebarInset className="application">
       <header className="topbar">
         <div className="heading"><SidebarTrigger><Menu /></SidebarTrigger><div><small>{title.eyebrow}</small><h1>{title.title}</h1></div></div>
-        <div className="top-actions"><NativeSelect className="company-switcher" value={activeOrganization.id} onChange={(event) => { if (event.target.value === "__new__") { setCompanyOpen(true); return; } setLoading(true); setData(emptyData); setSelected(null); setActiveOrganizationId(event.target.value); setSection("dashboard"); }} aria-label="Empresa ativa">{organizations.map((organization) => <NativeSelectOption key={organization.id} value={organization.id}>{organization.name}</NativeSelectOption>)}<NativeSelectOption value="__new__">+ Criar nova empresa</NativeSelectOption></NativeSelect><div className="global-search"><Search /><Input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Buscar neste módulo" aria-label="Buscar neste módulo" /></div><Button variant="outline" size="icon" asChild aria-label="Sair"><a href={signOutPath} target="_top"><LogOut /></a></Button>{title.entity && <Button onClick={() => setCreateEntity(title.entity!)}><Plus />{title.action}</Button>}</div>
+        <div className="top-actions"><NativeSelect className="company-switcher" value={activeOrganization.id} onChange={(event) => { if (event.target.value === "__new__") { setCompanyOpen(true); return; } setLoading(true); setData(emptyData); setSelected(null); setActiveOrganizationId(event.target.value); setSection("dashboard"); }} aria-label="Empresa ativa">{organizations.map((organization) => <NativeSelectOption key={organization.id} value={organization.id}>{organization.name}</NativeSelectOption>)}<NativeSelectOption value="__new__">+ Criar nova empresa</NativeSelectOption></NativeSelect><div className="global-search"><Search /><Input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Buscar neste módulo" aria-label="Buscar neste módulo" /></div><ThemeToggle /><Button variant="outline" size="icon" asChild aria-label="Sair"><a href={signOutPath} target="_top"><LogOut /></a></Button>{title.entity && <Button onClick={() => setCreateEntity(title.entity!)}><Plus />{title.action}</Button>}</div>
       </header>
 
       <main className="workspace">

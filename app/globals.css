@@ -43,6 +43,36 @@
   --sidebar-ring: #5cdaf3;
 }
 
+.dark {
+  color-scheme: dark;
+  --background: #061329;
+  --foreground: #eaf4ff;
+  --card: #0d2142;
+  --card-foreground: #eaf4ff;
+  --popover: #0d2142;
+  --popover-foreground: #eaf4ff;
+  --primary: #188de8;
+  --primary-foreground: #ffffff;
+  --secondary: #132c52;
+  --secondary-foreground: #d8eaff;
+  --muted: #102442;
+  --muted-foreground: #91aac6;
+  --accent: #17c7ee;
+  --accent-foreground: #062044;
+  --destructive: #ee6474;
+  --border: #203d63;
+  --input: #294b74;
+  --ring: #37c8f1;
+  --sidebar: #030b1d;
+  --sidebar-foreground: #eaf4ff;
+  --sidebar-primary: #17c7ee;
+  --sidebar-primary-foreground: #062044;
+  --sidebar-accent: #102a56;
+  --sidebar-accent-foreground: #ffffff;
+  --sidebar-border: #19365d;
+  --sidebar-ring: #5cdaf3;
+}
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -95,6 +125,8 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 button, input, textarea, select { font: inherit; }
+.theme-toggle { flex: 0 0 40px; width: 40px; height: 40px; background: rgba(255,255,255,.72); }
+.theme-toggle svg { width: 17px; height: 17px; }
 
 .main-sidebar {
   --sidebar-width: 260px;
@@ -598,6 +630,7 @@ button, input, textarea, select { font: inherit; }
 
 .public-page,.onboarding-page { min-height: 100svh; background: radial-gradient(circle at 85% 10%,rgba(23,199,238,.2),transparent 28rem),linear-gradient(155deg,#f8fcff 0%,#edf6ff 58%,#f5fbff 100%); }
 .public-nav { display: flex; width: min(1180px,calc(100% - 40px)); min-height: 84px; align-items: center; justify-content: space-between; margin: 0 auto; }
+.public-nav-actions { display: flex; align-items: center; gap: 9px; }
 .public-brand,.onboarding-brand { display: flex; align-items: center; gap: 11px; color: #102a56; }
 .public-brand > div,.onboarding-brand > div { display: grid; gap: 2px; }
 .public-brand strong,.onboarding-brand strong { font-size: 1.15rem; letter-spacing: -.035em; }
@@ -633,7 +666,8 @@ button, input, textarea, select { font: inherit; }
 
 .onboarding-page { display: grid; place-items: center; padding: 30px 18px; }
 .onboarding-panel { width: min(100%,540px); padding: clamp(24px,5vw,45px); border: 1px solid #cfe2f3; border-radius: 25px; background: rgba(255,255,255,.95); box-shadow: 0 28px 70px rgba(11,57,112,.13); }
-.onboarding-brand { margin-bottom: 36px; }
+.onboarding-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 18px; margin-bottom: 36px; }
+.onboarding-brand { min-width: 0; }
 .onboarding-icon { display: grid; width: 55px; height: 55px; place-items: center; border-radius: 17px; background: #def5fc; color: #0b72c5; }
 .onboarding-icon svg { width: 24px; }
 .onboarding-step { margin: 18px 0 6px!important; color: #0b72c5!important; font-size: .69rem!important; font-weight: 850; letter-spacing: .11em; }
@@ -667,4 +701,118 @@ button, input, textarea, select { font: inherit; }
   .public-copy h1 { font-size: clamp(2.5rem,13vw,4rem); }
   .public-preview article { grid-template-columns: 42px minmax(0,1fr); }
   .public-preview article > span { grid-column: 2; }
+}
+
+/* Dark theme ------------------------------------------------------------- */
+.dark .theme-toggle { border-color: #2a4b74; background: #10284a; color: #dff4ff; }
+.dark .theme-toggle:hover { background: #173760; color: #fff; }
+.dark .application {
+  background:
+    radial-gradient(circle at 92% -4%, rgba(23,199,238,.12), transparent 25rem),
+    linear-gradient(180deg,#07162f 0%,#061329 100%);
+}
+.dark .topbar { border-bottom-color: rgba(39,70,108,.9); background: rgba(6,19,41,.9); }
+.dark .heading h1 { color: #eaf4ff; }
+.dark :where(.heading small,.panel-heading small,.metric-card p,.metric-card small) { color: #8fa9c5; }
+.dark :where(.company-switcher,.global-search input) { border-color: #294a70; background: rgba(13,33,66,.92); color: #eaf4ff; }
+.dark .global-search svg { color: #88a5c3; }
+.dark .loading { color: #9bb3cc; }
+.dark .loading i { border-color: #244466; border-top-color: #17c7ee; }
+
+.dark :where(.surface,.metric-card,.day-card,.customer-card) {
+  border-color: #203d63;
+  background: rgba(13,33,66,.96);
+  box-shadow: 0 13px 38px rgba(0,7,20,.22);
+}
+.dark :where(.panel-heading h2,.metric-card strong,.attention-list strong,.timeline strong,.customer-card h2,.team-roster h3,.members-list strong) { color: #e4f1ff; }
+.dark :where(.attention-list small,.timeline span,.customer-card > .customer-primary > p,.team-roster p,.team-roster article > div > span,.members-intro,.members-list small) { color: #91a9c2; }
+.dark :where(.timeline > button,.attention-list button,.team-roster article,.team-summary dl div,.customer-card footer) { border-color: #203a5c; }
+.dark .timeline time { color: #b5cae0; }
+.dark .timeline > button:hover strong { color: #5cdaf3; }
+.dark .timeline-dot { box-shadow: 0 0 0 4px #142b4a; }
+.dark .full-link { color: #70d9f2; }
+.dark .metric-icon.cyan { background: #123852; color: #5cdaf3; }
+.dark .metric-icon.blue { background: #142f5c; color: #72aef9; }
+.dark .metric-icon.violet { background: #272653; color: #aaa0ff; }
+.dark .metric-icon.orange { background: #49351f; color: #ffc574; }
+
+.dark :where(.crm-lane,.agenda-day) { border-color: #203d63; background: rgba(5,17,38,.7); }
+.dark :where(.crm-lane h2,.agenda-day header strong) { color: #dbeaff; }
+.dark :where(.crm-lane header > small,.agenda-day header span) { color: #89a3bf; }
+.dark :where(.lead-card,.agenda-event) { border-color: #244366; background: #0d2142; box-shadow: 0 8px 23px rgba(0,7,20,.2); }
+.dark :where(.lead-card h3,.agenda-event h3) { color: #e4f1ff; }
+.dark :where(.lead-card p,.agenda-event p,.agenda-event button span) { color: #91a9c2; }
+.dark :where(.lead-card > .record-actions,.agenda-event footer) { border-color: #203a5c; }
+.dark .lead-card .lead-main > strong { color: #5cdaf3; }
+.dark .lead-card .lead-main > span { color: #8da6c0; }
+
+.dark .table-surface > .panel-heading { border-bottom-color: #203d63; }
+.dark .table-surface th { background: #091a35; color: #91a9c2; }
+.dark .table-surface td { color: #c4d6e8; }
+.dark .table-surface tbody tr:hover { background: #10294d; }
+.dark :where(.table-link strong,.route-tech strong,.pool-profile strong,.team-tip strong,.route-note strong) { color: #deedff; }
+.dark :where(.table-link small,.cell-stack small,.route-tech small,.pool-profile small,.legend,.route-tech > b) { color: #8fa8c2; }
+.dark .muted { color: #829bb5; }
+.dark .water-reading { color: #5cdaf3; }
+
+.dark .customer-head > span { background: linear-gradient(145deg,#0b72e7,#17c7ee); }
+.dark :where(.pool-profile,.route-note,.team-tip) { background: #102b4d; color: #a6bed6; }
+.dark :where(.route-note svg,.team-tip svg,.pool-profile > svg) { color: #5cdaf3; }
+.dark .members-list article { border-color: #203d63; background: #0b1d3b; }
+.dark .member-avatar { background: #123852; color: #5cdaf3; }
+.dark .capacity small { color: #91a9c2; }
+.dark .capacity strong { color: #d5e6f8; }
+.dark .team-summary dt { color: #91a9c2; }
+.dark .team-summary dd { color: #d5e6f8; }
+.dark .radial-summary > span { background: radial-gradient(circle at center,#0d2142 54%,transparent 55%),conic-gradient(#0b72e7 0 56%,#17c7ee 56% 77%,#294463 77%); box-shadow: inset 0 0 0 1px #294463; }
+.dark .radial-summary b { color: #eaf4ff; }
+.dark .radial-summary small { color: #91a9c2; }
+
+.dark .detail-sheet { background: #0b1d3b; }
+.dark .detail-sheet > div:first-child { border-bottom-color: #203d63; background: linear-gradient(135deg,#10294d 0%,#0d2142 70%,#0b2446 100%); }
+.dark .detail-sheet h2 { color: #eaf4ff; }
+.dark :where(.detail-grid div,.quote-breakdown) { border-color: #203d63; background: #102442; }
+.dark :where(.detail-grid dt,.detail-block > small) { color: #8fa8c2; }
+.dark .detail-grid dd { color: #d3e4f6; }
+.dark .detail-block p { color: #adc1d6; }
+.dark :where(.quote-breakdown span,.quote-breakdown > strong) { color: #a5bad0; }
+.dark .quote-breakdown span b { color: #dceaff; }
+.dark .quote-breakdown > strong { border-top-color: #294463; }
+.dark .quote-breakdown em { color: #5cdaf3; }
+.dark .reading-detail span { background: linear-gradient(145deg,#102c4d,#0d2344); }
+.dark .reading-detail small { color: #91a9c2; }
+.dark .reading-detail b { color: #5cdaf3; }
+.dark :where(.inventory-balance,.transaction-total) { background: linear-gradient(135deg,#102c4d,#0d2344); }
+.dark :where(.inventory-balance small,.transaction-total small) { color: #91a9c2; }
+.dark :where(.inventory-balance strong,.transaction-total strong) { color: #5cdaf3; }
+.dark .detail-delete { border-top-color: #203d63; }
+
+.dark :where(.public-page,.onboarding-page) { background: radial-gradient(circle at 85% 10%,rgba(23,199,238,.13),transparent 28rem),linear-gradient(155deg,#061329 0%,#091b38 58%,#07162f 100%); }
+.dark :where(.public-brand,.onboarding-brand,.public-copy h1,.onboarding-panel h1) { color: #eaf4ff; }
+.dark :where(.public-brand small,.onboarding-brand small,.public-copy > p,.public-copy > small,.onboarding-panel > p) { color: #9bb3cc; }
+.dark .public-login { border-color: #294b74; background: rgba(13,33,66,.82); color: #dcecff; }
+.dark .public-login:hover { border-color: #5cdaf3; background: #10294d; }
+.dark .public-kicker { border-color: #265f82; background: #0c2b49; color: #7be4f8; }
+.dark :where(.public-preview,.onboarding-panel,.public-features article) { border-color: #244366; background: rgba(13,33,66,.92); box-shadow: 0 28px 70px rgba(0,7,20,.28); }
+.dark .preview-logo { border-bottom-color: #294463; border-radius: 16px; background: #fff; }
+.dark .preview-heading { border-bottom-color: #294463; }
+.dark .preview-heading span { color: #91a9c2; }
+.dark .preview-heading b { color: #5cdaf3; }
+.dark .public-preview article { background: #10294d; }
+.dark .public-preview article > svg { background: #123852; color: #5cdaf3; }
+.dark .public-preview article strong { color: #e4f1ff; }
+.dark .public-preview article small { color: #94acc5; }
+.dark .public-preview article > span { color: #5cdaf3; }
+.dark .public-features h2 { color: #e4f1ff; }
+.dark .public-features p { color: #9bb3cc; }
+.dark .onboarding-icon { background: #123852; color: #5cdaf3; }
+.dark .onboarding-security { background: #10294d; color: #a4bad0; }
+.dark .onboarding-security svg { color: #5cdaf3; }
+.dark .onboarding-security strong { color: #e4f1ff; }
+.dark .onboarding-panel footer { border-top-color: #294463; color: #8fa8c2; }
+.dark .onboarding-panel footer a { color: #70d9f2; }
+
+@media (max-width: 620px) {
+  .heading h1 { display: none; }
+  .theme-toggle { width: 36px; height: 36px; flex-basis: 36px; }
 }

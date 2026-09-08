@@ -8,6 +8,7 @@ import { ArrowRight, Building2, LogOut, ShieldCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { ThemeToggle } from "@/app/theme-toggle";
 
 export function CompanyOnboarding({ displayName, email, signOutPath }: { displayName: string; email: string; signOutPath: string }) {
   const [error, setError] = useState("");
@@ -35,9 +36,12 @@ export function CompanyOnboarding({ displayName, email, signOutPath }: { display
 
   return <main className="onboarding-page">
     <section className="onboarding-panel">
-      <div className="onboarding-brand">
-        <span className="brand-mark" aria-hidden="true"><img src="/fama-piscinas-mark.png" alt="" /></span>
-        <div><strong>Fama System</strong><small>Fama Piscinas · Gestão inteligente</small></div>
+      <div className="onboarding-head">
+        <div className="onboarding-brand">
+          <span className="brand-mark" aria-hidden="true"><img src="/fama-piscinas-mark.png" alt="" /></span>
+          <div><strong>Fama System</strong><small>Fama Piscinas · Gestão inteligente</small></div>
+        </div>
+        <ThemeToggle />
       </div>
       <span className="onboarding-icon"><Building2 /></span>
       <p className="onboarding-step">PRIMEIRO ACESSO</p>
