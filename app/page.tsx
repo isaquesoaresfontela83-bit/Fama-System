@@ -1,31 +1,25 @@
-import { FamaSystemApp } from "./cloriva-app";
-import { AccessGate } from "./access-gate";
-import { CompanyOnboarding } from "./company-onboarding";
+import { FamaControlAccessGate } from "./fama-control-access-gate";
+import { FamaControlApp } from "./fama-control-app";
 import { chatGPTSignInPath, chatGPTSignOutPath, getChatGPTUser } from "./chatgpt-auth";
-import { getUserOrganizations, isPlatformAdmin } from "@/lib/tenant";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
 export default async function Home() {
   const user = await getChatGPTUser();
+
   if (!user) {
-    return <AccessGate signInPath={chatGPTSignInPath("/")} />;
+    return <FamaControlAccessGate signInPath={chatGPTSignInPath("/")} />;
   }
 
-  const organizations = await getUserOrganizations(user);
-  if (!organizations.length) {
-    return <CompanyOnboarding displayName={user.displayName} email={user.email} signOutPath={chatGPTSignOutPath("/")} />;
-  }
-
-  return <FamaSystemApp
-    organizations={organizations}
-    currentUser={{
-      id: user.id,
-      displayName: user.displayName,
-      email: user.email,
-      isPlatformAdmin: isPlatformAdmin(user),
-    }}
-    signOutPath={chatGPTSignOutPath("/")}
-  />;
+  return (
+    <FamaControlApp
+      currentUser={{
+        id: user.id,
+        email: user.email,
+        displayName: user.displayName,
+      }}
+      signOutPath={chatGPTSignOutPath("/")}
+    />
+  );
 }
