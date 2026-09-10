@@ -28,7 +28,6 @@ npx --yes wrangler@latest whoami
 
 cat > "${BOOT_CONFIG}" <<EOF
 {
-  "$schema": "./node_modules/wrangler/config-schema.json",
   "name": "${WORKER_NAME}",
   "compatibility_date": "2026-09-10",
   "observability": { "enabled": true }
