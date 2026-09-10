@@ -5,6 +5,7 @@ import { chatGPTSignInPath, chatGPTSignOutPath, getChatGPTUser } from "./chatgpt
 import { getUserOrganizations, isPlatformAdmin } from "@/lib/tenant";
 
 export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
 export default async function Home() {
   const user = await getChatGPTUser();
