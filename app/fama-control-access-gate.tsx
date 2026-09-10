@@ -1,4 +1,6 @@
-export function FamaControlAccessGate({ signInPath }: { signInPath: string }) {
+import { FamaControlLoginForm } from "./fama-control-login-form";
+
+export function FamaControlAccessGate() {
   return (
     <main className="min-h-screen bg-[#061426] text-[#edf7ff]">
       <div className="mx-auto flex min-h-screen w-full max-w-3xl items-center px-4 py-10">
@@ -17,19 +19,13 @@ export function FamaControlAccessGate({ signInPath }: { signInPath: string }) {
           <div className="text-sm font-black tracking-[0.14em] text-[#39a8f2]">PAINEL DO PROPRIETÁRIO</div>
           <h1 className="mt-3 text-4xl font-medium tracking-tight sm:text-5xl">Entrar no Fama Control</h1>
           <p className="mt-5 max-w-xl text-lg leading-8 text-[#b8cadb]">
-            Use sua conta do ChatGPT. O painel continua restrito ao proprietário autorizado no Supabase.
+            Use o e-mail e a senha cadastrados no Supabase. O acesso administrativo continua restrito às contas autorizadas para o Fama Control.
           </p>
 
-          <a
-            href={signInPath}
-            target="_top"
-            className="mt-8 flex w-full items-center justify-center rounded-2xl bg-gradient-to-r from-[#29a5ef] to-[#1685d6] px-5 py-4 text-lg font-extrabold text-white shadow-lg transition hover:brightness-110"
-          >
-            Entrar com ChatGPT&nbsp;&nbsp;→
-          </a>
+          <FamaControlLoginForm />
 
           <div className="mt-8 border-t border-[#2a507c] pt-6 text-sm leading-6 text-[#b8cadb]">
-            Sessão autenticada pelo ChatGPT Sites. A autorização administrativa é confirmada no servidor antes de qualquer dado do Fama Control ser carregado.
+            A sessão é protegida por cookie criptografado e a autorização é validada pelo backend antes de o painel ser carregado.
           </div>
         </section>
       </div>
