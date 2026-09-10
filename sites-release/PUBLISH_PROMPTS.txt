@@ -1,0 +1,16 @@
+FAMA SYSTEM — PROMPT PARA PUBLICAÇÃO
+
+Corrija somente a autenticação do Fama System e publique no MESMO Site existente. Use como fonte de verdade o repositório GitHub isaquesoaresfontela83-bit/Fama-System, branch sites-release-ready. Mantenha exatamente o layout atual. Remova da revisão publicada qualquer formulário antigo de e-mail/senha que não exista na branch e use exclusivamente a autenticação nativa Entrar com ChatGPT já implementada em app/chatgpt-auth.ts e app/page.tsx. Não altere cores, módulos, banco, permissões, textos operacionais, estrutura visual ou funcionalidades. Gere a prévia, teste o login e publique no mesmo endereço https://fama-system.isaquesoaresfontela8.chatgpt.site/ . Não use AppDeploy.
+
+
+FAMA CONTROL — PROMPT PARA PUBLICAÇÃO
+
+Corrija somente o login do Fama Control e publique no MESMO Site existente. Preserve 100% do layout, logo, cores, módulos, permissões individuais clicáveis e funcionalidades. O Supabase Auth já autentica corretamente e o backend atual está pronto. A falha da revisão publicada ocorre depois do login porque sessionStorage é tratado como obrigatório. Use o patch do repositório isaquesoaresfontela83-bit/Fama-System, branch sites-release-ready, arquivo sites-release/fama-control-auth-session-fix.js. A sessão deve ficar imediatamente em memória; sessionStorage deve ser apenas fallback opcional dentro de try/catch. Após obter access_token, chame https://mupnsdqahoybhmkpufmx.supabase.co/functions/v1/fama-control com apikey, Content-Type application/json, Authorization Bearer <access_token> e body {"action":"bootstrap"}. Aceite a resposta em json.data. Não use AppDeploy. Teste o login na prévia e publique no mesmo endereço https://fama-control.isaquesoaresfontela8.chatgpt.site/ .
+
+
+DOMÍNIOS — DEPOIS DOS DOIS TESTES
+
+Fama System: famasystem.online
+Fama Control: control.famasystem.online
+
+Adicionar cada domínio nas configurações do respectivo ChatGPT Site. Copiar exatamente os registros DNS reais gerados pelo ChatGPT Sites para a Hostinger. Remover apenas registros conflitantes antigos de AppDeploy para @, www e control. Não apagar MX/TXT de e-mail. Não inventar CNAME/A/TXT.
