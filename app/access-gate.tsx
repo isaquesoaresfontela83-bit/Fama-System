@@ -3,6 +3,7 @@
 import { ArrowRight, CalendarDays, FileSignature, ShieldCheck, Sparkles } from "lucide-react";
 
 import { ThemeToggle } from "@/app/theme-toggle";
+import { LoginForm } from "@/app/login-form";
 
 export function AccessGate({ signInPath }: { signInPath: string }) {
   return <main className="public-page">
@@ -11,7 +12,7 @@ export function AccessGate({ signInPath }: { signInPath: string }) {
         <span className="brand-mark" aria-hidden="true"><img src="/fama-piscinas-mark.png" alt="" /></span>
         <div><strong>Fama System</strong><small>Fama Piscinas · Gestão inteligente</small></div>
       </div>
-      <div className="public-nav-actions"><ThemeToggle /><a className="public-login" href={signInPath} target="_top">Entrar</a></div>
+      <div className="public-nav-actions"><ThemeToggle /><a className="public-login" href="#login">Entrar</a></div>
     </nav>
 
     <section className="public-hero">
@@ -19,8 +20,8 @@ export function AccessGate({ signInPath }: { signInPath: string }) {
         <span className="public-kicker"><Sparkles />Gestão completa para empresas de piscinas</span>
         <h1>Sua operação inteira, organizada em um só lugar.</h1>
         <p>CRM, orçamentos em PDF, agenda, ordens de serviço, garantias, contratos, estoque, financeiro e equipe — com uma área privada para cada empresa.</p>
-        <a className="public-cta" href={signInPath} target="_top">Criar minha empresa<ArrowRight /></a>
-        <small>Conta protegida com Entrar com ChatGPT. Seus dados ficam separados dos dados das demais empresas.</small>
+        <a className="public-cta" href="#login">Entrar no sistema<ArrowRight /></a>
+        <small>Conta protegida por autenticação segura. Seus dados ficam separados dos dados das demais empresas.</small><LoginForm />
       </div>
 
       <div className="public-preview" aria-label="Recursos do Fama System">
