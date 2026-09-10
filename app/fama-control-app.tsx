@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 type Org = { id:string; name:string; slug?:string; status:string; deleted_at?:string|null };
 type Member = { id:string; organization_id:string; user_id?:string; user_email:string; display_name?:string; role:string; status:string; permissions?:string[] };
@@ -11,9 +11,6 @@ type Props = {
   signOutPath: string;
 };
 
-const SUPA='https://mupnsdqahoybhmkpufmx.supabase.co';
-const KEY='sb_publishable_zIRS_RPPmub36dmBEwp_CA_6iByYsV_';
-const API=SUPA+'/functions/v1/fama-control';
 const labels:Record<string,string>={dashboard:'Visão geral',crm:'CRM',quotes:'Orçamentos',agenda:'Agenda',orders:'Ordens de serviço',warranties:'Garantias',customers:'Clientes e piscinas',contracts:'Contratos',inventory:'Estoque',finance:'Financeiro',team:'Equipe'};
 const tabs=[['overview','Visão geral'],['companies','Empresas'],['users','Usuários'],['audit','Auditoria'],['backup','Backup & Lixeira'],['security','Segurança'],['privacy','Privacidade']] as const;
 
@@ -26,7 +23,6 @@ function Button({children,onClick,kind='default',disabled=false}:{children:React
 }
 
 export function FamaControlApp({currentUser,signOutPath}:Props){
-  const tokenRef=useRef('');
   const [active,setActive]=useState<(typeof tabs)[number][0]>('overview');
   const [data,setData]=useState<Bootstrap>({organizations:[],members:[],modules:Object.keys(labels),health:{},auth_users:[]});
   const [loading,setLoading]=useState(true);
@@ -38,31 +34,20 @@ export function FamaControlApp({currentUser,signOutPath}:Props){
   const [limits,setLimits]=useState<any[]>([]);
   const [privacy,setPrivacy]=useState<any[]>([]);
 
-  const getSession=useCallback(async()=>{
-    const r=await fetch('/api/fama-control/chatgpt-session',{method:'POST',credentials:'same-origin',cache:'no-store'});
+  const call=useCallback(async(action:string,payload:Record<string,unknown>={}):Promise<any>=>{
+    const r=await fetch('/api/fama-control',{method:'POST',credentials:'same-origin',cache:'no-store',headers:{'Content-Type':'application/json'},body:JSON.stringify({action,...payload})});
     const j=await r.json().catch(()=>({}));
-    if(r.status===401){window.location.assign('/signin-with-chatgpt?return_to=%2F');throw new Error('Entrando com ChatGPT...')}
-    if(!r.ok||!j.access_token)throw new Error(j.message||'Não foi possível iniciar a sessão administrativa.');
-    tokenRef.current=j.access_token;
-    return j.access_token as string;
-  },[]);
-
-  const call=useCallback(async(action:string,payload:Record<string,unknown>={},retry=true):Promise<any>=>{
-    let token=tokenRef.current;
-    if(!token)token=await getSession();
-    let r=await fetch(API,{method:'POST',headers:{apikey:KEY,'Content-Type':'application/json',Authorization:'Bearer '+token,'x-access-token':token},body:JSON.stringify({action,...payload,access_token:token})});
-    let j=await r.json().catch(()=>({}));
-    if(r.status===401&&retry){token=await getSession();r=await fetch(API,{method:'POST',headers:{apikey:KEY,'Content-Type':'application/json',Authorization:'Bearer '+token,'x-access-token':token},body:JSON.stringify({action,...payload,access_token:token})});j=await r.json().catch(()=>({}));}
+    if(r.status===401){window.location.assign('/');throw new Error('Sessão expirada. Entre novamente.')}
     if(!r.ok||!(j.ok||j.success||j.authorized))throw new Error(j.message||`Falha no Fama Control (${r.status}).`);
     return j.data??j;
-  },[getSession]);
+  },[]);
 
   const bootstrap=useCallback(async()=>{
     const d=await call('bootstrap');
     setData({organizations:d.organizations||[],members:d.members||[],modules:d.modules||Object.keys(labels),health:d.health||{},auth_users:d.auth_users||[]});
   },[call]);
 
-  useEffect(()=>{(async()=>{try{setLoading(true);await getSession();await bootstrap()}catch(e:any){setError(e?.message||'Falha ao abrir o Fama Control.')}finally{setLoading(false)}})()},[getSession,bootstrap]);
+  useEffect(()=>{(async()=>{try{setLoading(true);await bootstrap()}catch(e:any){setError(e?.message||'Falha ao abrir o Fama Control.')}finally{setLoading(false)}})()},[bootstrap]);
 
   async function run(key:string,fn:()=>Promise<void>){try{setBusy(key);setError('');await fn()}catch(e:any){setError(e?.message||'Falha na operação.')}finally{setBusy('')}}
   const orgName=(id:string)=>data.organizations.find(o=>o.id===id)?.name||'—';
@@ -121,7 +106,7 @@ export function FamaControlApp({currentUser,signOutPath}:Props){
       {active==='overview'&&<section>
         <div className="mb-4"><h1 className="text-3xl font-bold">Visão geral</h1><p className="text-sm text-[#b8cadb]">Saúde administrativa de todo o Fama System.</p></div>
         <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-          {[['EMPRESAS ATIVAS',activeOrgs.length,`${suspended} suspensa(s) · ${deleted} na lixeira`],['USUÁRIOS',data.members.length,'vínculos cadastrados'],['BACKEND','ONLINE','Supabase + Fama Control'],['ACESSO','CHATGPT','login nativo do Site']].map((x,i)=><Card key={i} className="p-4"><span className="text-xs font-black tracking-wider text-[#b8cadb]">{x[0]}</span><strong className="mt-1 block text-3xl">{x[1]}</strong><em className="mt-1 block text-xs not-italic text-[#b8cadb]">{x[2]}</em></Card>)}
+          {[['EMPRESAS ATIVAS',activeOrgs.length,`${suspended} suspensa(s) · ${deleted} na lixeira`],['USUÁRIOS',data.members.length,'vínculos cadastrados'],['BACKEND','ONLINE','Supabase + Fama Control'],['ACESSO','SUPABASE','e-mail + senha']].map((x,i)=><Card key={i} className="p-4"><span className="text-xs font-black tracking-wider text-[#b8cadb]">{x[0]}</span><strong className="mt-1 block text-3xl">{x[1]}</strong><em className="mt-1 block text-xs not-italic text-[#b8cadb]">{x[2]}</em></Card>)}
         </div>
         <Card className="mt-4 p-5"><h2 className="text-xl font-bold">Ações rápidas</h2><div className="mt-4 flex flex-wrap gap-2"><Button kind="primary" onClick={createCompany}>+ Nova empresa</Button><Button onClick={createUser}>+ Novo usuário</Button><Button onClick={()=>makeBackup('global')}>Criar backup global</Button><Button onClick={()=>openTab('audit')}>Abrir auditoria</Button></div></Card>
       </section>}
