@@ -55,7 +55,7 @@ for row in data:
 DB_ID="$(get_db_id || true)"
 if [[ -z "${DB_ID}" ]]; then
   say "Criando banco D1 de produção: ${DB_NAME}"
-  npx --yes wrangler@latest d1 create "${DB_NAME}" --config "${BOOT_CONFIG}" --yes
+  npx --yes wrangler@latest d1 create "${DB_NAME}" --config "${BOOT_CONFIG}" --update-config=false
   sleep 2
   DB_ID="$(get_db_id || true)"
 fi
