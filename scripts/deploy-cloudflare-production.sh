@@ -62,7 +62,8 @@ for row in data:
 DB_ID="$(get_db_id || true)"
 if [[ -z "${DB_ID}" ]]; then
   say "Criando banco D1 de produção: ${DB_NAME}"
-  npx --yes wrangler@latest d1 create "${DB_NAME}" --config "${BOOT_CONFIG}"
+  # Responde 'não' à oferta opcional de alterar o arquivo de configuração.
+  printf 'n\n' | npx --yes wrangler@latest d1 create "${DB_NAME}" --config "${BOOT_CONFIG}"
   sleep 2
   DB_ID="$(get_db_id || true)"
 fi
@@ -93,6 +94,19 @@ fi
 [[ -n "${GENERATED_CONFIG}" && -f "${GENERATED_CONFIG}" ]] || fail "Build concluído, mas o wrangler.json gerado não foi localizado."
 
 say "Configuração gerada: ${GENERATED_CONFIG}"
+
+# Vinext ainda pode gerar a chave legada legacy_env. Wrangler 4.131+ rejeita
+# essa chave, então removemos somente esse campo antes dos comandos remotos.
+python3 - "${GENERATED_CONFIG}" <<'PY'
+import json, pathlib, sys
+path = pathlib.Path(sys.argv[1])
+data = json.loads(path.read_text())
+if isinstance(data, dict):
+    data.pop("legacy_env", None)
+path.write_text(json.dumps(data, indent=2) + "\n")
+PY
+
+say "Configuração Wrangler compatibilizada"
 
 has_table(){
   local table="$1"
