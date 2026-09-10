@@ -18,13 +18,20 @@ command -v python3 >/dev/null || fail "python3 não encontrado."
 say "Atualizando Wrangler"
 npx --yes wrangler@latest --version
 
-if ! npx --yes wrangler@latest whoami >/dev/null 2>&1; then
+WHOAMI_OUTPUT="$(npx --yes wrangler@latest whoami 2>&1 || true)"
+if printf '%s' "${WHOAMI_OUTPUT}" | grep -qiE 'not authenticated|please run.*wrangler login'; then
   say "Entre na sua conta Cloudflare. O terminal mostrará um link/código para autorizar."
   npx --yes wrangler@latest login --device
+  WHOAMI_OUTPUT="$(npx --yes wrangler@latest whoami 2>&1 || true)"
+fi
+
+if printf '%s' "${WHOAMI_OUTPUT}" | grep -qiE 'not authenticated|please run.*wrangler login'; then
+  printf '%s\n' "${WHOAMI_OUTPUT}" >&2
+  fail "A autenticação Cloudflare ainda não foi concluída."
 fi
 
 say "Conta Cloudflare conectada"
-npx --yes wrangler@latest whoami
+printf '%s\n' "${WHOAMI_OUTPUT}"
 
 cat > "${BOOT_CONFIG}" <<EOF
 {
@@ -55,7 +62,7 @@ for row in data:
 DB_ID="$(get_db_id || true)"
 if [[ -z "${DB_ID}" ]]; then
   say "Criando banco D1 de produção: ${DB_NAME}"
-  npx --yes wrangler@latest d1 create "${DB_NAME}" --config "${BOOT_CONFIG}" --update-config=false
+  npx --yes wrangler@latest d1 create "${DB_NAME}" --config "${BOOT_CONFIG}"
   sleep 2
   DB_ID="$(get_db_id || true)"
 fi
