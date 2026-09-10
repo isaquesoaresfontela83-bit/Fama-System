@@ -35,12 +35,8 @@ async function serviceFetch(path: string, init: RequestInit = {}) {
 async function serviceJson(path: string, init: RequestInit = {}) {
   const response = await serviceFetch(path, init);
   let data: any = null;
-  try {
-    data = await response.json();
-  } catch {}
-  if (!response.ok) {
-    throw new Error(data?.message || data?.msg || data?.error || `SUPABASE_${response.status}`);
-  }
+  try { data = await response.json(); } catch {}
+  if (!response.ok) throw new Error(data?.message || data?.msg || data?.error || `SUPABASE_${response.status}`);
   return data;
 }
 
@@ -60,7 +56,6 @@ async function isAuthorizedOwner(email: string) {
 function tokenHashFromGenerateLink(payload: any): string {
   const direct = payload?.properties?.hashed_token ?? payload?.properties?.token_hash ?? payload?.hashed_token;
   if (direct) return String(direct);
-
   const actionLink = payload?.properties?.action_link ?? payload?.action_link;
   if (!actionLink) return "";
   try {
@@ -69,6 +64,27 @@ function tokenHashFromGenerateLink(payload: any): string {
   } catch {
     return "";
   }
+}
+
+async function verifyTokenHash(tokenHash: string, generated: any) {
+  const hinted = String(generated?.properties?.verification_type ?? generated?.verification_type ?? "").toLowerCase();
+  const types = [...new Set([hinted, "magiclink", "email"].filter(Boolean))];
+  let lastMessage = "Não foi possível validar a sessão Supabase.";
+
+  for (const type of types) {
+    const response = await fetch(`${SUPABASE_URL}/auth/v1/verify`, {
+      method: "POST",
+      headers: { apikey: SUPABASE_PUBLISHABLE_KEY, "Content-Type": "application/json" },
+      body: JSON.stringify({ type, token_hash: tokenHash }),
+      cache: "no-store",
+    });
+    let data: any = null;
+    try { data = await response.json(); } catch {}
+    if (response.ok && data?.access_token) return data;
+    lastMessage = data?.message || data?.msg || data?.error || `VERIFY_${response.status}`;
+  }
+
+  throw new Error(lastMessage);
 }
 
 export async function POST() {
@@ -95,8 +111,8 @@ export async function POST() {
   }
 
   try {
-    // Gera um token de uso único no servidor sem enviar e-mail. A identidade de entrada
-    // já foi autenticada pelo ChatGPT Sites e validada contra os administradores/owners.
+    // O ChatGPT Sites já autenticou a identidade. O servidor valida essa identidade
+    // contra o Fama Control e cria uma sessão Supabase de uso normal, sem pedir senha.
     const generated = await serviceJson("/auth/v1/admin/generate_link", {
       method: "POST",
       body: JSON.stringify({ type: "magiclink", email }),
@@ -104,25 +120,7 @@ export async function POST() {
 
     const tokenHash = tokenHashFromGenerateLink(generated);
     if (!tokenHash) throw new Error("TOKEN_HASH_NOT_RETURNED");
-
-    const verifyResponse = await fetch(`${SUPABASE_URL}/auth/v1/verify`, {
-      method: "POST",
-      headers: {
-        apikey: SUPABASE_PUBLISHABLE_KEY,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ type: "email", token_hash: tokenHash }),
-      cache: "no-store",
-    });
-
-    let session: any = null;
-    try {
-      session = await verifyResponse.json();
-    } catch {}
-
-    if (!verifyResponse.ok || !session?.access_token) {
-      throw new Error(session?.message || session?.msg || session?.error || `VERIFY_${verifyResponse.status}`);
-    }
+    const session = await verifyTokenHash(tokenHash, generated);
 
     return json(200, {
       ok: true,
