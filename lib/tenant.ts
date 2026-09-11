@@ -5,7 +5,7 @@ import { database } from "@/lib/database";
 import { getValidFamaAccessToken } from "@/lib/fama-auth-tokens";
 
 export type OrganizationRole = "owner" | "admin" | "member" | "technician";
-export type ModulePermission = "dashboard" | "crm" | "quotes" | "agenda" | "orders" | "warranties" | "customers" | "contracts" | "inventory" | "finance" | "team";
+export type ModulePermission = "dashboard" | "crm" | "quotes" | "agenda" | "orders" | "warranties" | "customers" | "contracts" | "inventory" | "finance" | "team" | "members";
 
 export const ALL_MODULES: ModulePermission[] = [
   "dashboard",
@@ -19,6 +19,7 @@ export const ALL_MODULES: ModulePermission[] = [
   "inventory",
   "finance",
   "team",
+  "members",
 ];
 
 export type OrganizationMembership = {
@@ -108,6 +109,7 @@ export async function requireUser() {
 
 async function requestedModule(request: Request): Promise<ModulePermission | null> {
   const url = new URL(request.url);
+  if (url.pathname.startsWith("/api/members")) return "members";
   if (url.pathname.includes("/api/warranties/") && url.pathname.endsWith("/schedule")) return "warranties";
   if (!url.pathname.startsWith("/api/records")) return null;
 
@@ -181,18 +183,16 @@ export async function requireTenant(request: Request, roles?: OrganizationRole[]
     throw new RequestError("Esta empresa está temporariamente suspensa.", 403);
   }
 
-  let effectiveRole = membership.role;
-  let permissions: ModulePermission[] = [...ALL_MODULES];
+  // Fama Control is authoritative for role and module access for every account,
+  // including records that may still be marked as owner/admin in the local D1.
+  const control = await controlAccess(user, membership.name);
+  const effectiveRole = control.role;
+  const permissions = control.permissions;
 
-  if (membership.role !== "owner") {
-    const control = await controlAccess(user, membership.name);
-    effectiveRole = control.role;
-    permissions = control.permissions;
-    if (effectiveRole !== membership.role) {
-      await db.prepare(`UPDATE organization_members SET role = ?, updated_at = ? WHERE id = ?`)
-        .bind(effectiveRole, new Date().toISOString(), membership.memberId)
-        .run();
-    }
+  if (effectiveRole !== membership.role) {
+    await db.prepare(`UPDATE organization_members SET role = ?, updated_at = ? WHERE id = ?`)
+      .bind(effectiveRole, new Date().toISOString(), membership.memberId)
+      .run();
   }
 
   if (roles && !roles.includes(effectiveRole)) {
