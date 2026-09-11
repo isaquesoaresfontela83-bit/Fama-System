@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { ThemeProvider } from "@/app/theme-provider";
+import { ModuleAccessGuard } from "@/app/module-access-guard";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -33,6 +34,7 @@ export default function RootLayout({
       <body className="antialiased">
         <ThemeProvider>
           {children}
+          <ModuleAccessGuard />
           <a
             href="/manual"
             aria-label="Abrir manual de uso do Fama System"
