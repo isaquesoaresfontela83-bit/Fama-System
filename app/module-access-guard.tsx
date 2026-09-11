@@ -14,6 +14,7 @@ const labels: Record<string, string> = {
   estoque: "inventory",
   financeiro: "finance",
   equipe: "team",
+  "usuários e empresas": "members",
 };
 
 function normalize(value: string) {
@@ -21,10 +22,17 @@ function normalize(value: string) {
 }
 
 function moduleButtons() {
-  return Array.from(document.querySelectorAll<HTMLButtonElement>(".main-sidebar button"))
+  return Array.from(
+    document.querySelectorAll<HTMLButtonElement>(
+      '.main-sidebar button[data-sidebar="menu-button"]',
+    ),
+  )
     .map((button) => {
-      const span = button.querySelector("span");
-      const label = normalize(String(span?.textContent ?? button.textContent ?? ""));
+      const candidates = Array.from(button.querySelectorAll("span"))
+        .map((span) => normalize(String(span.textContent ?? "")))
+        .filter(Boolean);
+      const fullText = normalize(String(button.textContent ?? ""));
+      const label = candidates.find((value) => Boolean(labels[value])) ?? fullText;
       return { button, label };
     })
     .filter((item) => Boolean(labels[item.label]));
@@ -34,6 +42,7 @@ function hideButton(button: HTMLButtonElement, hidden: boolean) {
   const container = button.closest("li") ?? button;
   if (container instanceof HTMLElement) {
     container.hidden = hidden;
+    container.style.display = hidden ? "none" : "";
     container.setAttribute("aria-hidden", hidden ? "true" : "false");
   }
 }
@@ -146,7 +155,7 @@ export function ModuleAccessGuard() {
     window.addEventListener("focus", onFocus);
     document.addEventListener("visibilitychange", onVisibility);
 
-    refreshTimer = window.setInterval(refreshCurrentPermissions, 10000);
+    refreshTimer = window.setInterval(refreshCurrentPermissions, 5000);
 
     observer = new MutationObserver(() => {
       tryBind();
