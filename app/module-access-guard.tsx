@@ -14,37 +14,95 @@ const labels: Record<string, string> = {
   estoque: "inventory",
   financeiro: "finance",
   equipe: "team",
-  "usuários e empresas": "members",
 };
+
+const orderedModules = [
+  "dashboard",
+  "crm",
+  "quotes",
+  "agenda",
+  "orders",
+  "warranties",
+  "customers",
+  "contracts",
+  "inventory",
+  "finance",
+  "team",
+] as const;
 
 function normalize(value: string) {
   return value.replace(/\s+/g, " ").trim().toLocaleLowerCase("pt-BR");
 }
 
-function moduleButtons() {
-  return Array.from(
+function moduleItems() {
+  const buttons = Array.from(
     document.querySelectorAll<HTMLButtonElement>(
       '.main-sidebar button[data-sidebar="menu-button"]',
     ),
-  )
-    .map((button) => {
-      const candidates = Array.from(button.querySelectorAll("span"))
+  );
+
+  return buttons
+    .map((button, index) => {
+      const spanTexts = Array.from(button.querySelectorAll("span"))
         .map((span) => normalize(String(span.textContent ?? "")))
         .filter(Boolean);
       const fullText = normalize(String(button.textContent ?? ""));
-      const label = candidates.find((value) => Boolean(labels[value])) ?? fullText;
-      return { button, label };
+      const byLabel = spanTexts
+        .map((value) => labels[value])
+        .find(Boolean) ?? labels[fullText];
+      const module = byLabel ?? orderedModules[index] ?? null;
+      return { button, module };
     })
-    .filter((item) => Boolean(labels[item.label]));
+    .filter(
+      (item): item is { button: HTMLButtonElement; module: string } =>
+        Boolean(item.module) && orderedModules.includes(item.module as (typeof orderedModules)[number]),
+    );
 }
 
-function hideButton(button: HTMLButtonElement, hidden: boolean) {
-  const container = button.closest("li") ?? button;
-  if (container instanceof HTMLElement) {
-    container.hidden = hidden;
-    container.style.display = hidden ? "none" : "";
-    container.setAttribute("aria-hidden", hidden ? "true" : "false");
+function setItemVisible(button: HTMLButtonElement, visible: boolean) {
+  const container = button.closest<HTMLElement>('[data-sidebar="menu-item"]') ??
+    button.closest<HTMLElement>("li") ??
+    button;
+
+  if (visible) {
+    container.hidden = false;
+    container.removeAttribute("aria-hidden");
+    container.style.removeProperty("display");
+    container.style.removeProperty("visibility");
+    container.style.removeProperty("pointer-events");
+  } else {
+    container.hidden = true;
+    container.setAttribute("aria-hidden", "true");
+    container.style.setProperty("display", "none", "important");
+    container.style.setProperty("visibility", "hidden", "important");
+    container.style.setProperty("pointer-events", "none", "important");
   }
+}
+
+function updateGroupVisibility() {
+  for (const group of Array.from(
+    document.querySelectorAll<HTMLElement>('.main-sidebar [data-sidebar="group"]'),
+  )) {
+    const operationalItems = Array.from(
+      group.querySelectorAll<HTMLElement>('[data-sidebar="menu-item"]'),
+    ).filter((item) => {
+      const button = item.querySelector<HTMLButtonElement>('[data-sidebar="menu-button"]');
+      if (!button) return false;
+      const text = normalize(String(button.textContent ?? ""));
+      return Boolean(labels[text]) || orderedModules.some((module) => text.includes(module));
+    });
+
+    if (!operationalItems.length) continue;
+    const hasVisible = operationalItems.some(
+      (item) => !item.hidden && item.style.display !== "none",
+    );
+    group.style.setProperty("display", hasVisible ? "" : "none", hasVisible ? "" : "important");
+    if (hasVisible) group.style.removeProperty("display");
+  }
+}
+
+function signatureOf(values: Set<string>) {
+  return [...values].sort().join("|");
 }
 
 export function ModuleAccessGuard() {
@@ -55,28 +113,22 @@ export function ModuleAccessGuard() {
     let refreshTimer: number | null = null;
     let disposed = false;
     let loading = false;
+    let firstLoaded = false;
+    let lastSignature = "";
 
     function applyPermissions() {
-      const items = moduleButtons();
+      const items = moduleItems();
       if (!items.length) return;
 
       for (const item of items) {
-        hideButton(item.button, !permissions.has(labels[item.label]));
+        setItemVisible(item.button, permissions.has(item.module));
       }
 
-      const active = items.find((item) =>
-        item.button.getAttribute("data-active") === "true" ||
-        item.button.getAttribute("aria-current") === "page",
-      );
+      updateGroupVisibility();
 
-      if (active && !permissions.has(labels[active.label])) {
-        const firstAllowed = items.find((item) => permissions.has(labels[item.label]));
-        firstAllowed?.button.click();
-        return;
-      }
-
-      if (!active && !permissions.has("dashboard")) {
-        const firstAllowed = items.find((item) => permissions.has(labels[item.label]));
+      const active = items.find((item) => item.button.getAttribute("data-active") === "true");
+      if (active && !permissions.has(active.module)) {
+        const firstAllowed = items.find((item) => permissions.has(item.module));
         firstAllowed?.button.click();
       }
     }
@@ -98,12 +150,24 @@ export function ModuleAccessGuard() {
         }
 
         const payload = await response.json().catch(() => ({}));
-        if (!response.ok) throw new Error(payload?.error ?? "Não foi possível carregar as permissões.");
+        if (!response.ok) {
+          throw new Error(payload?.error ?? "Não foi possível carregar as permissões.");
+        }
         if (activeOrganizationId !== organizationId || disposed) return;
 
-        permissions = new Set(
+        const next = new Set<string>(
           Array.isArray(payload.permissions) ? payload.permissions.map(String) : [],
         );
+        const nextSignature = signatureOf(next);
+
+        if (firstLoaded && nextSignature !== lastSignature) {
+          window.location.reload();
+          return;
+        }
+
+        permissions = next;
+        lastSignature = nextSignature;
+        firstLoaded = true;
         applyPermissions();
       } catch (error) {
         console.error("module_access_guard_failed", error);
@@ -131,6 +195,8 @@ export function ModuleAccessGuard() {
       const onChange = () => {
         const value = select.value;
         if (!value || value === "__new__") return;
+        firstLoaded = false;
+        lastSignature = "";
         window.setTimeout(() => void loadPermissions(value), 0);
       };
 
@@ -154,8 +220,7 @@ export function ModuleAccessGuard() {
     tryBind();
     window.addEventListener("focus", onFocus);
     document.addEventListener("visibilitychange", onVisibility);
-
-    refreshTimer = window.setInterval(refreshCurrentPermissions, 5000);
+    refreshTimer = window.setInterval(refreshCurrentPermissions, 4000);
 
     observer = new MutationObserver(() => {
       tryBind();
