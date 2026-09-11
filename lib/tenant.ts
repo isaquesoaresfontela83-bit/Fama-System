@@ -29,6 +29,7 @@ export type OrganizationMembership = {
 };
 
 type MembershipRow = OrganizationMembership & {
+  memberId: string;
   organizationStatus: string;
   memberStatus: string;
 };
@@ -87,7 +88,7 @@ async function claimPendingMemberships(user: ChatGPTUser) {
 export async function getUserOrganizations(user: ChatGPTUser): Promise<OrganizationMembership[]> {
   await claimPendingMemberships(user);
   const db = database();
-  const result = await db.prepare(`SELECT o.id, o.name, o.slug, m.role,
+  const result = await db.prepare(`SELECT o.id, o.name, o.slug, m.id AS memberId, m.role,
       o.status AS organizationStatus, m.status AS memberStatus
     FROM organization_members m
     JOIN organizations o ON o.id = m.organization_id
@@ -164,7 +165,7 @@ export async function requireTenant(request: Request, roles?: OrganizationRole[]
   await claimPendingMemberships(user);
 
   const db = database();
-  const membership = await db.prepare(`SELECT o.id, o.name, o.slug, m.role,
+  const membership = await db.prepare(`SELECT o.id, o.name, o.slug, m.id AS memberId, m.role,
       o.status AS organizationStatus, m.status AS memberStatus
     FROM organization_members m
     JOIN organizations o ON o.id = m.organization_id
@@ -189,7 +190,7 @@ export async function requireTenant(request: Request, roles?: OrganizationRole[]
     permissions = control.permissions;
     if (effectiveRole !== membership.role) {
       await db.prepare(`UPDATE organization_members SET role = ?, updated_at = ? WHERE id = ?`)
-        .bind(effectiveRole, new Date().toISOString(), membership.id)
+        .bind(effectiveRole, new Date().toISOString(), membership.memberId)
         .run();
     }
   }
