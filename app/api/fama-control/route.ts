@@ -56,6 +56,25 @@ async function sendToControl(accessToken: string, payload: Record<string, unknow
   });
 }
 
+function sanitizeTrashList(action: unknown, data: unknown) {
+  if (action !== "trash_list" || !data || typeof data !== "object") return data;
+
+  const response = data as {
+    data?: {
+      snapshots?: Array<{ legacy?: boolean; [key: string]: unknown }>;
+      legacy_archived_count?: number;
+      [key: string]: unknown;
+    };
+  };
+  const trash = response.data;
+  if (!trash || !Array.isArray(trash.snapshots)) return data;
+
+  const legacy = trash.snapshots.filter((snapshot) => snapshot?.legacy === true);
+  trash.snapshots = trash.snapshots.filter((snapshot) => snapshot?.legacy !== true);
+  trash.legacy_archived_count = legacy.length;
+  return response;
+}
+
 export async function POST(request: Request) {
   let session = await readFamaControlSession();
   if (!session) {
@@ -111,6 +130,8 @@ export async function POST(request: Request) {
   } catch {
     data = { ok: false, message: `Falha no Fama Control (${upstream.status}).` };
   }
+
+  data = sanitizeTrashList(payload.action, data);
 
   if (upstream.status === 401) await clearFamaControlSession();
   return json(upstream.status, data);
