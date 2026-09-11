@@ -8,6 +8,7 @@ fail(){ printf '\nERRO: %s\n' "$*" >&2; exit 1; }
 
 command -v node >/dev/null || fail "Node.js não encontrado."
 command -v npm >/dev/null || fail "npm não encontrado."
+command -v python3 >/dev/null || fail "python3 não encontrado."
 
 say "Atualizando Wrangler"
 npx --yes wrangler@latest --version
@@ -40,6 +41,24 @@ fi
 [[ -n "${GENERATED_CONFIG}" && -f "${GENERATED_CONFIG}" ]] || fail "Build concluído, mas o wrangler.json gerado não foi localizado."
 
 say "Configuração gerada: ${GENERATED_CONFIG}"
+
+# Wrangler 4.131+ removeu suporte ao campo legacy_env.
+# O build do Vinext ainda pode gerar esse campo, então removemos apenas
+# essa chave obsoleta antes do deploy, sem alterar as demais bindings.
+python3 - "${GENERATED_CONFIG}" <<'PY'
+import json
+import sys
+
+path = sys.argv[1]
+with open(path, "r", encoding="utf-8") as fh:
+    config = json.load(fh)
+
+config.pop("legacy_env", None)
+
+with open(path, "w", encoding="utf-8") as fh:
+    json.dump(config, fh, ensure_ascii=False, indent=2)
+    fh.write("\n")
+PY
 
 SESSION_SECRET=""
 if [[ -f .env.local ]]; then
