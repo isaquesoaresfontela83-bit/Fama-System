@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { ThemeProvider } from "@/app/theme-provider";
+import { ControlPermissionUiGuard } from "@/app/control-permission-ui-guard";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -24,6 +25,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
     <html lang="pt-BR" suppressHydrationWarning>
       <body className="antialiased">
         <ThemeProvider>
+          <ControlPermissionUiGuard />
           {children}
           <a
             href="/manual"
