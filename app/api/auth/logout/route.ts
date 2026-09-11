@@ -1,4 +1,5 @@
 import { cookies } from "next/headers";
+import { clearFamaAuthTokens } from "@/lib/fama-auth-tokens";
 
 export async function GET(request: Request) {
   const cookieStore = await cookies();
@@ -10,6 +11,8 @@ export async function GET(request: Request) {
     path: "/",
     maxAge: 0,
   });
+
+  await clearFamaAuthTokens();
 
   const url = new URL(request.url);
 
