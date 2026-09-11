@@ -14,6 +14,10 @@ const modulesByLabel: Record<string, string> = {
   estoque: "inventory",
   financeiro: "finance",
   equipe: "team",
+  "usuários e empresas": "members",
+  "usuarios e empresas": "members",
+  "usuários e permissões": "members",
+  "usuarios e permissoes": "members",
 };
 
 function normalize(value: string) {
