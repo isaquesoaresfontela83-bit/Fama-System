@@ -30,7 +30,18 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="pt-BR" suppressHydrationWarning>
-      <body className="antialiased"><ThemeProvider>{children}</ThemeProvider></body>
+      <body className="antialiased">
+        <ThemeProvider>
+          {children}
+          <a
+            href="/manual"
+            aria-label="Abrir manual de uso do Fama System"
+            className="fixed bottom-3 right-3 z-[90] rounded-full border border-sky-300/70 bg-[#0b3158] px-4 py-2 text-xs font-black text-white shadow-2xl shadow-slate-950/30 transition hover:bg-[#124875] sm:bottom-5 sm:right-5 sm:text-sm"
+          >
+            ? Manual de uso
+          </a>
+        </ThemeProvider>
+      </body>
     </html>
   );
 }
