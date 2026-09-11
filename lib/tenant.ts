@@ -2,8 +2,24 @@ import { env } from "cloudflare:workers";
 
 import { ChatGPTUser, getChatGPTUser } from "@/app/chatgpt-auth";
 import { database } from "@/lib/database";
+import { getValidFamaAccessToken } from "@/lib/fama-auth-tokens";
 
 export type OrganizationRole = "owner" | "admin" | "member" | "technician";
+export type ModulePermission = "dashboard" | "crm" | "quotes" | "agenda" | "orders" | "warranties" | "customers" | "contracts" | "inventory" | "finance" | "team";
+
+export const ALL_MODULES: ModulePermission[] = [
+  "dashboard",
+  "crm",
+  "quotes",
+  "agenda",
+  "orders",
+  "warranties",
+  "customers",
+  "contracts",
+  "inventory",
+  "finance",
+  "team",
+];
 
 export type OrganizationMembership = {
   id: string;
@@ -17,6 +33,11 @@ type MembershipRow = OrganizationMembership & {
   memberStatus: string;
 };
 
+type ControlAccess = {
+  role: OrganizationRole;
+  permissions: ModulePermission[];
+};
+
 export class RequestError extends Error {
   status: number;
 
@@ -25,6 +46,23 @@ export class RequestError extends Error {
     this.status = status;
   }
 }
+
+const SUPABASE_URL = "https://mupnsdqahoybhmkpufmx.supabase.co";
+const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_zIRS_RPPmub36dmBEwp_CA_6iByYsV_";
+const CONTROL_API = `${SUPABASE_URL}/functions/v1/fama-control`;
+
+const entityModules: Record<string, ModulePermission> = {
+  leads: "crm",
+  quotes: "quotes",
+  appointments: "agenda",
+  workOrders: "orders",
+  warranties: "warranties",
+  customers: "customers",
+  contracts: "contracts",
+  inventory: "inventory",
+  transactions: "finance",
+  employees: "team",
+};
 
 function platformOwnerEmail() {
   const runtime = env as unknown as { PLATFORM_OWNER_EMAIL?: string };
@@ -67,6 +105,58 @@ export async function requireUser() {
   return user;
 }
 
+async function requestedModule(request: Request): Promise<ModulePermission | null> {
+  const url = new URL(request.url);
+  if (url.pathname.includes("/api/warranties/") && url.pathname.endsWith("/schedule")) return "warranties";
+  if (!url.pathname.startsWith("/api/records")) return null;
+
+  let entity = "";
+  if (request.method === "DELETE") {
+    entity = String(url.searchParams.get("entity") ?? "");
+  } else {
+    try {
+      const body = await request.clone().json() as { entity?: unknown };
+      entity = String(body.entity ?? "");
+    } catch {}
+  }
+  return entityModules[entity] ?? null;
+}
+
+async function controlAccess(user: ChatGPTUser, organizationName: string): Promise<ControlAccess> {
+  const accessToken = await getValidFamaAccessToken();
+  if (!accessToken) {
+    throw new RequestError("Sua sessão de acesso expirou. Saia e entre novamente para atualizar as permissões.", 401);
+  }
+
+  const response = await fetch(CONTROL_API, {
+    method: "POST",
+    headers: {
+      apikey: SUPABASE_PUBLISHABLE_KEY,
+      Authorization: `Bearer ${accessToken}`,
+      "x-access-token": accessToken,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ action: "system_access", organization_name: organizationName }),
+    cache: "no-store",
+  });
+  const payload = await response.json().catch(() => null) as any;
+  const data = payload?.data ?? payload;
+  if (!response.ok || !(payload?.ok || payload?.authorized || payload?.success) || !data?.member) {
+    if (response.status === 401) throw new RequestError("Sua sessão de acesso expirou. Entre novamente.", 401);
+    throw new RequestError(payload?.message ?? "Seu usuário não possui acesso ativo a esta empresa.", 403);
+  }
+
+  const role = String(data.member.role ?? "member") as OrganizationRole;
+  const validRoles = new Set<OrganizationRole>(["owner", "admin", "member", "technician"]);
+  const safeRole: OrganizationRole = validRoles.has(role) ? role : "member";
+  const rawPermissions = Array.isArray(data.permissions) ? data.permissions.map(String) : [];
+  const permissions = safeRole === "owner"
+    ? [...ALL_MODULES]
+    : ALL_MODULES.filter((module) => rawPermissions.includes(module));
+
+  return { role: safeRole, permissions };
+}
+
 export async function requireTenant(request: Request, roles?: OrganizationRole[]) {
   const user = await requireUser();
   const organizationId = String(request.headers.get("x-organization-id") ?? "").trim();
@@ -89,17 +179,38 @@ export async function requireTenant(request: Request, roles?: OrganizationRole[]
   if (membership.organizationStatus !== "active") {
     throw new RequestError("Esta empresa está temporariamente suspensa.", 403);
   }
-  if (roles && !roles.includes(membership.role)) {
+
+  let effectiveRole = membership.role;
+  let permissions: ModulePermission[] = [...ALL_MODULES];
+
+  if (membership.role !== "owner") {
+    const control = await controlAccess(user, membership.name);
+    effectiveRole = control.role;
+    permissions = control.permissions;
+    if (effectiveRole !== membership.role) {
+      await db.prepare(`UPDATE organization_members SET role = ?, updated_at = ? WHERE id = ?`)
+        .bind(effectiveRole, new Date().toISOString(), membership.id)
+        .run();
+    }
+  }
+
+  if (roles && !roles.includes(effectiveRole)) {
     throw new RequestError("Seu perfil não permite esta operação.", 403);
+  }
+
+  const module = await requestedModule(request);
+  if (module && !permissions.includes(module)) {
+    throw new RequestError("Seu usuário não possui acesso a este módulo.", 403);
   }
 
   return {
     user,
+    permissions,
     organization: {
       id: membership.id,
       name: membership.name,
       slug: membership.slug,
-      role: membership.role,
+      role: effectiveRole,
     } satisfies OrganizationMembership,
   };
 }
