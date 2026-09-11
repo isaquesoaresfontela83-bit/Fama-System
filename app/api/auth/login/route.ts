@@ -1,5 +1,6 @@
 import { cookies } from "next/headers";
 import { createFamaSession } from "@/lib/fama-session";
+import { writeFamaAuthTokens } from "@/lib/fama-auth-tokens";
 
 export const dynamic = "force-dynamic";
 
@@ -50,6 +51,7 @@ export async function POST(request: Request) {
     if (
       !response.ok ||
       !auth.access_token ||
+      !auth.refresh_token ||
       !auth.user?.id ||
       !auth.user?.email
     ) {
@@ -82,6 +84,12 @@ export async function POST(request: Request) {
       sameSite: "lax",
       path: "/",
       maxAge: 60 * 60 * 24 * 7,
+    });
+
+    await writeFamaAuthTokens({
+      accessToken: String(auth.access_token),
+      refreshToken: String(auth.refresh_token),
+      expiresAt: Date.now() + Number(auth.expires_in ?? 3600) * 1000,
     });
 
     return Response.json({
