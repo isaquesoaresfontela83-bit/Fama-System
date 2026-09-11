@@ -1,5 +1,5 @@
 import { database } from "@/lib/database";
-import { requireTenant, tenantError } from "@/lib/tenant";
+import { requireTenant, tenantError, type ModulePermission } from "@/lib/tenant";
 
 const queries = [
   `SELECT id, name, phone, source, interest, status,
@@ -44,20 +44,23 @@ const queries = [
 
 export async function GET(request: Request) {
   try {
-    const { organization } = await requireTenant(request);
+    const { organization, permissions } = await requireTenant(request);
     const db = database();
     const result = await db.batch(queries.map((query) => db.prepare(query).bind(organization.id)));
+    const can = (module: ModulePermission) => permissions.includes(module);
+
     return Response.json({
-      leads: result[0].results,
-      quotes: result[1].results,
-      appointments: result[2].results,
-      workOrders: result[3].results,
-      customers: result[4].results,
-      inventory: result[5].results,
-      transactions: result[6].results,
-      employees: result[7].results.map((employee) => ({ ...employee, active: Boolean(employee.active) })),
-      warranties: result[8].results,
-      contracts: result[9].results,
+      permissions,
+      leads: can("crm") ? result[0].results : [],
+      quotes: can("quotes") ? result[1].results : [],
+      appointments: can("agenda") ? result[2].results : [],
+      workOrders: can("orders") ? result[3].results : [],
+      customers: can("customers") ? result[4].results : [],
+      inventory: can("inventory") ? result[5].results : [],
+      transactions: can("finance") ? result[6].results : [],
+      employees: can("team") ? result[7].results.map((employee) => ({ ...employee, active: Boolean(employee.active) })) : [],
+      warranties: can("warranties") ? result[8].results : [],
+      contracts: can("contracts") ? result[9].results : [],
     });
   } catch (error) {
     console.error("bootstrap_failed", error);
