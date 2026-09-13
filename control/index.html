@@ -1,0 +1,252 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#071a2d">
+<title>Fama Control v15.0</title>
+<style>
+:root{
+  --bg:#061426;--bg2:#071d34;--card:#0d284c;--card2:#102f58;--line:#2b517d;
+  --text:#edf7ff;--muted:#b7cadc;--blue:#2398e8;--cyan:#72def5;--danger:#ff6b78;
+  --ok:#61daa2;--warn:#ffca6a;--shadow:0 24px 60px rgba(0,0,0,.28)
+}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
+body{background:radial-gradient(circle at 15% 0,#06405d 0,transparent 26%),linear-gradient(180deg,#071a2d,#041020);color:var(--text)}
+body.light{--card:#fff;--card2:#f5faff;--line:#cbddea;--text:#13283b;--muted:#637c94;--shadow:0 18px 45px rgba(35,77,109,.14);background:linear-gradient(180deg,#edf8fd,#f9fcfe)}
+button,input,select{font:inherit}
+.wrap{max-width:1180px;margin:0 auto;padding:24px 16px 48px}
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:22px}
+.brand{display:flex;gap:12px;align-items:center}
+.logo{width:58px;height:58px;border-radius:18px;background:linear-gradient(145deg,#fff,#e6f4ff);display:grid;place-items:center;color:#0d5da1;font-size:30px;font-weight:1000;box-shadow:var(--shadow)}
+.brand small{display:block;color:var(--cyan);font-weight:900;letter-spacing:.12em;font-size:12px}
+.brand strong{display:block;font-size:23px;margin-top:2px}
+.btn{border:1px solid var(--line);background:#0e3159;color:var(--text);border-radius:13px;padding:11px 15px;font-weight:800;cursor:pointer}
+.light .btn{background:#f3f9fd}
+.btn.primary{background:linear-gradient(135deg,#2aa5ef,#1685d6);border:0;color:#fff}
+.btn.danger{background:#3d1824;color:#ffdce0;border-color:#7e3d4c}
+.btn:disabled{opacity:.55;cursor:not-allowed}
+.card{background:linear-gradient(180deg,rgba(14,42,79,.98),rgba(9,31,62,.98));border:1px solid var(--line);border-radius:24px;box-shadow:var(--shadow)}
+.light .card{background:#fff}
+#login{max-width:620px;margin:42px auto 0;padding:34px}
+.lock{width:72px;height:72px;border-radius:21px;background:linear-gradient(145deg,#28c9e9,#1689ea);display:grid;place-items:center;font-size:34px;margin-bottom:24px}
+.kicker{color:#3ea9f2;font-weight:950;letter-spacing:.13em;font-size:13px}
+h1{font-size:42px;line-height:1.05;margin:10px 0 14px}
+.lead{color:var(--muted);font-size:17px;line-height:1.55}
+.field{margin-top:17px}
+.field label{display:block;font-weight:850;margin-bottom:8px}
+.field input,.field select{width:100%;padding:14px 15px;border-radius:13px;border:1px solid #345f8d;background:#12335d;color:var(--text);outline:none}
+.light .field input,.light .field select{background:#f7fbfe;border-color:#cbddea;color:var(--text)}
+.field input:focus,.field select:focus{border-color:#38aaf0;box-shadow:0 0 0 3px rgba(56,170,240,.14)}
+.password-wrap{position:relative}.password-wrap input{padding-right:54px}.eye{position:absolute;right:8px;top:7px;border:0;background:transparent;color:var(--muted);font-size:22px;padding:6px 8px;cursor:pointer}
+.err{color:#ff8894;min-height:22px;margin-top:14px}.success{color:var(--ok)}
+.loginbtn{width:100%;padding:15px;margin-top:8px;font-size:17px}
+.security{margin-top:20px;padding-top:18px;border-top:1px solid var(--line);color:var(--muted);font-size:14px;line-height:1.5}
+.hidden{display:none!important}
+#app{display:none}#app.on{display:block}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:18px}
+.stat{padding:20px}.stat span{display:block;color:var(--muted);font-size:12px;font-weight:900;letter-spacing:.08em}.stat strong{font-size:32px}
+.toolbar{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:18px}
+.company{padding:20px;margin-bottom:16px}
+.company-head,.member-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
+.company h2{margin:0 0 6px;font-size:22px}
+.pill{display:inline-flex;align-items:center;border:1px solid var(--line);border-radius:999px;padding:5px 9px;color:var(--muted);font-size:12px;font-weight:900}
+.pill.active{color:#b5f6d4;border-color:#2e7957}.pill.suspended{color:#ffdbab;border-color:#865e2a}
+.members{display:grid;gap:12px;margin-top:16px}
+.member{background:#0a2142;border:1px solid #244c77;border-radius:18px;padding:16px}
+.light .member{background:#f7fbff;border-color:#d4e4ef}
+.member-name{font-weight:950}.member-mail{color:var(--muted);font-size:13px;margin-top:3px}
+.modules{display:flex;gap:8px;flex-wrap:wrap;margin-top:13px}
+.mod{display:inline-flex;align-items:center;gap:7px;border:1px solid #325d89;background:#0e2d53;border-radius:999px;padding:7px 10px;font-size:12px;cursor:pointer}
+.light .mod{background:#f3f9fd;border-color:#cbddea}
+.mod input{accent-color:#2099e7}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:13px}
+.small{padding:8px 10px;font-size:12px}
+.empty{color:var(--muted);padding:10px 0}
+.modal{position:fixed;inset:0;background:rgba(0,7,17,.78);display:none;align-items:center;justify-content:center;padding:16px;z-index:20}
+.modal.on{display:flex}.modalbox{width:min(570px,100%);max-height:90vh;overflow:auto;padding:24px}.modalbox h3{margin:0 0 6px;font-size:24px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.toast{position:fixed;right:16px;bottom:16px;display:none;max-width:min(420px,calc(100vw - 32px));background:#0f315a;color:#fff;border:1px solid #3d6894;border-radius:14px;padding:13px 15px;box-shadow:var(--shadow);z-index:50}
+.toast.on{display:block}
+.footer{text-align:center;color:#7f9db9;font-size:12px;margin-top:28px}
+.note{font-size:13px;color:var(--muted);line-height:1.45}
+@media(max-width:760px){.wrap{padding:16px 11px 38px}#login{margin-top:14px;padding:25px 20px}h1{font-size:34px}.stats{grid-template-columns:1fr}.grid2{grid-template-columns:1fr}.company-head,.member-head{flex-direction:column}.brand strong{font-size:20px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <div class="brand"><div class="logo">F</div><div><small>FAMA SYSTEM</small><strong>Fama Control</strong></div></div>
+    <button id="theme" class="btn" type="button" aria-label="Alternar tema">☀︎</button>
+  </div>
+
+  <section id="login" class="card">
+    <div class="lock">🔒</div>
+    <div class="kicker">PAINEL DO PROPRIETÁRIO</div>
+    <h1>Entrar no Fama Control</h1>
+    <p class="lead">Acesso administrativo do proprietário. Login por e-mail e senha, com autorização conferida no Supabase.</p>
+    <form id="loginForm">
+      <div class="field"><label for="email">E-mail</label><input id="email" type="email" autocomplete="username" value="isaquesoaresfontela83@gmail.com" required></div>
+      <div class="field"><label for="password">Senha</label><div class="password-wrap"><input id="password" type="password" autocomplete="current-password" required><button id="eye" type="button" class="eye">◉</button></div></div>
+      <div id="loginMsg" class="err"></div>
+      <button id="loginBtn" type="submit" class="btn primary loginbtn">Entrar com segurança →</button>
+    </form>
+    <div class="security">🔐 Sem magic link. A senha é enviada diretamente ao Supabase Auth. O arquivo não contém sua senha e não possui chave secreta administrativa.</div>
+  </section>
+
+  <main id="app">
+    <div class="stats">
+      <div class="card stat"><span>EMPRESAS</span><strong id="sCompanies">0</strong></div>
+      <div class="card stat"><span>USUÁRIOS</span><strong id="sUsers">0</strong></div>
+      <div class="card stat"><span>SUSPENSAS</span><strong id="sSuspended">0</strong></div>
+    </div>
+    <div class="toolbar">
+      <button id="newCompany" class="btn primary">+ Nova empresa</button>
+      <button id="newUser" class="btn">+ Novo usuário</button>
+      <button id="refresh" class="btn">↻ Atualizar</button>
+      <button id="logout" class="btn">Sair</button>
+    </div>
+    <div id="companies"></div>
+    <div class="footer">Fama Control · Fama System · versão 15.0</div>
+  </main>
+</div>
+
+<div id="companyModal" class="modal"><div class="card modalbox">
+  <h3>Nova empresa</h3><div class="field"><label>Nome da empresa</label><input id="companyName"></div>
+  <div class="actions"><button class="btn close" data-target="companyModal">Cancelar</button><button id="saveCompany" class="btn primary">Criar empresa</button></div>
+</div></div>
+
+<div id="userModal" class="modal"><div class="card modalbox">
+  <h3>Novo usuário</h3><p class="note">O usuário será criado já confirmado no Supabase Auth, sem envio de e-mail de confirmação.</p>
+  <div class="grid2"><div class="field"><label>Nome</label><input id="userName"></div><div class="field"><label>E-mail</label><input id="userEmail" type="email"></div></div>
+  <div class="grid2"><div class="field"><label>Senha temporária</label><input id="userPassword" type="password"></div><div class="field"><label>Perfil</label><select id="userRole"><option value="member">Usuário</option><option value="technician">Técnico</option><option value="admin">Administrador</option><option value="owner">Proprietário</option></select></div></div>
+  <div class="field"><label>Empresa</label><select id="userOrg"></select></div>
+  <div class="field"><label>Módulos liberados</label><div id="newMods" class="modules"></div></div>
+  <div class="actions"><button class="btn close" data-target="userModal">Cancelar</button><button id="saveUser" class="btn primary">Criar usuário</button></div>
+</div></div>
+<div id="toast" class="toast"></div>
+
+<script>
+(() => {
+const SUPA = 'https://mupnsdqahoybhmkpufmx.supabase.co';
+const KEY = 'sb_publishable_zIRS_RPPmub36dmBEwp_CA_6iByYsV_';
+const API = SUPA + '/functions/v1/fama-control';
+const labels = {dashboard:'Visão geral',crm:'CRM',quotes:'Orçamentos',agenda:'Agenda',orders:'Ordens de serviço',warranties:'Garantias',customers:'Clientes',contracts:'Contratos',inventory:'Estoque',finance:'Financeiro',team:'Equipe'};
+let state = {organizations:[],members:[],modules:Object.keys(labels)};
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? '').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function token(){return sessionStorage.getItem('fama_control_token')||''}
+function setToken(v){v?sessionStorage.setItem('fama_control_token',v):sessionStorage.removeItem('fama_control_token')}
+function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('on');setTimeout(()=>t.classList.remove('on'),3000)}
+function busy(btn,on){btn.disabled=on;if(on){btn.dataset.old=btn.textContent;btn.textContent='Aguarde...'}else if(btn.dataset.old){btn.textContent=btn.dataset.old;delete btn.dataset.old}}
+function showLogin(){ $('#app').classList.remove('on'); $('#login').classList.remove('hidden') }
+function showApp(){ $('#login').classList.add('hidden'); $('#app').classList.add('on') }
+
+async function api(action,data={}){
+  let r;
+  try{
+    r = await fetch(API,{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+token()},body:JSON.stringify({action,...data})});
+  }catch(e){throw new Error('Não foi possível conectar à API do Fama Control. Verifique a internet e tente novamente.')}
+  let j={}; try{j=await r.json()}catch(e){}
+  if(r.status===401){setToken('');showLogin();throw new Error(j.message||'Sessão inválida. Entre novamente.')}
+  if(!r.ok||!j.ok) throw new Error(j.message||('Falha no Fama Control ('+r.status+').'));
+  return j.data;
+}
+
+async function login(email,password){
+  let r;
+  try{
+    r=await fetch(SUPA+'/auth/v1/token?grant_type=password',{method:'POST',headers:{'apikey':KEY,'Content-Type':'application/json'},body:JSON.stringify({email,password})});
+  }catch(e){throw new Error('Não foi possível conectar ao Supabase Auth.')}
+  let j={}; try{j=await r.json()}catch(e){}
+  if(!r.ok||!j.access_token){
+    if(r.status===429) throw new Error('Muitas tentativas. Aguarde alguns minutos e tente novamente.');
+    throw new Error(j.msg||j.message||j.error_description||'E-mail ou senha inválidos.');
+  }
+  setToken(j.access_token);
+  await load();
+}
+
+async function load(){state=await api('bootstrap');render();showApp()}
+
+function render(){
+  $('#sCompanies').textContent=state.organizations.length;
+  $('#sUsers').textContent=state.members.length;
+  $('#sSuspended').textContent=state.organizations.filter(o=>o.status==='suspended').length;
+  $('#userOrg').innerHTML=state.organizations.map(o=>`<option value="${esc(o.id)}">${esc(o.name)}</option>`).join('');
+  const c=$('#companies');
+  if(!state.organizations.length){c.innerHTML='<section class="card company empty">Nenhuma empresa cadastrada.</section>';return}
+  c.innerHTML=state.organizations.map(o=>{
+    const ms=state.members.filter(m=>m.organization_id===o.id);
+    return `<section class="card company">
+      <div class="company-head"><div><h2>${esc(o.name)}</h2><span class="pill ${esc(o.status)}">${o.status==='active'?'ATIVA':'SUSPENSA'}</span></div>
+      <button class="btn small orgStatus" data-id="${esc(o.id)}" data-status="${esc(o.status)}">${o.status==='active'?'Suspender':'Reativar'}</button></div>
+      <div class="members">${ms.length?ms.map(memberHtml).join(''):'<div class="empty">Nenhum usuário vinculado.</div>'}</div>
+    </section>`;
+  }).join('');
+  bindDynamic();
+}
+
+function memberHtml(m){
+  const perms=Array.isArray(m.permissions)?m.permissions:[];
+  const owner=m.role==='owner';
+  return `<article class="member" data-member="${esc(m.id)}">
+    <div class="member-head"><div><div class="member-name">${esc(m.display_name||m.user_email)}</div><div class="member-mail">${esc(m.user_email)} · ${esc(m.role)} · ${esc(m.status)}</div></div>
+    <span class="pill ${m.status==='active'?'active':'suspended'}">${m.status==='active'?'ATIVO':'INATIVO'}</span></div>
+    <div class="modules">${state.modules.map(k=>`<label class="mod"><input type="checkbox" data-module="${k}" ${(owner||perms.includes(k))?'checked':''} ${owner?'disabled':''}>${esc(labels[k]||k)}</label>`).join('')}</div>
+    <div class="actions">${owner?'<span class="pill active">Proprietário: acesso total</span>':`
+      <button class="btn primary small saveMember" data-id="${esc(m.id)}">Salvar acessos</button>
+      <button class="btn small memberStatus" data-id="${esc(m.id)}" data-status="${esc(m.status)}">${m.status==='active'?'Desativar':'Ativar'}</button>
+      <button class="btn danger small delMember" data-id="${esc(m.id)}">Remover vínculo</button>`}</div>
+  </article>`;
+}
+
+function bindDynamic(){
+  document.querySelectorAll('.saveMember').forEach(b=>b.onclick=async()=>{
+    const art=b.closest('.member'); const perms=[...art.querySelectorAll('[data-module]:checked')].map(x=>x.dataset.module);
+    try{busy(b,true);await api('update_member',{id:b.dataset.id,status:'active',permissions:perms});toast('Permissões salvas.');await load()}catch(e){toast(e.message)}finally{busy(b,false)}
+  });
+  document.querySelectorAll('.memberStatus').forEach(b=>b.onclick=async()=>{
+    const art=b.closest('.member'); const perms=[...art.querySelectorAll('[data-module]:checked')].map(x=>x.dataset.module);
+    try{busy(b,true);await api('update_member',{id:b.dataset.id,status:b.dataset.status==='active'?'inactive':'active',permissions:perms});toast('Status atualizado.');await load()}catch(e){toast(e.message)}finally{busy(b,false)}
+  });
+  document.querySelectorAll('.delMember').forEach(b=>b.onclick=async()=>{
+    if(!confirm('Remover este usuário da empresa?'))return;
+    try{busy(b,true);await api('delete_member',{id:b.dataset.id});toast('Vínculo removido.');await load()}catch(e){toast(e.message)}finally{busy(b,false)}
+  });
+  document.querySelectorAll('.orgStatus').forEach(b=>b.onclick=async()=>{
+    try{busy(b,true);await api('update_org',{id:b.dataset.id,status:b.dataset.status==='active'?'suspended':'active'});toast('Empresa atualizada.');await load()}catch(e){toast(e.message)}finally{busy(b,false)}
+  });
+}
+
+$('#loginForm').addEventListener('submit',async e=>{
+  e.preventDefault(); const b=$('#loginBtn'),m=$('#loginMsg');m.textContent='';busy(b,true);
+  try{await login($('#email').value.trim(),$('#password').value)}
+  catch(err){setToken('');m.textContent=err.message||'Não foi possível entrar.'}
+  finally{busy(b,false)}
+});
+$('#eye').onclick=()=>{const p=$('#password');p.type=p.type==='password'?'text':'password'};
+$('#newCompany').onclick=()=>$('#companyModal').classList.add('on');
+$('#newUser').onclick=()=>{renderNewMods();$('#userModal').classList.add('on')};
+document.querySelectorAll('.close').forEach(b=>b.onclick=()=>$('#'+b.dataset.target).classList.remove('on'));
+$('#saveCompany').onclick=async function(){
+  try{busy(this,true);await api('create_org',{name:$('#companyName').value.trim()});$('#companyModal').classList.remove('on');$('#companyName').value='';toast('Empresa criada.');await load()}
+  catch(e){toast(e.message)}finally{busy(this,false)}
+};
+function renderNewMods(){$('#newMods').innerHTML=state.modules.map(k=>`<label class="mod"><input type="checkbox" data-newmod="${k}" checked>${esc(labels[k]||k)}</label>`).join('')}
+$('#userRole').onchange=function(){const o=this.value==='owner';document.querySelectorAll('[data-newmod]').forEach(x=>{if(o)x.checked=true;x.disabled=o})};
+$('#saveUser').onclick=async function(){
+  const perms=[...document.querySelectorAll('[data-newmod]:checked')].map(x=>x.dataset.newmod);
+  try{busy(this,true);await api('create_user',{display_name:$('#userName').value,email:$('#userEmail').value,password:$('#userPassword').value,role:$('#userRole').value,organization_id:$('#userOrg').value,permissions:perms});$('#userModal').classList.remove('on');$('#userName').value='';$('#userEmail').value='';$('#userPassword').value='';toast('Usuário criado sem envio de confirmação.');await load()}
+  catch(e){toast(e.message)}finally{busy(this,false)}
+};
+$('#refresh').onclick=()=>load().catch(e=>toast(e.message));
+$('#logout').onclick=()=>{setToken('');showLogin();toast('Sessão encerrada.')};
+$('#theme').onclick=()=>{document.body.classList.toggle('light');localStorage.setItem('fama_control_theme',document.body.classList.contains('light')?'light':'dark')};
+if(localStorage.getItem('fama_control_theme')==='light')document.body.classList.add('light');
+if(token())load().catch(()=>showLogin());
+})();
+</script>
+</body>
+</html>
