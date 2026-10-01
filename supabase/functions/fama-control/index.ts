@@ -1,4 +1,5 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
+import { parseAssistantSettings } from '../_shared/fama-ai-settings.ts';
 
 const URL = Deno.env.get("SUPABASE_URL") ?? "";
 const SERVICE = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "";
@@ -137,6 +138,23 @@ Deno.serve(async (req: Request) => {
   catch { return respond(400, { ok: false, message: "Requisição inválida." }); }
 
   const action = String(body.action ?? "bootstrap");
+  if (action === 'ai_settings_save') {
+    const user = await validate(req);
+    if (!user?.adminOk) return respond(403, { ok: false, message: 'Somente administradores do Fama Control podem editar a IA.' });
+    let settings;
+    try { settings = parseAssistantSettings(body.settings); } catch (error) { return respond(400, { ok: false, message: error instanceof Error ? error.message : 'Configuração inválida.' }); }
+    const revision = body.revision;
+    if (!Number.isInteger(revision) || revision < 1 || revision >= 2147483647) return respond(400, { ok: false, message: 'Revisão inválida. Recarregue a configuração.' });
+    try {
+      const rows = await sj(`/rest/v1/fama_ai_settings?id=eq.global&revision=eq.${revision}&select=config,revision,updated_at`, {
+        method: 'PATCH', headers: { Prefer: 'return=representation' },
+        body: JSON.stringify({ config: settings, revision: revision + 1, updated_at: new Date().toISOString() }),
+      });
+      if (!Array.isArray(rows) || !rows[0]) return respond(409, { ok: false, message: 'A configuração foi alterada por outro administrador. Recarregue antes de salvar.' });
+      await sf('/rest/v1/audit_logs', { method: 'POST', headers: { Prefer: 'return=minimal' }, body: JSON.stringify({ actor_user_id: user.id, event_type: 'update', entity_type: 'fama_ai_settings', record_id: 'global', metadata: { revision: revision + 1 } }) }).catch(() => null);
+      return respond(200, { ok: true, data: { settings: rows[0].config, revision: rows[0].revision, updatedAt: rows[0].updated_at } });
+    } catch { return respond(503, { ok: false, message: 'Não foi possível salvar a configuração da IA.' }); }
+  }
   if (["bootstrap","load","init","session","authorize"].includes(action)) return directBootstrap(req);
 
   const authorization = req.headers.get("authorization") ?? "";

@@ -1,10 +1,13 @@
 'use client';
 
 import { useCallback, useEffect, useState } from 'react';
+import { FamaAiPanel } from './fama-ai-panel';
+import { FamaAiSettingsPanel } from './fama-ai-settings-panel';
+import { useFamaAiSettings } from '@/hooks/use-fama-ai-settings';
 
 type Org = { id:string; name:string; slug?:string; status:string; deleted_at?:string|null };
 type Member = { id:string; organization_id:string; user_id?:string; user_email:string; display_name?:string; role:string; status:string; permissions?:string[] };
-type Bootstrap = { organizations:Org[]; members:Member[]; modules:string[]; health?:Record<string,any>; auth_users?:any[] };
+type Bootstrap = { organizations:Org[]; members:Member[]; modules:string[]; health?:Record<string,any>; auth_users?:any[]; platform_admin?:boolean };
 
 type Props = {
   currentUser: { id:string; email:string; displayName:string };
@@ -12,7 +15,7 @@ type Props = {
 };
 
 const labels:Record<string,string>={dashboard:'Visão geral',crm:'CRM',quotes:'Orçamentos',agenda:'Agenda',orders:'Ordens de serviço',warranties:'Garantias',customers:'Clientes e piscinas',contracts:'Contratos',inventory:'Estoque',finance:'Financeiro',team:'Equipe'};
-const tabs=[['overview','Visão geral'],['companies','Empresas'],['users','Usuários'],['audit','Auditoria'],['backup','Backup & Lixeira'],['security','Segurança'],['privacy','Privacidade']] as const;
+const tabs=[['overview','Visão geral'],['assistant','Fama IA'],['ai-settings','Configurar IA'],['companies','Empresas'],['users','Usuários'],['audit','Auditoria'],['backup','Backup & Lixeira'],['security','Segurança'],['privacy','Privacidade']] as const;
 
 function Card({children,className=''}:{children:React.ReactNode;className?:string}){
   return <div className={'rounded-2xl border border-[#2a507c] bg-[#0d284c] shadow-xl '+className}>{children}</div>;
@@ -23,6 +26,7 @@ function Button({children,onClick,kind='default',disabled=false}:{children:React
 }
 
 export function FamaControlApp({currentUser,signOutPath}:Props){
+  const ai = useFamaAiSettings();
   const [active,setActive]=useState<(typeof tabs)[number][0]>('overview');
   const [data,setData]=useState<Bootstrap>({organizations:[],members:[],modules:Object.keys(labels),health:{},auth_users:[]});
   const [loading,setLoading]=useState(true);
@@ -33,6 +37,7 @@ export function FamaControlApp({currentUser,signOutPath}:Props){
   const [trash,setTrash]=useState<{organizations:any[];snapshots:any[]}>({organizations:[],snapshots:[]});
   const [limits,setLimits]=useState<any[]>([]);
   const [privacy,setPrivacy]=useState<any[]>([]);
+  const [loadedLists,setLoadedLists]=useState<string[]>([]);
 
   const call=useCallback(async(action:string,payload:Record<string,unknown>={}):Promise<any>=>{
     const r=await fetch('/api/fama-control',{method:'POST',credentials:'same-origin',cache:'no-store',headers:{'Content-Type':'application/json'},body:JSON.stringify({action,...payload})});
@@ -44,7 +49,7 @@ export function FamaControlApp({currentUser,signOutPath}:Props){
 
   const bootstrap=useCallback(async()=>{
     const d=await call('bootstrap');
-    setData({organizations:d.organizations||[],members:d.members||[],modules:d.modules||Object.keys(labels),health:d.health||{},auth_users:d.auth_users||[]});
+    setData({organizations:d.organizations||[],members:d.members||[],modules:d.modules||Object.keys(labels),health:d.health||{},auth_users:d.auth_users||[],platform_admin:d.platform_admin===true});
   },[call]);
 
   useEffect(()=>{(async()=>{try{setLoading(true);await bootstrap()}catch(e:any){setError(e?.message||'Falha ao abrir o Fama Control.')}finally{setLoading(false)}})()},[bootstrap]);
@@ -54,10 +59,10 @@ export function FamaControlApp({currentUser,signOutPath}:Props){
 
   async function openTab(tab:(typeof tabs)[number][0]){
     setActive(tab);
-    if(tab==='audit'&&!audit.length)await run('audit',async()=>setAudit(await call('audit_list',{limit:250})));
-    if(tab==='backup')await run('backup',async()=>{const [b,t]=await Promise.all([call('backup_list'),call('trash_list')]);setBackups(b||[]);setTrash(t||{organizations:[],snapshots:[]})});
+    if(tab==='audit'&&!audit.length)await run('audit',async()=>{setAudit(await call('audit_list',{limit:250}));setLoadedLists(v=>[...new Set([...v,'audit'])])});
+    if(tab==='backup')await run('backup',async()=>{const [b,t]=await Promise.all([call('backup_list'),call('trash_list')]);setBackups(b||[]);setTrash(t||{organizations:[],snapshots:[]});setLoadedLists(v=>[...new Set([...v,'backup'])])});
     if(tab==='security')await run('security',async()=>{const [h,l]=await Promise.all([call('health'),call('limits_list')]);setData(v=>({...v,health:h.health||v.health,auth_users:h.auth_users||v.auth_users}));setLimits(l||[])});
-    if(tab==='privacy')await run('privacy',async()=>setPrivacy(await call('privacy_list')));
+    if(tab==='privacy')await run('privacy',async()=>{setPrivacy(await call('privacy_list'));setLoadedLists(v=>[...new Set([...v,'privacy'])])});
   }
 
   async function createCompany(){
@@ -98,11 +103,14 @@ export function FamaControlApp({currentUser,signOutPath}:Props){
       </header>
 
       <nav className="sticky top-0 z-20 mb-4 flex gap-2 overflow-x-auto bg-[#071b31]/95 py-2 backdrop-blur">
-        {tabs.map(([id,name])=><button key={id} onClick={()=>void openTab(id)} className={'whitespace-nowrap rounded-full border px-4 py-2 text-sm font-extrabold '+(active===id?'border-transparent bg-gradient-to-r from-[#2199e8] to-[#177fc8] text-white':'border-[#2a507c] bg-[#0c2b50] text-[#b8cadb]')}>{name}</button>)}
+        {tabs.filter(([id])=>id!=='ai-settings'||data.platform_admin).map(([id,name])=><button key={id} onClick={()=>void openTab(id)} className={'whitespace-nowrap rounded-full border px-4 py-2 text-sm font-extrabold '+(active===id?'border-transparent bg-gradient-to-r from-[#2199e8] to-[#177fc8] text-white':'border-[#2a507c] bg-[#0c2b50] text-[#b8cadb]')}>{name}</button>)}
       </nav>
 
       {error&&<div className="mb-4 rounded-xl border border-[#81414d] bg-[#3d1824] px-4 py-3 text-sm text-[#ffc4ca]">{error}<button className="ml-3 underline" onClick={()=>setError('')}>fechar</button></div>}
 
+      {(active==='assistant'||active==='ai-settings')&&(!ai.value||ai.error)&&<Card className="p-5"><p role={ai.error?'alert':'status'}>{ai.error||'Carregando configurações do assistente…'}</p>{ai.error&&<div className="mt-3"><Button onClick={()=>ai.refresh().then(()=>undefined).catch(()=>undefined)}>Tentar novamente</Button></div>}</Card>}
+      {active==='ai-settings'&&data.platform_admin&&ai.value&&<FamaAiSettingsPanel {...ai.value} onSave={ai.save} onReload={ai.refresh} />}
+      {active==='assistant'&&ai.value&&!ai.error&&<FamaAiPanel key={ai.value.revision} settings={ai.value.settings} data={{organizations:data.organizations,members:data.members,audit:loadedLists.includes('audit')?audit:undefined,backups:loadedLists.includes('backup')?backups:undefined,privacy:loadedLists.includes('privacy')?privacy:undefined}} scopeLabel="Fama Control" allowedSections={tabs.map(([id])=>id)} onAction={action=>{const tab=tabs.find(([id])=>id===action.section);if(tab)void openTab(tab[0])}} />}
       {active==='overview'&&<section>
         <div className="mb-4"><h1 className="text-3xl font-bold">Visão geral</h1><p className="text-sm text-[#b8cadb]">Saúde administrativa de todo o Fama System.</p></div>
         <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">

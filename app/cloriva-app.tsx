@@ -115,10 +115,12 @@ import {
 import { DeleteButton } from "./delete-button";
 import { MembersPanel } from "./members-panel";
 import { PlatformCompanies } from "./platform-companies";
+import { FamaAiPanel } from "./fama-ai-panel";
+import { useFamaAiSettings } from '@/hooks/use-fama-ai-settings';
 import { generateContractPdf } from "@/lib/contract-pdf";
 import { generateQuotePdf } from "@/lib/quote-pdf";
 
-type Section = "dashboard" | "crm" | "quotes" | "agenda" | "orders" | "warranties" | "customers" | "contracts" | "inventory" | "finance" | "team" | "members" | "platform";
+type Section = "dashboard" | "assistant" | "crm" | "quotes" | "agenda" | "orders" | "warranties" | "customers" | "contracts" | "inventory" | "finance" | "team" | "members" | "platform";
 type Entity = keyof BootstrapData;
 type CreateEntity = Entity;
 type AnyRecord = Lead | Quote | Appointment | WorkOrder | Customer | InventoryItem | Transaction | Employee | Warranty | Contract;
@@ -130,6 +132,7 @@ const navGroups = [
     label: "Operação",
     items: [
       { id: "dashboard" as Section, label: "Visão geral", icon: LayoutDashboard },
+      { id: "assistant" as Section, label: "Fama IA interna", icon: Sparkles },
       { id: "crm" as Section, label: "CRM", icon: TrendingUp },
       { id: "quotes" as Section, label: "Orçamentos", icon: FileText },
       { id: "agenda" as Section, label: "Agenda", icon: CalendarDays },
@@ -151,6 +154,7 @@ const navGroups = [
 
 const sectionMeta: Record<Section, { eyebrow: string; title: string; entity?: CreateEntity; action?: string }> = {
   dashboard: { eyebrow: "Central de operação", title: "Visão geral", entity: "workOrders", action: "Nova ordem" },
+  assistant: { eyebrow: "Assistente interno", title: "Fama IA interna" },
   crm: { eyebrow: "Relacionamento comercial", title: "CRM de vendas", entity: "leads", action: "Novo lead" },
   quotes: { eyebrow: "Propostas e aprovações", title: "Orçamentos", entity: "quotes", action: "Novo orçamento" },
   agenda: { eyebrow: "Rotas e compromissos", title: "Agenda", entity: "appointments", action: "Agendar visita" },
@@ -233,6 +237,7 @@ function Empty({ children }: { children: ReactNode }) {
 }
 
 export function FamaSystemApp({ organizations, currentUser, signOutPath }: { organizations: Organization[]; currentUser: CurrentUser; signOutPath: string }) {
+  const ai = useFamaAiSettings();
   const [section, setSection] = useState<Section>("dashboard");
   const [activeOrganizationId, setActiveOrganizationId] = useState(organizations[0].id);
   const [data, setData] = useState<BootstrapData>(emptyData);
@@ -249,10 +254,12 @@ export function FamaSystemApp({ organizations, currentUser, signOutPath }: { org
   const tenantHeaders = { "x-organization-id": activeOrganization.id };
 
   useEffect(() => {
+    let cancelled = false;
     fetch("/api/bootstrap", { headers: { "x-organization-id": activeOrganization.id } })
       .then(async (response) => {
         if (!response.ok) throw new Error("load");
         const real = (await response.json()) as Partial<BootstrapData>;
+        if (cancelled) return;
         setData({
           leads: real.leads ?? [],
           quotes: real.quotes ?? [],
@@ -266,8 +273,9 @@ export function FamaSystemApp({ organizations, currentUser, signOutPath }: { org
           contracts: real.contracts ?? [],
         });
       })
-      .catch(() => toast.error("Não foi possível carregar os registros agora."))
-      .finally(() => setLoading(false));
+      .catch(() => { if (!cancelled) toast.error("Não foi possível carregar os registros agora."); })
+      .finally(() => { if (!cancelled) setLoading(false); });
+    return () => { cancelled = true; };
   }, [activeOrganization.id]);
 
   const filter = <T extends AnyRecord>(items: T[]) => {
@@ -393,6 +401,7 @@ export function FamaSystemApp({ organizations, currentUser, signOutPath }: { org
       <main className="workspace">
         {loading ? <div className="loading"><i /><p>Preparando sua operação…</p></div> : <>
           {section === "dashboard" && <Dashboard data={data} revenue={revenue} receivable={receivable} salesPipeline={salesPipeline} stockAlerts={stockAlerts} onSelect={setSelected} onNavigate={setSection} />}
+          {section === "assistant" && (ai.value && !ai.error ? <FamaAiPanel key={`${activeOrganization.id}:${ai.value.revision}`} settings={ai.value.settings} data={data} scopeLabel={activeOrganization.name} allowedSections={Object.keys(sectionMeta)} onAction={action => { if (action.create) setCreateEntity(action.create); else if (action.section in sectionMeta) setSection(action.section as Section); }} /> : <div className="surface p-5"><p role={ai.error ? 'alert' : 'status'}>{ai.error || 'Carregando configurações do assistente…'}</p>{ai.error && <Button className="mt-3" onClick={() => void ai.refresh().catch(() => undefined)}>Tentar novamente</Button>}</div>)}
           {section === "crm" && <Crm leads={filter(data.leads)} onSelect={(record) => setSelected({ entity: "leads", record })} onMove={(record, status) => patchRecord("leads", record, { status })} onDelete={canDelete ? deleteRecord : undefined} />}
           {section === "quotes" && <Quotes quotes={filter(data.quotes)} organizationName={activeOrganization.name} onSelect={(record) => setSelected({ entity: "quotes", record })} onStatus={(record, status) => patchRecord("quotes", record, { status })} onDelete={canDelete ? deleteRecord : undefined} />}
           {section === "agenda" && <Agenda appointments={filter(data.appointments)} employees={data.employees} onSelect={(record) => setSelected({ entity: "appointments", record })} onStatus={(record, status) => patchRecord("appointments", record, { status })} onDelete={canDelete ? deleteRecord : undefined} />}
