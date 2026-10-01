@@ -4,7 +4,7 @@ Repositório unificado do **Fama System** e **Fama Control**, com o banco compar
 
 Código completo no [GitHub — Fama-System](https://github.com/isaquesoaresfontela83-bit/Fama-System/tree/chore/fama-platform-monorepo). A organização está na branch `chore/fama-platform-monorepo`; veja [como clonar e contribuir](docs/REPOSITORIO.md).
 
-Esta organização preserva os 412 arquivos originais da entrega: System versão 99 e Control versão 37. O mapeamento de caminhos e os hashes ficam em [SOURCE_MANIFEST.json](SOURCE_MANIFEST.json).
+O snapshot inicial preserva os 412 arquivos originais da entrega: System versão 99 e Control versão 37. As versões atuais incluem a assistente adicionada no VS Code e integrada aos dois sistemas. Veja [ASSISTENTE.md](docs/ASSISTENTE.md). O mapeamento de origem, hashes e commit do snapshot ficam em [SOURCE_MANIFEST.json](SOURCE_MANIFEST.json).
 
 ## Estrutura
 
@@ -59,7 +59,7 @@ As portas padrão são 5173 e 5174. Para configurar os endereços de comunicaç�
 | `npm run lint` | Executa as verificações de código existentes. |
 | `npm run test:control:localhost` | Executa o teste HTTP local do Control. |
 | `npm run verify` | Confere estrutura, configurações versionadas e links da documentação. |
-| `npm run verify:source` | Também compara os 412 arquivos com a entrega de origem. |
+| `npm run verify:source` | Confere os 412 arquivos no commit do snapshot original. |
 | `npm run package` | Exporta os arquivos versionados e o identificador do commit para `artifacts/`. |
 
 Selecione uma aplicação quando necessário:

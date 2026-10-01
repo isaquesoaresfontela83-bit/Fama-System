@@ -2093,5 +2093,7 @@
       "repository_path": "apps/fama-control/worker/index.ts",
       "sha256": "214a9e8157c62c119cbb90c2a26a6b261dba8d78da4881577017b294c13fea18"
     }
-  ]
+  ],
+  "original_snapshot_commit": "62f701fc4983eaa685b5149e9a93300e2effac05",
+  "assistant_origin_commit": "658b77550904f4f139eb2196033e4115c2832cd2"
 }

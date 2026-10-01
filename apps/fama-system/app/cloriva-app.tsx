@@ -141,8 +141,11 @@ import { BillingCenter } from "./billing-center";
 import { SupportCenter } from "./support-center";
 import { CompanySettingsPanel } from "./company-settings-panel";
 import { defaultCompanySettings, type CompanySettings } from "@/lib/company-settings";
+import { FamaAiPanel } from "./fama-ai-panel";
+import { useFamaAiSettings } from "@/hooks/use-fama-ai-settings";
+import { systemAssistantData, systemAssistantSources } from "@/lib/fama-ai-access";
 
-type Section = "dashboard" | "crm" | "quotes" | "agenda" | "orders" | "warranties" | "customers" | "contracts" | "inventory" | "finance" | "team" | "mobile" | "manual" | "privacy" | "support" | "billing" | "settings" | "members" | "platform";
+type Section = "assistant" | "dashboard" | "crm" | "quotes" | "agenda" | "orders" | "warranties" | "customers" | "contracts" | "inventory" | "finance" | "team" | "mobile" | "manual" | "privacy" | "support" | "billing" | "settings" | "members" | "platform";
 type NavigationEntry = { section: Section; subpage?: FinanceTab };
 type Entity = keyof BootstrapData;
 type CreateEntity = Entity;
@@ -157,6 +160,7 @@ const navGroups = [
     label: "Operação",
     items: [
       { id: "dashboard" as Section, label: "Visão geral", icon: LayoutDashboard },
+      { id: "assistant" as Section, label: "Fama IA", icon: Sparkles },
       { id: "crm" as Section, label: "CRM", icon: TrendingUp },
       { id: "quotes" as Section, label: "Orçamentos", icon: FileText },
       { id: "agenda" as Section, label: "Agenda", icon: CalendarDays },
@@ -178,6 +182,7 @@ const navGroups = [
 ];
 
 const sectionMeta: Record<Section, { eyebrow: string; title: string; entity?: CreateEntity; action?: string }> = {
+  assistant: { eyebrow: "Assistente de gestão", title: "Fama IA" },
   dashboard: { eyebrow: "Central de operação", title: "Visão geral", entity: "workOrders", action: "Nova ordem" },
   crm: { eyebrow: "Relacionamento comercial", title: "CRM de vendas", entity: "leads", action: "Novo lead" },
   quotes: { eyebrow: "Propostas e aprovações", title: "Orçamentos", entity: "quotes", action: "Novo orçamento" },
@@ -207,7 +212,7 @@ function defaultSectionFor(organization: Organization): Section {
 }
 
 function canOpenSectionFor(organization: Organization, section: Section, isPlatformAdmin: boolean) {
-  if (section === "manual" || section === "privacy") return true;
+  if (section === "assistant" || section === "manual" || section === "privacy") return true;
   if (section === "support") return true;
   if (section === "members") return organization.role === "owner" || organization.role === "admin";
   if (section === "billing") return organization.role === "owner" || organization.role === "admin";
@@ -369,6 +374,8 @@ export function FamaSystemApp({ organizations, currentUser, signOutPath }: { org
   const [financeTab, setFinanceTab] = useState<FinanceTab>("visao");
   const [activeOrganizationId, setActiveOrganizationId] = useState(organizations[0].id);
   const [data, setData] = useState<BootstrapData>(emptyData);
+  const [loadedDataScope, setLoadedDataScope] = useState<string | null>(null);
+  const ai = useFamaAiSettings();
   const [loading, setLoading] = useState(true);
   const [online, setOnline] = useState(true);
   const [syncingOffline, setSyncingOffline] = useState(false);
@@ -391,6 +398,9 @@ export function FamaSystemApp({ organizations, currentUser, signOutPath }: { org
       : sourceOrganization
   ), [accessOverrides, sourceOrganization]);
   const accessKey = `${activeOrganization.role}:${activeOrganization.permissions.join(",")}`;
+  const dataScope = `${activeOrganization.id}:${accessKey}`;
+  const assistantSources = systemAssistantSources(activeOrganization.role, activeOrganization.permissions);
+  const assistantData = systemAssistantData(data, activeOrganization.role, activeOrganization.permissions);
   const canManageAccess = activeOrganization.role === "owner" || activeOrganization.role === "admin";
   const billingBlocked = isBillingBlocked(activeOrganization, billingClock);
   const canDelete = canManageAccess;
@@ -583,14 +593,15 @@ export function FamaSystemApp({ organizations, currentUser, signOutPath }: { org
         };
         try { window.localStorage.setItem(cacheKey, JSON.stringify(nextData)); } catch { /* The live data remains available when storage is full. */ }
         setData(nextData);
+        setLoadedDataScope(`${activeOrganization.id}:${accessKey}`);
       })
       .catch(() => {
         if (disposed) return;
         try {
           const cached = JSON.parse(window.localStorage.getItem(cacheKey) ?? "null") as BootstrapData | null;
-          if (cached) { setData(pruneDataForAccess(cached, activeOrganization)); toast.info("Modo offline: exibindo a última atualização salva."); }
-          else toast.error("Não foi possível carregar os registros agora.");
-        } catch { toast.error("Não foi possível carregar os registros agora."); }
+          if (cached) { setData(pruneDataForAccess(cached, activeOrganization)); setLoadedDataScope(`${activeOrganization.id}:${accessKey}`); toast.info("Modo offline: exibindo a última atualização salva."); }
+          else { setLoadedDataScope(null); toast.error("Não foi possível carregar os registros agora."); }
+        } catch { setLoadedDataScope(null); toast.error("Não foi possível carregar os registros agora."); }
       })
       .finally(() => { if (!disposed) setLoading(false); });
     return () => { disposed = true; controller.abort(); };
@@ -760,7 +771,7 @@ export function FamaSystemApp({ organizations, currentUser, signOutPath }: { org
           { id: "support" as Section, label: "Suporte", icon: MessageCircle },
           { id: "privacy" as Section, label: "Privacidade e segurança", icon: LockKeyhole },
           { id: "manual" as Section, label: "Manual de uso", icon: BookOpenCheck },
-        ] }].map((group) => ({ ...group, items: group.items.filter((item) => item.id === "members" || item.id === "billing" || item.id === "settings" || item.id === "platform" || item.id === "support" || item.id === "manual" || item.id === "privacy" || item.id === "mobile" || canAccess(item.id)) })).filter((group) => group.items.length).map((group) => <SidebarGroup key={group.label}>
+        ] }].map((group) => ({ ...group, items: group.items.filter((item) => item.id === "assistant" || item.id === "members" || item.id === "billing" || item.id === "settings" || item.id === "platform" || item.id === "support" || item.id === "manual" || item.id === "privacy" || item.id === "mobile" || canAccess(item.id)) })).filter((group) => group.items.length).map((group) => <SidebarGroup key={group.label}>
           <SidebarGroupLabel>{group.label}</SidebarGroupLabel>
           <SidebarGroupContent><SidebarMenu>{group.items.map((item) => <SidebarMenuItem key={item.id}>
           <SidebarMenuButton isActive={section === item.id} tooltip={item.label} onClick={() => navigate(item.id)}><item.icon /><span>{item.label}</span></SidebarMenuButton>
@@ -773,12 +784,25 @@ export function FamaSystemApp({ organizations, currentUser, signOutPath }: { org
     <SidebarInset className="application">
       <header className="topbar">
         <div className="heading"><SidebarTrigger><Menu /></SidebarTrigger><Button className="back-navigation" variant="outline" size="sm" onClick={navigateBack} disabled={!sectionHistory.length} aria-label="Voltar para a aba anterior"><ArrowLeft /><span>Voltar</span></Button><div><small>{title.eyebrow}</small><h1>{title.title}</h1></div></div>
-        <div className="top-actions"><NativeSelect className="company-switcher" value={activeOrganization.id} onChange={(event) => { const nextOrganization = organizations.find((organization) => organization.id === event.target.value) ?? activeOrganization; setLoading(true); setData(emptyData); setSelected(null); setActiveOrganizationId(event.target.value); const defaultSection = isBillingBlocked(nextOrganization) ? (nextOrganization.role === "owner" || nextOrganization.role === "admin" ? "billing" : "support") : defaultSectionFor(nextOrganization); setSectionHistory([]); setSection(defaultSection); }} aria-label="Empresa ativa">{organizations.map((organization) => <NativeSelectOption key={organization.id} value={organization.id}>{organization.name}</NativeSelectOption>)}</NativeSelect>{section !== "customers" && !billingBlocked && <div className="global-search"><Search /><Input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Buscar neste módulo" aria-label="Buscar neste módulo" /></div>}<ThemeToggle /><Button variant="outline" size="icon" asChild aria-label="Sair"><a href={signOutPath} target="_top"><LogOut /></a></Button>{title.entity && !billingBlocked && <Button onClick={() => setCreateEntity(title.entity!)}><Plus />{title.action}</Button>}</div>
+        <div className="top-actions"><NativeSelect className="company-switcher" value={activeOrganization.id} onChange={(event) => { const nextOrganization = organizations.find((organization) => organization.id === event.target.value) ?? activeOrganization; setLoading(true); setData(emptyData); setLoadedDataScope(null); setSelected(null); setCreateEntity(null); setActiveOrganizationId(event.target.value); const defaultSection = isBillingBlocked(nextOrganization) ? (nextOrganization.role === "owner" || nextOrganization.role === "admin" ? "billing" : "support") : defaultSectionFor(nextOrganization); setSectionHistory([]); setSection(defaultSection); }} aria-label="Empresa ativa">{organizations.map((organization) => <NativeSelectOption key={organization.id} value={organization.id}>{organization.name}</NativeSelectOption>)}</NativeSelect>{section !== "customers" && !billingBlocked && <div className="global-search"><Search /><Input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Buscar neste módulo" aria-label="Buscar neste módulo" /></div>}<ThemeToggle /><Button variant="outline" size="icon" asChild aria-label="Sair"><a href={signOutPath} target="_top"><LogOut /></a></Button>{title.entity && !billingBlocked && <Button onClick={() => setCreateEntity(title.entity!)}><Plus />{title.action}</Button>}</div>
       </header>
 
       <main className="workspace">
         {loading ? <div className="loading"><i /><p>Preparando sua operação…</p></div> : <>
           {billingBlocked && section !== "billing" && section !== "support" && section !== "privacy" && section !== "manual" && <BillingBlocked canManageAccess={canManageAccess} onBilling={() => navigate("billing")} />}
+          {!billingBlocked && section === "assistant" && <>
+            {loadedDataScope !== dataScope ? <div className="empty-state"><p>A assistente precisa dos registros da empresa selecionada.</p><Button variant="outline" onClick={() => setRefreshNonce(value => value + 1)}>Carregar registros</Button></div> : ai.value ?
+              <FamaAiPanel key={`${dataScope}:${ai.value.revision}`} data={assistantData} settings={ai.value.settings} scopeLabel={activeOrganization.name} allowedSources={assistantSources} allowedSections={assistantSources} onAction={action => {
+                if (!Object.hasOwn(sectionMeta, action.section) || !canOpenSection(action.section as Section)) return toast.error("Seu perfil não possui acesso a este módulo.");
+                if (billingBlocked || !ai.value?.settings.enabled) return;
+                if (action.create) {
+                  if (!ai.value.settings.allowCreate || !canAccess(entityPermissions[action.create])) return;
+                  if (action.create === "quotes") setInitialQuoteSelection(null);
+                  if (action.create === "transactions") setFinanceEntryType("receita");
+                  setCreateEntity(action.create);
+                } else if (ai.value.settings.allowNavigation) navigate(action.section as Section);
+              }} /> : <div className="empty-state"><p>{ai.error || "Carregando a configuração da assistente…"}</p>{ai.error && <Button variant="outline" onClick={() => void ai.refresh().catch(() => undefined)}>Tentar novamente</Button>}</div>}
+          </>}
           {!billingBlocked && section === "dashboard" && canOpenSection("dashboard") && <Dashboard data={data} settings={companySettings} revenue={revenue} receivable={receivable} payable={payable} salesPipeline={salesPipeline} onSelect={setSelected} onNavigate={navigate} />}
           {!billingBlocked && section === "crm" && canOpenSection("crm") && <Crm leads={filter(data.leads)} onSelect={(record) => setSelected({ entity: "leads", record })} onMove={(record, status) => patchRecord("leads", record, { status })} onDelete={canDelete ? deleteRecord : undefined} />}
           {!billingBlocked && section === "quotes" && canOpenSection("quotes") && <Quotes key={activeOrganization.id} organizationId={activeOrganization.id} quotes={filter(data.quotes)} organizationName={activeOrganization.name} canManageCatalog={canManageAccess} onCreateProject={(selection) => { setInitialQuoteSelection(selection); setCreateEntity("quotes"); }} onCreate={() => { setInitialQuoteSelection(null); setCreateEntity("quotes"); }} onSelect={(record) => setSelected({ entity: "quotes", record })} onStatus={(record, status) => patchRecord("quotes", record, { status })} onConvert={convertQuote} onDelete={canDelete ? deleteRecord : undefined} />}
@@ -788,7 +812,7 @@ export function FamaSystemApp({ organizations, currentUser, signOutPath }: { org
           {!billingBlocked && section === "customers" && canOpenSection("customers") && <Customers customers={data.customers} query={query} onQueryChange={setQuery} onSelect={(record) => setSelected({ entity: "customers", record })} onDelete={canDelete ? deleteRecord : undefined} />}
           {!billingBlocked && section === "contracts" && canOpenSection("contracts") && <Contracts contracts={filter(data.contracts)} organizationName={activeOrganization.name} onSelect={(record) => setSelected({ entity: "contracts", record })} onStatus={(record, status) => patchRecord("contracts", record, { status })} onDelete={canDelete ? deleteRecord : undefined} />}
           {!billingBlocked && section === "inventory" && canOpenSection("inventory") && <Inventory items={filter(data.inventory)} lowStockAlert={companySettings.lowStockAlert} onSelect={(record) => setSelected({ entity: "inventory", record })} onAdjust={adjustStock} onDelete={canDelete ? deleteRecord : undefined} />}
-          {!billingBlocked && section === "finance" && canOpenSection("finance") && <FinanceWorkspace organizationId={activeOrganization.id} transactions={filter(data.transactions)} quotes={filter(data.quotes)} tab={financeTab} onTabChange={navigateFinanceTab} onStatus={(record, status) => patchRecord("transactions", record, { status })} onOpenEntry={(type) => { setFinanceEntryType(type); setCreateEntity("transactions"); }} onReconciled={(transactionId, created) => setData((current) => ({ ...current, transactions: current.transactions.some((item) => item.id === transactionId) ? current.transactions.map((item) => item.id === transactionId ? { ...item, status: "pago" } : item) : created ? [created, ...current.transactions] : current.transactions }))} onPurchasePayable={(record) => setData((current) => ({ ...current, transactions: [record, ...current.transactions] }))} />}
+          {!billingBlocked && section === "finance" && canOpenSection("finance") && <FinanceWorkspace onAssistant={() => navigate("assistant")} organizationId={activeOrganization.id} transactions={filter(data.transactions)} quotes={filter(data.quotes)} tab={financeTab} onTabChange={navigateFinanceTab} onStatus={(record, status) => patchRecord("transactions", record, { status })} onOpenEntry={(type) => { setFinanceEntryType(type); setCreateEntity("transactions"); }} onReconciled={(transactionId, created) => setData((current) => ({ ...current, transactions: current.transactions.some((item) => item.id === transactionId) ? current.transactions.map((item) => item.id === transactionId ? { ...item, status: "pago" } : item) : created ? [created, ...current.transactions] : current.transactions }))} onPurchasePayable={(record) => setData((current) => ({ ...current, transactions: [record, ...current.transactions] }))} />}
           {!billingBlocked && section === "team" && canOpenSection("team") && <Team appointments={data.appointments} employees={filter(data.employees)} onSelect={(record) => setSelected({ entity: "employees", record })} onDelete={canDelete ? deleteRecord : undefined} />}
           {!billingBlocked && section === "mobile" && canOpenSection("mobile") && <TechnicianMobile appointments={data.appointments} orders={data.workOrders} onAppointmentStatus={(record, status) => patchRecord("appointments", record, { status })} onOrderStatus={(record, status) => status === "concluida" ? setClosingOrder(record) : void patchRecord("workOrders", record, { status })} />}
           {section === "manual" && <Manual />}

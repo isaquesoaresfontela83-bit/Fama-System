@@ -89,3 +89,12 @@ As implementações completas ficam nos arquivos indicados.
 | `/api/records/[id]` | PATCH, DELETE | `app/api/records/[id]/route.ts` |
 | `/api/records` | POST | `app/api/records/route.ts` |
 | `/api/warranties/[id]/schedule` | POST | `app/api/warranties/[id]/schedule/route.ts` |
+
+## Configuração da assistente
+
+| Aplicação | Rota | Métodos | Acesso |
+| --- | --- | --- | --- |
+| Fama System | `/api/ai-settings` | GET | Somente preferências globais públicas do Supabase; nenhum registro operacional. |
+| Fama Control | `/api/ai-settings` | GET, POST | GET de preferências públicas; POST restrito ao administrador da plataforma, com origem, limite de requisições e revisão. |
+
+Consulte [ASSISTENTE.md](ASSISTENTE.md) para migração, limites e comportamento.

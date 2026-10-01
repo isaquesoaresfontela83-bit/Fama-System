@@ -146,6 +146,7 @@ export function FinanceWorkspace({
   onOpenEntry,
   onReconciled,
   onPurchasePayable,
+  onAssistant,
   quotes = [],
 }: {
   organizationId: string;
@@ -156,8 +157,10 @@ export function FinanceWorkspace({
   onOpenEntry: (type: "receita" | "despesa") => void;
   onReconciled: (transactionId: string, created?: Transaction) => void;
   onPurchasePayable: (record: Transaction) => void;
+  onAssistant?: () => void;
   quotes?: Quote[];
 }) {
+  const hasAssistant = Boolean(onAssistant);
   const [data, setData] = useState<Payload>(empty);
   const [loading, setLoading] = useState(true);
   const [busy, setBusy] = useState(false);
@@ -304,8 +307,8 @@ export function FinanceWorkspace({
     void refresh();
     void refreshAsaas();
     void refreshFinanceConnections();
-    void refreshAiStatus();
-  }, [refresh, refreshAsaas, refreshFinanceConnections, refreshAiStatus]);
+    if (!hasAssistant) void refreshAiStatus();
+  }, [refresh, refreshAsaas, refreshFinanceConnections, refreshAiStatus, hasAssistant]);
   useEffect(() => {
     if (tab !== "bancos" || !asaas.connections.length) return;
     const timer = window.setTimeout(() => void refreshAsaasControl({ silent: true }), 0);
@@ -1795,6 +1798,11 @@ export function FinanceWorkspace({
             </form>
           </section>
           <section className="surface finance-snapshot">
+            {onAssistant ? <div className="finance-ai-panel">
+              <div className="panel-heading"><div><small>FAMA IA</small><h2>Assistente financeiro</h2></div><Sparkles /></div>
+              <p>Consulte receitas recebidas, despesas pagas, valores a receber, valores a pagar e lançamentos vencidos da empresa selecionada.</p>
+              <Button type="button" onClick={onAssistant}><Sparkles /> Abrir Fama IA</Button>
+            </div> :
             <div className="finance-ai-panel">
               <div className="panel-heading">
                 <div>
@@ -1845,7 +1853,7 @@ export function FinanceWorkspace({
                 </small>
               )}
               {aiAnswer && <div className="finance-ai-answer">{aiAnswer}</div>}
-            </div>
+            </div>}
             <div className="panel-heading">
               <div>
                 <small>CONCILIAÇÃO</small>

@@ -67,3 +67,7 @@ npm run package
 O comando gera em `artifacts/` um ZIP dos arquivos versionados, um identificador de commit e o checksum. Ele verifica a estrutura, exige uma árvore de trabalho limpa e exporta os arquivos do projeto. Credenciais locais e a configuração interna do Git ficam fora dessa exportação de código.
 
 O pacote inicial desta organização também conserva os metadados Git locais para que a pasta extraída já possa ser usada como repositório. Essa é uma diferença deliberada em relação ao exportador de código para entregas futuras.
+
+## Snapshot e evolução do código
+
+A organização inicial está preservada no commit `62f701fc4983eaa685b5149e9a93300e2effac05`. `npm run verify:source` confere os 412 arquivos e seus hashes nesse commit, registrado em `SOURCE_MANIFEST.json`; as versões atuais podem evoluir. Pacotes exportados sem histórico usam `npm run verify`. A assistente do VS Code e sua integração atual estão documentadas em [ASSISTENTE.md](ASSISTENTE.md).

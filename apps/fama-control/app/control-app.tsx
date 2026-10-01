@@ -5,6 +5,8 @@
 import { useEffect, useMemo, useState, type MouseEvent, type ReactNode } from "react";
 import {
   Activity,
+  Sparkles,
+  Settings2,
   ArrowLeft,
   Bell,
   Building2,
@@ -40,6 +42,10 @@ import { featurePermissions, type FeaturePermission } from "@/lib/permissions";
 import { defaultPoolQuoteConfig, type PoolQuoteConfig } from "@/lib/pool-quote-catalog";
 import { CompanyAccountsDialog, type CompanyAccountAction } from "@/app/company-accounts-dialog";
 import { AccessValidationPanel } from "@/app/access-validation-panel";
+import { FamaAiPanel } from "./fama-ai-panel";
+import { FamaAiSettingsPanel } from "./fama-ai-settings-panel";
+import { useFamaAiSettings } from "@/hooks/use-fama-ai-settings";
+import type { AssistantData, AssistantSource } from "@/lib/fama-ai";
 
 type Organization = {
   id: string;
@@ -116,7 +122,7 @@ type PlanCatalogItem = {
   modules: string;
 };
 
-type ControlSection = "overview" | "sales" | "companies" | "finance" | "plans" | "support" | "health" | "quotes" | "permissions" | "security" | "audit" | "privacy";
+type ControlSection = "assistant" | "ai-settings" | "overview" | "sales" | "companies" | "finance" | "plans" | "support" | "health" | "quotes" | "permissions" | "security" | "audit" | "privacy";
 
 function date(value: string) {
   if (!value) return "—";
@@ -273,6 +279,8 @@ export function ControlApp({ displayName, email, signOutPath, systemUrl }: { dis
   const [audit, setAudit] = useState<AuditEvent[]>([]);
   const [privacyRequests, setPrivacyRequests] = useState<PrivacyRequest[]>([]);
   const [loading, setLoading] = useState(true);
+  const [assistantDataLoaded, setAssistantDataLoaded] = useState(false);
+  const ai = useFamaAiSettings();
   const [busy, setBusy] = useState(false);
   const [editingMember, setEditingMember] = useState<AccessMember | null>(null);
   const [editingPermissions, setEditingPermissions] = useState<FeaturePermission[]>([]);
@@ -309,6 +317,7 @@ export function ControlApp({ displayName, email, signOutPath, systemUrl }: { dis
       if (!membersResponse.ok) throw new Error(membersPayload.error ?? "Não foi possível carregar os acessos.");
       if (!auditResponse.ok) throw new Error(auditPayload.error ?? "Não foi possível carregar a auditoria.");
       if (!privacyResponse.ok) throw new Error(privacyPayload.error ?? "Não foi possível carregar as solicitações de privacidade.");
+      setAssistantDataLoaded(true);
       setOrganizations(organizationPayload.organizations ?? []);
       setMembers(membersPayload.members ?? []);
       setSecurity(securityPayload);
@@ -319,6 +328,7 @@ export function ControlApp({ displayName, email, signOutPath, systemUrl }: { dis
       setTickets(supportResponse?.ok ? supportPayload.tickets ?? [] : []);
       if (supportResponse && !supportResponse.ok) toast.warning("Suporte ainda sem tabela conectada. O restante do painel foi carregado.");
     } catch (cause) {
+      setAssistantDataLoaded(false);
       toast.error(cause instanceof Error ? cause.message : "Não foi possível carregar o painel.");
     } finally {
       setBusy(false);
@@ -531,6 +541,10 @@ export function ControlApp({ displayName, email, signOutPath, systemUrl }: { dis
 
   function openSection(event: MouseEvent<HTMLAnchorElement>, next: ControlSection) {
     event.preventDefault();
+    navigateSection(next);
+  }
+
+  function navigateSection(next: ControlSection) {
     if (next !== activeSection) {
       const nextHistory = [...sectionHistory, activeSection];
       setSectionHistory(nextHistory);
@@ -552,10 +566,20 @@ export function ControlApp({ displayName, email, signOutPath, systemUrl }: { dis
     window.history.replaceState(null, "", `#${previous}`);
   }
 
+  const assistantSources: AssistantSource[] = ["overview", "companies", "users", "audit", "privacy"];
+  const assistantData: AssistantData = {
+    organizations,
+    members: members.map(item => ({ id: item.id, display_name: item.displayName, role: item.role, status: item.status })),
+    audit: audit.map(item => ({ id: String(item.id), event_type: item.eventType, occurred_at: item.occurredAt })),
+    privacy: privacyRequests.map(item => ({ id: item.id, request_type: item.requestType, status: item.status })),
+  };
+
   return <div className="control-shell">
     <aside className="control-sidebar">
       <Brand />
       <nav className="control-nav" aria-label="Administração">
+        <a className={`control-nav-item ${activeSection === "assistant" ? "active" : ""}`} href="#assistant" onClick={event => openSection(event, "assistant")}><Sparkles /> Fama IA</a>
+        <a className={`control-nav-item ${activeSection === "ai-settings" ? "active" : ""}`} href="#ai-settings" onClick={event => openSection(event, "ai-settings")}><Settings2 /> Configurar IA</a>
         <a className={`control-nav-item ${activeSection === "overview" ? "active" : ""}`} href="#overview" onClick={(event) => openSection(event, "overview")}><LayoutDashboard /> Visão geral</a>
         <a className={`control-nav-item ${activeSection === "sales" ? "active" : ""}`} href="#sales" onClick={(event) => openSection(event, "sales")}><TrendingUp /> Vendas</a>
         <a className={`control-nav-item ${activeSection === "companies" ? "active" : ""}`} href="#companies" onClick={(event) => openSection(event, "companies")}><Building2 /> Empresas e usuários</a>
@@ -573,6 +597,16 @@ export function ControlApp({ displayName, email, signOutPath, systemUrl }: { dis
     </aside>
     <main className="control-main">
       <header className="control-topbar"><div className="control-heading"><Button className="back-navigation" variant="outline" size="sm" onClick={goBack} disabled={!sectionHistory.length} aria-label="Voltar para a aba anterior"><ArrowLeft /><span>Voltar</span></Button><div><p className="control-kicker">PAINEL DO PROPRIETÁRIO</p><h1>Administração da plataforma</h1></div></div><div className="control-actions"><Button variant="outline" size="sm" onClick={() => void load()} disabled={busy}><RefreshCw className={busy ? "spin" : ""} /> Atualizar</Button><ThemeToggle /><Button variant="outline" size="icon" asChild aria-label="Sair"><a href={signOutPath} target="_top"><LogOut /></a></Button></div></header>
+      {(activeSection === "assistant" || activeSection === "ai-settings") && <section id={activeSection} className="control-panel space-y-4">
+        {ai.value ? activeSection === "ai-settings" ? <FamaAiSettingsPanel settings={ai.value.settings} revision={ai.value.revision} updatedAt={ai.value.updatedAt} onSave={ai.save} onReload={ai.refresh} /> : assistantDataLoaded ? <>
+          <FamaAiPanel key={`${email}:${ai.value.revision}`} data={assistantData} settings={ai.value.settings} scopeLabel="Administração da plataforma" allowedSources={assistantSources} allowedSections={assistantSources} onAction={action => {
+            const destinations: Record<string, ControlSection> = { companies: "companies", users: "permissions", audit: "audit", privacy: "privacy" };
+            const next = destinations[action.section];
+            if (next && !action.create && ai.value?.settings.enabled && ai.value.settings.allowNavigation) navigateSection(next);
+          }} />
+          <p className="control-muted">Para consultar agenda, orçamentos, contratos e financeiro de uma empresa, selecione a empresa no Fama System.</p><Button variant="outline" asChild><a href={systemUrl}>Abrir Fama System <ExternalLink /></a></Button>
+        </> : <div className="space-y-3"><p className="control-muted">{loading ? "Carregando os registros da plataforma…" : "Não foi possível carregar os registros para a assistente."}</p><Button variant="outline" disabled={busy} onClick={() => void load()}>Carregar registros</Button></div> : <div className="space-y-3"><p className="control-muted">{ai.error || "Carregando a configuração da assistente…"}</p>{ai.error && <Button variant="outline" onClick={() => void ai.refresh().catch(() => undefined)}>Tentar novamente</Button>}</div>}
+      </section>}
       <section id="overview" className="control-grid">
         <article className="control-metric"><span><Building2 /></span><div><small>Empresas cadastradas</small><strong>{loading ? "—" : organizations.length}</strong><p>perfis separados</p></div></article>
         <article className="control-metric"><span><Activity /></span><div><small>Inadimplência/atenção</small><strong>{loading ? "—" : attentionPlans.length}</strong><p>cobranças para revisar</p></div></article>

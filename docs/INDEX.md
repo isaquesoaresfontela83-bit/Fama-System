@@ -5,6 +5,7 @@
 | [DESENVOLVIMENTO.md](DESENVOLVIMENTO.md) | Fluxo pela raiz, instalação, execução e testes. |
 | [INSTALACAO.md](INSTALACAO.md) | Requisitos e preparação individual das aplicações. |
 | [ARQUITETURA.md](ARQUITETURA.md) | Relação entre frontend, APIs, Control e Supabase. |
+| [ASSISTENTE.md](ASSISTENTE.md) | Funções, consultas, configuração, permissões e limites da assistente. |
 | [BANCO.md](BANCO.md) | Snapshot PostgreSQL, migrações, storage e rotinas. |
 | [CONFIGURACAO.md](CONFIGURACAO.md) | Variáveis e integrações. |
 | [DOMINIOS-E-PROPRIETARIO.md](DOMINIOS-E-PROPRIETARIO.md) | Endereços fixos e autorização do proprietário na transferência. |

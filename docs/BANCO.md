@@ -57,3 +57,7 @@ Os registros de empresas, usuários, logs, backups, catálogos editados e anexos
 `FAMA_DATA_ENCRYPTION_KEY` protege dados sensíveis da aplicação com AES-GCM; `fama_recovery_key`, no Vault, atende funções de auditoria/recuperação do banco. São configurações distintas. Dados criptografados da instalação antiga exigem os segredos originais correspondentes; gerar uma chave nova não permite decifrar dados antigos.
 
 Documentação oficial: [Database backups](https://supabase.com/docs/guides/platform/backups), [Auth](https://supabase.com/docs/guides/auth), [Storage](https://supabase.com/docs/guides/storage) e [Vault](https://supabase.com/docs/guides/database/vault).
+
+## Migração da assistente
+
+O snapshot foi capturado antes da assistente. Após restaurá-lo, aplique uma única vez `database/supabase/migrations/20261001210000_fama_ai_settings.sql` no Supabase compartilhado. Essa migração adiciona a tabela global de preferências e a função transacional de atualização e auditoria. Os dois aplicativos usam a mesma configuração. Consulte [ASSISTENTE.md](ASSISTENTE.md).

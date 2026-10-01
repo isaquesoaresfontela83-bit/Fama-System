@@ -43,11 +43,23 @@ for (const name of ['01-estrutura-completa-supabase.sql', '02-storage.sql', '03-
 }
 const source = readJson('SOURCE_MANIFEST.json');
 if (source && source.original_files_preserved !== source.files.length) failures.push('Quantidade inconsistente no manifesto de origem.');
+const sourceRefArgument = process.argv.indexOf('--source-ref');
+const sourceRef = sourceRefArgument >= 0 ? process.argv[sourceRefArgument + 1] : source?.original_snapshot_commit;
 if (strict && source) {
-  for (const entry of source.files) {
-    const file = requireFile(entry.repository_path);
-    if (file && crypto.createHash('sha256').update(fs.readFileSync(file)).digest('hex') !== entry.sha256) {
-      failures.push(`Conteúdo difere do snapshot de origem: ${entry.repository_path}`);
+  if (sourceRef && (!/^[a-f0-9]{40}$/.test(sourceRef) || !fs.existsSync(path.join(root, '.git')))) {
+    failures.push('A conferência do snapshot exige um clone Git e um hash de commit completo. Para pacotes de código sem histórico, use npm run verify.');
+  } else {
+    for (const entry of source.files) {
+      let content;
+      try {
+        content = sourceRef ? execFileSync('git', ['show', `${sourceRef}:${entry.repository_path}`], { cwd: root, maxBuffer: 16 * 1024 * 1024, stdio: ['ignore', 'pipe', 'ignore'] }) : fs.readFileSync(requireFile(entry.repository_path));
+      } catch {
+        failures.push(`Arquivo ausente no snapshot de origem: ${entry.repository_path}`);
+        continue;
+      }
+      if (crypto.createHash('sha256').update(content).digest('hex') !== entry.sha256) {
+        failures.push(`Conteúdo difere do snapshot de origem: ${entry.repository_path}`);
+      }
     }
   }
 }
@@ -99,5 +111,5 @@ if (failures.length) {
   process.exit(1);
 }
 process.stdout.write(JSON.stringify({ status: 'ok', original_files: source?.original_files_preserved,
-  original_hashes_checked: strict, applications: 2, tables: database?.schema.tables.length,
+  original_hashes_checked: strict, source_ref: strict ? sourceRef ?? null : null, applications: 2, tables: database?.schema.tables.length,
   functions: database?.schema.functions.length, private_values_detected: false }) + '\n');
