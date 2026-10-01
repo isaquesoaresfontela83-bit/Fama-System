@@ -1,0 +1,35 @@
+{
+  "published_at": "2026-10-01T22:18:06.729184+00:00",
+  "engine": "local_rules",
+  "validation": {
+    "system_tests": 80,
+    "control_tests": 50,
+    "typecheck": "passed",
+    "build": "passed",
+    "changed_typescript_eslint": "passed",
+    "ui_render_and_accessibility": "passed",
+    "permission_scoped_metrics_and_insights": "passed",
+    "production_publication": "succeeded",
+    "authenticated_browser_validation": "pending_required_preview_skill_unavailable"
+  },
+  "projects": {
+    "system": {
+      "project_id": "appgprj_6a9a074b50b48191acca49e35aa90dc6",
+      "version_number": 102,
+      "version_id": "appgprj_6a9a074b50b48191acca49e35aa90dc6~appgver_308c66d79b248191aee3f64c794b730c",
+      "commit_sha": "9ee6ecdfdac71459540c743b23789597649ffaec",
+      "deployment_id": "appgdep_6abedc06d8b48191a54ff3574bda329f",
+      "status": "succeeded",
+      "url": "https://fama-system.isaquesoaresfontela8.chatgpt.site"
+    },
+    "control": {
+      "project_id": "appgprj_6aa0a5eb3a8c81918279118311b7b970",
+      "version_number": 40,
+      "version_id": "appgprj_6aa0a5eb3a8c81918279118311b7b970~appgver_2e7d514805308191990af749a4d3214f",
+      "commit_sha": "c74e77b95cf3c9f7034475b9c710a59f320eaed7",
+      "deployment_id": "appgdep_6abedbe16dac819180256c7a45d62156",
+      "status": "succeeded",
+      "url": "https://fama-control.isaquesoaresfontela8.chatgpt.site"
+    }
+  }
+}

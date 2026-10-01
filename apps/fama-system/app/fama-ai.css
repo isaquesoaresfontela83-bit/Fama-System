@@ -1,0 +1,285 @@
+/* Fama IA: scoped operational workspace, shared by System and Control. */
+.fama-ai { --ai-tint: color-mix(in srgb, var(--primary) 6%, var(--card)); --ai-success: #158463; --ai-warning: #9b6514; --ai-danger: #c63d4c; color: var(--foreground); min-width: 0; }
+.dark .fama-ai { --ai-success: #5ed6ab; --ai-warning: #f3c36b; --ai-danger: #ff91a0; }
+.fama-ai button, .fama-ai-settings button { cursor: pointer; }
+.fama-ai button:disabled, .fama-ai-settings button:disabled { cursor: default; }
+.fama-ai button:focus-visible, .fama-ai select:focus-visible, .fama-ai-settings input:focus-visible, .fama-ai-settings textarea:focus-visible, .fama-ai-settings select:focus-visible { outline: 3px solid color-mix(in srgb, var(--primary) 60%, transparent); outline-offset: 3px; }
+.fama-ai-header { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 20px; margin-bottom: 24px; }
+.fama-ai-brand, .fama-ai-header-actions { display: flex; align-items: center; gap: 14px; min-width: 0; }
+.fama-ai-brand-icon { display: grid; place-items: center; width: 54px; height: 54px; border-radius: 17px; color: #fff; background: #0b72e7; box-shadow: 0 5px 14px #0b72e726; flex-shrink: 0; }
+.fama-ai-brand-icon svg { width: 25px; height: 25px; }
+.fama-ai-eyebrow { display: block; color: var(--muted-foreground); font-size: 13px; font-weight: 650; letter-spacing: .065em; }
+.fama-ai .fama-ai-header h2 { font-size: clamp(23px, 2.2vw, 30px); line-height: 1.25; margin: 3px 0 0; letter-spacing: -.04em; font-weight: 750; }
+.fama-ai-header-actions { flex-wrap: wrap; }
+.fama-ai-header-actions [data-slot="button"] { border-radius: 11px; height: 39px; font-size: 14px; }
+.fama-ai-scope { display: inline-flex; align-items: center; gap: 8px; max-width: 260px; overflow-wrap: anywhere; padding: 7px 11px; border: 1px solid var(--border); border-radius: 20px; font-size: 13px; background: var(--card); }
+.fama-ai-scope > span { width: 6px; height: 6px; border-radius: 50%; background: var(--primary); flex-shrink: 0; }
+.fama-ai-metrics { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(175px, 100%), 1fr)); gap: 0; border: 1px solid var(--border); border-radius: 16px; background: var(--card); margin-bottom: 24px; overflow: hidden; }
+.fama-ai-metric { padding: 19px 22px; min-width: 0; border-inline-end: 1px solid var(--border); }
+.fama-ai-metric:last-child { border-inline-end: 0; }
+.fama-ai-metric > span { display: block; color: var(--muted-foreground); font-size: 14px; margin-bottom: 7px; }
+.fama-ai-metric > strong { display: block; font-size: clamp(22px, 2vw, 29px); font-weight: 700; letter-spacing: -.035em; line-height: 1.25; overflow-wrap: anywhere; }
+.fama-ai-metric > small { display: block; font-size: 12px; margin-top: 5px; line-height: 1.5; color: var(--muted-foreground); }
+.fama-ai-metric[data-tone="success"] > strong { color: var(--ai-success); }
+.fama-ai-metric[data-tone="warning"] > strong { color: var(--ai-warning); }
+.fama-ai-metric[data-tone="danger"] > strong { color: var(--ai-danger); }
+.fama-ai-workspace { display: grid; grid-template-columns: 218px minmax(0, 1fr); border: 1px solid var(--border); border-radius: 20px; background: var(--card); box-shadow: 0 8px 32px #102a5608; overflow: hidden; }
+.fama-ai-rail { padding: 25px 14px 18px; color: #e3efff; background: #0a2045; display: flex; flex-direction: column; min-width: 0; }
+.fama-ai-rail-heading { display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 650; padding: 0 6px; }
+.fama-ai-rail-heading svg { color: #67d9ed; }
+.fama-ai-rail > p { font-size: 12px; color: #acc3e0; margin: 8px 6px 23px; }
+.fama-ai-rail nav { display: flex; flex-direction: column; gap: 4px; }
+.fama-ai-rail nav button { display: flex; align-items: center; gap: 11px; min-height: 42px; padding: 9px 11px; border-radius: 10px; text-align: left; font-size: 14px; line-height: 1.35; transition: background .15s; }
+.fama-ai-rail nav button:hover { background: #ffffff0c; }
+.fama-ai-rail nav button[aria-pressed="true"] { background: #1667b8; color: #fff; box-shadow: inset 3px 0 #5ddbef; }
+.fama-ai-rail nav button svg { flex-shrink: 0; color: #a9c9ec; }
+.fama-ai-rail nav button[aria-pressed="true"] svg { color: #a6f2ff; }
+.fama-ai-rail nav button span { flex: 1; }
+.fama-ai-rail nav button small { min-width: 20px; font-size: 11px; font-variant-numeric: tabular-nums; text-align: right; color: #bdd3ee; }
+.fama-ai-rail-tip { padding: 17px 8px 13px; margin-top: auto; border-top: 1px solid #234164; }
+.fama-ai-rail-tip > svg { margin-top: 26px; color: #74d7f0; }
+.fama-ai-rail-tip strong { display: block; font-size: 13px; margin: 8px 0; }
+.fama-ai-rail-tip p { font-size: 12px; color: #b5cce6; line-height: 1.65; }
+.fama-ai-rail-tip b { color: #e5f3ff; font-weight: 500; }
+.fama-ai-help-button { display: flex; align-items: center; justify-content: space-between; gap: 6px; text-align: left; font-size: 12px; padding: 10px 8px; color: #91dff5; }
+.fama-ai-main { min-width: 0; position: relative; display: flex; flex-direction: column; background: var(--card); }
+.fama-ai-context-bar { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 17px 26px; border-bottom: 1px solid var(--border); }
+.fama-ai-context-bar > div { display: flex; align-items: center; gap: 9px; font-size: 14px; min-width: 0; }
+.fama-ai-context-bar > div svg { color: var(--primary); flex-shrink: 0; }
+.fama-ai-context-bar > span { font-size: 12px; color: var(--muted-foreground); white-space: nowrap; }
+.fama-ai-mobile-module { display: none; }
+.fama-ai-conversation { max-height: 650px; min-height: 420px; overflow-y: auto; scrollbar-width: thin; scrollbar-color: var(--border) transparent; overscroll-behavior: contain; }
+.fama-ai-conversation-empty { max-height: none; }
+.fama-ai-welcome { max-width: 900px; margin: 0 auto; padding: 42px 36px 30px; }
+.fama-ai-welcome-symbol { width: 59px; height: 59px; display: grid; place-items: center; margin-bottom: 22px; border: 1px solid color-mix(in srgb, var(--primary) 22%, var(--border)); border-radius: 18px; background: var(--ai-tint); color: var(--primary); box-shadow: 0 5px 18px #0b72e708; }
+.fama-ai-welcome > .fama-ai-eyebrow { color: var(--primary); font-size: 13px; letter-spacing: .02em; }
+.fama-ai .fama-ai-welcome h3 { font-size: clamp(25px, 2.5vw, 34px); line-height: 1.2; letter-spacing: -.045em; font-weight: 700; margin: 9px 0 14px; max-width: 560px; }
+.fama-ai-welcome > p { max-width: 610px; color: var(--muted-foreground); font-size: 15px; line-height: 1.65; }
+.fama-ai-prompts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 11px; margin-top: 26px; }
+.fama-ai-prompts > button { display: flex; align-items: center; gap: 12px; text-align: left; border: 1px solid var(--border); border-radius: 12px; padding: 14px; min-width: 0; background: var(--card); transition: border-color .15s, background .15s, transform .15s; }
+.fama-ai-prompts > button:hover { border-color: var(--primary); background: var(--ai-tint); transform: translateY(-1px); }
+.fama-ai-prompt-icon { display: grid; place-items: center; width: 36px; height: 36px; background: var(--ai-tint); border-radius: 10px; color: var(--primary); flex-shrink: 0; }
+.fama-ai-prompts > button > span:nth-child(2) { flex: 1; min-width: 0; }
+.fama-ai-prompts small { display: block; color: var(--muted-foreground); font-size: 11px; margin-bottom: 4px; }
+.fama-ai-prompts strong { font-size: 14px; line-height: 1.4; font-weight: 600; }
+.fama-ai-prompts > button > svg { transform: rotate(45deg); color: var(--muted-foreground); flex-shrink: 0; }
+.fama-ai-priorities { margin-top: 29px; border-top: 1px solid var(--border); padding-top: 20px; }
+.fama-ai-priorities-title { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; font-size: 13px; }
+.fama-ai-priorities-title svg { color: var(--ai-warning); }
+.fama-ai-priorities-title span { margin-left: auto; color: var(--muted-foreground); font-size: 11px; }
+.fama-ai-priorities > button { display: flex; align-items: center; gap: 11px; text-align: left; width: 100%; padding: 12px 0; border-bottom: 1px solid color-mix(in srgb, var(--border) 55%, transparent); }
+.fama-ai-priorities > button:last-child { border-bottom: 0; }
+.fama-ai-priorities > button:hover strong { color: var(--primary); }
+.fama-ai-priority-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--primary); flex-shrink: 0; }
+.fama-ai-priority-dot[data-tone="warning"] { background: var(--ai-warning); }
+.fama-ai-priority-dot[data-tone="danger"] { background: var(--ai-danger); }
+.fama-ai-priorities > button > span:nth-child(2) { flex: 1; min-width: 0; }
+.fama-ai-priorities strong { display: block; font-size: 13px; font-weight: 600; }
+.fama-ai-priorities small { display: block; font-size: 12px; line-height: 1.5; color: var(--muted-foreground); margin-top: 3px; }
+.fama-ai-priorities b { font-size: 13px; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.fama-ai-priorities > button > svg { color: var(--muted-foreground); flex-shrink: 0; }
+.fama-ai-messages { padding: 28px; display: flex; flex-direction: column; gap: 28px; }
+.fama-ai-user-message { align-self: flex-end; max-width: min(85%, 580px); }
+.fama-ai-user-message > span { display: block; text-align: right; font-size: 12px; color: var(--muted-foreground); margin-bottom: 7px; }
+.fama-ai-user-message p { background: var(--ai-tint); border: 1px solid color-mix(in srgb, var(--primary) 14%, var(--border)); border-radius: 15px 15px 4px 15px; padding: 12px 17px; font-size: 15px; line-height: 1.6; white-space: pre-wrap; overflow-wrap: anywhere; }
+.fama-ai-response { min-width: 0; }
+.fama-ai-response-heading { display: flex; align-items: center; flex-wrap: wrap; gap: 9px; margin-bottom: 12px; font-size: 13px; }
+.fama-ai-avatar { width: 29px; height: 29px; border-radius: 9px; display: grid; place-items: center; color: white; background: var(--primary); flex-shrink: 0; }
+.fama-ai-source-tag { display: inline-flex; align-items: center; gap: 5px; border: 1px solid var(--border); border-radius: 20px; padding: 3px 8px; font-size: 11px; color: var(--muted-foreground); }
+.fama-ai-response-body { border: 1px solid var(--border); border-radius: 4px 15px 15px 15px; padding: 20px; background: var(--card); }
+.fama-ai .fama-ai-response-body h3 { font-size: 17px; line-height: 1.45; font-weight: 650; letter-spacing: -.015em; margin: 0 0 16px; }
+.fama-ai-metrics-compact { background: var(--ai-tint); border: 0; gap: 1px; grid-template-columns: repeat(auto-fit, minmax(min(150px, 100%), 1fr)); border-radius: 10px; margin: 0 0 18px; }
+.fama-ai-metrics-compact .fama-ai-metric { border: 0; padding: 13px 15px; }
+.fama-ai-metrics-compact .fama-ai-metric > span { font-size: 12px; margin-bottom: 5px; }
+.fama-ai-metrics-compact .fama-ai-metric > strong { font-size: 20px; letter-spacing: -.02em; }
+.fama-ai-metrics-compact .fama-ai-metric > small { font-size: 11px; }
+.fama-ai-records { display: flex; flex-direction: column; }
+.fama-ai-record { display: flex; justify-content: space-between; gap: 15px; padding: 13px 0; border-bottom: 1px solid var(--border); }
+.fama-ai-record:last-child { border-bottom: 0; }
+.fama-ai-record-main { min-width: 0; flex: 1; }
+.fama-ai-record-main > strong { display: block; font-size: 14px; line-height: 1.5; font-weight: 600; overflow-wrap: anywhere; }
+.fama-ai-record-main > p { color: var(--muted-foreground); font-size: 12px; line-height: 1.65; margin-top: 4px; overflow-wrap: anywhere; }
+.fama-ai-record-meta { display: flex; flex-direction: column; align-items: flex-end; gap: 6px; max-width: 45%; }
+.fama-ai-record-meta > strong { font-size: 14px; font-weight: 650; text-align: right; overflow-wrap: anywhere; }
+.fama-ai-status { border-radius: 5px; padding: 3px 6px; font-size: 11px; line-height: 1.35; color: var(--muted-foreground); background: var(--muted); text-align: right; }
+.fama-ai-status[data-tone="success"] { color: var(--ai-success); background: color-mix(in srgb, var(--ai-success) 9%, var(--card)); }
+.fama-ai-status[data-tone="warning"] { color: var(--ai-warning); background: color-mix(in srgb, var(--ai-warning) 9%, var(--card)); }
+.fama-ai-status[data-tone="danger"] { color: var(--ai-danger); background: color-mix(in srgb, var(--ai-danger) 9%, var(--card)); }
+.fama-ai-note { font-size: 12px; line-height: 1.65; color: var(--muted-foreground); margin: 14px 0 0; }
+.fama-ai-answer-text { font-size: 15px; line-height: 1.75; white-space: pre-wrap; overflow-wrap: anywhere; }
+.fama-ai-no-results { display: flex; align-items: center; gap: 10px; padding: 17px 0; color: var(--muted-foreground); font-size: 14px; }
+.fama-ai-no-results svg { flex-shrink: 0; }
+.fama-ai-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
+.fama-ai-actions [data-slot="button"] { border-radius: 8px; height: 35px; font-size: 13px; }
+.fama-ai-response-footer { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; padding-top: 14px; margin-top: 16px; border-top: 1px solid var(--border); }
+.fama-ai-response-footer [data-slot="button"] { height: 28px; padding: 2px 5px; font-size: 12px; color: var(--muted-foreground); }
+.fama-ai-response-footer > span { font-size: 11px; margin-left: auto; color: var(--muted-foreground); }
+.fama-ai-followups { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 11px; }
+.fama-ai-followups > button { display: inline-flex; align-items: center; gap: 7px; border: 1px solid var(--border); border-radius: 20px; padding: 6px 11px; font-size: 12px; color: var(--primary); }
+.fama-ai-followups > button:hover { background: var(--ai-tint); }
+.fama-ai-expand { margin-top: 6px; color: var(--primary); }
+.fama-ai-jump { align-self: center; border-radius: 20px; margin: 8px 0; }
+.fama-ai-composer-area { padding: 18px 28px 20px; border-top: 1px solid var(--border); margin-top: auto; background: var(--card); }
+.fama-ai-composer-context { display: flex; align-items: center; gap: 5px; color: var(--muted-foreground); font-size: 12px; margin: 0 2px 10px; }
+.fama-ai-context-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--primary); margin-right: 4px; }
+.fama-ai-composer { border: 1px solid var(--input); border-radius: 14px; padding: 3px; background: var(--background); transition: border-color .15s, box-shadow .15s; }
+.fama-ai-composer:focus-within { border-color: var(--primary); box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary) 10%, transparent); }
+.fama-ai-composer textarea[data-slot="textarea"] { resize: vertical; max-height: 200px; min-height: 64px; border: 0; background: transparent; font-size: 15px; box-shadow: none; outline: none; padding: 13px 14px 7px; line-height: 1.65; border-radius: 11px; }
+.fama-ai-composer textarea[data-slot="textarea"]:focus-visible { outline: none; box-shadow: none; }
+.fama-ai-composer-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 4px 7px 7px 14px; }
+.fama-ai-composer-toolbar > span { display: flex; align-items: center; gap: 6px; font-size: 11px; color: var(--muted-foreground); }
+.fama-ai-composer-toolbar > span svg { color: var(--primary); flex-shrink: 0; }
+.fama-ai-send { height: 35px; border-radius: 9px; gap: 5px; padding: 0 13px; font-size: 13px; }
+.fama-ai-composer-note { display: flex; justify-content: space-between; gap: 10px; margin: 10px 2px 0; font-size: 11px; color: var(--muted-foreground); }
+.fama-ai-footer { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px; color: var(--muted-foreground); font-size: 12px; padding: 14px 2px 0; }
+.fama-ai-footer button { display: inline-flex; align-items: center; gap: 7px; color: var(--primary); }
+.fama-ai-help { margin: 18px 24px 0; padding: 17px; border: 1px solid var(--border); background: var(--ai-tint); border-radius: 12px; }
+.fama-ai-help > div { display: flex; justify-content: space-between; gap: 10px; font-size: 14px; }
+.fama-ai-help > div button { color: var(--muted-foreground); }
+.fama-ai-help p { margin: 9px 0; font-size: 14px; line-height: 1.6; }
+.fama-ai-help small { font-size: 12px; color: var(--muted-foreground); line-height: 1.6; }
+.fama-ai-disabled { display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 14px; text-align: center; padding: 50px 30px; min-height: 360px; }
+.fama-ai-disabled > svg { color: var(--primary); width: 32px; height: 32px; }
+.fama-ai-disabled h3 { font-size: 22px; font-weight: 650; }
+.fama-ai-disabled p { color: var(--muted-foreground); font-size: 15px; line-height: 1.65; max-width: 420px; }
+
+.control-panel.control-ai-panel { padding: 0; border: 0; border-radius: 0; background: transparent; box-shadow: none; }
+
+/* Configuration studio */
+.fama-ai-settings { color: var(--foreground); min-width: 0; }
+.fama-ai-settings-header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 18px; margin-bottom: 22px; }
+.fama-ai-settings-title { display: flex; align-items: center; gap: 14px; }
+.fama-ai-settings-title > span { display: grid; place-items: center; width: 49px; height: 49px; color: var(--primary); background: var(--secondary); border-radius: 15px; }
+.fama-ai-settings .fama-ai-settings-header h2 { font-size: 28px; line-height: 1.3; font-weight: 700; letter-spacing: -.035em; margin: 2px 0 0; }
+.fama-ai-settings-subtitle { font-size: 15px; line-height: 1.65; color: var(--muted-foreground); margin-bottom: 24px; max-width: 760px; }
+.fama-ai-settings-status { display: inline-flex; align-items: center; gap: 7px; border: 1px solid var(--border); border-radius: 20px; padding: 7px 12px; font-size: 13px; background: var(--card); }
+.fama-ai-settings-status > span { width: 6px; height: 6px; border-radius: 50%; background: var(--primary); }
+.fama-ai-settings-status[data-enabled="false"] > span { background: var(--muted-foreground); }
+.fama-ai-settings-tabs { margin-bottom: 22px; max-width: 100%; overflow-x: auto; }
+.fama-ai-settings-tabs [data-slot="tabs-list"] { padding: 4px; height: 43px; border: 1px solid var(--border); background: var(--muted); }
+.fama-ai-settings-tabs [data-slot="tabs-trigger"] { font-size: 14px; gap: 7px; padding: 0 14px; }
+.fama-ai-settings-grid { display: grid; grid-template-columns: minmax(0, 1fr) 280px; align-items: start; gap: 22px; }
+.fama-ai-settings-fieldset { min-width: 0; display: flex; flex-direction: column; gap: 22px; }
+.fama-ai-settings-card { border: 1px solid var(--border); border-radius: 16px; background: var(--card); padding: 24px; }
+.fama-ai-settings-card-title { display: flex; align-items: center; gap: 11px; margin-bottom: 8px; }
+.fama-ai-settings-card-title > svg { color: var(--primary); width: 20px; height: 20px; }
+.fama-ai-settings .fama-ai-settings-card-title h3 { font-size: 18px; line-height: 1.4; font-weight: 650; margin: 0; }
+.fama-ai-settings-card > p { color: var(--muted-foreground); font-size: 14px; line-height: 1.6; margin-bottom: 21px; }
+.fama-ai-settings-fields { display: grid; grid-template-columns: minmax(0, 1fr) 170px; gap: 16px; }
+.fama-ai-settings label.fama-ai-field { display: flex; flex-direction: column; gap: 8px; margin-top: 16px; font-size: 14px; font-weight: 550; }
+.fama-ai-settings .fama-ai-field input, .fama-ai-settings .fama-ai-field textarea, .fama-ai-settings .fama-ai-field select { width: 100%; min-width: 0; border: 1px solid var(--input); border-radius: 10px; background: var(--background); color: var(--foreground); padding: 10px 12px; font-size: 15px; font-weight: 400; line-height: 1.6; }
+.fama-ai-settings .fama-ai-field small { font-size: 12px; font-weight: 400; line-height: 1.5; color: var(--muted-foreground); }
+.fama-ai-setting-toggle { display: flex; align-items: center; justify-content: space-between; gap: 18px; padding: 16px 0; border-bottom: 1px solid var(--border); }
+.fama-ai-setting-toggle:last-child { border-bottom: 0; }
+.fama-ai-setting-toggle strong { display: block; font-size: 14px; font-weight: 600; }
+.fama-ai-setting-toggle p { color: var(--muted-foreground); font-size: 13px; line-height: 1.6; margin-top: 4px; }
+.fama-ai-setting-toggle [data-slot="switch"] { width: 40px; height: 24px; flex-shrink: 0; }
+.fama-ai-setting-toggle [data-slot="switch-thumb"] { width: 20px; height: 20px; }
+.fama-ai-source-options { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.fama-ai-source-option { display: flex; align-items: center; gap: 10px; padding: 13px; border: 1px solid var(--border); border-radius: 11px; cursor: pointer; font-size: 13px; }
+.fama-ai-source-option[data-enabled="true"] { background: color-mix(in srgb, var(--primary) 5%, var(--card)); border-color: color-mix(in srgb, var(--primary) 30%, var(--border)); }
+.fama-ai-source-option input { width: 16px; height: 16px; accent-color: var(--primary); flex-shrink: 0; }
+.fama-ai-source-option svg { color: var(--primary); flex-shrink: 0; width: 17px; height: 17px; }
+.fama-ai-source-option span { flex: 1; }
+.fama-ai-settings-aside { border: 1px solid var(--border); background: var(--secondary); border-radius: 16px; padding: 23px; }
+.fama-ai-settings-aside > svg { color: var(--primary); }
+.fama-ai-settings-aside h3 { font-size: 17px; font-weight: 650; margin: 14px 0 10px; }
+.fama-ai-settings-aside > p { font-size: 13px; line-height: 1.7; color: var(--muted-foreground); }
+.fama-ai-settings-aside ul { list-style: none; display: flex; flex-direction: column; gap: 14px; padding: 22px 0; font-size: 13px; }
+.fama-ai-settings-aside li { display: flex; align-items: center; gap: 8px; }
+.fama-ai-settings-aside li svg { color: var(--primary); width: 15px; height: 15px; flex-shrink: 0; }
+.fama-ai-settings-revision { border-top: 1px solid var(--border); padding-top: 18px; margin-top: 3px; font-size: 12px; line-height: 1.75; color: var(--muted-foreground); }
+.fama-ai-settings-revision strong { display: block; color: var(--foreground); font-weight: 600; }
+.fama-ai-settings-alert { display: flex; align-items: flex-start; gap: 10px; color: var(--foreground); background: var(--secondary); padding: 15px; border: 1px solid var(--border); border-radius: 12px; margin: 0 0 20px; font-size: 14px; line-height: 1.6; }
+.fama-ai-settings-alert > svg { flex-shrink: 0; color: var(--primary); margin-top: 2px; }
+.fama-ai-command-toolbar { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 15px; }
+.fama-ai-command-toolbar .fama-ai-settings-card-title { margin-bottom: 0; }
+.fama-ai-commands { display: flex; flex-direction: column; gap: 18px; }
+.fama-ai-command { padding: 19px; border: 1px solid var(--border); border-radius: 12px; background: var(--background); }
+.fama-ai-command .fama-ai-field input, .fama-ai-command .fama-ai-field select, .fama-ai-command .fama-ai-field textarea { background: var(--card); }
+.fama-ai-command-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.fama-ai-command-top label { display: flex; align-items: center; gap: 8px; font-size: 13px; }
+.fama-ai-command-top input { accent-color: var(--primary); }
+.fama-ai-command-top button { color: var(--destructive); }
+.fama-ai-commands-empty { text-align: center; padding: 38px 22px; border: 1px dashed var(--input); border-radius: 12px; }
+.fama-ai-commands-empty > svg { color: var(--primary); margin: 0 auto 13px; }
+.fama-ai-commands-empty strong { display: block; font-size: 15px; }
+.fama-ai-commands-empty p { font-size: 13px; color: var(--muted-foreground); line-height: 1.6; margin: 9px auto 18px; max-width: 380px; }
+.fama-ai-settings-savebar { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; border-top: 1px solid var(--border); padding-top: 22px; margin-top: 22px; }
+.fama-ai-settings-savebar [data-slot="button"] { border-radius: 10px; height: 41px; font-size: 14px; }
+.fama-ai-settings-savebar > span { color: var(--muted-foreground); font-size: 12px; margin-left: auto; }
+.fama-ai-settings-feedback { margin-top: 16px; padding: 12px 15px; border-radius: 10px; border: 1px solid var(--border); font-size: 14px; line-height: 1.6; color: var(--primary); background: var(--secondary); }
+.fama-ai-settings-feedback[data-failed="true"] { color: var(--destructive); }
+.fama-ai-settings-preview-note { display: flex; align-items: center; gap: 9px; margin: 0 0 25px; font-size: 14px; line-height: 1.6; color: var(--muted-foreground); }
+.fama-ai-settings-preview-note svg { color: var(--primary); flex-shrink: 0; }
+
+@media (min-width: 1600px) { .fama-ai-workspace { grid-template-columns: 240px minmax(0, 1fr); } .fama-ai-welcome { padding-inline: 46px; } }
+@media (max-width: 1100px) { .fama-ai-settings-grid { grid-template-columns: minmax(0, 1fr); } .fama-ai-settings-aside { display: none; } .fama-ai-welcome { padding-inline: 24px; } .fama-ai-workspace { grid-template-columns: 190px minmax(0, 1fr); } .fama-ai-rail { padding-inline: 10px; } .fama-ai-prompts > button { gap: 9px; padding: 12px; } .fama-ai-prompt-icon { width: 30px; height: 30px; } }
+@media (max-width: 820px) {
+  .fama-ai-workspace { grid-template-columns: minmax(0, 1fr); }
+  .fama-ai-rail { display: none; }
+  .fama-ai-mobile-module { display: flex; align-items: center; gap: 12px; padding: 13px 22px; border-bottom: 1px solid var(--border); background: var(--ai-tint); }
+  .fama-ai-mobile-module label { font-size: 12px; color: var(--muted-foreground); }
+  .fama-ai-mobile-module select { border: 1px solid var(--input); border-radius: 8px; padding: 7px 10px; background: var(--card); font-size: 14px; min-width: 0; max-width: 65%; }
+  .fama-ai-metric { padding: 16px 18px; }
+  .fama-ai-header { gap: 16px; }
+  .fama-ai-header-actions { gap: 10px; }
+}
+@media (max-width: 540px) {
+  .fama-ai-header { margin-bottom: 18px; }
+  .fama-ai-brand-icon { width: 45px; height: 45px; border-radius: 13px; }
+  .fama-ai-brand { gap: 11px; }
+  .fama-ai-eyebrow { font-size: 11px; }
+  .fama-ai-header-actions { width: 100%; justify-content: space-between; }
+  .fama-ai-scope { max-width: 57%; font-size: 11px; }
+  .fama-ai-header-actions [data-slot="button"] { height: 35px; padding-inline: 10px; font-size: 12px; }
+  .fama-ai-metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); margin-bottom: 18px; }
+  .fama-ai-metric { padding: 14px; border-bottom: 1px solid var(--border); }
+  .fama-ai-metric > span { font-size: 12px; }
+  .fama-ai-metric > strong { font-size: 21px; }
+  .fama-ai-metric:nth-child(2n) { border-inline-end: 0; }
+  .fama-ai-metric > small { font-size: 11px; }
+  .fama-ai-workspace { border-radius: 15px; }
+  .fama-ai-context-bar { padding: 14px 16px; }
+  .fama-ai-context-bar > div { font-size: 13px; }
+  .fama-ai-context-bar > span { display: none; }
+  .fama-ai-mobile-module { padding: 11px 16px; }
+  .fama-ai-welcome { padding: 28px 17px 20px; }
+  .fama-ai-welcome-symbol { width: 48px; height: 48px; border-radius: 14px; margin-bottom: 18px; }
+  .fama-ai-welcome > p { font-size: 14px; }
+  .fama-ai .fama-ai-welcome h3 { font-size: 27px; }
+  .fama-ai-prompts { grid-template-columns: minmax(0, 1fr); gap: 9px; margin-top: 22px; }
+  .fama-ai-prompts > button { padding: 12px; gap: 12px; }
+  .fama-ai-prompts > button small { margin-bottom: 2px; }
+  .fama-ai-priorities-title > span { display: none; }
+  .fama-ai-priorities small { display: none; }
+  .fama-ai-priorities strong { font-size: 12px; }
+  .fama-ai-priorities b { font-size: 12px; }
+  .fama-ai-priorities > button { gap: 8px; }
+  .fama-ai-priorities > button > svg { display: none; }
+  .fama-ai-messages { padding: 20px 14px; gap: 23px; }
+  .fama-ai-response-body { padding: 15px; }
+  .fama-ai .fama-ai-response-body h3 { font-size: 16px; }
+  .fama-ai-record { gap: 9px; }
+  .fama-ai-record-meta > strong { font-size: 13px; }
+  .fama-ai-record-main > strong { font-size: 13px; }
+  .fama-ai-record-main > p { font-size: 11px; }
+  .fama-ai-status { font-size: 10px; }
+  .fama-ai-metrics-compact .fama-ai-metric { padding: 11px; }
+  .fama-ai-metrics-compact .fama-ai-metric > strong { font-size: 18px; }
+  .fama-ai-response-footer > span { display: none; }
+  .fama-ai-composer-area { padding: 16px 14px; }
+  .fama-ai-composer textarea[data-slot="textarea"] { font-size: 16px; }
+  .fama-ai-composer-toolbar { padding-left: 10px; }
+  .fama-ai-composer-toolbar > span { font-size: 10px; }
+  .fama-ai-composer-note span:last-child { display: none; }
+  .fama-ai-help { margin-inline: 14px; }
+  .fama-ai-settings-card { padding: 19px; }
+  .fama-ai-settings .fama-ai-settings-header h2 { font-size: 24px; }
+  .fama-ai-settings-title { gap: 10px; }
+  .fama-ai-settings-status { display: none; }
+  .fama-ai-settings-fields, .fama-ai-source-options { grid-template-columns: minmax(0, 1fr); }
+  .fama-ai-setting-toggle p { font-size: 12px; }
+  .fama-ai-settings-savebar > span { width: 100%; margin-left: 0; }
+}
+@media (prefers-reduced-motion: reduce) { .fama-ai *, .fama-ai-settings * { transition: none !important; scroll-behavior: auto !important; } }
