@@ -1,0 +1,139 @@
+[
+  {
+    "project": "fama-system",
+    "entries": [
+      {
+        "key": "DATA_BACKEND",
+        "is_secret": false,
+        "value": "supabase"
+      },
+      {
+        "key": "FAMA_ASAAS_API_KEY",
+        "is_secret": true,
+        "value": null
+      },
+      {
+        "key": "FAMA_ASAAS_ENVIRONMENT",
+        "is_secret": false,
+        "value": "production"
+      },
+      {
+        "key": "FAMA_ASAAS_WEBHOOK_TOKEN",
+        "is_secret": true,
+        "value": null
+      },
+      {
+        "key": "FAMA_DATA_BRIDGE_SECRET",
+        "is_secret": true,
+        "value": null
+      },
+      {
+        "key": "FAMA_DATA_ENCRYPTION_KEY",
+        "is_secret": true,
+        "value": null
+      },
+      {
+        "key": "FAMA_SESSION_SECRET",
+        "is_secret": true,
+        "value": null
+      },
+      {
+        "key": "PLATFORM_OWNER_EMAIL",
+        "is_secret": true,
+        "value": null
+      },
+      {
+        "key": "PLATFORM_OWNER_USER_ID",
+        "is_secret": true,
+        "value": null
+      },
+      {
+        "key": "PLUGGY_CLIENT_ID",
+        "is_secret": true,
+        "value": null
+      },
+      {
+        "key": "PLUGGY_CLIENT_SECRET",
+        "is_secret": true,
+        "value": null
+      },
+      {
+        "key": "SUPABASE_AUTH_ENABLED",
+        "is_secret": false,
+        "value": "true"
+      },
+      {
+        "key": "SUPABASE_PUBLISHABLE_KEY",
+        "is_secret": false,
+        "value": null
+      },
+      {
+        "key": "SUPABASE_STORAGE_BUCKET",
+        "is_secret": false,
+        "value": "fama-documents"
+      },
+      {
+        "key": "SUPABASE_URL",
+        "is_secret": false,
+        "value": "https://mupnsdqahoybhmkpufmx.supabase.co"
+      }
+    ],
+    "revision": 22
+  },
+  {
+    "project": "fama-control",
+    "entries": [
+      {
+        "key": "DATA_BACKEND",
+        "is_secret": false,
+        "value": "supabase"
+      },
+      {
+        "key": "FAMA_DATA_BRIDGE_SECRET",
+        "is_secret": true,
+        "value": null
+      },
+      {
+        "key": "FAMA_DATA_ENCRYPTION_KEY",
+        "is_secret": true,
+        "value": null
+      },
+      {
+        "key": "PLATFORM_OWNER_EMAIL",
+        "is_secret": true,
+        "value": null
+      },
+      {
+        "key": "PLATFORM_OWNER_USER_ID",
+        "is_secret": true,
+        "value": null
+      },
+      {
+        "key": "SUPABASE_AUTH_ENABLED",
+        "is_secret": false,
+        "value": "true"
+      },
+      {
+        "key": "SUPABASE_PUBLISHABLE_KEY",
+        "is_secret": false,
+        "value": null
+      },
+      {
+        "key": "SUPABASE_SECRET_KEY",
+        "is_secret": true,
+        "value": null
+      },
+      {
+        "key": "SUPABASE_STORAGE_BUCKET",
+        "is_secret": false,
+        "value": "fama-documents"
+      },
+      {
+        "key": "SUPABASE_URL",
+        "is_secret": false,
+        "value": "https://mupnsdqahoybhmkpufmx.supabase.co"
+      }
+    ],
+    "revision": 5
+  }
+]

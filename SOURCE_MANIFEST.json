@@ -1,0 +1,2097 @@
+{
+  "organized_at": "2026-10-01T18:45:11.845031+00:00",
+  "original_library_filename": "Fama-Sistema-Completo.zip",
+  "projects": [
+    {
+      "name": "fama-system",
+      "commit_sha": "34a4c728d8223db9ef8974e97e6125229d611d3f",
+      "version_number": 99,
+      "project_id": "appgprj_6a9a074b50b48191acca49e35aa90dc6",
+      "version_id": "appgprj_6a9a074b50b48191acca49e35aa90dc6~appgver_486afcace25881918dad6e83554ebc4a",
+      "tracked_files": 236,
+      "exported_files": 236
+    },
+    {
+      "name": "fama-control",
+      "commit_sha": "2720a0c2a2930e9b3426324100de2e3d90243623",
+      "version_number": 37,
+      "project_id": "appgprj_6aa0a5eb3a8c81918279118311b7b970",
+      "version_id": "appgprj_6aa0a5eb3a8c81918279118311b7b970~appgver_5c3b5755f6c0819184ce68836ba2b483",
+      "tracked_files": 176,
+      "exported_files": 176
+    }
+  ],
+  "database": {
+    "captured_at": "2026-10-01T16:33:49.475574+00:00",
+    "tables": 49,
+    "functions": 31,
+    "triggers": 77,
+    "policies": 125,
+    "storage_policies": 4,
+    "buckets": 2,
+    "cron_jobs": 4
+  },
+  "original_files_preserved": 412,
+  "files": [
+    {
+      "original_path": "fama-system/.env.example",
+      "repository_path": "apps/fama-system/.env.example",
+      "sha256": "35c8153f166552722e01edb2b740b4544e7b26ef78d02580b2bb6221efa097b8"
+    },
+    {
+      "original_path": "fama-system/.gitignore",
+      "repository_path": "apps/fama-system/.gitignore",
+      "sha256": "3941eafedcef1929cf023b4216272fe33971d06a5cbac68b4854f7e676540c88"
+    },
+    {
+      "original_path": "fama-system/.npmrc",
+      "repository_path": "apps/fama-system/.npmrc",
+      "sha256": "494e64a8818b6158e89321250500ad5ad018e33ad5cfea06a1cacd2cf4da75fa"
+    },
+    {
+      "original_path": "fama-system/.openai/hosting.json",
+      "repository_path": "apps/fama-system/.openai/hosting.json",
+      "sha256": "62ad0e2f30085414db6a1acecf661e8f96d0b5bd8d6ae8d7ffdceebcb07691ab"
+    },
+    {
+      "original_path": "fama-system/.site-deploy.tar.gz",
+      "repository_path": "archive/legacy/fama-system.site-deploy-original.tar.gz",
+      "sha256": "2e0776c96fcf6c9dca28802ed6036ba3c798d99d664c0c0582d06de260c1cdd7"
+    },
+    {
+      "original_path": "fama-system/MANUAL_FAMA_SYSTEM.md",
+      "repository_path": "apps/fama-system/MANUAL_FAMA_SYSTEM.md",
+      "sha256": "8e47a9f610e557e38e8a00b2d5c5722d5fd30539dc02fe45dd1ed541535ea8e1"
+    },
+    {
+      "original_path": "fama-system/README.md",
+      "repository_path": "apps/fama-system/README.md",
+      "sha256": "8dac4e086ceabe03f5ff692cb994765090fad19cc0feffe5b2cff94c16e4c6b7"
+    },
+    {
+      "original_path": "fama-system/app/access-gate.tsx",
+      "repository_path": "apps/fama-system/app/access-gate.tsx",
+      "sha256": "a647a52beca3e2c32aaa04b2ccd285b080f042b6100a5673e18fa911349f918c"
+    },
+    {
+      "original_path": "fama-system/app/api/access/route.ts",
+      "repository_path": "apps/fama-system/app/api/access/route.ts",
+      "sha256": "81230ccd1009a7b360635d20edf7ee01c330fa077deb0d73ca95ebefb47fdb24"
+    },
+    {
+      "original_path": "fama-system/app/api/account/export/route.ts",
+      "repository_path": "apps/fama-system/app/api/account/export/route.ts",
+      "sha256": "31bae77997840310618d1136ddbcf23e2984ec585c2a75b53ab8eda30506d31a"
+    },
+    {
+      "original_path": "fama-system/app/api/admin/billing/route.ts",
+      "repository_path": "apps/fama-system/app/api/admin/billing/route.ts",
+      "sha256": "6872f2b97d9cc54ca6c5fb392b5cbfd2a9d86acf83e076c94b2650417fc9b9d1"
+    },
+    {
+      "original_path": "fama-system/app/api/admin/checkouts/route.ts",
+      "repository_path": "apps/fama-system/app/api/admin/checkouts/route.ts",
+      "sha256": "d6cd42b9920556fff96f79108ba30d448ff4f070162b286ac3bfccdd4fe5777b"
+    },
+    {
+      "original_path": "fama-system/app/api/admin/launch/route.ts",
+      "repository_path": "apps/fama-system/app/api/admin/launch/route.ts",
+      "sha256": "be8007574d39b4112ea8ee77ffc43c1e1e7bbcd31cde17c33d871c42444e8376"
+    },
+    {
+      "original_path": "fama-system/app/api/admin/members/[id]/route.ts",
+      "repository_path": "apps/fama-system/app/api/admin/members/[id]/route.ts",
+      "sha256": "4c74cb04195354384de2303307be8fd2b40da2c4b8a08925629a41d23eb2c60e"
+    },
+    {
+      "original_path": "fama-system/app/api/admin/members/route.ts",
+      "repository_path": "apps/fama-system/app/api/admin/members/route.ts",
+      "sha256": "90703b4ec26668a07254f67962ee0ed99b1b42218576d75e3368d29aefcc62d8"
+    },
+    {
+      "original_path": "fama-system/app/api/admin/organization-settings/[id]/route.ts",
+      "repository_path": "apps/fama-system/app/api/admin/organization-settings/[id]/route.ts",
+      "sha256": "6a782231372c132bd782a60bd893642d1b7934bcbee1379070a1d5cc70ab1e0a"
+    },
+    {
+      "original_path": "fama-system/app/api/admin/organizations/[id]/route.ts",
+      "repository_path": "apps/fama-system/app/api/admin/organizations/[id]/route.ts",
+      "sha256": "749b20e656ea56cfd9b61de74a0323f3a9a37b623df971782fd499b7421cdff8"
+    },
+    {
+      "original_path": "fama-system/app/api/admin/organizations/route.ts",
+      "repository_path": "apps/fama-system/app/api/admin/organizations/route.ts",
+      "sha256": "dd2f40471f352a6f065b730a7fd2da5c0361330504cca10374a23219738b68de"
+    },
+    {
+      "original_path": "fama-system/app/api/admin/security/re-encrypt/route.ts",
+      "repository_path": "apps/fama-system/app/api/admin/security/re-encrypt/route.ts",
+      "sha256": "e58b89bb1313ea2d38a76b96bdffa9334a8f14579e711c3beb1a93c26ae13661"
+    },
+    {
+      "original_path": "fama-system/app/api/admin/support/route.ts",
+      "repository_path": "apps/fama-system/app/api/admin/support/route.ts",
+      "sha256": "e0d50fae597785ff265d976716883548238448e98d694e6c75ed769afd29829e"
+    },
+    {
+      "original_path": "fama-system/app/api/asaas/route.ts",
+      "repository_path": "apps/fama-system/app/api/asaas/route.ts",
+      "sha256": "15ae144c7441d17c8366402c1008e849788af63bee8c2868233638f69ce4767f"
+    },
+    {
+      "original_path": "fama-system/app/api/attachments/[id]/route.ts",
+      "repository_path": "apps/fama-system/app/api/attachments/[id]/route.ts",
+      "sha256": "c29da8f64283827adb3d07ad2d39fb87d0058866f839ffe0eb63c4088e687b2b"
+    },
+    {
+      "original_path": "fama-system/app/api/attachments/route.ts",
+      "repository_path": "apps/fama-system/app/api/attachments/route.ts",
+      "sha256": "bc3296b69e05e2401d9e3d8617089ba157715ee7a9faf3fd86aee6fbfe4c128d"
+    },
+    {
+      "original_path": "fama-system/app/api/auth/login/route.ts",
+      "repository_path": "apps/fama-system/app/api/auth/login/route.ts",
+      "sha256": "7bb4b1dea845746c9949ff3f534d756a77e6e18ad843bd3b4d8d824be6113ad8"
+    },
+    {
+      "original_path": "fama-system/app/api/auth/logout/route.ts",
+      "repository_path": "apps/fama-system/app/api/auth/logout/route.ts",
+      "sha256": "6ee2d920cd6074c9e76e5949be96e356d7a8a2698aa5ee350558228fd1da6ec9"
+    },
+    {
+      "original_path": "fama-system/app/api/auth/mfa-login/route.ts",
+      "repository_path": "apps/fama-system/app/api/auth/mfa-login/route.ts",
+      "sha256": "fbbfcee9f784587f71ea5e1d9697c42400c2ab079beec4f666bcedc2cd0860c6"
+    },
+    {
+      "original_path": "fama-system/app/api/auth/mfa/route.ts",
+      "repository_path": "apps/fama-system/app/api/auth/mfa/route.ts",
+      "sha256": "5ba7bb910ff84ddeca3ad74d0b5188271e256c39913b2f0eac8d04721e8d14b4"
+    },
+    {
+      "original_path": "fama-system/app/api/auth/password/route.ts",
+      "repository_path": "apps/fama-system/app/api/auth/password/route.ts",
+      "sha256": "b84d3871e9f88b7b55a8377f8020a7ab28cfc4e430a590eaeaa5b5c62eed7a13"
+    },
+    {
+      "original_path": "fama-system/app/api/auth/recover/route.ts",
+      "repository_path": "apps/fama-system/app/api/auth/recover/route.ts",
+      "sha256": "7b0b436f231c785a3b0b250d88cb755d1f4f525911624c1f24258550edd92b35"
+    },
+    {
+      "original_path": "fama-system/app/api/auth/session/route.ts",
+      "repository_path": "apps/fama-system/app/api/auth/session/route.ts",
+      "sha256": "67cc7c2996a1c6462ce14a39078410d06c045c5c18b0c70e37d20746b3e0e921"
+    },
+    {
+      "original_path": "fama-system/app/api/auth/signup/route.ts",
+      "repository_path": "apps/fama-system/app/api/auth/signup/route.ts",
+      "sha256": "aa27bfd4d77c32f66986fc8b1e79c9da0dd2faeba404680072036f5e62b2a135"
+    },
+    {
+      "original_path": "fama-system/app/api/billing/asaas-webhook/route.ts",
+      "repository_path": "apps/fama-system/app/api/billing/asaas-webhook/route.ts",
+      "sha256": "1368a93cce6e445c4eb83c30d35e9cd11dd738244c602fcabd95b65d33587b6e"
+    },
+    {
+      "original_path": "fama-system/app/api/billing/route.ts",
+      "repository_path": "apps/fama-system/app/api/billing/route.ts",
+      "sha256": "6dacdc2ebff9a67b2960c27bf2be29d4ab151bdcf560b4e94f8953079b09a6a0"
+    },
+    {
+      "original_path": "fama-system/app/api/bootstrap/route.ts",
+      "repository_path": "apps/fama-system/app/api/bootstrap/route.ts",
+      "sha256": "d3552a4adc383f4b36709195f0009d72375c0188efb9c158175747072cbb9681"
+    },
+    {
+      "original_path": "fama-system/app/api/company-settings/route.ts",
+      "repository_path": "apps/fama-system/app/api/company-settings/route.ts",
+      "sha256": "33b7da651fd6af5a8f0168b28f825bde4ee421bd2946a44afe7650a08d4199a9"
+    },
+    {
+      "original_path": "fama-system/app/api/fama-ai/route.ts",
+      "repository_path": "apps/fama-system/app/api/fama-ai/route.ts",
+      "sha256": "8100853f544a14395ed5f573750f7587de3c059c738e3fdb3b9bcfde011dea54"
+    },
+    {
+      "original_path": "fama-system/app/api/finance-connections/route.ts",
+      "repository_path": "apps/fama-system/app/api/finance-connections/route.ts",
+      "sha256": "3badeda01bde4e9b9161b14d9c5cfc2244a08d7d8650339e0fed3b898e205fe3"
+    },
+    {
+      "original_path": "fama-system/app/api/finance/route.ts",
+      "repository_path": "apps/fama-system/app/api/finance/route.ts",
+      "sha256": "d7ffd07a372b077d2f733d83dee9e587cabcffe4f8f1e253f3c7c35812ec6923"
+    },
+    {
+      "original_path": "fama-system/app/api/legal/consent/route.ts",
+      "repository_path": "apps/fama-system/app/api/legal/consent/route.ts",
+      "sha256": "ba8983c84d0dcee52e6ee73c96213d3c012a35d92e4c70965940bda603dd7ade"
+    },
+    {
+      "original_path": "fama-system/app/api/members/[id]/route.ts",
+      "repository_path": "apps/fama-system/app/api/members/[id]/route.ts",
+      "sha256": "14983fc8f3c7e942af09c23f7962c7269862921c29ab9aa0ab2c3460f52a2a51"
+    },
+    {
+      "original_path": "fama-system/app/api/members/route.ts",
+      "repository_path": "apps/fama-system/app/api/members/route.ts",
+      "sha256": "0b2caa99ba0520cd23984a9a28566eaf7f43ed3b4b3b4d162c5aa1d863d0a86f"
+    },
+    {
+      "original_path": "fama-system/app/api/organizations/route.ts",
+      "repository_path": "apps/fama-system/app/api/organizations/route.ts",
+      "sha256": "56cbf4f013ec41d8f1d9d5d8d3c3955ffc5e8841373a433efafb0a5eeda30bea"
+    },
+    {
+      "original_path": "fama-system/app/api/privacy/public/route.ts",
+      "repository_path": "apps/fama-system/app/api/privacy/public/route.ts",
+      "sha256": "e3c647fd173d9c2cce2ae2ad300ddbb2aab0f3cea42b5bb419e98bde54518565"
+    },
+    {
+      "original_path": "fama-system/app/api/privacy/route.ts",
+      "repository_path": "apps/fama-system/app/api/privacy/route.ts",
+      "sha256": "01da80e1b2996d053113c186d1f596964d9a619fe318c602aa920b3b7c5fa39f"
+    },
+    {
+      "original_path": "fama-system/app/api/public/checkout/route.ts",
+      "repository_path": "apps/fama-system/app/api/public/checkout/route.ts",
+      "sha256": "11db4f26b99f97da188e73c3f00ec01378a85b8581d8826268b94a6db7bb7b98"
+    },
+    {
+      "original_path": "fama-system/app/api/public/quotes/[id]/approval/route.ts",
+      "repository_path": "apps/fama-system/app/api/public/quotes/[id]/approval/route.ts",
+      "sha256": "66b72fd6adc6ecae92c68e2c6658bf0e0a5c1bcfc25e26d18fdd69dfbb8492fa"
+    },
+    {
+      "original_path": "fama-system/app/api/quote-config/route.ts",
+      "repository_path": "apps/fama-system/app/api/quote-config/route.ts",
+      "sha256": "b3826b6d09b0ff29984afc108d66b9fedd3781f4777d478209b2ea5380c3061f"
+    },
+    {
+      "original_path": "fama-system/app/api/quotes/[id]/approval-link/route.ts",
+      "repository_path": "apps/fama-system/app/api/quotes/[id]/approval-link/route.ts",
+      "sha256": "af15cfc8d21aaf8db3607a21748cfb695e687ba4f723624933b2ae809976366a"
+    },
+    {
+      "original_path": "fama-system/app/api/quotes/[id]/convert/route.ts",
+      "repository_path": "apps/fama-system/app/api/quotes/[id]/convert/route.ts",
+      "sha256": "c0876bb61a846617cc9402658bbbd6a1bfd7805682cbd88eafd3f6ce48c5e387"
+    },
+    {
+      "original_path": "fama-system/app/api/records/[id]/route.ts",
+      "repository_path": "apps/fama-system/app/api/records/[id]/route.ts",
+      "sha256": "a48e4348d6cd03265e9ce2c6a34113aa0e4df92180163c3ced18fccfb910468e"
+    },
+    {
+      "original_path": "fama-system/app/api/records/route.ts",
+      "repository_path": "apps/fama-system/app/api/records/route.ts",
+      "sha256": "96f8a5f2161845488c3d47d957825f49696f3d115825d79ee4b187e53502678f"
+    },
+    {
+      "original_path": "fama-system/app/api/recovery/[id]/route.ts",
+      "repository_path": "apps/fama-system/app/api/recovery/[id]/route.ts",
+      "sha256": "33a4856c0614bb613db83b798762ce591b9312fc2cdf0c25effb0af5c81b6d21"
+    },
+    {
+      "original_path": "fama-system/app/api/recovery/route.ts",
+      "repository_path": "apps/fama-system/app/api/recovery/route.ts",
+      "sha256": "457b2266f23783f6fa1037268091fbfb9e4c6f4a119e41c27fc88e0c448055f0"
+    },
+    {
+      "original_path": "fama-system/app/api/support/route.ts",
+      "repository_path": "apps/fama-system/app/api/support/route.ts",
+      "sha256": "a5accf701e6a32294e41943d03105dd5102b9db2812bd8ae5a69a20eea59486d"
+    },
+    {
+      "original_path": "fama-system/app/api/warranties/[id]/schedule/route.ts",
+      "repository_path": "apps/fama-system/app/api/warranties/[id]/schedule/route.ts",
+      "sha256": "3bea7ec1054be4940388be32400db40f9bdd8bbcb54fcfad933b5efec8f0e066"
+    },
+    {
+      "original_path": "fama-system/app/api/whatsapp/route.ts",
+      "repository_path": "apps/fama-system/app/api/whatsapp/route.ts",
+      "sha256": "d2d559ecf9dafce98874939bfc9a5d79d40c974227e678514d90b1ffb2850b5d"
+    },
+    {
+      "original_path": "fama-system/app/assinar/[plan]/checkout-client.tsx",
+      "repository_path": "apps/fama-system/app/assinar/[plan]/checkout-client.tsx",
+      "sha256": "c18bffe5cb0673b2787e3ef1c3b3de213352421432cdb44279b922304a89a357"
+    },
+    {
+      "original_path": "fama-system/app/assinar/[plan]/page.tsx",
+      "repository_path": "apps/fama-system/app/assinar/[plan]/page.tsx",
+      "sha256": "8ba87eafc1028c0622cddb857750cd1708d678e28cae046c87761cc40fc1e319"
+    },
+    {
+      "original_path": "fama-system/app/auth/confirmar/page.tsx",
+      "repository_path": "apps/fama-system/app/auth/confirmar/page.tsx",
+      "sha256": "1eb684ada36c26997612a468df3f99359909561849f399e245d5f4913f69646e"
+    },
+    {
+      "original_path": "fama-system/app/auth/recuperar/page.tsx",
+      "repository_path": "apps/fama-system/app/auth/recuperar/page.tsx",
+      "sha256": "8451a80d332a0d9e52651af151f76b4909e563fc7454dec32380a768e0817603"
+    },
+    {
+      "original_path": "fama-system/app/billing-center.tsx",
+      "repository_path": "apps/fama-system/app/billing-center.tsx",
+      "sha256": "a76342e58bfa499b146ff5dec0ace5e117bee0b6951308a1e17aea2a0e8928cc"
+    },
+    {
+      "original_path": "fama-system/app/cloriva-app.tsx",
+      "repository_path": "apps/fama-system/app/cloriva-app.tsx",
+      "sha256": "6b34c5ddb547016a69e2b4567eca2190c3caee590ea2990cacdddf9ce524aa6c"
+    },
+    {
+      "original_path": "fama-system/app/company-onboarding.tsx",
+      "repository_path": "apps/fama-system/app/company-onboarding.tsx",
+      "sha256": "5cbb678542ac6e698f866befa5d06b2029c086251e92b49286ff9dd70ce04c0d"
+    },
+    {
+      "original_path": "fama-system/app/company-settings-panel.tsx",
+      "repository_path": "apps/fama-system/app/company-settings-panel.tsx",
+      "sha256": "f7aeba675e002238e14c64677a9f657c1f772f48753924e959f2b6a6db7d487c"
+    },
+    {
+      "original_path": "fama-system/app/configurar-asaas/page.tsx",
+      "repository_path": "apps/fama-system/app/configurar-asaas/page.tsx",
+      "sha256": "426dbd28a29f9806ffa54372d131dc9d5c3e6f9d5c9182dbb308a6c232a89831"
+    },
+    {
+      "original_path": "fama-system/app/configurar-asaas/submit/route.ts",
+      "repository_path": "apps/fama-system/app/configurar-asaas/submit/route.ts",
+      "sha256": "ac876bfbce4b17da0feddcc8c105ed100bca9bfd87faab52db3f677251dd9504"
+    },
+    {
+      "original_path": "fama-system/app/data-model.ts",
+      "repository_path": "apps/fama-system/app/data-model.ts",
+      "sha256": "1651f1fbe895b32c2b5ff32d724d64e52828451c1e40cf0fe570be40b23968fd"
+    },
+    {
+      "original_path": "fama-system/app/delete-button.tsx",
+      "repository_path": "apps/fama-system/app/delete-button.tsx",
+      "sha256": "e14bfee9a426e35918dacd714208b7ab24ff199e4ce227df460a39ed99815b73"
+    },
+    {
+      "original_path": "fama-system/app/entrar/page.tsx",
+      "repository_path": "apps/fama-system/app/entrar/page.tsx",
+      "sha256": "6ff7180f350c045960f7276bf52859ab65da4a91f6203f80dd74517c06309ca3"
+    },
+    {
+      "original_path": "fama-system/app/finance-workspace.tsx",
+      "repository_path": "apps/fama-system/app/finance-workspace.tsx",
+      "sha256": "2f6ba75c5afcf9c9dc6e19e3f60fd96430acf473ae0806ecfd5878b3d984e046"
+    },
+    {
+      "original_path": "fama-system/app/fiscal-portal-panel.tsx",
+      "repository_path": "apps/fama-system/app/fiscal-portal-panel.tsx",
+      "sha256": "6a335a46ed8cf0cc88514fa95de3ea79c3fffab31f1207e4741382acaba28d60"
+    },
+    {
+      "original_path": "fama-system/app/globals.css",
+      "repository_path": "apps/fama-system/app/globals.css",
+      "sha256": "c693e69df1ddcffd27145147f7c91f34f6a6005ec9e2613dc7e86a34ea890dcd"
+    },
+    {
+      "original_path": "fama-system/app/layout.tsx",
+      "repository_path": "apps/fama-system/app/layout.tsx",
+      "sha256": "040a29fee3ed5379e663368039bc28afd934bdc3356448c39827e84747a2dd30"
+    },
+    {
+      "original_path": "fama-system/app/legal-consent-gate.tsx",
+      "repository_path": "apps/fama-system/app/legal-consent-gate.tsx",
+      "sha256": "e38aa21efb5fa22c68ea57e5f94b1d89c410a0a4d46be4c7ddb3d54a3ffc5eb6"
+    },
+    {
+      "original_path": "fama-system/app/manual.tsx",
+      "repository_path": "apps/fama-system/app/manual.tsx",
+      "sha256": "3e5adbea12107fabbc3b47ef8f58b8235b5e2178dd5514b929eefb73fb7f1b73"
+    },
+    {
+      "original_path": "fama-system/app/manual/page.tsx",
+      "repository_path": "apps/fama-system/app/manual/page.tsx",
+      "sha256": "79371a59ca06866705a3f59ab32087ac9b251d4000ba6c1d8f70e380ce5ac470"
+    },
+    {
+      "original_path": "fama-system/app/members-panel.tsx",
+      "repository_path": "apps/fama-system/app/members-panel.tsx",
+      "sha256": "266d48afc87b93512d8275c0a95cf3cfaa573ee4bda204fe4f016c16bed8858e"
+    },
+    {
+      "original_path": "fama-system/app/page.tsx",
+      "repository_path": "apps/fama-system/app/page.tsx",
+      "sha256": "0a9fe8a4096d606b7b4c0417580598932f4bc8357401d1fca8fe894624a65938"
+    },
+    {
+      "original_path": "fama-system/app/planos/page.tsx",
+      "repository_path": "apps/fama-system/app/planos/page.tsx",
+      "sha256": "4076c2deabaabf805a6b73e4b82f431907c202f80ef24ac69228365715d9ece4"
+    },
+    {
+      "original_path": "fama-system/app/platform-companies.tsx",
+      "repository_path": "apps/fama-system/app/platform-companies.tsx",
+      "sha256": "ccfb662c39bdf56d491fe1e74234ee948270ff1ba1eb8a0a5776a43f1e8baf85"
+    },
+    {
+      "original_path": "fama-system/app/privacidade/page.tsx",
+      "repository_path": "apps/fama-system/app/privacidade/page.tsx",
+      "sha256": "2f225cf00a5054be676d493fd7f4ebf9b5fe39a5e15838f9ff9b47bb7064be67"
+    },
+    {
+      "original_path": "fama-system/app/privacidade/solicitar/page.tsx",
+      "repository_path": "apps/fama-system/app/privacidade/solicitar/page.tsx",
+      "sha256": "08007f7dd2719a2d3ea5e1a7f1d1d5e4bcc6629a268436633f71598fe90a3c21"
+    },
+    {
+      "original_path": "fama-system/app/privacy-center.tsx",
+      "repository_path": "apps/fama-system/app/privacy-center.tsx",
+      "sha256": "3048f77f47409621d33654401a08718d3d35a1e83a8fe453d8754170e39f0f8f"
+    },
+    {
+      "original_path": "fama-system/app/proposta/[id]/page.tsx",
+      "repository_path": "apps/fama-system/app/proposta/[id]/page.tsx",
+      "sha256": "e6d57d150be7716a7802c13bed3c59bd310a558311d487b9f90752c879112090"
+    },
+    {
+      "original_path": "fama-system/app/record-attachments.tsx",
+      "repository_path": "apps/fama-system/app/record-attachments.tsx",
+      "sha256": "df86e746cb4fed33b522dd86d02911cf5cdcae6cf79fa7b8d1b54e27c20f325f"
+    },
+    {
+      "original_path": "fama-system/app/support-center.tsx",
+      "repository_path": "apps/fama-system/app/support-center.tsx",
+      "sha256": "4e02836fe9f6c9a44f9cfa9695d17fb71bfcdc662a1906049324e4bb9a71c277"
+    },
+    {
+      "original_path": "fama-system/app/system-auth.ts",
+      "repository_path": "apps/fama-system/app/system-auth.ts",
+      "sha256": "9460cd30613eee2be9c611d85e059d13f19c3b53a19c89a36891555b34c7af3f"
+    },
+    {
+      "original_path": "fama-system/app/termos/page.tsx",
+      "repository_path": "apps/fama-system/app/termos/page.tsx",
+      "sha256": "dfb38c35469f6e4adfa0259cdf906825a7871f95a67190e12d271cdb57295438"
+    },
+    {
+      "original_path": "fama-system/app/theme-provider.tsx",
+      "repository_path": "apps/fama-system/app/theme-provider.tsx",
+      "sha256": "1eaed457fd731ea47fbb67663f8282da31dc9f5713fe471ecad0d0b3e64dba22"
+    },
+    {
+      "original_path": "fama-system/app/theme-toggle.tsx",
+      "repository_path": "apps/fama-system/app/theme-toggle.tsx",
+      "sha256": "358175a755ef90e5f89119145a8f064b0b66f78dd6354270b45798ceb5fd9854"
+    },
+    {
+      "original_path": "fama-system/build/sites-vite-plugin.ts",
+      "repository_path": "apps/fama-system/build/sites-vite-plugin.ts",
+      "sha256": "81b7cbfaeb970611572256aba0e313425beb3809f6426f63750696c15d9c756b"
+    },
+    {
+      "original_path": "fama-system/cloudflare-env.d.ts",
+      "repository_path": "apps/fama-system/cloudflare-env.d.ts",
+      "sha256": "58639da3644de0691fdc93eb7ecb32c9b76ce04989f0b1dd46065435263d5365"
+    },
+    {
+      "original_path": "fama-system/components.json",
+      "repository_path": "apps/fama-system/components.json",
+      "sha256": "31f4ca67a4a62572571003d3d5aac85ee6fbfca67a192924bac6b168d95e98fd"
+    },
+    {
+      "original_path": "fama-system/components/ui/accordion.tsx",
+      "repository_path": "apps/fama-system/components/ui/accordion.tsx",
+      "sha256": "a4f153089ba886dfcf73fac26b5c01ca933fa12fbe88df6fb723912bfffdfbb0"
+    },
+    {
+      "original_path": "fama-system/components/ui/alert-dialog.tsx",
+      "repository_path": "apps/fama-system/components/ui/alert-dialog.tsx",
+      "sha256": "9a8d950f2b9b4352d5ebb762fb44d5c28c2d353aa29712071973656a8736e311"
+    },
+    {
+      "original_path": "fama-system/components/ui/alert.tsx",
+      "repository_path": "apps/fama-system/components/ui/alert.tsx",
+      "sha256": "2cc59b5f7bda91c1670884b1bf46bfc8a2a6f226cef184f5762acc037188885b"
+    },
+    {
+      "original_path": "fama-system/components/ui/aspect-ratio.tsx",
+      "repository_path": "apps/fama-system/components/ui/aspect-ratio.tsx",
+      "sha256": "b1c157886236782cb92d8fbcd4749532aaf6d8aabefd6e157ca40358f902f407"
+    },
+    {
+      "original_path": "fama-system/components/ui/attachment.tsx",
+      "repository_path": "apps/fama-system/components/ui/attachment.tsx",
+      "sha256": "ae8a25dd1a896d3964e3ef54d97e51221b418cde287dfd794428b89951c5c790"
+    },
+    {
+      "original_path": "fama-system/components/ui/avatar.tsx",
+      "repository_path": "apps/fama-system/components/ui/avatar.tsx",
+      "sha256": "58a846bf1617b94b9681921db9b8461d0145f311424663d11678a06b6153cb34"
+    },
+    {
+      "original_path": "fama-system/components/ui/badge.tsx",
+      "repository_path": "apps/fama-system/components/ui/badge.tsx",
+      "sha256": "46a0de5224f6a5d5d63d45246534288518dce888f031064bff925bbc7fe6ad97"
+    },
+    {
+      "original_path": "fama-system/components/ui/breadcrumb.tsx",
+      "repository_path": "apps/fama-system/components/ui/breadcrumb.tsx",
+      "sha256": "d4c0831bba2212e778248f54a6ace6ef378df8bba4616d1abf27787a31eabae5"
+    },
+    {
+      "original_path": "fama-system/components/ui/bubble.tsx",
+      "repository_path": "apps/fama-system/components/ui/bubble.tsx",
+      "sha256": "870cc0c5cfc8a515053f7e41e706a6bd017a909b45f1305fd3b164a52cc4483b"
+    },
+    {
+      "original_path": "fama-system/components/ui/button-group.tsx",
+      "repository_path": "apps/fama-system/components/ui/button-group.tsx",
+      "sha256": "784c89d8ee683e1bc972ae69e6ea8225a7f63abe22aa1b5fc3423ae8a2a399c0"
+    },
+    {
+      "original_path": "fama-system/components/ui/button.tsx",
+      "repository_path": "apps/fama-system/components/ui/button.tsx",
+      "sha256": "cc36af0f8b5019c33cc039fbf03bb952a513072b15b55b53c592b78af3e5f4c4"
+    },
+    {
+      "original_path": "fama-system/components/ui/calendar.tsx",
+      "repository_path": "apps/fama-system/components/ui/calendar.tsx",
+      "sha256": "3855fbe0d3f8ad3a4b93071f98b76a9f6782d46ec8b05f5d2ddbee1e4e39bc84"
+    },
+    {
+      "original_path": "fama-system/components/ui/card.tsx",
+      "repository_path": "apps/fama-system/components/ui/card.tsx",
+      "sha256": "c48dd3b96be90a7066f1aebf294f0af9d00ebcdc367d5d4aca55429ade570c1c"
+    },
+    {
+      "original_path": "fama-system/components/ui/carousel.tsx",
+      "repository_path": "apps/fama-system/components/ui/carousel.tsx",
+      "sha256": "b7ea0dda3903d972c186f739e23da61f547bc83b5a0bf13b16856577846d5fc3"
+    },
+    {
+      "original_path": "fama-system/components/ui/chart.tsx",
+      "repository_path": "apps/fama-system/components/ui/chart.tsx",
+      "sha256": "45aa5ea4a386f4fb5b8869ff4bab3a08cf89255190ee322043baf84c3e950b6a"
+    },
+    {
+      "original_path": "fama-system/components/ui/checkbox.tsx",
+      "repository_path": "apps/fama-system/components/ui/checkbox.tsx",
+      "sha256": "b23ab9d4deeedf2ac8f512c368361ede681aa383437ef48563a6f9b7dbe95f27"
+    },
+    {
+      "original_path": "fama-system/components/ui/collapsible.tsx",
+      "repository_path": "apps/fama-system/components/ui/collapsible.tsx",
+      "sha256": "c6598e5584f4258b5d9fefadbc5ad6a66888ad58729f4b634a0bb2d9c513188b"
+    },
+    {
+      "original_path": "fama-system/components/ui/combobox.tsx",
+      "repository_path": "apps/fama-system/components/ui/combobox.tsx",
+      "sha256": "2d68e78b2dc7e38a085f222dede60a80b4f8229a6e91732c484605e204d46735"
+    },
+    {
+      "original_path": "fama-system/components/ui/command.tsx",
+      "repository_path": "apps/fama-system/components/ui/command.tsx",
+      "sha256": "361193df1e3d64a9e9b5048f045264782fcb387aab3f00f2b805fdcbf538b16a"
+    },
+    {
+      "original_path": "fama-system/components/ui/context-menu.tsx",
+      "repository_path": "apps/fama-system/components/ui/context-menu.tsx",
+      "sha256": "2cf1fcf59df0649a3e2a126d1df2f639145f6b6bf5689ee54af1f40ab1245017"
+    },
+    {
+      "original_path": "fama-system/components/ui/dialog.tsx",
+      "repository_path": "apps/fama-system/components/ui/dialog.tsx",
+      "sha256": "4bc5294374af6c1f9c152c6bd98e30f44f9a4313c3a05ba907060977f64297c5"
+    },
+    {
+      "original_path": "fama-system/components/ui/direction.tsx",
+      "repository_path": "apps/fama-system/components/ui/direction.tsx",
+      "sha256": "84ae2ad658207f0e0f367978e5508cd8027cd00c29c41d3d13db21a708c3d1e6"
+    },
+    {
+      "original_path": "fama-system/components/ui/drawer.tsx",
+      "repository_path": "apps/fama-system/components/ui/drawer.tsx",
+      "sha256": "cb6eaf58eb0757ca91af284e5d925b89a42ad7eb19cb3f44c575a3487aa9350f"
+    },
+    {
+      "original_path": "fama-system/components/ui/dropdown-menu.tsx",
+      "repository_path": "apps/fama-system/components/ui/dropdown-menu.tsx",
+      "sha256": "98f0dcdae38225b73734aceeb9213dd751fea2c72ea520df31003cd133deac8a"
+    },
+    {
+      "original_path": "fama-system/components/ui/empty.tsx",
+      "repository_path": "apps/fama-system/components/ui/empty.tsx",
+      "sha256": "ae95bdcf367a076ae02e7925f14522a148798f72d9651749c6d55497dba584c0"
+    },
+    {
+      "original_path": "fama-system/components/ui/field.tsx",
+      "repository_path": "apps/fama-system/components/ui/field.tsx",
+      "sha256": "ba67d76f017ac059fc86cf8c344e0b2991c4322d3619e125498c19b87f6eefbd"
+    },
+    {
+      "original_path": "fama-system/components/ui/form.tsx",
+      "repository_path": "apps/fama-system/components/ui/form.tsx",
+      "sha256": "315b46bb75ab7d1c6061b5d750aa4bedf6e7a455e15e2d7f9182f053d5972b1e"
+    },
+    {
+      "original_path": "fama-system/components/ui/hover-card.tsx",
+      "repository_path": "apps/fama-system/components/ui/hover-card.tsx",
+      "sha256": "f5d8df42c59370ec14d61bcc54f7d68e9bb7dfa0d6a872b2f7cffc2aafbf23b8"
+    },
+    {
+      "original_path": "fama-system/components/ui/input-group.tsx",
+      "repository_path": "apps/fama-system/components/ui/input-group.tsx",
+      "sha256": "6afbd58fea4c438e6252dc4568bddc122e84ababead4ad5cee50ace01100c9a0"
+    },
+    {
+      "original_path": "fama-system/components/ui/input-otp.tsx",
+      "repository_path": "apps/fama-system/components/ui/input-otp.tsx",
+      "sha256": "161946daa89f0eda2575b9271c0494e35807c4ffb55598a49f67160c17fec299"
+    },
+    {
+      "original_path": "fama-system/components/ui/input.tsx",
+      "repository_path": "apps/fama-system/components/ui/input.tsx",
+      "sha256": "8c4612a7c41319ac5049daa3b34b080f9784b6245c17780eb87c127e58e473db"
+    },
+    {
+      "original_path": "fama-system/components/ui/item.tsx",
+      "repository_path": "apps/fama-system/components/ui/item.tsx",
+      "sha256": "6e2144d6d87142dbbe56d568810bf546318c8aa661447ebb0d76ebbf382cb45f"
+    },
+    {
+      "original_path": "fama-system/components/ui/kbd.tsx",
+      "repository_path": "apps/fama-system/components/ui/kbd.tsx",
+      "sha256": "6088c3a5432338b1719c17e9b5d0e1fa74fd1f66060f248fc88909d33a82cd13"
+    },
+    {
+      "original_path": "fama-system/components/ui/label.tsx",
+      "repository_path": "apps/fama-system/components/ui/label.tsx",
+      "sha256": "a476e41f08b9de5bd447de66a33d8bc2ad18f2fa6b96c064778bab4b6f439f4c"
+    },
+    {
+      "original_path": "fama-system/components/ui/marker.tsx",
+      "repository_path": "apps/fama-system/components/ui/marker.tsx",
+      "sha256": "3d798763f094b2bb5e7ade2d5cd1b9bab498bc8ca7fd4cfaf4e5835bdedc34a0"
+    },
+    {
+      "original_path": "fama-system/components/ui/menubar.tsx",
+      "repository_path": "apps/fama-system/components/ui/menubar.tsx",
+      "sha256": "9243af8afcea03703398ccd1c2a8c0a87ad6cbaf2bd272fb609f5b79fe46aebb"
+    },
+    {
+      "original_path": "fama-system/components/ui/message-scroller.tsx",
+      "repository_path": "apps/fama-system/components/ui/message-scroller.tsx",
+      "sha256": "bb7660a248e4e9589c3816c7c1c199ea1381a70d2c8476ae895b567a7a4d86cf"
+    },
+    {
+      "original_path": "fama-system/components/ui/message.tsx",
+      "repository_path": "apps/fama-system/components/ui/message.tsx",
+      "sha256": "9d2952bf3b641081f09aa2739535e6bbd1be0a4946789752a2c20d8aaef43185"
+    },
+    {
+      "original_path": "fama-system/components/ui/native-select.tsx",
+      "repository_path": "apps/fama-system/components/ui/native-select.tsx",
+      "sha256": "007516b111fca8c98a6c40c94ab91bb68cc5b52afce1ed1f5e510c3d86e7347c"
+    },
+    {
+      "original_path": "fama-system/components/ui/navigation-menu.tsx",
+      "repository_path": "apps/fama-system/components/ui/navigation-menu.tsx",
+      "sha256": "889d358a77de88e9cb6f39ea4895ea4c76eaf01d731b74e44f1c41e97a78a044"
+    },
+    {
+      "original_path": "fama-system/components/ui/pagination.tsx",
+      "repository_path": "apps/fama-system/components/ui/pagination.tsx",
+      "sha256": "374ad135c3d4ff3ec080a0009cd9745cdd0e12faa89d2b0e86074f11e5127fd1"
+    },
+    {
+      "original_path": "fama-system/components/ui/popover.tsx",
+      "repository_path": "apps/fama-system/components/ui/popover.tsx",
+      "sha256": "31c350309ff5d3034e6ecf1b0eda75ba8855bdbf987fc7ad6d71f0ef07c5a447"
+    },
+    {
+      "original_path": "fama-system/components/ui/progress.tsx",
+      "repository_path": "apps/fama-system/components/ui/progress.tsx",
+      "sha256": "c8c26e8f5f041c3cdf4915347dc1d9c022f9448f149990fadcaf303e952fa57d"
+    },
+    {
+      "original_path": "fama-system/components/ui/radio-group.tsx",
+      "repository_path": "apps/fama-system/components/ui/radio-group.tsx",
+      "sha256": "fe5ce39636d0818c2bf9c4eebddff893d1225fa2c81b5fa4bb8cbb39a8c913ce"
+    },
+    {
+      "original_path": "fama-system/components/ui/resizable.tsx",
+      "repository_path": "apps/fama-system/components/ui/resizable.tsx",
+      "sha256": "bc63958467aa00557c551bb0d96a5ae4c965c1e1ba2380e595949d933b132f7c"
+    },
+    {
+      "original_path": "fama-system/components/ui/scroll-area.tsx",
+      "repository_path": "apps/fama-system/components/ui/scroll-area.tsx",
+      "sha256": "8bd9d986b2844c9a87de825c6de4787b6739b36c3dc9a05ccf3eb107160e4043"
+    },
+    {
+      "original_path": "fama-system/components/ui/select.tsx",
+      "repository_path": "apps/fama-system/components/ui/select.tsx",
+      "sha256": "0b796a108a4eb5ba52d9ad938b7aea36dc56ae66c703a6d0a23dbc24f96daff3"
+    },
+    {
+      "original_path": "fama-system/components/ui/separator.tsx",
+      "repository_path": "apps/fama-system/components/ui/separator.tsx",
+      "sha256": "6da346505c8629a4668420d2a5ca48891383bbe0b0ceb14163537c671879427e"
+    },
+    {
+      "original_path": "fama-system/components/ui/sheet.tsx",
+      "repository_path": "apps/fama-system/components/ui/sheet.tsx",
+      "sha256": "63863cf2df8f8973e52b3459ac9bdbf81be1262dbc70eb53d5271ffb03488e16"
+    },
+    {
+      "original_path": "fama-system/components/ui/sidebar.tsx",
+      "repository_path": "apps/fama-system/components/ui/sidebar.tsx",
+      "sha256": "4a8d73e7730a2b1fcecfca31299ed26db65c2307b84197a59c6ec7c01c7ad28e"
+    },
+    {
+      "original_path": "fama-system/components/ui/skeleton.tsx",
+      "repository_path": "apps/fama-system/components/ui/skeleton.tsx",
+      "sha256": "ba48dd5be5a6a1378bd4e011028654b5bf419f1e7d20ee4b9f8330c1264e7239"
+    },
+    {
+      "original_path": "fama-system/components/ui/slider.tsx",
+      "repository_path": "apps/fama-system/components/ui/slider.tsx",
+      "sha256": "0e37484f4b416e79ac18c655cac961aefacf6e67085cfc2b320ea8af545635a3"
+    },
+    {
+      "original_path": "fama-system/components/ui/sonner.tsx",
+      "repository_path": "apps/fama-system/components/ui/sonner.tsx",
+      "sha256": "13ccc9b0fe4248e622f83a1d3b2f0566b72b5e04162d7d0c8db8945ecc71b55f"
+    },
+    {
+      "original_path": "fama-system/components/ui/spinner.tsx",
+      "repository_path": "apps/fama-system/components/ui/spinner.tsx",
+      "sha256": "3e6e6e8d37fb4069f8e43e55318f8db06fbc36e6c8be0096da3c9337c1c798b9"
+    },
+    {
+      "original_path": "fama-system/components/ui/switch.tsx",
+      "repository_path": "apps/fama-system/components/ui/switch.tsx",
+      "sha256": "386d4d4deb39f34126f9700fe9bf5393d238485dd94018bba9d154dda84c62ae"
+    },
+    {
+      "original_path": "fama-system/components/ui/table.tsx",
+      "repository_path": "apps/fama-system/components/ui/table.tsx",
+      "sha256": "20e5a7f224959c6b75802995706a97e9da171f693d4b6b1b436388fcd9df96f3"
+    },
+    {
+      "original_path": "fama-system/components/ui/tabs.tsx",
+      "repository_path": "apps/fama-system/components/ui/tabs.tsx",
+      "sha256": "865d0194331b9b2be36723fa79d3575dc83078b4cb941cafee87cb72fc2cff46"
+    },
+    {
+      "original_path": "fama-system/components/ui/textarea.tsx",
+      "repository_path": "apps/fama-system/components/ui/textarea.tsx",
+      "sha256": "253cdeb487c73beaaccdf47fc163e36e7d5b7ae6ddf09a4f64998a109a112979"
+    },
+    {
+      "original_path": "fama-system/components/ui/toggle-group.tsx",
+      "repository_path": "apps/fama-system/components/ui/toggle-group.tsx",
+      "sha256": "69f643e889e933f05c1439084480d8646f66a161c7d1cf0730ee926382ade35e"
+    },
+    {
+      "original_path": "fama-system/components/ui/toggle.tsx",
+      "repository_path": "apps/fama-system/components/ui/toggle.tsx",
+      "sha256": "ba4d0b0a2b2fee75dc36dfc19e32082e721024b919050c97fd5dc70faa924e16"
+    },
+    {
+      "original_path": "fama-system/components/ui/tooltip.tsx",
+      "repository_path": "apps/fama-system/components/ui/tooltip.tsx",
+      "sha256": "a0784eb77831a799fad7991df4f1b666f876201565a80175e1aa68733574a2e4"
+    },
+    {
+      "original_path": "fama-system/db/index.ts",
+      "repository_path": "apps/fama-system/db/index.ts",
+      "sha256": "dc7610b00b918e0ffff1360a63626f16655ced3064b2eaf96095a4101fb14bcd"
+    },
+    {
+      "original_path": "fama-system/db/schema.ts",
+      "repository_path": "apps/fama-system/db/schema.ts",
+      "sha256": "60e71c95981123c7686a76d9e95a1819c294f8e35e13a8ff251450c914bdd882"
+    },
+    {
+      "original_path": "fama-system/drizzle.config.ts",
+      "repository_path": "apps/fama-system/drizzle.config.ts",
+      "sha256": "af081f7384aaeb0082cf422e29f139d137ca2f6a57c69b2c37b9fb1f8479867b"
+    },
+    {
+      "original_path": "fama-system/drizzle/0000_crazy_nitro.sql",
+      "repository_path": "apps/fama-system/drizzle/0000_crazy_nitro.sql",
+      "sha256": "ed140c71b37ab134abafbb7e4d2e621aaa8fea96627bc90e2d139a7eba5d9d09"
+    },
+    {
+      "original_path": "fama-system/drizzle/0001_fresh_sugar_man.sql",
+      "repository_path": "apps/fama-system/drizzle/0001_fresh_sugar_man.sql",
+      "sha256": "a02058e1f56dedd278451e779bc05296fbf89f2f63b3328f84a4489cada8a6d7"
+    },
+    {
+      "original_path": "fama-system/drizzle/0002_foamy_roland_deschain.sql",
+      "repository_path": "apps/fama-system/drizzle/0002_foamy_roland_deschain.sql",
+      "sha256": "ef34f96f7247d46599a499af58f36326d2839f578ba9e4fb538d45e82f15d025"
+    },
+    {
+      "original_path": "fama-system/drizzle/0003_adorable_calypso.sql",
+      "repository_path": "apps/fama-system/drizzle/0003_adorable_calypso.sql",
+      "sha256": "c4ff37cb0701c0fdbe1b4743f0532508531e9a6ddafa748efb5f98607f19ca29"
+    },
+    {
+      "original_path": "fama-system/drizzle/0004_purple_thor_girl.sql",
+      "repository_path": "apps/fama-system/drizzle/0004_purple_thor_girl.sql",
+      "sha256": "5bb718c666bda89433392905f723441b497ce58c527859b60a8e1f041f96c0ca"
+    },
+    {
+      "original_path": "fama-system/drizzle/0005_reflective_fenris.sql",
+      "repository_path": "apps/fama-system/drizzle/0005_reflective_fenris.sql",
+      "sha256": "24babbebb8baf07f665dab4e052f9630cb0648a0065262b8d45ce4ca2d1b5500"
+    },
+    {
+      "original_path": "fama-system/drizzle/meta/0000_snapshot.json",
+      "repository_path": "apps/fama-system/drizzle/meta/0000_snapshot.json",
+      "sha256": "496e9bbab5b232c186e678cf183a1f41e4bde3ca0363d6a6b100783f40c77d62"
+    },
+    {
+      "original_path": "fama-system/drizzle/meta/0001_snapshot.json",
+      "repository_path": "apps/fama-system/drizzle/meta/0001_snapshot.json",
+      "sha256": "1e65515421fddafff4bc44773f95a8779fa72fb7f654d1936f2ae9b0652386ea"
+    },
+    {
+      "original_path": "fama-system/drizzle/meta/0002_snapshot.json",
+      "repository_path": "apps/fama-system/drizzle/meta/0002_snapshot.json",
+      "sha256": "e00e2506fb1fd93142e6dd51a095ea1f61512b7a5d7f28b6a2178414a9ce1ae2"
+    },
+    {
+      "original_path": "fama-system/drizzle/meta/0003_snapshot.json",
+      "repository_path": "apps/fama-system/drizzle/meta/0003_snapshot.json",
+      "sha256": "371d4e3d100bd7be9a61dddf5c66cac9f5e309e77591f8e9ee56633ea4a62b28"
+    },
+    {
+      "original_path": "fama-system/drizzle/meta/0004_snapshot.json",
+      "repository_path": "apps/fama-system/drizzle/meta/0004_snapshot.json",
+      "sha256": "7373274d58734a7d36976a8f46aa1ce953468333b668be5e977e5730d471f0be"
+    },
+    {
+      "original_path": "fama-system/drizzle/meta/0005_snapshot.json",
+      "repository_path": "apps/fama-system/drizzle/meta/0005_snapshot.json",
+      "sha256": "ceba829649a1889ea6c31d87767e6f86299c5f1f642b9e5f30425c98b93e3e63"
+    },
+    {
+      "original_path": "fama-system/drizzle/meta/_journal.json",
+      "repository_path": "apps/fama-system/drizzle/meta/_journal.json",
+      "sha256": "697e16e5b85743161ecc921c0cbdf2e6730e64e75d9c6a362e6685172e24af64"
+    },
+    {
+      "original_path": "fama-system/eslint.config.mjs",
+      "repository_path": "apps/fama-system/eslint.config.mjs",
+      "sha256": "f22a254df7d934bbf9be499d3c969a13abb7f7f64c03f5967d0095cad81dfe06"
+    },
+    {
+      "original_path": "fama-system/hooks/use-mobile.ts",
+      "repository_path": "apps/fama-system/hooks/use-mobile.ts",
+      "sha256": "ad0936f84f1df79d3697bfbff9c18f8ad58431c1cbaf2359c6a853b0fcc9f28b"
+    },
+    {
+      "original_path": "fama-system/lib/asaas.ts",
+      "repository_path": "apps/fama-system/lib/asaas.ts",
+      "sha256": "1b91510c8f56692ce795394f25a760ab9288d643d82d03d6472e7896782d6460"
+    },
+    {
+      "original_path": "fama-system/lib/bank-statement.ts",
+      "repository_path": "apps/fama-system/lib/bank-statement.ts",
+      "sha256": "95c63151f00f320aca9e048ce83c3963eb7815d1fc1411ca391b99a9b438eb2b"
+    },
+    {
+      "original_path": "fama-system/lib/billing-access.ts",
+      "repository_path": "apps/fama-system/lib/billing-access.ts",
+      "sha256": "027422c606f6a36d7a86dd02a374935e72fadceed7ff356d23f9f1193dbb86bd"
+    },
+    {
+      "original_path": "fama-system/lib/billing.ts",
+      "repository_path": "apps/fama-system/lib/billing.ts",
+      "sha256": "21ba2295dce21396341b996ee61998edd07655cd7d1eb6b656676a3d153646fc"
+    },
+    {
+      "original_path": "fama-system/lib/company-settings.ts",
+      "repository_path": "apps/fama-system/lib/company-settings.ts",
+      "sha256": "05027bc75030b136353c03afb7bc6289c22fa847e7c33654872a4d08cd27cf29"
+    },
+    {
+      "original_path": "fama-system/lib/contract-pdf.ts",
+      "repository_path": "apps/fama-system/lib/contract-pdf.ts",
+      "sha256": "8674e8f0dab43ed75b7dc0bbb7338a5c4efe0aa66bdd7d69988ad5b4805658c7"
+    },
+    {
+      "original_path": "fama-system/lib/crypto.ts",
+      "repository_path": "apps/fama-system/lib/crypto.ts",
+      "sha256": "958dff0a3e6998ecfb3649717f6e96aaf6786a8c954c52cd385b775fac4c4356"
+    },
+    {
+      "original_path": "fama-system/lib/database.ts",
+      "repository_path": "apps/fama-system/lib/database.ts",
+      "sha256": "7d28ca6bd8fe54033d856ed5d313f133d0e19ff8cfe820994da8c49a6c554243"
+    },
+    {
+      "original_path": "fama-system/lib/finance-schema.ts",
+      "repository_path": "apps/fama-system/lib/finance-schema.ts",
+      "sha256": "d105d8cdd4f7386b96fa8bd6941b9e31622a2768fd55db62226f81343756f8da"
+    },
+    {
+      "original_path": "fama-system/lib/fiscal-document.ts",
+      "repository_path": "apps/fama-system/lib/fiscal-document.ts",
+      "sha256": "168b3910dd1e5de625443f5dcfc705f822adf8ad6316551f2ff43ce2580454a4"
+    },
+    {
+      "original_path": "fama-system/lib/fiscal-portal.ts",
+      "repository_path": "apps/fama-system/lib/fiscal-portal.ts",
+      "sha256": "8996b985b54454e4712595b6ad18bd6457633c6a7cc904692e793a0db8db921b"
+    },
+    {
+      "original_path": "fama-system/lib/fiscal.ts",
+      "repository_path": "apps/fama-system/lib/fiscal.ts",
+      "sha256": "8c28b24f3ff73e9de3b476c57f7b702273a026f46a91b78cbd5b9a92d85a89be"
+    },
+    {
+      "original_path": "fama-system/lib/inventory.ts",
+      "repository_path": "apps/fama-system/lib/inventory.ts",
+      "sha256": "d6e317b9095364d60dee880f77e6c97fe4c5dcf95f2cad286b152f1cfea50ebb"
+    },
+    {
+      "original_path": "fama-system/lib/launch-readiness.ts",
+      "repository_path": "apps/fama-system/lib/launch-readiness.ts",
+      "sha256": "a5a2d1f5490af19dc2891c4e4967ff43f523cf88f6aef751e63e5147234cedd6"
+    },
+    {
+      "original_path": "fama-system/lib/manual-pix.ts",
+      "repository_path": "apps/fama-system/lib/manual-pix.ts",
+      "sha256": "99d20e325101fe46a4b09c6fa751f225966e0465ff4ecdb788b5bb387cfc2bb2"
+    },
+    {
+      "original_path": "fama-system/lib/permissions.ts",
+      "repository_path": "apps/fama-system/lib/permissions.ts",
+      "sha256": "91cd4317c655dbe42ba3f82d684cd02c6320ebc53422cfaa24dc24ef301dedf2"
+    },
+    {
+      "original_path": "fama-system/lib/plans.ts",
+      "repository_path": "apps/fama-system/lib/plans.ts",
+      "sha256": "40ee9279dab22e8b1869c6570d5bba8c06f9fbffbb2200e48b0d3950734d44a9"
+    },
+    {
+      "original_path": "fama-system/lib/pool-quote-catalog.ts",
+      "repository_path": "apps/fama-system/lib/pool-quote-catalog.ts",
+      "sha256": "c5b0e790e175249b34997dbc4d98f837837ef66516f4f7ce60669fccbc0845cb"
+    },
+    {
+      "original_path": "fama-system/lib/quote-calculation.ts",
+      "repository_path": "apps/fama-system/lib/quote-calculation.ts",
+      "sha256": "3aa715827cc8baaa2805ae69b310af53256165c32d73d2c7f679399b942a6f7b"
+    },
+    {
+      "original_path": "fama-system/lib/quote-config.ts",
+      "repository_path": "apps/fama-system/lib/quote-config.ts",
+      "sha256": "d39f7d2f008d2113062235d77fb9d296e7388a50044e8fe281ddd4d15446f426"
+    },
+    {
+      "original_path": "fama-system/lib/quote-pdf.ts",
+      "repository_path": "apps/fama-system/lib/quote-pdf.ts",
+      "sha256": "fe243989892a6410ccc044a76074bd7bed9e172e799d398ba65bb11f22da8ccf"
+    },
+    {
+      "original_path": "fama-system/lib/request-security.ts",
+      "repository_path": "apps/fama-system/lib/request-security.ts",
+      "sha256": "2d01230b876024d7a26b60ee0aa02374f756263a1df3b71d5388556cf89d8505"
+    },
+    {
+      "original_path": "fama-system/lib/security.ts",
+      "repository_path": "apps/fama-system/lib/security.ts",
+      "sha256": "25bb8f078738d49c71d09a4fa42aa9107f40c6838368196854e0b12c6e50f595"
+    },
+    {
+      "original_path": "fama-system/lib/supabase.ts",
+      "repository_path": "apps/fama-system/lib/supabase.ts",
+      "sha256": "3bea9715b5dd21524032c7d09fd61ffdf81b7db81dee5e150a2ef7ef2c4e074a"
+    },
+    {
+      "original_path": "fama-system/lib/tenant.ts",
+      "repository_path": "apps/fama-system/lib/tenant.ts",
+      "sha256": "77982b520795f7c0064ca17afe7864e9c3951bf5fa3ec8fdee8382f4433284f4"
+    },
+    {
+      "original_path": "fama-system/lib/utils.ts",
+      "repository_path": "apps/fama-system/lib/utils.ts",
+      "sha256": "53f3d3d070f0a9082934da25b875f9499855c2b0693868dd28be8c23d8730f68"
+    },
+    {
+      "original_path": "fama-system/lib/work-order-pdf.ts",
+      "repository_path": "apps/fama-system/lib/work-order-pdf.ts",
+      "sha256": "332c0ea93517c424d030c5ca6d1da7d71652500a3e78ea16467d0b5a0a4922a2"
+    },
+    {
+      "original_path": "fama-system/next.config.ts",
+      "repository_path": "apps/fama-system/next.config.ts",
+      "sha256": "614bce25b089c3f19b1e17a6346c74b858034040154c6621e7d35303004767cc"
+    },
+    {
+      "original_path": "fama-system/package-lock.json",
+      "repository_path": "apps/fama-system/package-lock.json",
+      "sha256": "f7da82f46d4d88b031f1115f7bdd321cc5a3b1f0b89902a44856adeb1a60974a"
+    },
+    {
+      "original_path": "fama-system/package.json",
+      "repository_path": "apps/fama-system/package.json",
+      "sha256": "ba751318d9303bf842b5184d69ef950561f426e21af993fadd700558593d05d9"
+    },
+    {
+      "original_path": "fama-system/postcss.config.mjs",
+      "repository_path": "apps/fama-system/postcss.config.mjs",
+      "sha256": "dfac7ac2d86d326a0e5adb024e7943c181393ed17a5fcb8f0315b24c7da6ddde"
+    },
+    {
+      "original_path": "fama-system/public/fama-permissions-migration.sql",
+      "repository_path": "apps/fama-system/public/fama-permissions-migration.sql",
+      "sha256": "5155d14e0bf865d1748803357737e6d2293ff64f84bb1fb5606a327e290dedba"
+    },
+    {
+      "original_path": "fama-system/public/fama-piscinas-logo.png",
+      "repository_path": "apps/fama-system/public/fama-piscinas-logo.png",
+      "sha256": "00ef39fd7886fdbaf87d8aa0e9f6206b5343a78534c558886fbbd3e5eb76d306"
+    },
+    {
+      "original_path": "fama-system/public/fama-piscinas-mark.png",
+      "repository_path": "apps/fama-system/public/fama-piscinas-mark.png",
+      "sha256": "99d60ddaa3b396e16facaf590cce41553c84430d063fba9916f5efb9a880e3e3"
+    },
+    {
+      "original_path": "fama-system/public/fama-supabase-schema.sql",
+      "repository_path": "apps/fama-system/public/fama-supabase-schema.sql",
+      "sha256": "ff3485dfa1e4a23369bd28f778c11a89a142075a09a7940a17ca9d1ae2f007e0"
+    },
+    {
+      "original_path": "fama-system/public/favicon.ico",
+      "repository_path": "apps/fama-system/public/favicon.ico",
+      "sha256": "971417596aa790fbc9845c6108852b7e71194ab12b63fdb700d78efa55190dcf"
+    },
+    {
+      "original_path": "fama-system/public/favicon.svg",
+      "repository_path": "apps/fama-system/public/favicon.svg",
+      "sha256": "e79578abdaf99be7842d9efd9c14f86e2c16da5547052269ae367ca5786cabc8"
+    },
+    {
+      "original_path": "fama-system/public/manual/fama-control.svg",
+      "repository_path": "apps/fama-system/public/manual/fama-control.svg",
+      "sha256": "11722512a4622f830bfcee5ab3d6d386ec7cc9b1b6f3411aa913d60f5629b730"
+    },
+    {
+      "original_path": "fama-system/public/manual/financeiro-fama-system.svg",
+      "repository_path": "apps/fama-system/public/manual/financeiro-fama-system.svg",
+      "sha256": "55daca3a313854be5b4cfa18ab7adf8ce623ea081d0942e75918740d43c58d6c"
+    },
+    {
+      "original_path": "fama-system/public/manual/login-fama-system.svg",
+      "repository_path": "apps/fama-system/public/manual/login-fama-system.svg",
+      "sha256": "9e08a159b34a48cfc4c70d61bee7211f872dfbcf9f3a8b88b6acb100f2bf10f3"
+    },
+    {
+      "original_path": "fama-system/public/payments/mercado-pago-pix.jpg",
+      "repository_path": "apps/fama-system/public/payments/mercado-pago-pix.jpg",
+      "sha256": "a011bb3edcafd026370c80dc6d4a943872495fd52890955bfc3b423fa4789208"
+    },
+    {
+      "original_path": "fama-system/scripts/build-verified.sh",
+      "repository_path": "apps/fama-system/scripts/build-verified.sh",
+      "sha256": "2ae5329ac860076070c9217a43106a15cb5ecf907a0f7baeb9ef903f76b53c68"
+    },
+    {
+      "original_path": "fama-system/scripts/install-ci.sh",
+      "repository_path": "apps/fama-system/scripts/install-ci.sh",
+      "sha256": "f63e840679ca885f206d17b7f8285199bb6bcd47ebc360008d04d16b8e54f63c"
+    },
+    {
+      "original_path": "fama-system/scripts/sites-env.sh",
+      "repository_path": "apps/fama-system/scripts/sites-env.sh",
+      "sha256": "df86ebfc27d2f00860036658e933ac0ddd7b5f6879aa5d51218f0863c7e1fb60"
+    },
+    {
+      "original_path": "fama-system/supabase/company-billing-migration.sql",
+      "repository_path": "apps/fama-system/supabase/company-billing-migration.sql",
+      "sha256": "474b0932adad3465943b9f046d7492e89d544f3e6d4db3c5a551c9faa87efc7d"
+    },
+    {
+      "original_path": "fama-system/supabase/finance-operations-migration.sql",
+      "repository_path": "apps/fama-system/supabase/finance-operations-migration.sql",
+      "sha256": "7a3e6fc6ecd8505d0a7e14637cae91b0a2879cb20fa37dab97344f59dcaea7bb"
+    },
+    {
+      "original_path": "fama-system/supabase/fiscal-portal.sql",
+      "repository_path": "apps/fama-system/supabase/fiscal-portal.sql",
+      "sha256": "09a2c7ce6e0ef6b08474944135a15a78be240d01fe3844b01d4979bae1bdf406"
+    },
+    {
+      "original_path": "fama-system/supabase/open-finance-migration.sql",
+      "repository_path": "apps/fama-system/supabase/open-finance-migration.sql",
+      "sha256": "1131305ea16e30c47d58c7a7de7eb97ac2c46a9e4b709eb637ad2d45527796a5"
+    },
+    {
+      "original_path": "fama-system/supabase/permissions-migration.sql",
+      "repository_path": "apps/fama-system/supabase/permissions-migration.sql",
+      "sha256": "37888d5c41e5861f4400efd15dc928cf8365fc9a92fc5faad39b0fdf2275f305"
+    },
+    {
+      "original_path": "fama-system/supabase/public-checkout-migration.sql",
+      "repository_path": "apps/fama-system/supabase/public-checkout-migration.sql",
+      "sha256": "d492224e08d78159c30bdb401a37dff7516567a287f618a62208d65c72b4d062"
+    },
+    {
+      "original_path": "fama-system/supabase/schema.sql",
+      "repository_path": "apps/fama-system/supabase/schema.sql",
+      "sha256": "e57ed98323bd15fda04a633a31f8b46c2b558a788c1346e9824d88c2fb328bdb"
+    },
+    {
+      "original_path": "fama-system/supabase/support-tickets-migration.sql",
+      "repository_path": "apps/fama-system/supabase/support-tickets-migration.sql",
+      "sha256": "ae9ece728bc7c9f5c218a5fe9a22640f98ffce594f3d6014332f931a64e4fb1e"
+    },
+    {
+      "original_path": "fama-system/tests/asaas.test.mjs",
+      "repository_path": "apps/fama-system/tests/asaas.test.mjs",
+      "sha256": "3660ce2ddb8c98a6833d61f72760508202f6745712266d8f4fd993d76e6f67fd"
+    },
+    {
+      "original_path": "fama-system/tests/cloudflare-loader.mjs",
+      "repository_path": "apps/fama-system/tests/cloudflare-loader.mjs",
+      "sha256": "9d7400cb075a25b13e6f3d7a2b8ddacb150e12a56cace04f0107b6bcd7172763"
+    },
+    {
+      "original_path": "fama-system/tests/finance-csv.test.mjs",
+      "repository_path": "apps/fama-system/tests/finance-csv.test.mjs",
+      "sha256": "c4a4287249f860f010732ddea909b5a89caaec3ea2c3c8df4ebf01d5b8464a87"
+    },
+    {
+      "original_path": "fama-system/tests/launch-readiness.test.mjs",
+      "repository_path": "apps/fama-system/tests/launch-readiness.test.mjs",
+      "sha256": "f3de3bd7cc11f5e6d2654cd14b857ca8eaf71d68de441c409a54c8dc1b1c7547"
+    },
+    {
+      "original_path": "fama-system/tests/provider-runtime.test.mjs",
+      "repository_path": "apps/fama-system/tests/provider-runtime.test.mjs",
+      "sha256": "eef1f8bfb334530ebd8277dbc9b721b55e0bb8a81db529e837b848a00740d869"
+    },
+    {
+      "original_path": "fama-system/tests/rendered-html.test.mjs",
+      "repository_path": "apps/fama-system/tests/rendered-html.test.mjs",
+      "sha256": "1ba1b0e2d5f57712fa3e52b196b91d565436e56e058b70d6b1dcf116bbda546a"
+    },
+    {
+      "original_path": "fama-system/tests/ui-components.test.mjs",
+      "repository_path": "apps/fama-system/tests/ui-components.test.mjs",
+      "sha256": "acee34ae20307e4efb9805db198c00875ba9b3242b6ad78b4c4e23db704c4e60"
+    },
+    {
+      "original_path": "fama-system/tsconfig.json",
+      "repository_path": "apps/fama-system/tsconfig.json",
+      "sha256": "be18523b23b78b6e1a876ddd107d330f0168bddf09d751b57e0b5edce69c66f3"
+    },
+    {
+      "original_path": "fama-system/vendor/shadcn-tailwind-4.13.0.LICENSE.md",
+      "repository_path": "apps/fama-system/vendor/shadcn-tailwind-4.13.0.LICENSE.md",
+      "sha256": "1564074e13439397221ffd522e2e504d56561994a23d371aa5e3ad43e4f5423f"
+    },
+    {
+      "original_path": "fama-system/vendor/shadcn-tailwind-4.13.0.css",
+      "repository_path": "apps/fama-system/vendor/shadcn-tailwind-4.13.0.css",
+      "sha256": "bc7d83425702955b4cb67cb14ede9d603f9d912376d57a2d81d661094d2a782a"
+    },
+    {
+      "original_path": "fama-system/vite.config.ts",
+      "repository_path": "apps/fama-system/vite.config.ts",
+      "sha256": "43e5f02f727ca043f08ebf34789f330580a7a0cb90f426c92f4a454d066988fc"
+    },
+    {
+      "original_path": "fama-system/worker/index.ts",
+      "repository_path": "apps/fama-system/worker/index.ts",
+      "sha256": "8b56b3ee1e0791302223e08505f1f8e0bcc14e8b5404e17b61bd9be3a26068c3"
+    },
+    {
+      "original_path": "fama-control/.env.example",
+      "repository_path": "apps/fama-control/.env.example",
+      "sha256": "f05f6474f683dcdd50f041d59d8a78d87c999420be5f55e42ca7c8901ed6c1f3"
+    },
+    {
+      "original_path": "fama-control/.gitignore",
+      "repository_path": "apps/fama-control/.gitignore",
+      "sha256": "3941eafedcef1929cf023b4216272fe33971d06a5cbac68b4854f7e676540c88"
+    },
+    {
+      "original_path": "fama-control/.npmrc",
+      "repository_path": "apps/fama-control/.npmrc",
+      "sha256": "494e64a8818b6158e89321250500ad5ad018e33ad5cfea06a1cacd2cf4da75fa"
+    },
+    {
+      "original_path": "fama-control/.openai/hosting.json",
+      "repository_path": "apps/fama-control/.openai/hosting.json",
+      "sha256": "d3ac3584f2bf39f4f630856c932d765751699cf7edfb776c33dedbc4480a848a"
+    },
+    {
+      "original_path": "fama-control/README.md",
+      "repository_path": "apps/fama-control/README.md",
+      "sha256": "47991fd1964fda09acd1a4d6ba5c7652c6b9c063bbc850dcf3fcf9318bbe15fb"
+    },
+    {
+      "original_path": "fama-control/app/access-gate.tsx",
+      "repository_path": "apps/fama-control/app/access-gate.tsx",
+      "sha256": "38bee95e12ae89ecb1c4008a5f3d7ca4c1fba90533df404ebe9e07092429dab3"
+    },
+    {
+      "original_path": "fama-control/app/access-validation-panel.tsx",
+      "repository_path": "apps/fama-control/app/access-validation-panel.tsx",
+      "sha256": "7b43fec0d99a47063aa46e9c73c45917504259b1e5b8fded51666f9536167f5e"
+    },
+    {
+      "original_path": "fama-control/app/api/admin/audit/route.ts",
+      "repository_path": "apps/fama-control/app/api/admin/audit/route.ts",
+      "sha256": "2a16244cc02c3654fdd27af6cfd28ec328a9ed2e176de73646c5e12cff2cc3da"
+    },
+    {
+      "original_path": "fama-control/app/api/admin/backup/route.ts",
+      "repository_path": "apps/fama-control/app/api/admin/backup/route.ts",
+      "sha256": "fae8680a27bfb40f4bf350239634a448cce9e0645f0c11c85a1542ca31dd506a"
+    },
+    {
+      "original_path": "fama-control/app/api/admin/members/[id]/route.ts",
+      "repository_path": "apps/fama-control/app/api/admin/members/[id]/route.ts",
+      "sha256": "f1b507cc463b5a3b930029a781b098d8ff7bfc38dbf40e54eed341ba2835cf26"
+    },
+    {
+      "original_path": "fama-control/app/api/admin/members/route.ts",
+      "repository_path": "apps/fama-control/app/api/admin/members/route.ts",
+      "sha256": "90703b4ec26668a07254f67962ee0ed99b1b42218576d75e3368d29aefcc62d8"
+    },
+    {
+      "original_path": "fama-control/app/api/admin/organizations/[id]/members/route.ts",
+      "repository_path": "apps/fama-control/app/api/admin/organizations/[id]/members/route.ts",
+      "sha256": "465a186e3ee02ac6aae29ccaa8206b97e3a5dd4811b043b366977462fa51ad76"
+    },
+    {
+      "original_path": "fama-control/app/api/admin/organizations/[id]/route.ts",
+      "repository_path": "apps/fama-control/app/api/admin/organizations/[id]/route.ts",
+      "sha256": "775b9d34c86cf505a175d3bdb2cc9539898b928dd834ea0697d52450731619b4"
+    },
+    {
+      "original_path": "fama-control/app/api/admin/organizations/route.ts",
+      "repository_path": "apps/fama-control/app/api/admin/organizations/route.ts",
+      "sha256": "1448820f2e610a4df973a47706ef94f4b3209a4d5aa92ab0c464262538346622"
+    },
+    {
+      "original_path": "fama-control/app/api/admin/plans/route.ts",
+      "repository_path": "apps/fama-control/app/api/admin/plans/route.ts",
+      "sha256": "e32113024cbdc6e7dc3eab112e553ed51c2ee7c8d9c53519a8741831e870fc03"
+    },
+    {
+      "original_path": "fama-control/app/api/admin/privacy/route.ts",
+      "repository_path": "apps/fama-control/app/api/admin/privacy/route.ts",
+      "sha256": "6836a476080b1cd6045258506817af5b11defc57182072c4914f586def0d6d3c"
+    },
+    {
+      "original_path": "fama-control/app/api/admin/quote-config/route.ts",
+      "repository_path": "apps/fama-control/app/api/admin/quote-config/route.ts",
+      "sha256": "4834439da7273b59475743addcfd323f8190a6aa75181fd7c8a6fee76964b0f5"
+    },
+    {
+      "original_path": "fama-control/app/api/admin/security/re-encrypt/route.ts",
+      "repository_path": "apps/fama-control/app/api/admin/security/re-encrypt/route.ts",
+      "sha256": "e58b89bb1313ea2d38a76b96bdffa9334a8f14579e711c3beb1a93c26ae13661"
+    },
+    {
+      "original_path": "fama-control/app/api/admin/security/route.ts",
+      "repository_path": "apps/fama-control/app/api/admin/security/route.ts",
+      "sha256": "df1bd09e8dd63e52d6ba817cd02770c0bd9d97d2229a09371408709017644ccf"
+    },
+    {
+      "original_path": "fama-control/app/api/admin/support/route.ts",
+      "repository_path": "apps/fama-control/app/api/admin/support/route.ts",
+      "sha256": "2197cfe95fb54993e3b4e373d105b241313c56239e5119f008354d3ca1fa226b"
+    },
+    {
+      "original_path": "fama-control/app/api/admin/validation/route.ts",
+      "repository_path": "apps/fama-control/app/api/admin/validation/route.ts",
+      "sha256": "ccad8f7e8f30d4715a9ca080cb7cbffb0579c2d3fcc973133e6a335de82b1137"
+    },
+    {
+      "original_path": "fama-control/app/api/attachments/[id]/route.ts",
+      "repository_path": "apps/fama-control/app/api/attachments/[id]/route.ts",
+      "sha256": "68222ce5f287740b982ffa9ebb1aed7b8e510ef95d67226b4e2df81bb4f095f9"
+    },
+    {
+      "original_path": "fama-control/app/api/attachments/route.ts",
+      "repository_path": "apps/fama-control/app/api/attachments/route.ts",
+      "sha256": "57f9f858e29a27bacbf451c4bda2425205b8b1e55d7e365923b5a1932c312fe1"
+    },
+    {
+      "original_path": "fama-control/app/api/auth/login/route.ts",
+      "repository_path": "apps/fama-control/app/api/auth/login/route.ts",
+      "sha256": "734617cd92fb4369e218b26eda2ac070b8f9501ec0fe994a02d0257ec0d871ab"
+    },
+    {
+      "original_path": "fama-control/app/api/auth/logout/route.ts",
+      "repository_path": "apps/fama-control/app/api/auth/logout/route.ts",
+      "sha256": "94ea098fe95b11da75e8a6d4edf76d90173490893473ecf90bab65e83001b3e3"
+    },
+    {
+      "original_path": "fama-control/app/api/auth/mfa-login/route.ts",
+      "repository_path": "apps/fama-control/app/api/auth/mfa-login/route.ts",
+      "sha256": "101a6c2781da0df9ccf680c1285d5402d075f5a0a8b946148e72bafaa3fc4c27"
+    },
+    {
+      "original_path": "fama-control/app/api/auth/setup/route.ts",
+      "repository_path": "apps/fama-control/app/api/auth/setup/route.ts",
+      "sha256": "8f999f2ca6640510421a9d68d6ec84b9999409627f3107e4e2d4ac6f3006ffa9"
+    },
+    {
+      "original_path": "fama-control/app/api/bootstrap/route.ts",
+      "repository_path": "apps/fama-control/app/api/bootstrap/route.ts",
+      "sha256": "d3552a4adc383f4b36709195f0009d72375c0188efb9c158175747072cbb9681"
+    },
+    {
+      "original_path": "fama-control/app/api/internal/data/route.ts",
+      "repository_path": "apps/fama-control/app/api/internal/data/route.ts",
+      "sha256": "659f7d1ca06f6006995228dca52e7a128315ce7b06ac7de734e47ae88e3ed361"
+    },
+    {
+      "original_path": "fama-control/app/api/members/[id]/route.ts",
+      "repository_path": "apps/fama-control/app/api/members/[id]/route.ts",
+      "sha256": "356dbae0c6000762a6d534ebb791d3807fd6a2067dece16c45bc9b15a1f35eff"
+    },
+    {
+      "original_path": "fama-control/app/api/members/route.ts",
+      "repository_path": "apps/fama-control/app/api/members/route.ts",
+      "sha256": "ca6e9144f4e1bc1b0807510e4c3fb1e32a82d9be30665063dbe65a338c290efb"
+    },
+    {
+      "original_path": "fama-control/app/api/organizations/route.ts",
+      "repository_path": "apps/fama-control/app/api/organizations/route.ts",
+      "sha256": "b919248a26a5e01e3ff514a69e7897c2c796e0b65ff84731975501380518c44c"
+    },
+    {
+      "original_path": "fama-control/app/api/public/plans/route.ts",
+      "repository_path": "apps/fama-control/app/api/public/plans/route.ts",
+      "sha256": "6602c223c2ec5577691f84dd45e71532d8d1f13151fa1550e66bdf17f30de381"
+    },
+    {
+      "original_path": "fama-control/app/api/public/support/route.ts",
+      "repository_path": "apps/fama-control/app/api/public/support/route.ts",
+      "sha256": "1bf2921ac563e835285a54b749c8ce21204bfa62d29c9532905daedf02fb4d5f"
+    },
+    {
+      "original_path": "fama-control/app/api/records/[id]/route.ts",
+      "repository_path": "apps/fama-control/app/api/records/[id]/route.ts",
+      "sha256": "30e17a554b67beb4cb43103745d77d3f9a9ca070fbdcaf7c5500487ca79d7e43"
+    },
+    {
+      "original_path": "fama-control/app/api/records/route.ts",
+      "repository_path": "apps/fama-control/app/api/records/route.ts",
+      "sha256": "7e59ab3b98b8353b73e7d78f1fc56432cd3f0718c97e06880b1b7f82d8f72db7"
+    },
+    {
+      "original_path": "fama-control/app/api/warranties/[id]/schedule/route.ts",
+      "repository_path": "apps/fama-control/app/api/warranties/[id]/schedule/route.ts",
+      "sha256": "ebf25484fe712d93bc2701b282938ee1d6e851305c9b4325304dc7c2dbd9850e"
+    },
+    {
+      "original_path": "fama-control/app/chatgpt-auth.ts",
+      "repository_path": "apps/fama-control/app/chatgpt-auth.ts",
+      "sha256": "10c26d5bed12284dacc81c2abdf5f25eccae3811e58682680d50f471827ec131"
+    },
+    {
+      "original_path": "fama-control/app/cloriva-app.tsx",
+      "repository_path": "apps/fama-control/app/cloriva-app.tsx",
+      "sha256": "ee91a204199a0d7d7309ec37649f9fcf0175a1480844e86f0d217a51b669c7ce"
+    },
+    {
+      "original_path": "fama-control/app/company-accounts-dialog.tsx",
+      "repository_path": "apps/fama-control/app/company-accounts-dialog.tsx",
+      "sha256": "8f945f7b0e99c0eaed5288185c1b32d4839ae57514039fa90ad5347c334fb03f"
+    },
+    {
+      "original_path": "fama-control/app/company-accounts.css",
+      "repository_path": "apps/fama-control/app/company-accounts.css",
+      "sha256": "f29a1e7c6ff7fb3b04856f37efd6d54ed09111ed4b9567b65b138624580eb9d2"
+    },
+    {
+      "original_path": "fama-control/app/company-onboarding.tsx",
+      "repository_path": "apps/fama-control/app/company-onboarding.tsx",
+      "sha256": "40097572c1ae54ec4b0202c9a12b24855663f6164172bcda7ff5a1a9d8b012b1"
+    },
+    {
+      "original_path": "fama-control/app/control-app.tsx",
+      "repository_path": "apps/fama-control/app/control-app.tsx",
+      "sha256": "1f126377f1fc2d75a0649a507c42c913536b9b8f550bd9cf205de72bb332e992"
+    },
+    {
+      "original_path": "fama-control/app/data-model.ts",
+      "repository_path": "apps/fama-control/app/data-model.ts",
+      "sha256": "689500edf48eef268c72ba0fc8e30e1642baeb1c6659b228baf3f894eed4e5d7"
+    },
+    {
+      "original_path": "fama-control/app/delete-button.tsx",
+      "repository_path": "apps/fama-control/app/delete-button.tsx",
+      "sha256": "e14bfee9a426e35918dacd714208b7ab24ff199e4ce227df460a39ed99815b73"
+    },
+    {
+      "original_path": "fama-control/app/globals.css",
+      "repository_path": "apps/fama-control/app/globals.css",
+      "sha256": "ec791e82053ce963e33591e406acb57117f80b5bc280f7f3a846b96d9e5c4b43"
+    },
+    {
+      "original_path": "fama-control/app/layout.tsx",
+      "repository_path": "apps/fama-control/app/layout.tsx",
+      "sha256": "ec81220b527d9ca4d5a424f8d5760544810322a65e66111383f36e99566e2e5b"
+    },
+    {
+      "original_path": "fama-control/app/manual.tsx",
+      "repository_path": "apps/fama-control/app/manual.tsx",
+      "sha256": "a264f69b288b676345bbda259706aa37c1fbf3df89d9f633d024c1dd4d544bca"
+    },
+    {
+      "original_path": "fama-control/app/manual/page.tsx",
+      "repository_path": "apps/fama-control/app/manual/page.tsx",
+      "sha256": "5afd63523674dc3a1ef4e439094c7d4135b5066b0078dd68a27c7ba35d1c12f5"
+    },
+    {
+      "original_path": "fama-control/app/members-panel.tsx",
+      "repository_path": "apps/fama-control/app/members-panel.tsx",
+      "sha256": "f5369516abc4c9fa3428e74a4f53ab9372f15aad5d6e3badd41d8d0758396a1a"
+    },
+    {
+      "original_path": "fama-control/app/page.tsx",
+      "repository_path": "apps/fama-control/app/page.tsx",
+      "sha256": "ca5ec07b59f0d9d627d447243243906ce558b06e87464c2a240d41d0e802040b"
+    },
+    {
+      "original_path": "fama-control/app/platform-companies.tsx",
+      "repository_path": "apps/fama-control/app/platform-companies.tsx",
+      "sha256": "90b4cf15bc6ae5d1c648819d1f54734a956cfea82d89808c08bf4ddae1abd340"
+    },
+    {
+      "original_path": "fama-control/app/record-attachments.tsx",
+      "repository_path": "apps/fama-control/app/record-attachments.tsx",
+      "sha256": "a156ecae86431a6e5db389504e98a63414b027876eef2cb17d224544c348a381"
+    },
+    {
+      "original_path": "fama-control/app/restricted-access.tsx",
+      "repository_path": "apps/fama-control/app/restricted-access.tsx",
+      "sha256": "e118941167742bd675eeaff0386f413003f475f9789f96b9e563619fa4293064"
+    },
+    {
+      "original_path": "fama-control/app/theme-provider.tsx",
+      "repository_path": "apps/fama-control/app/theme-provider.tsx",
+      "sha256": "1eaed457fd731ea47fbb67663f8282da31dc9f5713fe471ecad0d0b3e64dba22"
+    },
+    {
+      "original_path": "fama-control/app/theme-toggle.tsx",
+      "repository_path": "apps/fama-control/app/theme-toggle.tsx",
+      "sha256": "358175a755ef90e5f89119145a8f064b0b66f78dd6354270b45798ceb5fd9854"
+    },
+    {
+      "original_path": "fama-control/build/sites-vite-plugin.ts",
+      "repository_path": "apps/fama-control/build/sites-vite-plugin.ts",
+      "sha256": "81b7cbfaeb970611572256aba0e313425beb3809f6426f63750696c15d9c756b"
+    },
+    {
+      "original_path": "fama-control/cloudflare-env.d.ts",
+      "repository_path": "apps/fama-control/cloudflare-env.d.ts",
+      "sha256": "58639da3644de0691fdc93eb7ecb32c9b76ce04989f0b1dd46065435263d5365"
+    },
+    {
+      "original_path": "fama-control/components.json",
+      "repository_path": "apps/fama-control/components.json",
+      "sha256": "31f4ca67a4a62572571003d3d5aac85ee6fbfca67a192924bac6b168d95e98fd"
+    },
+    {
+      "original_path": "fama-control/components/ui/accordion.tsx",
+      "repository_path": "apps/fama-control/components/ui/accordion.tsx",
+      "sha256": "a4f153089ba886dfcf73fac26b5c01ca933fa12fbe88df6fb723912bfffdfbb0"
+    },
+    {
+      "original_path": "fama-control/components/ui/alert-dialog.tsx",
+      "repository_path": "apps/fama-control/components/ui/alert-dialog.tsx",
+      "sha256": "9a8d950f2b9b4352d5ebb762fb44d5c28c2d353aa29712071973656a8736e311"
+    },
+    {
+      "original_path": "fama-control/components/ui/alert.tsx",
+      "repository_path": "apps/fama-control/components/ui/alert.tsx",
+      "sha256": "2cc59b5f7bda91c1670884b1bf46bfc8a2a6f226cef184f5762acc037188885b"
+    },
+    {
+      "original_path": "fama-control/components/ui/aspect-ratio.tsx",
+      "repository_path": "apps/fama-control/components/ui/aspect-ratio.tsx",
+      "sha256": "b1c157886236782cb92d8fbcd4749532aaf6d8aabefd6e157ca40358f902f407"
+    },
+    {
+      "original_path": "fama-control/components/ui/attachment.tsx",
+      "repository_path": "apps/fama-control/components/ui/attachment.tsx",
+      "sha256": "ae8a25dd1a896d3964e3ef54d97e51221b418cde287dfd794428b89951c5c790"
+    },
+    {
+      "original_path": "fama-control/components/ui/avatar.tsx",
+      "repository_path": "apps/fama-control/components/ui/avatar.tsx",
+      "sha256": "58a846bf1617b94b9681921db9b8461d0145f311424663d11678a06b6153cb34"
+    },
+    {
+      "original_path": "fama-control/components/ui/badge.tsx",
+      "repository_path": "apps/fama-control/components/ui/badge.tsx",
+      "sha256": "46a0de5224f6a5d5d63d45246534288518dce888f031064bff925bbc7fe6ad97"
+    },
+    {
+      "original_path": "fama-control/components/ui/breadcrumb.tsx",
+      "repository_path": "apps/fama-control/components/ui/breadcrumb.tsx",
+      "sha256": "d4c0831bba2212e778248f54a6ace6ef378df8bba4616d1abf27787a31eabae5"
+    },
+    {
+      "original_path": "fama-control/components/ui/bubble.tsx",
+      "repository_path": "apps/fama-control/components/ui/bubble.tsx",
+      "sha256": "870cc0c5cfc8a515053f7e41e706a6bd017a909b45f1305fd3b164a52cc4483b"
+    },
+    {
+      "original_path": "fama-control/components/ui/button-group.tsx",
+      "repository_path": "apps/fama-control/components/ui/button-group.tsx",
+      "sha256": "784c89d8ee683e1bc972ae69e6ea8225a7f63abe22aa1b5fc3423ae8a2a399c0"
+    },
+    {
+      "original_path": "fama-control/components/ui/button.tsx",
+      "repository_path": "apps/fama-control/components/ui/button.tsx",
+      "sha256": "cc36af0f8b5019c33cc039fbf03bb952a513072b15b55b53c592b78af3e5f4c4"
+    },
+    {
+      "original_path": "fama-control/components/ui/calendar.tsx",
+      "repository_path": "apps/fama-control/components/ui/calendar.tsx",
+      "sha256": "3855fbe0d3f8ad3a4b93071f98b76a9f6782d46ec8b05f5d2ddbee1e4e39bc84"
+    },
+    {
+      "original_path": "fama-control/components/ui/card.tsx",
+      "repository_path": "apps/fama-control/components/ui/card.tsx",
+      "sha256": "c48dd3b96be90a7066f1aebf294f0af9d00ebcdc367d5d4aca55429ade570c1c"
+    },
+    {
+      "original_path": "fama-control/components/ui/carousel.tsx",
+      "repository_path": "apps/fama-control/components/ui/carousel.tsx",
+      "sha256": "b7ea0dda3903d972c186f739e23da61f547bc83b5a0bf13b16856577846d5fc3"
+    },
+    {
+      "original_path": "fama-control/components/ui/chart.tsx",
+      "repository_path": "apps/fama-control/components/ui/chart.tsx",
+      "sha256": "45aa5ea4a386f4fb5b8869ff4bab3a08cf89255190ee322043baf84c3e950b6a"
+    },
+    {
+      "original_path": "fama-control/components/ui/checkbox.tsx",
+      "repository_path": "apps/fama-control/components/ui/checkbox.tsx",
+      "sha256": "b23ab9d4deeedf2ac8f512c368361ede681aa383437ef48563a6f9b7dbe95f27"
+    },
+    {
+      "original_path": "fama-control/components/ui/collapsible.tsx",
+      "repository_path": "apps/fama-control/components/ui/collapsible.tsx",
+      "sha256": "c6598e5584f4258b5d9fefadbc5ad6a66888ad58729f4b634a0bb2d9c513188b"
+    },
+    {
+      "original_path": "fama-control/components/ui/combobox.tsx",
+      "repository_path": "apps/fama-control/components/ui/combobox.tsx",
+      "sha256": "2d68e78b2dc7e38a085f222dede60a80b4f8229a6e91732c484605e204d46735"
+    },
+    {
+      "original_path": "fama-control/components/ui/command.tsx",
+      "repository_path": "apps/fama-control/components/ui/command.tsx",
+      "sha256": "361193df1e3d64a9e9b5048f045264782fcb387aab3f00f2b805fdcbf538b16a"
+    },
+    {
+      "original_path": "fama-control/components/ui/context-menu.tsx",
+      "repository_path": "apps/fama-control/components/ui/context-menu.tsx",
+      "sha256": "2cf1fcf59df0649a3e2a126d1df2f639145f6b6bf5689ee54af1f40ab1245017"
+    },
+    {
+      "original_path": "fama-control/components/ui/dialog.tsx",
+      "repository_path": "apps/fama-control/components/ui/dialog.tsx",
+      "sha256": "dce39c6adc47d997bd2567f8b7a72f466b0134715105cd42f9194007b8ecdb14"
+    },
+    {
+      "original_path": "fama-control/components/ui/direction.tsx",
+      "repository_path": "apps/fama-control/components/ui/direction.tsx",
+      "sha256": "84ae2ad658207f0e0f367978e5508cd8027cd00c29c41d3d13db21a708c3d1e6"
+    },
+    {
+      "original_path": "fama-control/components/ui/drawer.tsx",
+      "repository_path": "apps/fama-control/components/ui/drawer.tsx",
+      "sha256": "cb6eaf58eb0757ca91af284e5d925b89a42ad7eb19cb3f44c575a3487aa9350f"
+    },
+    {
+      "original_path": "fama-control/components/ui/dropdown-menu.tsx",
+      "repository_path": "apps/fama-control/components/ui/dropdown-menu.tsx",
+      "sha256": "98f0dcdae38225b73734aceeb9213dd751fea2c72ea520df31003cd133deac8a"
+    },
+    {
+      "original_path": "fama-control/components/ui/empty.tsx",
+      "repository_path": "apps/fama-control/components/ui/empty.tsx",
+      "sha256": "ae95bdcf367a076ae02e7925f14522a148798f72d9651749c6d55497dba584c0"
+    },
+    {
+      "original_path": "fama-control/components/ui/field.tsx",
+      "repository_path": "apps/fama-control/components/ui/field.tsx",
+      "sha256": "ba67d76f017ac059fc86cf8c344e0b2991c4322d3619e125498c19b87f6eefbd"
+    },
+    {
+      "original_path": "fama-control/components/ui/form.tsx",
+      "repository_path": "apps/fama-control/components/ui/form.tsx",
+      "sha256": "315b46bb75ab7d1c6061b5d750aa4bedf6e7a455e15e2d7f9182f053d5972b1e"
+    },
+    {
+      "original_path": "fama-control/components/ui/hover-card.tsx",
+      "repository_path": "apps/fama-control/components/ui/hover-card.tsx",
+      "sha256": "f5d8df42c59370ec14d61bcc54f7d68e9bb7dfa0d6a872b2f7cffc2aafbf23b8"
+    },
+    {
+      "original_path": "fama-control/components/ui/input-group.tsx",
+      "repository_path": "apps/fama-control/components/ui/input-group.tsx",
+      "sha256": "6afbd58fea4c438e6252dc4568bddc122e84ababead4ad5cee50ace01100c9a0"
+    },
+    {
+      "original_path": "fama-control/components/ui/input-otp.tsx",
+      "repository_path": "apps/fama-control/components/ui/input-otp.tsx",
+      "sha256": "161946daa89f0eda2575b9271c0494e35807c4ffb55598a49f67160c17fec299"
+    },
+    {
+      "original_path": "fama-control/components/ui/input.tsx",
+      "repository_path": "apps/fama-control/components/ui/input.tsx",
+      "sha256": "8c4612a7c41319ac5049daa3b34b080f9784b6245c17780eb87c127e58e473db"
+    },
+    {
+      "original_path": "fama-control/components/ui/item.tsx",
+      "repository_path": "apps/fama-control/components/ui/item.tsx",
+      "sha256": "6e2144d6d87142dbbe56d568810bf546318c8aa661447ebb0d76ebbf382cb45f"
+    },
+    {
+      "original_path": "fama-control/components/ui/kbd.tsx",
+      "repository_path": "apps/fama-control/components/ui/kbd.tsx",
+      "sha256": "6088c3a5432338b1719c17e9b5d0e1fa74fd1f66060f248fc88909d33a82cd13"
+    },
+    {
+      "original_path": "fama-control/components/ui/label.tsx",
+      "repository_path": "apps/fama-control/components/ui/label.tsx",
+      "sha256": "a476e41f08b9de5bd447de66a33d8bc2ad18f2fa6b96c064778bab4b6f439f4c"
+    },
+    {
+      "original_path": "fama-control/components/ui/marker.tsx",
+      "repository_path": "apps/fama-control/components/ui/marker.tsx",
+      "sha256": "3d798763f094b2bb5e7ade2d5cd1b9bab498bc8ca7fd4cfaf4e5835bdedc34a0"
+    },
+    {
+      "original_path": "fama-control/components/ui/menubar.tsx",
+      "repository_path": "apps/fama-control/components/ui/menubar.tsx",
+      "sha256": "9243af8afcea03703398ccd1c2a8c0a87ad6cbaf2bd272fb609f5b79fe46aebb"
+    },
+    {
+      "original_path": "fama-control/components/ui/message-scroller.tsx",
+      "repository_path": "apps/fama-control/components/ui/message-scroller.tsx",
+      "sha256": "bb7660a248e4e9589c3816c7c1c199ea1381a70d2c8476ae895b567a7a4d86cf"
+    },
+    {
+      "original_path": "fama-control/components/ui/message.tsx",
+      "repository_path": "apps/fama-control/components/ui/message.tsx",
+      "sha256": "9d2952bf3b641081f09aa2739535e6bbd1be0a4946789752a2c20d8aaef43185"
+    },
+    {
+      "original_path": "fama-control/components/ui/native-select.tsx",
+      "repository_path": "apps/fama-control/components/ui/native-select.tsx",
+      "sha256": "007516b111fca8c98a6c40c94ab91bb68cc5b52afce1ed1f5e510c3d86e7347c"
+    },
+    {
+      "original_path": "fama-control/components/ui/navigation-menu.tsx",
+      "repository_path": "apps/fama-control/components/ui/navigation-menu.tsx",
+      "sha256": "889d358a77de88e9cb6f39ea4895ea4c76eaf01d731b74e44f1c41e97a78a044"
+    },
+    {
+      "original_path": "fama-control/components/ui/pagination.tsx",
+      "repository_path": "apps/fama-control/components/ui/pagination.tsx",
+      "sha256": "374ad135c3d4ff3ec080a0009cd9745cdd0e12faa89d2b0e86074f11e5127fd1"
+    },
+    {
+      "original_path": "fama-control/components/ui/popover.tsx",
+      "repository_path": "apps/fama-control/components/ui/popover.tsx",
+      "sha256": "31c350309ff5d3034e6ecf1b0eda75ba8855bdbf987fc7ad6d71f0ef07c5a447"
+    },
+    {
+      "original_path": "fama-control/components/ui/progress.tsx",
+      "repository_path": "apps/fama-control/components/ui/progress.tsx",
+      "sha256": "c8c26e8f5f041c3cdf4915347dc1d9c022f9448f149990fadcaf303e952fa57d"
+    },
+    {
+      "original_path": "fama-control/components/ui/radio-group.tsx",
+      "repository_path": "apps/fama-control/components/ui/radio-group.tsx",
+      "sha256": "fe5ce39636d0818c2bf9c4eebddff893d1225fa2c81b5fa4bb8cbb39a8c913ce"
+    },
+    {
+      "original_path": "fama-control/components/ui/resizable.tsx",
+      "repository_path": "apps/fama-control/components/ui/resizable.tsx",
+      "sha256": "bc63958467aa00557c551bb0d96a5ae4c965c1e1ba2380e595949d933b132f7c"
+    },
+    {
+      "original_path": "fama-control/components/ui/scroll-area.tsx",
+      "repository_path": "apps/fama-control/components/ui/scroll-area.tsx",
+      "sha256": "8bd9d986b2844c9a87de825c6de4787b6739b36c3dc9a05ccf3eb107160e4043"
+    },
+    {
+      "original_path": "fama-control/components/ui/select.tsx",
+      "repository_path": "apps/fama-control/components/ui/select.tsx",
+      "sha256": "0b796a108a4eb5ba52d9ad938b7aea36dc56ae66c703a6d0a23dbc24f96daff3"
+    },
+    {
+      "original_path": "fama-control/components/ui/separator.tsx",
+      "repository_path": "apps/fama-control/components/ui/separator.tsx",
+      "sha256": "6da346505c8629a4668420d2a5ca48891383bbe0b0ceb14163537c671879427e"
+    },
+    {
+      "original_path": "fama-control/components/ui/sheet.tsx",
+      "repository_path": "apps/fama-control/components/ui/sheet.tsx",
+      "sha256": "63863cf2df8f8973e52b3459ac9bdbf81be1262dbc70eb53d5271ffb03488e16"
+    },
+    {
+      "original_path": "fama-control/components/ui/sidebar.tsx",
+      "repository_path": "apps/fama-control/components/ui/sidebar.tsx",
+      "sha256": "4a8d73e7730a2b1fcecfca31299ed26db65c2307b84197a59c6ec7c01c7ad28e"
+    },
+    {
+      "original_path": "fama-control/components/ui/skeleton.tsx",
+      "repository_path": "apps/fama-control/components/ui/skeleton.tsx",
+      "sha256": "ba48dd5be5a6a1378bd4e011028654b5bf419f1e7d20ee4b9f8330c1264e7239"
+    },
+    {
+      "original_path": "fama-control/components/ui/slider.tsx",
+      "repository_path": "apps/fama-control/components/ui/slider.tsx",
+      "sha256": "0e37484f4b416e79ac18c655cac961aefacf6e67085cfc2b320ea8af545635a3"
+    },
+    {
+      "original_path": "fama-control/components/ui/sonner.tsx",
+      "repository_path": "apps/fama-control/components/ui/sonner.tsx",
+      "sha256": "13ccc9b0fe4248e622f83a1d3b2f0566b72b5e04162d7d0c8db8945ecc71b55f"
+    },
+    {
+      "original_path": "fama-control/components/ui/spinner.tsx",
+      "repository_path": "apps/fama-control/components/ui/spinner.tsx",
+      "sha256": "3e6e6e8d37fb4069f8e43e55318f8db06fbc36e6c8be0096da3c9337c1c798b9"
+    },
+    {
+      "original_path": "fama-control/components/ui/switch.tsx",
+      "repository_path": "apps/fama-control/components/ui/switch.tsx",
+      "sha256": "386d4d4deb39f34126f9700fe9bf5393d238485dd94018bba9d154dda84c62ae"
+    },
+    {
+      "original_path": "fama-control/components/ui/table.tsx",
+      "repository_path": "apps/fama-control/components/ui/table.tsx",
+      "sha256": "20e5a7f224959c6b75802995706a97e9da171f693d4b6b1b436388fcd9df96f3"
+    },
+    {
+      "original_path": "fama-control/components/ui/tabs.tsx",
+      "repository_path": "apps/fama-control/components/ui/tabs.tsx",
+      "sha256": "865d0194331b9b2be36723fa79d3575dc83078b4cb941cafee87cb72fc2cff46"
+    },
+    {
+      "original_path": "fama-control/components/ui/textarea.tsx",
+      "repository_path": "apps/fama-control/components/ui/textarea.tsx",
+      "sha256": "253cdeb487c73beaaccdf47fc163e36e7d5b7ae6ddf09a4f64998a109a112979"
+    },
+    {
+      "original_path": "fama-control/components/ui/toggle-group.tsx",
+      "repository_path": "apps/fama-control/components/ui/toggle-group.tsx",
+      "sha256": "69f643e889e933f05c1439084480d8646f66a161c7d1cf0730ee926382ade35e"
+    },
+    {
+      "original_path": "fama-control/components/ui/toggle.tsx",
+      "repository_path": "apps/fama-control/components/ui/toggle.tsx",
+      "sha256": "ba4d0b0a2b2fee75dc36dfc19e32082e721024b919050c97fd5dc70faa924e16"
+    },
+    {
+      "original_path": "fama-control/components/ui/tooltip.tsx",
+      "repository_path": "apps/fama-control/components/ui/tooltip.tsx",
+      "sha256": "a0784eb77831a799fad7991df4f1b666f876201565a80175e1aa68733574a2e4"
+    },
+    {
+      "original_path": "fama-control/db/index.ts",
+      "repository_path": "apps/fama-control/db/index.ts",
+      "sha256": "dc7610b00b918e0ffff1360a63626f16655ced3064b2eaf96095a4101fb14bcd"
+    },
+    {
+      "original_path": "fama-control/db/schema.ts",
+      "repository_path": "apps/fama-control/db/schema.ts",
+      "sha256": "67124b79a4cba25ccc2485ccdc4323689a0073c316d48b5b355d6dd700736891"
+    },
+    {
+      "original_path": "fama-control/drizzle.config.ts",
+      "repository_path": "apps/fama-control/drizzle.config.ts",
+      "sha256": "af081f7384aaeb0082cf422e29f139d137ca2f6a57c69b2c37b9fb1f8479867b"
+    },
+    {
+      "original_path": "fama-control/drizzle/0000_crazy_nitro.sql",
+      "repository_path": "apps/fama-control/drizzle/0000_crazy_nitro.sql",
+      "sha256": "ed140c71b37ab134abafbb7e4d2e621aaa8fea96627bc90e2d139a7eba5d9d09"
+    },
+    {
+      "original_path": "fama-control/drizzle/0001_fresh_sugar_man.sql",
+      "repository_path": "apps/fama-control/drizzle/0001_fresh_sugar_man.sql",
+      "sha256": "a02058e1f56dedd278451e779bc05296fbf89f2f63b3328f84a4489cada8a6d7"
+    },
+    {
+      "original_path": "fama-control/drizzle/0002_foamy_roland_deschain.sql",
+      "repository_path": "apps/fama-control/drizzle/0002_foamy_roland_deschain.sql",
+      "sha256": "ef34f96f7247d46599a499af58f36326d2839f578ba9e4fb538d45e82f15d025"
+    },
+    {
+      "original_path": "fama-control/drizzle/meta/0000_snapshot.json",
+      "repository_path": "apps/fama-control/drizzle/meta/0000_snapshot.json",
+      "sha256": "496e9bbab5b232c186e678cf183a1f41e4bde3ca0363d6a6b100783f40c77d62"
+    },
+    {
+      "original_path": "fama-control/drizzle/meta/0001_snapshot.json",
+      "repository_path": "apps/fama-control/drizzle/meta/0001_snapshot.json",
+      "sha256": "1e65515421fddafff4bc44773f95a8779fa72fb7f654d1936f2ae9b0652386ea"
+    },
+    {
+      "original_path": "fama-control/drizzle/meta/0002_snapshot.json",
+      "repository_path": "apps/fama-control/drizzle/meta/0002_snapshot.json",
+      "sha256": "e00e2506fb1fd93142e6dd51a095ea1f61512b7a5d7f28b6a2178414a9ce1ae2"
+    },
+    {
+      "original_path": "fama-control/drizzle/meta/_journal.json",
+      "repository_path": "apps/fama-control/drizzle/meta/_journal.json",
+      "sha256": "3e80583a98431d07c5b955e6ae58a862723808321515391fbe57a06ea96bfe05"
+    },
+    {
+      "original_path": "fama-control/eslint.config.mjs",
+      "repository_path": "apps/fama-control/eslint.config.mjs",
+      "sha256": "f22a254df7d934bbf9be499d3c969a13abb7f7f64c03f5967d0095cad81dfe06"
+    },
+    {
+      "original_path": "fama-control/hooks/use-mobile.ts",
+      "repository_path": "apps/fama-control/hooks/use-mobile.ts",
+      "sha256": "ad0936f84f1df79d3697bfbff9c18f8ad58431c1cbaf2359c6a853b0fcc9f28b"
+    },
+    {
+      "original_path": "fama-control/lib/access-validation.ts",
+      "repository_path": "apps/fama-control/lib/access-validation.ts",
+      "sha256": "a873d4ed2ef4ebf9016f25ee1adde6f0d0b7ea303a82ead2ac2ee34ae1c4ad29"
+    },
+    {
+      "original_path": "fama-control/lib/admin-accounts.ts",
+      "repository_path": "apps/fama-control/lib/admin-accounts.ts",
+      "sha256": "42ff46ff8aef737c720e8b34d02a156bfb3fb5a34a0fdd570c785e1a0a5705b3"
+    },
+    {
+      "original_path": "fama-control/lib/contract-pdf.ts",
+      "repository_path": "apps/fama-control/lib/contract-pdf.ts",
+      "sha256": "8674e8f0dab43ed75b7dc0bbb7338a5c4efe0aa66bdd7d69988ad5b4805658c7"
+    },
+    {
+      "original_path": "fama-control/lib/crypto.ts",
+      "repository_path": "apps/fama-control/lib/crypto.ts",
+      "sha256": "f3c174b2c74adc88429b627c1833cfd883d067241f0918ffd4f1f9ac7b38ff18"
+    },
+    {
+      "original_path": "fama-control/lib/database.ts",
+      "repository_path": "apps/fama-control/lib/database.ts",
+      "sha256": "7d28ca6bd8fe54033d856ed5d313f133d0e19ff8cfe820994da8c49a6c554243"
+    },
+    {
+      "original_path": "fama-control/lib/internal-auth.ts",
+      "repository_path": "apps/fama-control/lib/internal-auth.ts",
+      "sha256": "ee10ffe437042f7c570805e211b9ea4a99867d9b0775a260e31b5210035577dd"
+    },
+    {
+      "original_path": "fama-control/lib/member-admin.ts",
+      "repository_path": "apps/fama-control/lib/member-admin.ts",
+      "sha256": "5b0a38f9e8175c8b043f635fee3207592b399feb138568fe648503a0b3947d9a"
+    },
+    {
+      "original_path": "fama-control/lib/permissions.ts",
+      "repository_path": "apps/fama-control/lib/permissions.ts",
+      "sha256": "afeb47afb9dadc74906c7007c125b9a1da98c3b7b78f9c257a71e2d7d1a77475"
+    },
+    {
+      "original_path": "fama-control/lib/pool-quote-catalog.ts",
+      "repository_path": "apps/fama-control/lib/pool-quote-catalog.ts",
+      "sha256": "ce7e2563b8f984632183971a2c028c4c5860f11005e407a1b46ae8b7c7a34f11"
+    },
+    {
+      "original_path": "fama-control/lib/quote-calculation.ts",
+      "repository_path": "apps/fama-control/lib/quote-calculation.ts",
+      "sha256": "20a2172328d484c8c7671e9a15cb628004262874cc596d0924ab8d93ae713fee"
+    },
+    {
+      "original_path": "fama-control/lib/quote-pdf.ts",
+      "repository_path": "apps/fama-control/lib/quote-pdf.ts",
+      "sha256": "359b4c4b76e3241a56d410c61ee6e35b782af34f8fabbcd74050387db5f82142"
+    },
+    {
+      "original_path": "fama-control/lib/request-security.ts",
+      "repository_path": "apps/fama-control/lib/request-security.ts",
+      "sha256": "2d01230b876024d7a26b60ee0aa02374f756263a1df3b71d5388556cf89d8505"
+    },
+    {
+      "original_path": "fama-control/lib/security.ts",
+      "repository_path": "apps/fama-control/lib/security.ts",
+      "sha256": "bece4c828cc50a2a91d19268638e4aea5d4e0b506f7eed244b97d978ecaacc68"
+    },
+    {
+      "original_path": "fama-control/lib/supabase.ts",
+      "repository_path": "apps/fama-control/lib/supabase.ts",
+      "sha256": "cd59bd7bf384c6e1910346a7d117542586d1b055b82613d6e3c19abcb70ff1ee"
+    },
+    {
+      "original_path": "fama-control/lib/tenant.ts",
+      "repository_path": "apps/fama-control/lib/tenant.ts",
+      "sha256": "9a3259fd20c5c04b47381ebe48c822a31a2dc0fcde70b4af09153b8926e64033"
+    },
+    {
+      "original_path": "fama-control/lib/utils.ts",
+      "repository_path": "apps/fama-control/lib/utils.ts",
+      "sha256": "53f3d3d070f0a9082934da25b875f9499855c2b0693868dd28be8c23d8730f68"
+    },
+    {
+      "original_path": "fama-control/next.config.ts",
+      "repository_path": "apps/fama-control/next.config.ts",
+      "sha256": "614bce25b089c3f19b1e17a6346c74b858034040154c6621e7d35303004767cc"
+    },
+    {
+      "original_path": "fama-control/package-lock.json",
+      "repository_path": "apps/fama-control/package-lock.json",
+      "sha256": "dffc40652edc3c10dc9d2894ccc1e9fe63227249fd60ffe117f86a6814970812"
+    },
+    {
+      "original_path": "fama-control/package.json",
+      "repository_path": "apps/fama-control/package.json",
+      "sha256": "deae7ce7d7f6e567590974847a10919652ba6f2d1b22f9fb00d1aeb620b22316"
+    },
+    {
+      "original_path": "fama-control/postcss.config.mjs",
+      "repository_path": "apps/fama-control/postcss.config.mjs",
+      "sha256": "dfac7ac2d86d326a0e5adb024e7943c181393ed17a5fcb8f0315b24c7da6ddde"
+    },
+    {
+      "original_path": "fama-control/public/fama-permissions-migration.sql",
+      "repository_path": "apps/fama-control/public/fama-permissions-migration.sql",
+      "sha256": "a0a0f935443868637e782d6b0ec123db1cd2b3f18a5c671715912a2726f0a513"
+    },
+    {
+      "original_path": "fama-control/public/fama-piscinas-logo.png",
+      "repository_path": "apps/fama-control/public/fama-piscinas-logo.png",
+      "sha256": "00ef39fd7886fdbaf87d8aa0e9f6206b5343a78534c558886fbbd3e5eb76d306"
+    },
+    {
+      "original_path": "fama-control/public/fama-piscinas-mark.png",
+      "repository_path": "apps/fama-control/public/fama-piscinas-mark.png",
+      "sha256": "4e0f04cd6fa42788c37169f764a2adf34cde752fbe6b09504b9a5e04093e65a8"
+    },
+    {
+      "original_path": "fama-control/public/fama-supabase-schema.sql",
+      "repository_path": "apps/fama-control/public/fama-supabase-schema.sql",
+      "sha256": "d7434f084947e1107f8014bdd14bbe1b171432eca5d60f13094922597c966dff"
+    },
+    {
+      "original_path": "fama-control/public/favicon.ico",
+      "repository_path": "apps/fama-control/public/favicon.ico",
+      "sha256": "98840f2b9d594b71ce70f948ddb8c9377f8f300e4956f34ffe1e19a721c833f2"
+    },
+    {
+      "original_path": "fama-control/public/favicon.svg",
+      "repository_path": "apps/fama-control/public/favicon.svg",
+      "sha256": "e79578abdaf99be7842d9efd9c14f86e2c16da5547052269ae367ca5786cabc8"
+    },
+    {
+      "original_path": "fama-control/scripts/build-verified.sh",
+      "repository_path": "apps/fama-control/scripts/build-verified.sh",
+      "sha256": "2ae5329ac860076070c9217a43106a15cb5ecf907a0f7baeb9ef903f76b53c68"
+    },
+    {
+      "original_path": "fama-control/scripts/install-ci.sh",
+      "repository_path": "apps/fama-control/scripts/install-ci.sh",
+      "sha256": "f63e840679ca885f206d17b7f8285199bb6bcd47ebc360008d04d16b8e54f63c"
+    },
+    {
+      "original_path": "fama-control/scripts/sites-env.sh",
+      "repository_path": "apps/fama-control/scripts/sites-env.sh",
+      "sha256": "df86ebfc27d2f00860036658e933ac0ddd7b5f6879aa5d51218f0863c7e1fb60"
+    },
+    {
+      "original_path": "fama-control/supabase/company-access.sql",
+      "repository_path": "apps/fama-control/supabase/company-access.sql",
+      "sha256": "55699cf1729953f69f4fb203c68929bb814e7e83be9d3ae76095ca4e2c74e1b8"
+    },
+    {
+      "original_path": "fama-control/supabase/permissions-migration.sql",
+      "repository_path": "apps/fama-control/supabase/permissions-migration.sql",
+      "sha256": "6839e181a16cefaffe21b10186313d40e93efbad74b4457b07e8f1203303d81f"
+    },
+    {
+      "original_path": "fama-control/supabase/schema.sql",
+      "repository_path": "apps/fama-control/supabase/schema.sql",
+      "sha256": "d7434f084947e1107f8014bdd14bbe1b171432eca5d60f13094922597c966dff"
+    },
+    {
+      "original_path": "fama-control/tests/cloudflare-loader.mjs",
+      "repository_path": "apps/fama-control/tests/cloudflare-loader.mjs",
+      "sha256": "9d7400cb075a25b13e6f3d7a2b8ddacb150e12a56cace04f0107b6bcd7172763"
+    },
+    {
+      "original_path": "fama-control/tests/company-accounts.test.mjs",
+      "repository_path": "apps/fama-control/tests/company-accounts.test.mjs",
+      "sha256": "b6706800d021b3e2a1737128416e22c724fe2b88bfac5399938395fdf1db2810"
+    },
+    {
+      "original_path": "fama-control/tests/launch-readiness.test.mjs",
+      "repository_path": "apps/fama-control/tests/launch-readiness.test.mjs",
+      "sha256": "07950eaadec7873fae971f4c951b47dbe8249045a83ee64c76bec893fb200bb5"
+    },
+    {
+      "original_path": "fama-control/tests/localhost-http.mjs",
+      "repository_path": "apps/fama-control/tests/localhost-http.mjs",
+      "sha256": "10ed23d1df53d495311d44e0b052c88297cf46784c7982d2b6cb7a3bea4f191d"
+    },
+    {
+      "original_path": "fama-control/tests/localhost-only.mjs",
+      "repository_path": "apps/fama-control/tests/localhost-only.mjs",
+      "sha256": "0bfe5e0a80507150a5f7c440bdb12ed3d1dea24cadcc53815b0768b47302618d"
+    },
+    {
+      "original_path": "fama-control/tests/rendered-html.test.mjs",
+      "repository_path": "apps/fama-control/tests/rendered-html.test.mjs",
+      "sha256": "eae1d187870ad9a4b3f0c37b40589b25c1a2090dcbee19964555cf70c136b118"
+    },
+    {
+      "original_path": "fama-control/tests/ui-components.test.mjs",
+      "repository_path": "apps/fama-control/tests/ui-components.test.mjs",
+      "sha256": "acee34ae20307e4efb9805db198c00875ba9b3242b6ad78b4c4e23db704c4e60"
+    },
+    {
+      "original_path": "fama-control/tsconfig.json",
+      "repository_path": "apps/fama-control/tsconfig.json",
+      "sha256": "be18523b23b78b6e1a876ddd107d330f0168bddf09d751b57e0b5edce69c66f3"
+    },
+    {
+      "original_path": "fama-control/vendor/shadcn-tailwind-4.13.0.LICENSE.md",
+      "repository_path": "apps/fama-control/vendor/shadcn-tailwind-4.13.0.LICENSE.md",
+      "sha256": "1564074e13439397221ffd522e2e504d56561994a23d371aa5e3ad43e4f5423f"
+    },
+    {
+      "original_path": "fama-control/vendor/shadcn-tailwind-4.13.0.css",
+      "repository_path": "apps/fama-control/vendor/shadcn-tailwind-4.13.0.css",
+      "sha256": "bc7d83425702955b4cb67cb14ede9d603f9d912376d57a2d81d661094d2a782a"
+    },
+    {
+      "original_path": "fama-control/vite.config.ts",
+      "repository_path": "apps/fama-control/vite.config.ts",
+      "sha256": "1c1f946c73d7357e8ecab96e25fb77b1659f903d2f30b81c8a48c27bcc614846"
+    },
+    {
+      "original_path": "fama-control/worker/index.ts",
+      "repository_path": "apps/fama-control/worker/index.ts",
+      "sha256": "214a9e8157c62c119cbb90c2a26a6b261dba8d78da4881577017b294c13fea18"
+    }
+  ]
+}

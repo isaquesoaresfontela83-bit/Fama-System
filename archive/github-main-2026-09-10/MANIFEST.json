@@ -1,0 +1,78 @@
+{
+  "repository": "isaquesoaresfontela83-bit/Fama-System",
+  "source_commit": "c9525ef2c07b2a33f68b83818be923e0d420ca1d",
+  "source_date": "2026-09-10",
+  "purpose": "Historical files without equivalent in the current snapshot",
+  "files": [
+    {
+      "original_path": "app/chatgpt-auth.ts",
+      "archive_path": "archive/github-main-2026-09-10/app/chatgpt-auth.ts",
+      "bytes": 1016,
+      "git_blob_sha": "c1ce9cd63777943d23310775397e6ec1d8a351c8",
+      "mode": "100644"
+    },
+    {
+      "original_path": "app/login-form.tsx",
+      "archive_path": "archive/github-main-2026-09-10/app/login-form.tsx",
+      "bytes": 4108,
+      "git_blob_sha": "ecdf366e3060059fbfaccc11f06f4aed54d23e8d",
+      "mode": "100644"
+    },
+    {
+      "original_path": "lib/fama-session.ts",
+      "archive_path": "archive/github-main-2026-09-10/lib/fama-session.ts",
+      "bytes": 2024,
+      "git_blob_sha": "ea3143c08cff0307b3e96e2a56c56b816083b273",
+      "mode": "100644"
+    },
+    {
+      "original_path": "scripts/attach-famasystem-domain.sh",
+      "archive_path": "archive/github-main-2026-09-10/scripts/attach-famasystem-domain.sh",
+      "bytes": 2579,
+      "git_blob_sha": "9eb35c3ad88cd319034f38b789aa1bc40afa3d29",
+      "mode": "100644"
+    },
+    {
+      "original_path": "scripts/deploy-cloudflare-production.sh",
+      "archive_path": "archive/github-main-2026-09-10/scripts/deploy-cloudflare-production.sh",
+      "bytes": 5620,
+      "git_blob_sha": "63fa18f841fe10b26304d1437d71e6d14e7fe2a9",
+      "mode": "100644"
+    },
+    {
+      "original_path": "sites-release/PUBLISH_PROMPTS.txt",
+      "archive_path": "archive/github-main-2026-09-10/sites-release/PUBLISH_PROMPTS.txt",
+      "bytes": 2195,
+      "git_blob_sha": "6d3f5502ba461807cf200735595349e1641918ce",
+      "mode": "100644"
+    },
+    {
+      "original_path": "sites-release/README.md",
+      "archive_path": "archive/github-main-2026-09-10/sites-release/README.md",
+      "bytes": 2663,
+      "git_blob_sha": "0315f290b094068b2d45be8104070058eba6b371",
+      "mode": "100644"
+    },
+    {
+      "original_path": "sites-release/fama-control-auth-session-fix.js",
+      "archive_path": "archive/github-main-2026-09-10/sites-release/fama-control-auth-session-fix.js",
+      "bytes": 3785,
+      "git_blob_sha": "fd8ac7b481e9ceb34ab1b8e7e2d32704ee573af9",
+      "mode": "100644"
+    },
+    {
+      "original_path": "supabase/functions/control-auth/index.ts",
+      "archive_path": "archive/github-main-2026-09-10/supabase/functions/control-auth/index.ts",
+      "bytes": 5008,
+      "git_blob_sha": "f2c0a2428bb4e57ff651db375ea5467db4d09159",
+      "mode": "100644"
+    },
+    {
+      "original_path": "supabase/functions/fama-control/index.ts",
+      "archive_path": "archive/github-main-2026-09-10/supabase/functions/fama-control/index.ts",
+      "bytes": 7551,
+      "git_blob_sha": "fb5f82d1d52193ad2d254bc828192a985d221d2a",
+      "mode": "100644"
+    }
+  ]
+}
