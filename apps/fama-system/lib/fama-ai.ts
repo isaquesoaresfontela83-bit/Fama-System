@@ -1,12 +1,16 @@
 import type { BootstrapData } from '@/app/data-model';
 import { assistantSources, defaultAssistantSettings, normalizeCommand, type AssistantSettings, type AssistantSource } from './fama-ai-settings';
 export { assistantSources, type AssistantSource } from './fama-ai-settings';
+import { answerWithCopilot, copilotSource, stepsFromPriorities } from './fama-ai-copilot';
+import type { AssistantDraft } from './fama-ai-drafts';
 
 type AdminRecord = { id?: string; name?: string; display_name?: string; status?: string; role?: string; label?: string; event_type?: string; occurred_at?: string; request_type?: string };
 export type AssistantData = Partial<BootstrapData> & {
   organizations?: AdminRecord[]; members?: AdminRecord[]; audit?: AdminRecord[]; backups?: AdminRecord[]; privacy?: AdminRecord[];
 };
-export type AssistantAction = { label: string; section: string; create?: keyof BootstrapData };
+export type AssistantAction = { label: string; section: string; create?: keyof BootstrapData; draft?: AssistantDraft; record?: { entity: keyof BootstrapData; id: string } };
+export type AssistantPlanStep = { id: string; title: string; description: string; priority: 'high' | 'normal'; source: AssistantSource; question?: string };
+export type AssistantChart = { title: string; series: { label: string; incomeCents: number; expenseCents: number }[] };
 export type AssistantTone = 'neutral' | 'success' | 'warning' | 'danger';
 export type AssistantMetric = { label: string; value: string; detail?: string; tone?: AssistantTone; source?: AssistantSource };
 export type AssistantItem = { id: string; title: string; detail?: string; value?: string; status?: string; tone?: AssistantTone };
@@ -14,10 +18,11 @@ export type AssistantSuggestion = { label: string; question: string; source: Ass
 export type AssistantAnswer = {
   text: string; source: AssistantSource; actions: AssistantAction[]; title?: string; metrics?: AssistantMetric[];
   items?: AssistantItem[]; note?: string; suggestions?: AssistantSuggestion[]; totalItems?: number;
+  narrative?: string; steps?: AssistantPlanStep[]; chart?: AssistantChart; draft?: AssistantDraft; customerName?: string; communication?: { title: string; text: string }; engine?: 'internal' | 'generative';
 };
 export type AssistantInsight = { id: string; source: AssistantSource; title: string; detail: string; value: string; question: string; tone: AssistantTone };
 export type AssistantWorkspace = { metrics: AssistantMetric[]; insights: AssistantInsight[]; counts: Partial<Record<AssistantSource, number>> };
-export type AssistantContext = { previousSource?: AssistantSource };
+export type AssistantContext = { previousSource?: AssistantSource; customerName?: string };
 
 const dataKeys: Partial<Record<AssistantSource, keyof AssistantData>> = {
   agenda: 'appointments', crm: 'leads', quotes: 'quotes', orders: 'workOrders', customers: 'customers', inventory: 'inventory',
@@ -61,7 +66,7 @@ const keywords: [AssistantSource, RegExp][] = [
 function explicitSource(query: string) { return keywords.find(([, pattern]) => pattern.test(query))?.[0]; }
 function resolveSource(query: string, selected: AssistantSource, context?: AssistantContext): AssistantSource {
   if (/\b(resumo da gestao|visao geral|prioridades|pendencias da empresa|meu dia)\b/.test(query)) return 'overview';
-  const explicit = explicitSource(query);
+  const explicit = copilotSource(query) ?? explicitSource(query);
   if (explicit) return explicit;
   if (selected !== 'overview') return selected;
   if (context?.previousSource && /^(e\b|agora\b|somente\b|apenas\b|tambem\b|buscar\s*:|busque\s*:|quais\b)|\b(amanha|hoje|semana|mes|vencid[oa]s?|ativ[oa]s?|pendentes?)\b/.test(query)) return context.previousSource;
@@ -151,7 +156,8 @@ export function answerInternal(message: string, data: AssistantData, selected: A
   if (!settings.sources[source]) return { text: `A função ${assistantSources[source]} está desativada pelo Fama Control.`, source, actions: [] };
   if (source === 'agenda' && /\bconflitos?\b/.test(normalize(message)) && !settings.detectConflicts) return { text: 'A detecção de conflitos na agenda está desativada pelo Fama Control.', source, actions: [] };
   if (command) return { text: command.response, title: command.trigger, source, actions: [] };
-  const answer = answerWithRules(message, pruneData(data, settings), source, now, settings);
+  const permitted = pruneData(data, settings);
+  const answer = answerWithCopilot(message, permitted, source, now, settings, context) ?? answerWithRules(message, permitted, source, now, settings);
   return {
     ...answer,
     actions: answer.actions.filter(action => action.create ? settings.allowCreate : settings.allowNavigation),
@@ -180,7 +186,7 @@ function answerWithRules(message: string, data: AssistantData, source: Assistant
       title, metrics, items: items.slice(0, settings.maxItems), totalItems: items.length, note, suggestions,
     });
   }
-  if (/\b(ajuda|como funciona|o que voce faz)\b/.test(query)) return result('Analiso os registros do Fama System usando regras locais. Consulte agenda, períodos financeiros, propostas, contratos, estoque e pendências. Use “buscar: nome” para filtrar ou datas DD/MM/AAAA. Você pode continuar com “e amanhã?” ou “somente os pendentes”. As ações abrem os formulários para revisão e salvamento.', { title: 'Como posso ajudar', suggestions: [{ label: 'Ver prioridades', question: 'Prioridades da empresa', source: 'overview' }, { label: 'Agenda de hoje', question: 'Agenda de hoje', source: 'agenda' }] });
+  if (/\b(ajuda|como funciona|o que voce faz)\b/.test(query)) return result('Analiso os registros autorizados do Fama System. Posso organizar as pendências do dia, sugerir horários para a equipe, reunir o histórico de um cliente, comparar meses financeiros e preparar cadastros e mensagens. Consulte também propostas, contratos, estoque e períodos financeiros. Use “buscar: nome” para filtrar ou datas DD/MM/AAAA. Você pode continuar com “e amanhã?” ou “somente os pendentes”. As ações abrem os formulários para revisão e salvamento.', { title: 'Como posso ajudar', suggestions: [{ label: 'Ver prioridades', question: 'Plano de ação da empresa', source: 'overview' }, { label: 'Agenda de hoje', question: 'Agenda de hoje', source: 'agenda' }] });
 
   if (source === 'agenda') {
     if (!data.appointments) return missing();
@@ -297,7 +303,7 @@ function answerWithRules(message: string, data: AssistantData, source: Assistant
       tone: ['ativo', 'active', 'aprovado', 'ganho', 'concluida'].includes(item.status ?? '') || item.active === true ? 'success' : ['suspended', 'suspenso', 'expirada', 'recusado'].includes(item.status ?? '') ? 'warning' : 'neutral',
     })), metrics, note, suggestions);
   }
-  if (!/\b(resumo|gestao|situacao|pendencias?|visao|geral|prioridades|meu dia)\b/.test(query)) return result('Posso ajudar com a gestão cadastrada no sistema. Escolha um módulo ou consulte a visão do dia, os orçamentos enviados, os contratos a vencer e o financeiro deste mês. Use “buscar: nome” para localizar registros.', { title: 'Vamos consultar sua operação', suggestions: [{ label: 'Ver prioridades', question: 'Prioridades da empresa', source: 'overview' }, { label: 'Agenda de hoje', question: 'Agenda de hoje', source: 'agenda' }] });
+  if (!/\b(resumo|gestao|situacao|pendencias?|visao|geral|prioridades|meu dia|plano de acao|checklist)\b/.test(query)) return result('Posso ajudar com a gestão cadastrada no sistema. Escolha um módulo ou consulte a visão do dia, os orçamentos enviados, os contratos a vencer e o financeiro deste mês. Use “buscar: nome” para localizar registros.', { title: 'Vamos consultar sua operação', suggestions: [{ label: 'Ver prioridades', question: 'Plano de ação da empresa', source: 'overview' }, { label: 'Agenda de hoje', question: 'Agenda de hoje', source: 'agenda' }] });
   const workspace = buildAssistantWorkspace(data, now, settings);
   const lines: string[] = [];
   if (data.organizations) lines.push(`Empresas: ${data.organizations.length} · ${data.organizations.filter(item => item.status === 'suspended').length} suspensas`);
@@ -312,8 +318,9 @@ function answerWithRules(message: string, data: AssistantData, source: Assistant
   if (data.contracts) lines.push(`Contratos: ${data.contracts.length}`);
   if (data.warranties) lines.push(`Garantias: ${data.warranties.length}`);
   if (data.employees) lines.push(`Equipe ativa: ${data.employees.filter(item => item.active).length}`);
-  return result(`Resumo dos dados carregados nesta área:\n${lines.join('\n') || 'Nenhum módulo carregado.'}\n${workspace.insights.map(item => `${item.title}: ${item.value}`).join('\n')}`, {
-    title: 'Visão da sua operação', metrics: workspace.metrics,
+  return result(`Resumo dos dados carregados nesta área:\n${lines.join('\n') || 'Nenhum módulo carregado.'}\n${workspace.insights.map(item => `${item.title}: ${item.value} · ${item.detail}`).join('\n')}`, {
+    title: /plano de acao|checklist/.test(query) ? 'Plano de ação da operação' : 'Visão da sua operação', metrics: workspace.metrics,
+    steps: /plano de acao|checklist/.test(query) ? stepsFromPriorities(workspace.insights) : undefined,
     items: workspace.insights.map(item => ({ id: item.id, title: item.title, detail: item.detail, value: item.value, status: assistantSources[item.source], tone: item.tone })),
     totalItems: workspace.insights.length,
     note: lines.length ? lines.join(' · ') : 'Nenhum módulo carregado nesta área.',

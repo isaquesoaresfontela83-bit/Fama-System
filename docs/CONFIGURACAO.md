@@ -4,6 +4,9 @@ Os modelos ficam em `config/env/fama-system.dev.vars.example` e `config/env/fama
 
 | Variável | Uso | Aplicação |
 | --- | --- | --- |
+| `FAMA_AI_GENERATIVE_ENABLED` | `false` por padrão; ativação explícita da conversa generativa após autorizar o provedor. | Ambos |
+| `OPENAI_API_KEY` | Segredo de servidor para a conversa livre opcional; nunca fica no frontend ou nas preferências. | Ambos |
+| `FAMA_AI_MODEL` | Modelo da conversa livre; padrão preparado `gpt-5-mini`. | Ambos |
 | `DATA_BACKEND` | `supabase` para o backend atual; `d1` preserva o fluxo legado/auxiliar. | Ambos |
 | `SUPABASE_URL` | URL do projeto Supabase da instalação. | Ambos |
 | `SUPABASE_AUTH_ENABLED` | Habilita login Supabase; use `true`. | Ambos |

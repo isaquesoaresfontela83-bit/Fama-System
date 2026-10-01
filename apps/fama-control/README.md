@@ -93,3 +93,7 @@ Em **Empresa e mensalidade**, altere nome/plano e habilite a mensalidade somente
 Empresas isentas não entram no MRR, nas pendências ou alertas de vencimento. O Fama System publicado respeita ambos os controles no navegador e no servidor, mostra a isenção e impede checkout enquanto a mensalidade estiver desativada. Senhas seguem apenas para o serviço de autenticação e não são gravadas nas tabelas de empresas, membros ou auditoria.
 
 O SQL aditivo correspondente está em `supabase/company-access.sql`. A suíte local verifica criação, edição, proteção do proprietário, origem das requisições, confirmação da persistência e ativação explícita de cobrança.
+
+## Central Fama IA
+
+As consultas administrativas, preferências globais e prévia ficam no painel. A documentação do copiloto, permissões e conexão generativa opcional está em [docs/FAMA_IA.md](docs/FAMA_IA.md). O planejamento e os cadastros operacionais são acessados na empresa selecionada no Fama System.

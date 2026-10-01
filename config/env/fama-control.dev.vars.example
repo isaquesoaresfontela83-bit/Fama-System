@@ -10,3 +10,8 @@ PLATFORM_OWNER_EMAIL=""
 PLATFORM_OWNER_USER_ID=""
 FAMA_DATA_ENCRYPTION_KEY=""
 FAMA_DATA_BRIDGE_SECRET=""
+
+# Conversa livre opcional. Ative apenas depois de autorizar o provedor.
+FAMA_AI_GENERATIVE_ENABLED="false"
+OPENAI_API_KEY=""
+FAMA_AI_MODEL="gpt-5-mini"

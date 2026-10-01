@@ -294,13 +294,13 @@ export function FinanceWorkspace({
   }, [organizationId]);
   const refreshAiStatus = useCallback(async () => {
     try {
-      const response = await fetch("/api/fama-ai", { cache: "no-store" });
+      const response = await fetch("/api/fama-ai", { cache: "no-store", headers: { "x-organization-id": organizationId } });
       const payload = (await response.json()) as { configured?: boolean };
       if (response.ok) setAiConfigured(Boolean(payload.configured));
     } catch {
       setAiConfigured(false);
     }
-  }, []);
+  }, [organizationId]);
   useEffect(() => {
     // Initial tenant load intentionally hydrates remote state.
     // eslint-disable-next-line react-hooks/set-state-in-effect
@@ -1848,8 +1848,8 @@ export function FinanceWorkspace({
               </form>
               {!aiConfigured && (
                 <small>
-                  A IA está instalada no sistema. Falta configurar a chave
-                  OPENAI_API_KEY no servidor para ativar as respostas.
+                  A conversa livre ainda não está conectada. Use a central
+                  Fama IA para consultar os registros e preparar ações.
                 </small>
               )}
               {aiAnswer && <div className="finance-ai-answer">{aiAnswer}</div>}

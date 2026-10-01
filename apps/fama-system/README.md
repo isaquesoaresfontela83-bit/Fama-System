@@ -43,7 +43,7 @@ A importação aceita CSV com `Data`, `Descrição` e `Valor`, ou `Data`, `Descr
 
 ## IA e automações operacionais
 
-A visão geral exibe um resumo diário com prioridade recomendada, alertas de cobrança vencida, lead parado, orçamento vencendo, garantia pendente e estoque baixo. A agenda permite enviar o cronograma semanal por técnico via WhatsApp. Ordens de serviço possuem checklist de conclusão e mensagem pós-visita. A IA financeira usa apenas contexto resumido e seguro, sem expor chaves, senhas, CPF/CNPJ completos ou dados bancários sensíveis.
+A visão geral exibe um resumo diário com prioridade recomendada, alertas de cobrança vencida, lead parado, orçamento vencendo, garantia pendente e estoque baixo. A agenda permite enviar o cronograma semanal por técnico via WhatsApp. Ordens de serviço possuem checklist de conclusão e mensagem pós-visita. A central Fama IA reúne consultas por módulo, planejamento da equipe, visão do cliente, projeção financeira, funil comercial, mensagens para revisão e rascunhos de cadastros. As consultas internas funcionam sem provedor de IA. A conversa livre opcional usa ferramentas de leitura no servidor, registros da empresa autenticada e ativação explícita. Veja `docs/FAMA_IA.md`.
 
 O WhatsApp possui dois modos: os botões `wa.me` já abrem mensagens pré-preenchidas para revisão manual; a API oficial Cloud da Meta está disponível em `/api/whatsapp` para envio de texto/template e recebimento de webhook. Ela permanece desativada até o administrador configurar `META_WHATSAPP_TOKEN`, `META_WHATSAPP_PHONE_NUMBER_ID` e `META_WHATSAPP_VERIFY_TOKEN` como segredos do ambiente. Nenhum token é armazenado no código ou enviado ao navegador.
 

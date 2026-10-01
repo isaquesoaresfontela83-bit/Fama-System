@@ -283,3 +283,71 @@
   .fama-ai-settings-savebar > span { width: 100%; margin-left: 0; }
 }
 @media (prefers-reduced-motion: reduce) { .fama-ai *, .fama-ai-settings * { transition: none !important; scroll-behavior: auto !important; } }
+
+/* Operational tools, reviewed drafts and source-backed analyses. */
+.fama-ai-workflows { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; padding: 18px 24px; border-bottom: 1px solid var(--border); background: var(--background); }
+.fama-ai-workflows > button { display: flex; align-items: center; gap: 12px; text-align: left; padding: 13px 15px; border: 1px solid var(--border); border-radius: 12px; background: var(--card); color: var(--foreground); transition: border-color .15s, background .15s; }
+.fama-ai-workflows > button:hover { border-color: var(--primary); background: var(--ai-tint); }
+.fama-ai-workflows > button:disabled { opacity: .5; cursor: default; }
+.fama-ai-workflows > button > svg { flex: 0 0 auto; width: 20px; color: var(--primary); }
+.fama-ai-workflows > button > span { font-size: 14px; font-weight: 650; }
+.fama-ai-workflows small { display: block; font-size: 12px; font-weight: 400; color: var(--muted-foreground); margin-top: 2px; }
+.fama-ai-block-heading { display: flex; align-items: center; gap: 10px; margin-bottom: 15px; flex-wrap: wrap; }
+.fama-ai-block-heading > svg { color: var(--primary); flex-shrink: 0; }
+.fama-ai-block-heading strong { font-size: 14px; }
+.fama-ai-block-heading small { font-size: 12px; color: var(--muted-foreground); }
+.fama-ai-block-heading > div { flex: 1; }
+.fama-ai-block-heading > div small { display: block; margin-top: 3px; }
+.fama-ai-block-heading > span, .fama-ai-engine-label { font-size: 12px; color: var(--primary); background: var(--ai-tint); padding: 3px 9px; border-radius: 6px; }
+.fama-ai-plan, .fama-ai-draft, .fama-ai-communication, .fama-ai-chart { margin-top: 20px; padding: 18px; border: 1px solid var(--border); border-radius: 12px; background: var(--card); }
+.fama-ai-plan-step { display: flex; align-items: flex-start; gap: 12px; padding: 14px 0; border-top: 1px solid var(--border); flex-wrap: wrap; }
+.fama-ai-plan-step > label { display: flex; gap: 8px; align-items: center; margin-top: 2px; font-size: 12px; color: var(--muted-foreground); }
+.fama-ai-plan-step input { width: 16px; height: 16px; accent-color: var(--primary); }
+.fama-ai-plan-step > div { flex: 1; min-width: 150px; }
+.fama-ai-plan-step strong { font-size: 14px; line-height: 1.5; }
+.fama-ai-plan-step p { margin: 4px 0 0; font-size: 14px; line-height: 1.6; color: var(--muted-foreground); }
+.fama-ai-plan-step[data-reviewed="true"] > div { opacity: .6; }
+.fama-ai-priority-label { font-size: 12px; background: color-mix(in srgb, var(--ai-warning) 10%, var(--card)); color: var(--ai-warning); border-radius: 6px; padding: 3px 8px; }
+.fama-ai-draft-fields { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+.fama-ai-draft-fields label { display: block; font-size: 13px; font-weight: 550; margin-bottom: 6px; }
+.fama-ai-draft-fields input, .fama-ai-draft-fields textarea, .fama-ai-draft-fields select { font-size: 14px; background: var(--background); }
+.fama-ai-draft-fields select { width: 100%; min-height: 36px; border: 1px solid var(--border); border-radius: 8px; padding: 6px 9px; color: var(--foreground); }
+.fama-ai-field-wide { grid-column: 1 / -1; }
+.fama-ai-draft-footer { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-top: 16px; flex-wrap: wrap; }
+.fama-ai-draft-footer small { max-width: 250px; font-size: 12px; color: var(--muted-foreground); line-height: 1.6; }
+.fama-ai-form-error, .fama-ai-connection-error { color: var(--destructive); font-size: 13px; line-height: 1.6; padding: 10px 0; }
+.fama-ai-chart figcaption { font-size: 14px; font-weight: 650; margin-bottom: 20px; }
+.fama-ai-chart-canvas { height: 220px; width: 100%; min-width: 0; }
+.fama-ai-chart-legend { display: flex; align-items: center; gap: 16px; font-size: 12px; flex-wrap: wrap; margin-top: 12px; }
+.fama-ai-chart-legend span { display: flex; align-items: center; gap: 6px; }
+.fama-ai-chart-legend i { width: 8px; height: 8px; border-radius: 2px; background: #16a085; }
+.fama-ai-chart-legend span:nth-child(2) i { background: #e28a4c; }
+.fama-ai-chart-legend small { color: var(--muted-foreground); }
+.fama-ai-communication p { white-space: pre-wrap; font-size: 14px; line-height: 1.8; padding: 14px; border-radius: 8px; background: var(--ai-tint); }
+.fama-ai-communication > small { display: block; font-size: 12px; color: var(--muted-foreground); margin-top: 12px; }
+.fama-ai-mode-bar { display: flex; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 8px; }
+.fama-ai-mode-bar > span { flex: 1; display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--muted-foreground); }
+.fama-ai-mode-bar > span svg { color: var(--primary); }
+.fama-ai-mode-bar > button:not([data-slot]) { font-size: 12px; color: var(--primary); text-decoration: underline; }
+.fama-ai-thinking { display: flex; align-items: center; gap: 10px; padding: 12px 0; font-size: 14px; }
+.fama-ai-thinking svg { width: 17px; animation: fama-ai-spin 1s linear infinite; }
+.fama-ai-thinking button, .fama-ai-connection-error button { margin-left: 10px; text-decoration: underline; font-size: 12px; }
+.fama-ai-client-picker { max-height: 340px; overflow: auto; display: grid; gap: 8px; }
+.fama-ai-client-picker > button { display: flex; align-items: center; gap: 12px; padding: 14px; border: 1px solid var(--border); border-radius: 10px; text-align: left; }
+.fama-ai-client-picker > button > span { flex: 1; }
+.fama-ai-client-picker strong, .fama-ai-client-picker small { display: block; }
+.fama-ai-client-picker small { font-size: 12px; color: var(--muted-foreground); margin-top: 3px; }
+.fama-ai-client-picker svg { width: 18px; color: var(--primary); }
+.fama-ai .fama-ai-answer-text { font-size: 15px; line-height: 1.8; margin-bottom: 14px; }
+@keyframes fama-ai-spin { to { transform: rotate(360deg); } }
+@media (max-width: 600px) {
+  .fama-ai-workflows { padding: 12px; gap: 8px; }
+  .fama-ai-workflows > button { padding: 10px; gap: 8px; }
+  .fama-ai-workflows small { font-size: 11px; }
+  .fama-ai-draft-fields { grid-template-columns: 1fr; }
+  .fama-ai-plan, .fama-ai-draft, .fama-ai-communication, .fama-ai-chart { padding: 13px; }
+  .fama-ai-plan-step > div { min-width: 130px; }
+}
+@media (prefers-reduced-motion: reduce) { .fama-ai-thinking svg { animation: none; } }
+
+.fama-ai-draft-selector { min-height: 40px; width: 100%; border: 1px solid var(--border); border-radius: 8px; padding: 8px 12px; background: var(--background); color: var(--foreground); font-size: 14px; }
