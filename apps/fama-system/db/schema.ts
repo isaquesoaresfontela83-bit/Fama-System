@@ -1,0 +1,335 @@
+import { sql } from "drizzle-orm";
+import { index, integer, real, sqliteTable, text, uniqueIndex } from "drizzle-orm/sqlite-core";
+
+const timestamps = {
+  createdAt: text("created_at").notNull().default(sql`CURRENT_TIMESTAMP`),
+  updatedAt: text("updated_at").notNull().default(sql`CURRENT_TIMESTAMP`),
+};
+
+export const quoteCatalogs = sqliteTable("quote_catalogs", {
+  organizationId: text("organization_id").primaryKey(),
+  configJson: text("config_json").notNull(),
+  updatedAt: text("updated_at").notNull(),
+});
+
+export const organizations = sqliteTable("organizations", {
+  id: text("id").primaryKey(),
+  name: text("name").notNull(),
+  slug: text("slug").notNull(),
+  nameKey: text("name_key").notNull().default(""),
+  plan: text("plan").notNull().default("inicial"),
+  billingEnabled: integer("billing_enabled", { mode: "boolean" }).notNull().default(true),
+  blockOnExpiry: integer("block_on_expiry", { mode: "boolean" }).notNull().default(true),
+  planStatus: text("plan_status").notNull().default("trial"),
+  planExpiresAt: text("plan_expires_at").notNull().default(""),
+  billingCustomerId: text("billing_customer_id").notNull().default(""),
+  billingPaymentId: text("billing_payment_id").notNull().default(""),
+  billingProvider: text("billing_provider").notNull().default(""),
+  pendingPlan: text("pending_plan").notNull().default(""),
+  pendingBillingCycle: text("pending_billing_cycle").notNull().default("monthly"),
+  status: text("status").notNull().default("active"),
+  createdByUserId: text("created_by_user_id").notNull(),
+  ...timestamps,
+}, (table) => [
+  uniqueIndex("idx_organizations_slug").on(table.slug),
+  index("idx_organizations_status").on(table.status),
+  uniqueIndex("idx_organizations_billing_payment").on(table.billingPaymentId).where(sql`${table.billingPaymentId} <> ''`),
+]);
+
+export const organizationMembers = sqliteTable("organization_members", {
+  id: text("id").primaryKey(),
+  organizationId: text("organization_id").notNull(),
+  userId: text("user_id").notNull().default(""),
+  userEmail: text("user_email").notNull(),
+  displayName: text("display_name").notNull().default(""),
+  role: text("role").notNull().default("member"),
+  permissions: text("permissions").notNull().default('["dashboard","crm","quotes","agenda","orders","warranties","customers","contracts","inventory","finance","team"]'),
+  status: text("status").notNull().default("invited"),
+  ...timestamps,
+}, (table) => [
+  uniqueIndex("idx_org_members_org_email").on(table.organizationId, table.userEmail),
+  index("idx_org_members_user_id").on(table.userId),
+  index("idx_org_members_organization").on(table.organizationId),
+]);
+
+export const subscriptionCheckouts = sqliteTable("subscription_checkouts", {
+  id: text("id").primaryKey(),
+  plan: text("plan").notNull(),
+  buyerName: text("buyer_name").notNull(),
+  buyerEmail: text("buyer_email").notNull(),
+  buyerDocument: text("buyer_document").notNull().default(""),
+  buyerPhone: text("buyer_phone").notNull().default(""),
+  paymentId: text("payment_id").notNull().default(""),
+  customerId: text("customer_id").notNull().default(""),
+  provider: text("provider").notNull().default("manual_pix"),
+  proofText: text("proof_text").notNull().default(""),
+  proofSubmittedAt: text("proof_submitted_at").notNull().default(""),
+  reviewedAt: text("reviewed_at").notNull().default(""),
+  reviewedBy: text("reviewed_by").notNull().default(""),
+  adminNotes: text("admin_notes").notNull().default(""),
+  status: text("status").notNull().default("pending_payment"),
+  ...timestamps,
+}, (table) => [
+  index("idx_subscription_checkouts_payment").on(table.paymentId),
+  index("idx_subscription_checkouts_email").on(table.buyerEmail),
+]);
+
+export const leads = sqliteTable("leads", {
+  id: text("id").primaryKey(),
+  organizationId: text("organization_id").notNull().default(""),
+  name: text("name").notNull(),
+  phone: text("phone").notNull().default(""),
+  source: text("source").notNull().default(""),
+  interest: text("interest").notNull().default(""),
+  status: text("status").notNull().default("novo"),
+  estimatedValueCents: integer("estimated_value_cents").notNull().default(0),
+  nextAction: text("next_action").notNull().default(""),
+  ...timestamps,
+}, (table) => [
+  index("idx_leads_created_at").on(table.createdAt),
+  index("idx_leads_org_created_at").on(table.organizationId, table.createdAt),
+]);
+
+export const quotes = sqliteTable("quotes", {
+  id: text("id").primaryKey(),
+  organizationId: text("organization_id").notNull().default(""),
+  quoteNumber: text("quote_number").notNull(),
+  clientName: text("client_name").notNull(),
+  service: text("service").notNull(),
+  materialsCents: integer("materials_cents").notNull().default(0),
+  laborCents: integer("labor_cents").notNull().default(0),
+  discountCents: integer("discount_cents").notNull().default(0),
+  totalCents: integer("total_cents").notNull().default(0),
+  status: text("status").notNull().default("rascunho"),
+  validUntil: text("valid_until").notNull().default(""),
+  notes: text("notes").notNull().default(""),
+  ...timestamps,
+}, (table) => [
+  uniqueIndex("idx_quotes_number").on(table.quoteNumber),
+  index("idx_quotes_created_at").on(table.createdAt),
+  index("idx_quotes_org_created_at").on(table.organizationId, table.createdAt),
+]);
+
+export const appointments = sqliteTable("appointments", {
+  id: text("id").primaryKey(),
+  organizationId: text("organization_id").notNull().default(""),
+  title: text("title").notNull(),
+  clientName: text("client_name").notNull(),
+  startAt: text("start_at").notNull(),
+  address: text("address").notNull().default(""),
+  technician: text("technician").notNull().default(""),
+  kind: text("kind").notNull().default("Manutenção"),
+  status: text("status").notNull().default("agendado"),
+  notes: text("notes").notNull().default(""),
+  ...timestamps,
+}, (table) => [
+  index("idx_appointments_start_at").on(table.startAt),
+  index("idx_appointments_org_start_at").on(table.organizationId, table.startAt),
+]);
+
+export const workOrders = sqliteTable("work_orders", {
+  id: text("id").primaryKey(),
+  organizationId: text("organization_id").notNull().default(""),
+  osNumber: text("os_number").notNull(),
+  clientName: text("client_name").notNull(),
+  service: text("service").notNull(),
+  scheduledAt: text("scheduled_at").notNull().default(""),
+  technician: text("technician").notNull().default(""),
+  status: text("status").notNull().default("aberta"),
+  ph: real("ph"),
+  chlorine: real("chlorine"),
+  alkalinity: real("alkalinity"),
+  productsUsed: text("products_used").notNull().default(""),
+  notes: text("notes").notNull().default(""),
+  amountCents: integer("amount_cents").notNull().default(0),
+  ...timestamps,
+}, (table) => [
+  uniqueIndex("idx_work_orders_number").on(table.osNumber),
+  index("idx_work_orders_scheduled_at").on(table.scheduledAt),
+  index("idx_work_orders_org_scheduled_at").on(table.organizationId, table.scheduledAt),
+]);
+
+export const customers = sqliteTable("customers", {
+  id: text("id").primaryKey(),
+  organizationId: text("organization_id").notNull().default(""),
+  name: text("name").notNull(),
+  phone: text("phone").notNull().default(""),
+  email: text("email").notNull().default(""),
+  address: text("address").notNull().default(""),
+  poolType: text("pool_type").notNull().default(""),
+  poolVolume: integer("pool_volume"),
+  plan: text("plan").notNull().default(""),
+  status: text("status").notNull().default("ativo"),
+  notes: text("notes").notNull().default(""),
+  ...timestamps,
+}, (table) => [
+  index("idx_customers_name").on(table.name),
+  index("idx_customers_org_name").on(table.organizationId, table.name),
+]);
+
+export const inventoryItems = sqliteTable("inventory_items", {
+  id: text("id").primaryKey(),
+  organizationId: text("organization_id").notNull().default(""),
+  name: text("name").notNull(),
+  sku: text("sku").notNull().default(""),
+  unit: text("unit").notNull().default("unidade"),
+  quantity: real("quantity").notNull().default(0),
+  minimumQuantity: real("minimum_quantity").notNull().default(0),
+  costCents: integer("cost_cents").notNull().default(0),
+  ...timestamps,
+}, (table) => [
+  index("idx_inventory_name").on(table.name),
+  index("idx_inventory_org_name").on(table.organizationId, table.name),
+]);
+
+export const transactions = sqliteTable("transactions", {
+  id: text("id").primaryKey(),
+  organizationId: text("organization_id").notNull().default(""),
+  description: text("description").notNull(),
+  type: text("type").notNull(),
+  category: text("category").notNull().default(""),
+  amountCents: integer("amount_cents").notNull().default(0),
+  dueDate: text("due_date").notNull().default(""),
+  status: text("status").notNull().default("pendente"),
+  ...timestamps,
+}, (table) => [
+  index("idx_transactions_due_date").on(table.dueDate),
+  index("idx_transactions_org_due_date").on(table.organizationId, table.dueDate),
+]);
+
+export const suppliers = sqliteTable("suppliers", {
+  id: text("id").primaryKey(), organizationId: text("organization_id").notNull(), name: text("name").notNull(),
+  document: text("document").notNull().default(""), email: text("email").notNull().default(""), phone: text("phone").notNull().default(""),
+  notes: text("notes").notNull().default(""), ...timestamps,
+}, (table) => [index("idx_suppliers_org_name").on(table.organizationId, table.name)]);
+
+export const purchases = sqliteTable("purchases", {
+  id: text("id").primaryKey(), organizationId: text("organization_id").notNull(), supplierId: text("supplier_id").notNull().default(""),
+  supplierName: text("supplier_name").notNull(), invoiceNumber: text("invoice_number").notNull().default(""), purchaseDate: text("purchase_date").notNull().default(""),
+  dueDate: text("due_date").notNull().default(""), amountCents: integer("amount_cents").notNull().default(0), status: text("status").notNull().default("pendente"),
+  payableId: text("payable_id").notNull().default(""), notes: text("notes").notNull().default(""), ...timestamps,
+}, (table) => [index("idx_purchases_org_date").on(table.organizationId, table.purchaseDate)]);
+
+export const bankAccounts = sqliteTable("bank_accounts", {
+  id: text("id").primaryKey(), organizationId: text("organization_id").notNull(), name: text("name").notNull(), institution: text("institution").notNull().default(""),
+  accountType: text("account_type").notNull().default("corrente"), openingBalanceCents: integer("opening_balance_cents").notNull().default(0),
+  provider: text("provider").notNull().default(""), providerConnectionId: text("provider_connection_id").notNull().default(""), providerAccountId: text("provider_account_id").notNull().default(""),
+  currentBalanceCents: integer("current_balance_cents").notNull().default(0),
+  active: integer("active", { mode: "boolean" }).notNull().default(true), ...timestamps,
+}, (table) => [index("idx_bank_accounts_org_name").on(table.organizationId, table.name)]);
+
+export const bankMovements = sqliteTable("bank_movements", {
+  id: text("id").primaryKey(), organizationId: text("organization_id").notNull(), accountId: text("account_id").notNull(), postedAt: text("posted_at").notNull().default(""),
+  description: text("description").notNull(), amountCents: integer("amount_cents").notNull(), status: text("status").notNull().default("pendente"),
+  matchedTransactionId: text("matched_transaction_id").notNull().default(""), importId: text("import_id").notNull().default(""), provider: text("provider").notNull().default(""),
+  providerTransactionId: text("provider_transaction_id").notNull().default(""), ...timestamps,
+}, (table) => [index("idx_bank_movements_org_date").on(table.organizationId, table.postedAt)]);
+
+export const bankConnections = sqliteTable("bank_connections", {
+  id: text("id").primaryKey(), organizationId: text("organization_id").notNull(), provider: text("provider").notNull(), itemHash: text("item_hash").notNull(),
+  encryptedItemId: text("encrypted_item_id").notNull(), institution: text("institution").notNull().default(""), status: text("status").notNull().default("ATIVA"),
+  lastSyncedAt: text("last_synced_at").notNull().default(""), ...timestamps,
+}, (table) => [index("idx_bank_connections_org").on(table.organizationId, table.provider)]);
+
+export const employees = sqliteTable("employees", {
+  id: text("id").primaryKey(),
+  organizationId: text("organization_id").notNull().default(""),
+  name: text("name").notNull(),
+  role: text("role").notNull().default(""),
+  phone: text("phone").notNull().default(""),
+  color: text("color").notNull().default("aqua"),
+  active: integer("active", { mode: "boolean" }).notNull().default(true),
+  ...timestamps,
+}, (table) => [
+  index("idx_employees_name").on(table.name),
+  index("idx_employees_org_name").on(table.organizationId, table.name),
+]);
+
+export const warranties = sqliteTable("warranties", {
+  id: text("id").primaryKey(),
+  organizationId: text("organization_id").notNull().default(""),
+  warrantyNumber: text("warranty_number").notNull(),
+  clientName: text("client_name").notNull(),
+  item: text("item").notNull(),
+  originReference: text("origin_reference").notNull().default(""),
+  purchaseDate: text("purchase_date").notNull().default(""),
+  expiresAt: text("expires_at").notNull().default(""),
+  scheduledAt: text("scheduled_at").notNull().default(""),
+  appointmentId: text("appointment_id").notNull().default(""),
+  technician: text("technician").notNull().default(""),
+  status: text("status").notNull().default("ativa"),
+  notes: text("notes").notNull().default(""),
+  ...timestamps,
+}, (table) => [
+  uniqueIndex("idx_warranties_number").on(table.warrantyNumber),
+  index("idx_warranties_expires_at").on(table.expiresAt),
+  index("idx_warranties_org_expires_at").on(table.organizationId, table.expiresAt),
+]);
+
+export const contracts = sqliteTable("contracts", {
+  id: text("id").primaryKey(),
+  organizationId: text("organization_id").notNull().default(""),
+  contractNumber: text("contract_number").notNull(),
+  clientName: text("client_name").notNull(),
+  clientDocument: text("client_document").notNull().default(""),
+  clientAddress: text("client_address").notNull().default(""),
+  service: text("service").notNull(),
+  startDate: text("start_date").notNull().default(""),
+  endDate: text("end_date").notNull().default(""),
+  frequency: text("frequency").notNull().default("mensal"),
+  monthlyCents: integer("monthly_cents").notNull().default(0),
+  paymentDay: integer("payment_day"),
+  status: text("status").notNull().default("rascunho"),
+  terms: text("terms").notNull().default(""),
+  ...timestamps,
+}, (table) => [
+  uniqueIndex("idx_contracts_number").on(table.contractNumber),
+  index("idx_contracts_created_at").on(table.createdAt),
+  index("idx_contracts_org_created_at").on(table.organizationId, table.createdAt),
+]);
+
+export const supportTickets = sqliteTable("support_tickets", {
+  id: text("id").primaryKey(),
+  organizationId: text("organization_id").notNull(),
+  organizationName: text("organization_name").notNull().default(""),
+  userId: text("user_id").notNull().default(""),
+  userEmail: text("user_email").notNull().default(""),
+  type: text("type").notNull().default("melhoria"),
+  priority: text("priority").notNull().default("media"),
+  title: text("title").notNull(),
+  message: text("message").notNull(),
+  status: text("status").notNull().default("aberto"),
+  adminNotes: text("admin_notes").notNull().default(""),
+  ...timestamps,
+}, (table) => [
+  index("idx_support_tickets_org_created").on(table.organizationId, table.createdAt),
+  index("idx_support_tickets_status").on(table.status),
+]);
+
+export const platformSettings = sqliteTable("platform_settings", {
+  key: text("key").primaryKey(),
+  value: text("value").notNull(),
+  updatedAt: text("updated_at").notNull(),
+});
+
+export const fiscalInvoices = sqliteTable("fiscal_invoices", {
+  id: text("id").primaryKey(),
+  organizationId: text("organization_id").notNull(),
+  type: text("type").notNull().default("nfse"),
+  status: text("status").notNull().default("rascunho"),
+  customerName: text("customer_name").notNull(),
+  customerDocument: text("customer_document").notNull().default(""),
+  customerEmail: text("customer_email").notNull().default(""),
+  serviceDescription: text("service_description").notNull(),
+  city: text("city").notNull().default(""),
+  amountCents: integer("amount_cents").notNull().default(0),
+  issueDate: text("issue_date").notNull().default(""),
+  officialNumber: text("official_number").notNull().default(""),
+  accessKey: text("access_key").notNull().default(""),
+  xmlUrl: text("xml_url").notNull().default(""),
+  pdfUrl: text("pdf_url").notNull().default(""),
+  provider: text("provider").notNull().default(""),
+  providerReference: text("provider_reference").notNull().default(""),
+  notes: text("notes").notNull().default(""),
+  ...timestamps,
+}, (table) => [index("idx_fiscal_invoices_org_date").on(table.organizationId, table.issueDate)]);

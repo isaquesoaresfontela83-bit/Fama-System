@@ -1,0 +1,37 @@
+.company-accounts-dialog { width: calc(100% - 2rem); max-width: 46rem; max-height: calc(100dvh - 2rem); overflow-y: auto; }
+.company-account-form { display: grid; gap: 1rem; }
+.company-list-filters { display: flex; gap: 1rem; align-items: end; margin: 1.25rem 0; flex-wrap: wrap; }
+.company-list-filters label { display: grid; gap: .4rem; min-width: 13rem; flex: 1; font-size: .8rem; color: var(--muted-foreground); }
+.company-list-filters input, .company-list-filters select { border: 1px solid var(--border); padding: .65rem .8rem; border-radius: .5rem; background: var(--background); color: var(--foreground); font-size: .95rem; min-width: 0; }
+.company-list-filters > small { padding-bottom: .7rem; color: var(--muted-foreground); }
+.company-account-form-fields { border: 0; padding: 0; margin: 0; min-width: 0; display: grid; gap: 1rem; }
+.company-account-form-fields:disabled { opacity: .7; }
+.company-account-form h3, .company-member-list h3 { margin: .25rem 0; font-size: 1rem; font-weight: 650; display: flex; align-items: center; gap: .5rem; }
+.company-account-fields { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+.company-account-form .pool-admin-label { min-width: 0; }
+.company-account-form .pool-admin-label > span { font-size: .875rem; }
+.company-account-form input, .company-account-form select { min-width: 0; font-size: 1rem; }
+.company-account-password { display: flex; align-items: center; gap: .4rem; }
+.company-account-password input { flex: 1; width: 0; }
+.company-account-note { padding: .8rem 1rem; background: var(--muted); border-radius: .6rem; color: var(--foreground); font-size: .875rem; line-height: 1.6; }
+.company-account-modules { border: 1px solid var(--border); border-radius: .7rem; padding: 1rem; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .85rem; }
+.company-account-modules legend { padding: 0 .35rem; font-size: .875rem; font-weight: 650; }
+.company-account-modules label { display: flex; align-items: center; gap: .6rem; font-size: .875rem; }
+.company-account-error { padding: .75rem; border: 1px solid var(--destructive); border-radius: .5rem; color: var(--destructive); font-size: .875rem; }
+.company-member-list { display: grid; gap: .7rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border); }
+.company-member-list article { display: flex; gap: 1rem; align-items: center; justify-content: space-between; padding: .65rem .8rem; background: var(--muted); border-radius: .5rem; }
+.company-member-list article div { display: grid; min-width: 0; overflow-wrap: anywhere; font-size: .875rem; }
+.company-member-list small, .company-member-list article > span { color: var(--muted-foreground); font-size: .875rem; }
+.company-account-success { display: grid; gap: 1rem; line-height: 1.6; }
+.company-success-icon { color: var(--primary); width: 2.5rem; height: 2.5rem; }
+.company-account-free { display: flex; align-items: flex-start; gap: .75rem; padding: 1rem; border: 1px solid color-mix(in srgb, var(--primary) 30%, var(--border)); background: color-mix(in srgb, var(--primary) 7%, var(--background)); border-radius: .7rem; }
+.company-account-free svg { color: var(--primary); flex-shrink: 0; }
+.company-account-free p { margin-top: .3rem; font-size: .875rem; color: var(--muted-foreground); line-height: 1.6; }
+.company-member-heading { display: flex; align-items: center; justify-content: space-between; gap: .5rem; flex-wrap: wrap; }
+.company-member-search { display: grid; gap: .4rem; font-size: .8rem; color: var(--muted-foreground); }
+.company-member-search input { padding: .65rem .8rem; border: 1px solid var(--border); border-radius: .5rem; background: var(--background); color: var(--foreground); font-size: 1rem; }
+.company-member-list article[data-editing="true"] { outline: 2px solid var(--primary); outline-offset: -2px; }
+.company-billing-option { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 1rem; border: 1px solid var(--border); border-radius: .7rem; }
+.company-billing-option label { font-size: .9rem; font-weight: 650; cursor: pointer; }
+.company-billing-option p { margin-top: .3rem; color: var(--muted-foreground); font-size: .85rem; line-height: 1.5; }
+@media (max-width: 620px) { .company-account-fields, .company-account-modules { grid-template-columns: 1fr; } .company-member-list article { align-items: flex-start; flex-direction: column; gap: .3rem; } }

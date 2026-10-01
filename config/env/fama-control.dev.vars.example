@@ -1,0 +1,17 @@
+# Copie para .dev.vars dentro do projeto e preencha com os valores do NOVO ambiente.
+# Não use source neste arquivo. Não versione nem publique seus valores.
+DATA_BACKEND="supabase"
+SUPABASE_URL="https://SEU-PROJETO.supabase.co"
+SUPABASE_AUTH_ENABLED="true"
+SUPABASE_PUBLISHABLE_KEY=""
+SUPABASE_SECRET_KEY=""
+SUPABASE_STORAGE_BUCKET="fama-documents"
+PLATFORM_OWNER_EMAIL=""
+PLATFORM_OWNER_USER_ID=""
+FAMA_DATA_ENCRYPTION_KEY=""
+FAMA_DATA_BRIDGE_SECRET=""
+
+# Conversa livre opcional. Ative apenas depois de autorizar o provedor.
+FAMA_AI_GENERATIVE_ENABLED="false"
+OPENAI_API_KEY=""
+FAMA_AI_MODEL="gpt-5-mini"

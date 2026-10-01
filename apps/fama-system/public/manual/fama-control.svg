@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 560" role="img" aria-labelledby="title desc">
+  <title id="title">Painel administrativo Fama Control</title>
+  <desc id="desc">Referência visual do painel de empresas, usuários, permissões, auditoria e segurança.</desc>
+  <rect width="1200" height="560" rx="24" fill="#f7fbff"/>
+  <rect x="28" y="28" width="1144" height="504" rx="18" fill="#fff" stroke="#d8e6f2"/>
+  <rect x="28" y="28" width="240" height="504" rx="18" fill="#132b55"/>
+  <text x="58" y="76" fill="#fff" font-family="Arial,sans-serif" font-size="23" font-weight="800">FAMA CONTROL</text>
+  <text x="58" y="115" fill="#9fd9f1" font-family="Arial,sans-serif" font-size="13" font-weight="700">ADMINISTRAÇÃO</text>
+  <rect x="48" y="140" width="200" height="42" rx="9" fill="#1a78a7"/><text x="66" y="167" fill="#fff" font-family="Arial,sans-serif" font-size="15" font-weight="700">Visão geral</text>
+  <text x="66" y="214" fill="#d4e8f7" font-family="Arial,sans-serif" font-size="15">Empresas</text>
+  <text x="66" y="255" fill="#d4e8f7" font-family="Arial,sans-serif" font-size="15">Usuários e permissões</text>
+  <text x="66" y="296" fill="#d4e8f7" font-family="Arial,sans-serif" font-size="15">Auditoria</text>
+  <text x="66" y="337" fill="#d4e8f7" font-family="Arial,sans-serif" font-size="15">Backup e lixeira</text>
+  <text x="66" y="378" fill="#d4e8f7" font-family="Arial,sans-serif" font-size="15">Segurança e LGPD</text>
+  <text x="310" y="78" fill="#12366f" font-family="Arial,sans-serif" font-size="28" font-weight="800">Visão administrativa</text>
+  <text x="310" y="106" fill="#71869a" font-family="Arial,sans-serif" font-size="14">Controle central para o proprietário da operação</text>
+  <g font-family="Arial,sans-serif"><rect x="310" y="144" width="240" height="112" rx="12" fill="#effbff" stroke="#c3eaf3"/><text x="334" y="177" fill="#6a829b" font-size="13">Empresas ativas</text><text x="334" y="219" fill="#12366f" font-size="27" font-weight="800">3</text><rect x="570" y="144" width="240" height="112" rx="12" fill="#f3f8ff" stroke="#d4e2f2"/><text x="594" y="177" fill="#6a829b" font-size="13">Usuários autorizados</text><text x="594" y="219" fill="#12366f" font-size="27" font-weight="800">12</text><rect x="830" y="144" width="300" height="112" rx="12" fill="#fff8ed" stroke="#f4dfb4"/><text x="854" y="177" fill="#84652c" font-size="13">Alertas de segurança</text><text x="854" y="219" fill="#aa6a00" font-size="27" font-weight="800">2 pendentes</text></g>
+  <rect x="310" y="292" width="820" height="178" rx="14" fill="#fff" stroke="#d8e6f2"/>
+  <text x="336" y="332" fill="#12366f" font-family="Arial,sans-serif" font-size="17" font-weight="800">Permissões por usuário</text>
+  <text x="336" y="373" fill="#6a829b" font-family="Arial,sans-serif" font-size="14">João · Orçamentos · Garantias · CRM</text><text x="1002" y="373" fill="#168a67" font-family="Arial,sans-serif" font-size="13" font-weight="700">Ativo</text>
+  <text x="336" y="416" fill="#6a829b" font-family="Arial,sans-serif" font-size="14">Marcos · Garantias · CRM</text><text x="1002" y="416" fill="#168a67" font-family="Arial,sans-serif" font-size="13" font-weight="700">Ativo</text>
+</svg>

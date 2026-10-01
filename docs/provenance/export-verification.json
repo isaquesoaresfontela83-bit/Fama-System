@@ -1,0 +1,50 @@
+{
+  "source_files_verified": 412,
+  "source_hashes_match": true,
+  "production_source_edited": false,
+  "sql_parser": "pglast",
+  "sql_files": [
+    {
+      "file": "banco-de-dados/01-estrutura-completa-supabase.sql",
+      "statements": 1633
+    },
+    {
+      "file": "banco-de-dados/02-storage.sql",
+      "statements": 12
+    },
+    {
+      "file": "banco-de-dados/03-agendamentos.sql",
+      "statements": 9
+    },
+    {
+      "file": "banco-de-dados/04-eventos-ddl.sql",
+      "statements": 1
+    },
+    {
+      "file": "banco-de-dados/05-privilegios-padrao-referencia.sql",
+      "statements": 96
+    }
+  ],
+  "sql_runtime_executed": false,
+  "credential_scan_unresolved_matches": [],
+  "known_synthetic_test_fixtures": [
+    {
+      "path": "fama-system/tests/asaas.test.mjs",
+      "kind": "asaas_key",
+      "classification": "synthetic_numeric_test_fixture"
+    },
+    {
+      "path": "fama-system/tests/asaas.test.mjs",
+      "kind": "asaas_key",
+      "classification": "synthetic_numeric_test_fixture"
+    },
+    {
+      "path": "fama-system/tests/launch-readiness.test.mjs",
+      "kind": "asaas_key",
+      "classification": "synthetic_numeric_test_fixture"
+    }
+  ],
+  "runtime_credential_values_omitted": true,
+  "database_production_rows_exported": false,
+  "archive_validation": "Todos os arquivos e CRCs conferidos após a geração do ZIP."
+}

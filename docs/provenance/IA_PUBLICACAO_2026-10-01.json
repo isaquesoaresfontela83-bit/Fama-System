@@ -1,0 +1,38 @@
+{
+  "published_at": "2026-10-01T21:32:21.649542+00:00",
+  "assistant_origin": {
+    "branch": "fama-control-final",
+    "commit_sha": "658b77550904f4f139eb2196033e4115c2832cd2"
+  },
+  "engine": "local_rules",
+  "validation": {
+    "system_tests": 72,
+    "control_tests": 42,
+    "typecheck": "passed",
+    "build": "passed",
+    "database_permissions": "verified",
+    "database_concurrency_and_audit": "verified_with_rollback",
+    "production_publication": "succeeded",
+    "authenticated_browser_validation": "pending_environment_ERR_BLOCKED_BY_CLIENT"
+  },
+  "projects": {
+    "system": {
+      "project_id": "appgprj_6a9a074b50b48191acca49e35aa90dc6",
+      "version_number": 101,
+      "version_id": "appgprj_6a9a074b50b48191acca49e35aa90dc6~appgver_d75e263e8d208191b27fe19cc5754182",
+      "commit_sha": "fe1bb518ced54b7cf8c8c1a05b2bc2ee1c2fde5f",
+      "deployment_id": "appgdep_6abed15459648191bad6efdae875acc1",
+      "status": "succeeded",
+      "url": "https://fama-system.isaquesoaresfontela8.chatgpt.site"
+    },
+    "control": {
+      "project_id": "appgprj_6aa0a5eb3a8c81918279118311b7b970",
+      "version_number": 39,
+      "version_id": "appgprj_6aa0a5eb3a8c81918279118311b7b970~appgver_fa5f21a151e48191ba9fbb7db3814115",
+      "commit_sha": "634c9e3e7f444b3344262e9d0ef125640f9f0c29",
+      "deployment_id": "appgdep_6abed13cba54819195df63057c456f07",
+      "status": "succeeded",
+      "url": "https://fama-control.isaquesoaresfontela8.chatgpt.site"
+    }
+  }
+}

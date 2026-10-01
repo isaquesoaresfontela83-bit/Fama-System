@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 650" role="img" aria-labelledby="title desc">
+  <title id="title">Tela de entrada do Fama System</title>
+  <desc id="desc">Referência visual da tela pública com marca, prévia dos módulos e formulário de login.</desc>
+  <rect width="1200" height="650" rx="28" fill="#f5faff"/>
+  <circle cx="1030" cy="60" r="250" fill="#dff7ff"/>
+  <text x="58" y="62" fill="#12366f" font-family="Arial,sans-serif" font-size="26" font-weight="800">Fama System</text>
+  <text x="58" y="89" fill="#6a829b" font-family="Arial,sans-serif" font-size="16">Gestão inteligente para piscinas</text>
+  <rect x="58" y="150" width="650" height="390" rx="22" fill="#ffffff" stroke="#d8e6f2"/>
+  <text x="92" y="196" fill="#1a78a7" font-family="Arial,sans-serif" font-size="13" font-weight="800" letter-spacing="2">GESTÃO COMPLETA PARA EMPRESAS DE PISCINAS</text>
+  <text x="92" y="246" fill="#12366f" font-family="Arial,sans-serif" font-size="34" font-weight="800">Sua operação inteira,</text>
+  <text x="92" y="286" fill="#12366f" font-family="Arial,sans-serif" font-size="34" font-weight="800">organizada em um só lugar.</text>
+  <rect x="92" y="330" width="280" height="48" rx="12" fill="#edfaff" stroke="#bee7f2"/>
+  <text x="112" y="360" fill="#176d87" font-family="Arial,sans-serif" font-size="15" font-weight="700">Dados isolados por empresa</text>
+  <text x="92" y="414" fill="#6a829b" font-family="Arial,sans-serif" font-size="16">CRM · Orçamentos · Agenda · Serviços</text>
+  <text x="92" y="442" fill="#6a829b" font-family="Arial,sans-serif" font-size="16">Financeiro · Estoque · Equipe</text>
+  <rect x="748" y="112" width="384" height="430" rx="22" fill="#ffffff" stroke="#d8e6f2"/>
+  <text x="788" y="157" fill="#1a78a7" font-family="Arial,sans-serif" font-size="12" font-weight="800" letter-spacing="2">CONTA FAMA</text>
+  <text x="788" y="202" fill="#12366f" font-family="Arial,sans-serif" font-size="28" font-weight="800">Entrar no sistema</text>
+  <rect x="788" y="228" width="154" height="38" rx="9" fill="#e9f8ff"/>
+  <text x="842" y="253" fill="#0b72e7" font-family="Arial,sans-serif" font-size="14" font-weight="700" text-anchor="middle">Entrar</text>
+  <text x="788" y="304" fill="#526b82" font-family="Arial,sans-serif" font-size="13">E-mail</text>
+  <rect x="788" y="314" width="304" height="42" rx="9" fill="#fff" stroke="#cbdce9"/>
+  <text x="804" y="341" fill="#9aaaba" font-family="Arial,sans-serif" font-size="14">seu@email.com</text>
+  <text x="788" y="388" fill="#526b82" font-family="Arial,sans-serif" font-size="13">Senha</text>
+  <rect x="788" y="398" width="304" height="42" rx="9" fill="#fff" stroke="#cbdce9"/>
+  <text x="804" y="425" fill="#9aaaba" font-family="Arial,sans-serif" font-size="14">••••••••</text>
+  <rect x="788" y="462" width="304" height="44" rx="10" fill="#0b72e7"/>
+  <text x="940" y="490" fill="#fff" font-family="Arial,sans-serif" font-size="15" font-weight="800" text-anchor="middle">Entrar</text>
+</svg>
