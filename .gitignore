@@ -17,6 +17,10 @@
 /.next/
 /out/
 
+# generated build artifacts
+/build/
+/dist/
+
 # misc
 .DS_Store
 *.pem
@@ -27,8 +31,9 @@ yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 
-# env files (can opt-in for committing if needed)
+# environment files — keep real secrets out of Git
 .env*
+!.env.example
 
 # vercel
 .vercel
@@ -36,7 +41,8 @@ yarn-error.log*
 # typescript
 next-env.d.ts
 *.tsbuildinfo
-/dist/
+
+# Cloudflare / local tooling
 /.wrangler/
 /.sites-runtime/
 /outputs/
