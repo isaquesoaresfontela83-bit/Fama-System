@@ -1,4 +1,4 @@
-# dependencies
+# Dependencies
 /node_modules
 /.pnp
 .pnp.*
@@ -8,38 +8,39 @@
 !.yarn/releases
 !.yarn/versions
 
-# testing
-/coverage
-
-# generated application output
+# Generated application output and test artifacts
 /.next/
+/.vinext/
 /out/
 /dist/
+/coverage/
+/tests/artifacts/
+*.tsbuildinfo
+next-env.d.ts
 
-# IMPORTANT: /build is source code in this repository.
-# vite.config.ts imports build/sites-vite-plugin.ts, so do not ignore it.
+# build/ contains source imported by vite.config.ts. Keep it tracked.
+# vendor/ contains CSS and third-party notices used by the application.
+# sites-release/ contains historical release material, not generated output.
 
-# misc
-.DS_Store
-*.pem
-
-# debug
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-.pnpm-debug.log*
-
-# environment files — keep real secrets out of Git
+# Environment files: retain only the example
 .env*
 !.env.example
+.dev.vars
+.dev.vars.*
+*.pem
+*.key
 
-# deployment / local tooling
-.vercel
-/.wrangler/
-/.sites-runtime/
+# Local tools and deployment state
+.vercel/
+.wrangler/
+.sites-runtime/
+.agents/
+.codex/
 /outputs/
 /work/
 
-# typescript
-next-env.d.ts
-*.tsbuildinfo
+# Logs and editor/OS files
+*.log
+.DS_Store
+Thumbs.db
+*.swp

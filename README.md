@@ -1,102 +1,72 @@
 # Fama System
 
-Plataforma SaaS multiempresa para gestão de empresas de piscinas. Reúne CRM, orçamentos e contratos em PDF, agenda, ordens de serviço, garantias, clientes e piscinas, estoque, financeiro, equipe e controle de usuários.
+ERP multiempresa para negócios de piscinas, com CRM, clientes, orçamentos e contratos em PDF, agenda, ordens de serviço, garantias, estoque, financeiro e equipe.
 
-## Arquitetura atual
+Este guia descreve a base presente neste repositório. Uma versão publicada pode usar outra revisão; confira a origem do código antes de implantar. O frontend independente do Fama Control não está completo nesta `main`: aqui existem funções de backend e materiais históricos relacionados a ele.
 
-O repositório usa uma arquitetura híbrida:
+## Começar
 
-- **Supabase Auth** para autenticação por e-mail e senha.
-- **Sessão própria assinada** (`fama_session`) para manter a identidade autenticada no Fama System.
-- **Cloudflare D1 + Drizzle ORM** para os dados operacionais e multiempresa.
-- **Next/Vinext + Vite + Cloudflare** para aplicação e publicação.
+Requer Node.js 22.13 ou superior. As dependências são registradas em `package-lock.json`.
 
-A autenticação e o banco operacional têm responsabilidades diferentes. Não remova Supabase ou D1 sem uma migração planejada.
-
-## Multiempresa e segurança
-
-- Cada empresa possui um `organization_id` próprio nos registros operacionais.
-- As APIs protegidas devem validar no servidor identidade, empresa, participação do usuário e perfil necessário.
-- `lib/tenant.ts` é a fronteira central de autorização multiempresa e deve falhar de forma fechada.
-- O cliente pode informar a organização ativa, mas nenhuma API deve confiar nesse identificador sem validar a associação do usuário.
-- Alterações de autenticação, sessão, permissões ou tenant exigem testes antes da publicação.
-
-## Perfis de acesso
-
-- `owner`: proprietário da empresa; administra usuários e registros.
-- `admin`: administra usuários permitidos e registros.
-- `member`: utiliza módulos operacionais autorizados.
-- `technician`: utiliza os módulos operacionais como técnico.
-
-## Estrutura principal
-
-- `app/`: interface e rotas de API.
-- `components/`: componentes reutilizáveis.
-- `hooks/`: hooks compartilhados.
-- `lib/`: serviços e utilitários do servidor, incluindo sessão e isolamento multiempresa.
-- `db/schema.ts`: modelo do banco D1.
-- `drizzle/`: migrações versionadas.
-- `tests/`: testes automatizados.
-- `scripts/`: scripts de instalação, build e suporte.
-- `public/`: recursos estáticos.
-- `build/`: **código-fonte auxiliar de build**; atualmente contém `sites-vite-plugin.ts` e não deve ser tratado como artefato descartável.
-- `vendor/`: dependências/recursos locais ainda referenciados pela aplicação; revisar antes de remover.
-- `sites-release/`: materiais de release/compatibilidade; manter até a cadeia de publicação ser consolidada.
-- `.openai/hosting.json`: configuração de hosting/bindings usada pelo projeto.
-
-Artefatos realmente gerados, como `dist/`, `.next/`, `out/`, cobertura e estado local do Wrangler, ficam fora do Git.
-
-## Desenvolvimento
-
-Requer Node.js 22.13 ou superior.
-
-```bash
-npm install
+```sh
+npm ci
 npm run dev
 ```
 
-Comandos principais:
+Use [.env.example](.env.example) para identificar as configurações e forneça os valores reais no ambiente de execução.
 
-- `npm run dev`: ambiente local.
-- `npm run build`: build verificado de produção.
-- `npm run db:generate`: gera migração a partir de `db/schema.ts`.
-- `npm run lint`: análise estática.
-- `npm test`: build + testes automatizados existentes.
+| Comando | Uso |
+| --- | --- |
+| `npm run dev` | Ambiente local com Vite |
+| `npm run build` | Compilação verificada, com limite de tempo |
+| `npm test` | Compilação e testes existentes |
+| `npm run lint` | Análise estática |
+| `npm run db:generate` | Geração de migrações Drizzle |
+| `npm run install:ci` | Instalador auxiliar do ambiente Sites |
 
-## Configuração
+## Arquitetura desta base
 
-Use `.env.example` como inventário de configuração. Valores reais devem existir somente no ambiente local ou na plataforma de hospedagem.
+| Parte | Implementação |
+| --- | --- |
+| Interface e APIs | React, Next/Vinext e Vite |
+| Login | Supabase Auth por e-mail e senha |
+| Sessão da aplicação | Cookie `fama_session` com assinatura em [lib/fama-session.ts](lib/fama-session.ts) |
+| Dados operacionais | Cloudflare D1 com esquema Drizzle |
+| Isolamento entre empresas | Associação e perfil verificados em [lib/tenant.ts](lib/tenant.ts) |
+| Hospedagem | Worker Cloudflare e configuração Sites |
 
-Configurações relevantes incluem:
+Os dados operacionais e a autenticação usam serviços diferentes. Preserve ambos ao organizar o projeto.
 
-- `PLATFORM_OWNER_EMAIL`: administrador da plataforma.
-- `FAMA_SESSION_SECRET`: segredo de assinatura da sessão; obrigatório, aleatório e com no mínimo 32 caracteres.
-- `SUPABASE_URL`: URL do projeto usado para autenticação.
-- `SUPABASE_PUBLISHABLE_KEY`: chave publicável do Supabase Auth.
-- variáveis `CLOUDFLARE_*`: overrides locais/de implantação quando necessários.
+O nome de [app/chatgpt-auth.ts](app/chatgpt-auth.ts) foi mantido por compatibilidade: a implementação desta revisão lê a sessão própria `fama_session`. Ele não representa um requisito de conta ChatGPT para o usuário.
 
-Nunca versionar senhas, service-role keys, tokens privados ou segredos de produção.
+O endpoint de login desta revisão lê `SUPABASE_URL` e `SUPABASE_PUBLISHABLE_KEY` do ambiente. Configure os dois valores e confirme `FAMA_SESSION_SECRET` antes de integrar ou publicar esta revisão.
 
-## Banco e migrações
+## Mapa do repositório
 
-Os dados operacionais usam Cloudflare D1 com Drizzle. Mudanças em `db/schema.ts` devem gerar uma migração versionada em `drizzle/`. As migrações precisam ser aplicadas de forma controlada antes de código que dependa do novo esquema receber tráfego.
+| Caminho | Responsabilidade |
+| --- | --- |
+| `app/` | Telas e rotas de API |
+| `components/` e `hooks/` | Componentes e comportamento reutilizáveis |
+| `lib/` | Sessão, autorização, banco e documentos PDF |
+| `db/` e `drizzle/` | Esquema e migrações D1 |
+| `worker/` | Entrada do Worker |
+| `scripts/` | Instalação, compilação e ferramentas de publicação |
+| `tests/` | Testes existentes |
+| `public/` | Imagens e ícones |
+| `build/` | Código-fonte do plugin de compilação; deve continuar no Git |
+| `vendor/` | CSS de terceiros e sua licença; importado pela aplicação |
+| `supabase/functions/` | Funções de backend relacionadas ao Fama Control |
+| `sites-release/` | Material histórico de publicação e compatibilidade |
+| `docs/` | Guia de manutenção do repositório |
 
-## Checklist antes de publicar
+`dist/`, caches, cobertura, logs e configurações locais são ignorados. Os lockfiles, migrações, plugins de compilação e licenças de terceiros são preservados.
 
-1. `npm run lint`
-2. `npm test`
-3. confirmar variáveis obrigatórias no ambiente
-4. revisar migrações D1 pendentes
-5. validar login e logout
-6. validar isolamento entre duas organizações diferentes
-7. validar permissões `owner`, `admin`, `member` e `technician`
-8. testar fluxos financeiros críticos quando houver alterações nesse módulo
-9. verificar que nenhum segredo foi incluído no diff
+## Manutenção
 
-## Política de mudanças críticas
+Leia [CONTRIBUTING.md](CONTRIBUTING.md) para o fluxo de alterações, [docs/REPOSITORY.md](docs/REPOSITORY.md) para detalhes da estrutura e [SECURITY.md](SECURITY.md) para relatos privados de segurança.
 
-Mudanças em autenticação, `lib/tenant.ts`, sessão, financeiro, migrações ou permissões devem passar por branch e pull request. Evite alterações destrutivas diretamente na `main`.
+As instruções em [sites-release/README.md](sites-release/README.md) são históricas. Não use seu fluxo antigo de login como instrução da revisão atual.
 
-## Licença
+## Direitos
 
-O Fama System é software proprietário. Consulte `LICENSE`. A visibilidade do código em um repositório público não concede autorização para copiar, redistribuir, modificar ou comercializar o projeto.
+Projeto proprietário de Isaque Soares Fontela. Consulte [LICENSE](LICENSE). Dependências de terceiros mantêm suas próprias licenças.

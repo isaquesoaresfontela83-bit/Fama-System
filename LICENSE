@@ -1,12 +1,10 @@
-Fama System Proprietary License
+Fama System — Direitos reservados
+
 Copyright (c) 2026 Isaque Soares Fontela. All rights reserved.
 
-This source code and all associated documentation, assets, designs, database schemas, business logic, and other materials are proprietary and confidential unless explicitly stated otherwise in writing by the copyright holder.
+Os materiais originais deste projeto são de titularidade de Isaque Soares Fontela.
+Nenhuma licença de uso, cópia, alteração, distribuição ou comercialização desses
+materiais é concedida sem autorização prévia por escrito do titular.
 
-No permission is granted to copy, reproduce, modify, distribute, sublicense, sell, publish, deploy, create derivative works from, or otherwise use this software or any substantial portion of it without prior written authorization from the copyright holder.
-
-Viewing or accessing this repository does not grant any license or intellectual-property rights.
-
-Third-party libraries and dependencies remain subject to their respective licenses.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW.
+As bibliotecas, dependências e materiais de terceiros continuam sujeitos às suas
+próprias licenças. Preserve os avisos de licença e atribuição desses materiais.
