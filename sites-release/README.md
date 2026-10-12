@@ -1,3 +1,5 @@
+> **Documento histórico.** As instruções abaixo pertencem a uma revisão anterior. O fluxo antigo de entrada e os endereços de publicação não descrevem necessariamente a revisão atual. Consulte o [README principal](../README.md) e o [guia do repositório](../docs/REPOSITORY.md) antes de usar este material em uma implantação.
+
 # Fama System / Fama Control — pacote de publicação
 
 Este diretório foi preparado para a próxima publicação dos dois ChatGPT Sites quando a cota de Sites/Work estiver disponível novamente.
