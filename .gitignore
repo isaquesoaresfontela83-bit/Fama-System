@@ -1,5 +1,3 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
-
 # dependencies
 /node_modules
 /.pnp
@@ -13,13 +11,13 @@
 # testing
 /coverage
 
-# next.js
+# generated application output
 /.next/
 /out/
-
-# generated build artifacts
-/build/
 /dist/
+
+# IMPORTANT: /build is source code in this repository.
+# vite.config.ts imports build/sites-vite-plugin.ts, so do not ignore it.
 
 # misc
 .DS_Store
@@ -35,15 +33,13 @@ yarn-error.log*
 .env*
 !.env.example
 
-# vercel
+# deployment / local tooling
 .vercel
-
-# typescript
-next-env.d.ts
-*.tsbuildinfo
-
-# Cloudflare / local tooling
 /.wrangler/
 /.sites-runtime/
 /outputs/
 /work/
+
+# typescript
+next-env.d.ts
+*.tsbuildinfo
