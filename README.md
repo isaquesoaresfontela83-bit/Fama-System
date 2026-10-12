@@ -21,11 +21,22 @@ Plataforma SaaS multiempresa para gestão de negócios de piscinas. Reúne CRM, 
 ## Estrutura principal
 
 - `app/`: interface Next/Vinext e rotas de API.
-- `db/schema.ts`: modelo completo do banco D1.
-- `drizzle/`: migrações versionadas do banco.
-- `lib/tenant.ts`: autorização e isolamento multiempresa.
-- `lib/quote-pdf.ts` e `lib/contract-pdf.ts`: geração dos documentos.
+- `components/`: componentes reutilizáveis da interface.
+- `hooks/`: hooks compartilhados da aplicação.
+- `lib/`: serviços e utilitários do servidor; `lib/tenant.ts` concentra autorização e isolamento multiempresa.
+- `db/schema.ts`: modelo do banco Cloudflare D1.
+- `drizzle/`: migrações versionadas do banco D1.
+- `tests/`: testes automatizados versionados do projeto.
+- `scripts/`: scripts de instalação, build e suporte ao ambiente.
+- `public/`: recursos estáticos.
 - `.openai/hosting.json`: configuração do projeto no ChatGPT Sites.
+- `lib/quote-pdf.ts` e `lib/contract-pdf.ts`: geração dos documentos.
+
+Diretórios gerados, como `build/`, `dist/`, `.next/` e artefatos locais do Cloudflare, não devem ser versionados.
+
+## Banco de dados
+
+A versão atual deste repositório utiliza **Cloudflare D1**, com Drizzle ORM e migrações em `drizzle/`. Supabase não faz parte da arquitetura documentada desta versão. Qualquer migração futura de banco deve atualizar esta seção e a documentação operacional antes de entrar em produção.
 
 ## Desenvolvimento
 
@@ -44,10 +55,20 @@ Comandos disponíveis:
 - `npm run lint`: verifica a qualidade do código.
 - `npm test`: executa a compilação e os testes automatizados existentes.
 
-## Variável de ambiente
+## Variáveis de ambiente
 
-Configure `PLATFORM_OWNER_EMAIL` no ambiente de hospedagem com o e-mail autenticado do responsável pela plataforma. O valor não deve ser incluído no repositório.
+Use `.env.example` apenas como referência dos nomes necessários. Configure os valores reais exclusivamente no ambiente local ou na plataforma de hospedagem. Nunca envie tokens, senhas, chaves de API ou credenciais reais ao repositório.
+
+Atualmente, `PLATFORM_OWNER_EMAIL` identifica o responsável pela administração da plataforma.
+
+## Segurança multiempresa
+
+`lib/tenant.ts` é um componente crítico de segurança. Alterações nesse arquivo devem preservar validação de identidade, associação do usuário à organização, status da organização, status do membro e autorização por perfil. Mudanças nessa camada devem ser acompanhadas de testes específicos antes da publicação.
 
 ## Publicação
 
 O projeto foi preparado para o ChatGPT Sites com banco D1. Na publicação, as migrações em `drizzle/` devem ser aplicadas antes da nova versão do Worker começar a receber tráfego.
+
+## Licença
+
+O Fama System é software proprietário. Consulte `LICENSE`. O fato de o código estar visível em um repositório público não concede autorização para copiar, redistribuir, modificar ou comercializar o projeto.
