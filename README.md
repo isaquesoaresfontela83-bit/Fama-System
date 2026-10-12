@@ -1,42 +1,50 @@
 # Fama System
 
-Plataforma SaaS multiempresa para gestão de negócios de piscinas. Reúne CRM, orçamentos e contratos em PDF, agenda, ordens de serviço, garantias, clientes e piscinas, estoque, financeiro, equipe e controle de usuários, com temas claro e escuro persistidos por usuário.
+Plataforma SaaS multiempresa para gestão de empresas de piscinas. Reúne CRM, orçamentos e contratos em PDF, agenda, ordens de serviço, garantias, clientes e piscinas, estoque, financeiro, equipe e controle de usuários.
+
+## Arquitetura atual
+
+O repositório usa uma arquitetura híbrida:
+
+- **Supabase Auth** para autenticação por e-mail e senha.
+- **Sessão própria assinada** (`fama_session`) para manter a identidade autenticada no Fama System.
+- **Cloudflare D1 + Drizzle ORM** para os dados operacionais e multiempresa.
+- **Next/Vinext + Vite + Cloudflare** para aplicação e publicação.
+
+A autenticação e o banco operacional têm responsabilidades diferentes. Não remova Supabase ou D1 sem uma migração planejada.
 
 ## Multiempresa e segurança
 
-- A autenticação é feita por **Entrar com ChatGPT** na infraestrutura do ChatGPT Sites.
-- Cada empresa possui um `organization_id` próprio em todos os registros operacionais.
-- Toda API valida no servidor a identidade autenticada, a empresa informada e a participação do usuário.
-- Proprietários e administradores podem convidar usuários e excluir registros com confirmação.
-- O administrador da plataforma controla apenas situação e quantidade de usuários das empresas; não recebe acesso automático aos dados internos.
-- Visitantes não autenticados visualizam somente a página pública de apresentação.
+- Cada empresa possui um `organization_id` próprio nos registros operacionais.
+- As APIs protegidas devem validar no servidor identidade, empresa, participação do usuário e perfil necessário.
+- `lib/tenant.ts` é a fronteira central de autorização multiempresa e deve falhar de forma fechada.
+- O cliente pode informar a organização ativa, mas nenhuma API deve confiar nesse identificador sem validar a associação do usuário.
+- Alterações de autenticação, sessão, permissões ou tenant exigem testes antes da publicação.
 
 ## Perfis de acesso
 
 - `owner`: proprietário da empresa; administra usuários e registros.
-- `admin`: administra usuários comuns e registros.
-- `member`: utiliza os módulos operacionais.
+- `admin`: administra usuários permitidos e registros.
+- `member`: utiliza módulos operacionais autorizados.
 - `technician`: utiliza os módulos operacionais como técnico.
 
 ## Estrutura principal
 
-- `app/`: interface Next/Vinext e rotas de API.
-- `components/`: componentes reutilizáveis da interface.
-- `hooks/`: hooks compartilhados da aplicação.
-- `lib/`: serviços e utilitários do servidor; `lib/tenant.ts` concentra autorização e isolamento multiempresa.
-- `db/schema.ts`: modelo do banco Cloudflare D1.
-- `drizzle/`: migrações versionadas do banco D1.
-- `tests/`: testes automatizados versionados do projeto.
-- `scripts/`: scripts de instalação, build e suporte ao ambiente.
+- `app/`: interface e rotas de API.
+- `components/`: componentes reutilizáveis.
+- `hooks/`: hooks compartilhados.
+- `lib/`: serviços e utilitários do servidor, incluindo sessão e isolamento multiempresa.
+- `db/schema.ts`: modelo do banco D1.
+- `drizzle/`: migrações versionadas.
+- `tests/`: testes automatizados.
+- `scripts/`: scripts de instalação, build e suporte.
 - `public/`: recursos estáticos.
-- `.openai/hosting.json`: configuração do projeto no ChatGPT Sites.
-- `lib/quote-pdf.ts` e `lib/contract-pdf.ts`: geração dos documentos.
+- `build/`: **código-fonte auxiliar de build**; atualmente contém `sites-vite-plugin.ts` e não deve ser tratado como artefato descartável.
+- `vendor/`: dependências/recursos locais ainda referenciados pela aplicação; revisar antes de remover.
+- `sites-release/`: materiais de release/compatibilidade; manter até a cadeia de publicação ser consolidada.
+- `.openai/hosting.json`: configuração de hosting/bindings usada pelo projeto.
 
-Diretórios gerados, como `build/`, `dist/`, `.next/` e artefatos locais do Cloudflare, não devem ser versionados.
-
-## Banco de dados
-
-A versão atual deste repositório utiliza **Cloudflare D1**, com Drizzle ORM e migrações em `drizzle/`. Supabase não faz parte da arquitetura documentada desta versão. Qualquer migração futura de banco deve atualizar esta seção e a documentação operacional antes de entrar em produção.
+Artefatos realmente gerados, como `dist/`, `.next/`, `out/`, cobertura e estado local do Wrangler, ficam fora do Git.
 
 ## Desenvolvimento
 
@@ -47,28 +55,48 @@ npm install
 npm run dev
 ```
 
-Comandos disponíveis:
+Comandos principais:
 
-- `npm run dev`: inicia o ambiente local.
-- `npm run build`: gera o Worker e os recursos de produção.
-- `npm run db:generate`: gera uma nova migração a partir de `db/schema.ts`.
-- `npm run lint`: verifica a qualidade do código.
-- `npm test`: executa a compilação e os testes automatizados existentes.
+- `npm run dev`: ambiente local.
+- `npm run build`: build verificado de produção.
+- `npm run db:generate`: gera migração a partir de `db/schema.ts`.
+- `npm run lint`: análise estática.
+- `npm test`: build + testes automatizados existentes.
 
-## Variáveis de ambiente
+## Configuração
 
-Use `.env.example` apenas como referência dos nomes necessários. Configure os valores reais exclusivamente no ambiente local ou na plataforma de hospedagem. Nunca envie tokens, senhas, chaves de API ou credenciais reais ao repositório.
+Use `.env.example` como inventário de configuração. Valores reais devem existir somente no ambiente local ou na plataforma de hospedagem.
 
-Atualmente, `PLATFORM_OWNER_EMAIL` identifica o responsável pela administração da plataforma.
+Configurações relevantes incluem:
 
-## Segurança multiempresa
+- `PLATFORM_OWNER_EMAIL`: administrador da plataforma.
+- `FAMA_SESSION_SECRET`: segredo de assinatura da sessão; obrigatório, aleatório e com no mínimo 32 caracteres.
+- `SUPABASE_URL`: URL do projeto usado para autenticação.
+- `SUPABASE_PUBLISHABLE_KEY`: chave publicável do Supabase Auth.
+- variáveis `CLOUDFLARE_*`: overrides locais/de implantação quando necessários.
 
-`lib/tenant.ts` é um componente crítico de segurança. Alterações nesse arquivo devem preservar validação de identidade, associação do usuário à organização, status da organização, status do membro e autorização por perfil. Mudanças nessa camada devem ser acompanhadas de testes específicos antes da publicação.
+Nunca versionar senhas, service-role keys, tokens privados ou segredos de produção.
 
-## Publicação
+## Banco e migrações
 
-O projeto foi preparado para o ChatGPT Sites com banco D1. Na publicação, as migrações em `drizzle/` devem ser aplicadas antes da nova versão do Worker começar a receber tráfego.
+Os dados operacionais usam Cloudflare D1 com Drizzle. Mudanças em `db/schema.ts` devem gerar uma migração versionada em `drizzle/`. As migrações precisam ser aplicadas de forma controlada antes de código que dependa do novo esquema receber tráfego.
+
+## Checklist antes de publicar
+
+1. `npm run lint`
+2. `npm test`
+3. confirmar variáveis obrigatórias no ambiente
+4. revisar migrações D1 pendentes
+5. validar login e logout
+6. validar isolamento entre duas organizações diferentes
+7. validar permissões `owner`, `admin`, `member` e `technician`
+8. testar fluxos financeiros críticos quando houver alterações nesse módulo
+9. verificar que nenhum segredo foi incluído no diff
+
+## Política de mudanças críticas
+
+Mudanças em autenticação, `lib/tenant.ts`, sessão, financeiro, migrações ou permissões devem passar por branch e pull request. Evite alterações destrutivas diretamente na `main`.
 
 ## Licença
 
-O Fama System é software proprietário. Consulte `LICENSE`. O fato de o código estar visível em um repositório público não concede autorização para copiar, redistribuir, modificar ou comercializar o projeto.
+O Fama System é software proprietário. Consulte `LICENSE`. A visibilidade do código em um repositório público não concede autorização para copiar, redistribuir, modificar ou comercializar o projeto.
