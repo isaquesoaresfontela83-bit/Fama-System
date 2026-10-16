@@ -1,36 +1,20 @@
 import { database, dateTime, optionalText, requiredText } from "@/lib/database";
 import { requireTenant, tenantError } from "@/lib/tenant";
 
-type WarrantyRow = {
-  id: string;
-  warrantyNumber: string;
-  clientName: string;
-  item: string;
-  originReference: string;
-  purchaseDate: string;
-  expiresAt: string;
-  scheduledAt: string;
-  appointmentId: string;
-  technician: string;
-  status: string;
-  notes: string;
-  createdAt: string;
-};
-
 const warrantySelect = `SELECT id, warranty_number AS warrantyNumber, client_name AS clientName, item,
   origin_reference AS originReference, purchase_date AS purchaseDate, expires_at AS expiresAt,
   scheduled_at AS scheduledAt, appointment_id AS appointmentId, technician, status, notes,
   created_at AS createdAt FROM warranties WHERE id = ? AND organization_id = ?`;
 
-export async function POST(request: Request, context: { params: Promise<{ id: string }> }) {
+export async function POST(request, context) {
   try {
     const { organization } = await requireTenant(request);
     const { id } = await context.params;
-    const body = await request.json() as Record<string, unknown>;
+    const body = await request.json();
     const scheduledAt = dateTime(requiredText(body.scheduledAt, "Data e hora"));
     const technician = optionalText(body.technician);
     const db = database();
-    const warranty = await db.prepare(warrantySelect).bind(id, organization.id).first<WarrantyRow>();
+    const warranty = await db.prepare(warrantySelect).bind(id, organization.id).first();
     if (!warranty) return Response.json({ error: "Garantia não encontrada." }, { status: 404 });
 
     const now = new Date().toISOString();
