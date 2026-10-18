@@ -552,11 +552,11 @@ button, input, textarea, select { font: inherit; }
 .detail-sheet h2 { margin-top: 10px; color: #133b48; font-size: 1.35rem; line-height: 1.25; }
 .detail-content { display: grid; gap: 22px; padding: 24px 25px 34px; }
 .detail-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 10px; margin: 0; }
-.detail-grid div { min-width: 0; padding: 12px; border-radius: 11px; background: #f1f6f7; }
-.detail-grid dt,.detail-block > small { color: #718991; font-size: .68rem; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; }
-.detail-grid dd { margin: 3px 0 0; color: #284a55; font-size: .8rem; font-weight: 650; overflow-wrap: anywhere; }
+.detail-grid > div { min-width: 0; padding: 12px; border: 1px solid var(--border); border-radius: 11px; background: var(--muted); }
+.detail-grid dt,.detail-block > small { color: var(--muted-foreground); font-size: .75rem; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; }
+.detail-grid dd { margin: 4px 0 0; color: var(--foreground); font-size: .9375rem; font-weight: 650; line-height: 1.5; overflow-wrap: anywhere; }
 .detail-block { display: grid; gap: 7px; }
-.detail-block p { margin: 0; color: #4d6871; font-size: .86rem; line-height: 1.55; }
+.detail-block p { margin: 0; color: var(--foreground); font-size: .9375rem; line-height: 1.55; }
 .quote-breakdown { display: grid; gap: 9px; padding: 16px; border: 1px solid #dce8ea; border-radius: 13px; }
 .quote-breakdown span,.quote-breakdown > strong { display: flex; justify-content: space-between; color: #617981; font-size: .78rem; }
 .quote-breakdown span b { color: #2f525d; }
@@ -771,10 +771,7 @@ button, input, textarea, select { font: inherit; }
 .dark .detail-sheet { background: #0b1d3b; }
 .dark .detail-sheet > div:first-child { border-bottom-color: #203d63; background: linear-gradient(135deg,#10294d 0%,#0d2142 70%,#0b2446 100%); }
 .dark .detail-sheet h2 { color: #eaf4ff; }
-.dark :where(.detail-grid div,.quote-breakdown) { border-color: #203d63; background: #102442; }
-.dark :where(.detail-grid dt,.detail-block > small) { color: #8fa8c2; }
-.dark .detail-grid dd { color: #d3e4f6; }
-.dark .detail-block p { color: #adc1d6; }
+.dark .quote-breakdown { border-color: #203d63; background: #102442; }
 .dark :where(.quote-breakdown span,.quote-breakdown > strong) { color: #a5bad0; }
 .dark .quote-breakdown span b { color: #dceaff; }
 .dark .quote-breakdown > strong { border-top-color: #294463; }
