@@ -817,26 +817,28 @@ button, input, textarea, select { font: inherit; }
 
 /* Readable record details, independent of the surrounding module palette. */
 .detail-sheet {
-  --record-detail-background: #edf3fa;
-  --record-detail-border: #adbed3;
-  --record-detail-label: #344862;
-  --record-detail-text: #101f35;
+  --record-detail-background: #0d2238;
+  --record-detail-border: #41698e;
+  --record-detail-label: #64e4ff;
+  --record-detail-text: #ffe09b;
 }
 .dark .detail-sheet {
-  --record-detail-background: #142b43;
-  --record-detail-border: #537392;
-  --record-detail-label: #d7e6ff;
-  --record-detail-text: #ffffff;
+  --record-detail-background: #0d2238;
+  --record-detail-border: #41698e;
+  --record-detail-label: #64e4ff;
+  --record-detail-text: #ffe09b;
 }
 .detail-sheet .detail-grid { gap: 12px; }
-.detail-sheet .detail-grid > div {
+.detail-sheet .detail-grid > div,
+.detail-sheet .detail-block {
   padding: 16px;
   border: 1px solid var(--record-detail-border);
-  background: var(--record-detail-background);
+  border-radius: 11px;
+  background: var(--record-detail-background) !important;
 }
 .detail-sheet .detail-grid dt,
 .detail-sheet .detail-block > small {
-  color: var(--record-detail-label);
+  color: var(--record-detail-label) !important;
   font-size: .875rem;
   font-weight: 750;
   line-height: 1.5;
@@ -845,7 +847,7 @@ button, input, textarea, select { font: inherit; }
 }
 .detail-sheet .detail-grid dd,
 .detail-sheet .detail-block p {
-  color: var(--record-detail-text);
+  color: var(--record-detail-text) !important;
   font-size: 1.125rem;
   font-weight: 700;
   line-height: 1.6;
