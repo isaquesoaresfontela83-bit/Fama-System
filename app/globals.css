@@ -813,3 +813,56 @@ button, input, textarea, select { font: inherit; }
   .heading h1 { display: none; }
   .theme-toggle { width: 36px; height: 36px; flex-basis: 36px; }
 }
+
+
+/* Readable record details, independent of the surrounding module palette. */
+.detail-sheet {
+  --record-detail-background: #edf3fa;
+  --record-detail-border: #adbed3;
+  --record-detail-label: #344862;
+  --record-detail-text: #101f35;
+}
+.dark .detail-sheet {
+  --record-detail-background: #142b43;
+  --record-detail-border: #537392;
+  --record-detail-label: #d7e6ff;
+  --record-detail-text: #ffffff;
+}
+.detail-sheet .detail-grid { gap: 12px; }
+.detail-sheet .detail-grid > div {
+  padding: 16px;
+  border: 1px solid var(--record-detail-border);
+  background: var(--record-detail-background);
+}
+.detail-sheet .detail-grid dt,
+.detail-sheet .detail-block > small {
+  color: var(--record-detail-label);
+  font-size: .875rem;
+  font-weight: 750;
+  line-height: 1.5;
+  letter-spacing: .025em;
+  opacity: 1;
+}
+.detail-sheet .detail-grid dd,
+.detail-sheet .detail-block p {
+  color: var(--record-detail-text);
+  font-size: 1.125rem;
+  font-weight: 700;
+  line-height: 1.6;
+  opacity: 1;
+  overflow-wrap: anywhere;
+}
+.detail-sheet .detail-grid dd { margin-top: 7px; }
+.detail-sheet .record-files {
+  background: var(--record-detail-background);
+  border-color: var(--record-detail-border);
+  color: var(--record-detail-text);
+}
+.detail-sheet .record-files :is(strong, label, b, a) {
+  color: var(--record-detail-text);
+}
+.detail-sheet .record-files small {
+  color: var(--record-detail-label);
+  font-size: .875rem;
+  line-height: 1.5;
+}
