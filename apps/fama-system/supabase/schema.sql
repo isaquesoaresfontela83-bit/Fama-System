@@ -64,7 +64,7 @@ create table if not exists public.leads (
   phone text not null default '',
   source text not null default '',
   interest text not null default '',
-  status text not null default 'novo' check (status in ('novo', 'contato', 'visita', 'proposta', 'ganho')),
+  status text not null default 'novo' check (status in ('novo', 'contato', 'visita', 'proposta', 'negociacao', 'ganho', 'perdido')),
   estimated_value_cents bigint not null default 0,
   next_action text not null default '',
   created_at timestamptz not null default now(),
@@ -100,7 +100,7 @@ create table if not exists public.appointments (
   address text not null default '',
   technician text not null default '',
   kind text not null default 'Manutenção',
-  status text not null default 'agendado' check (status in ('agendado', 'em_rota', 'concluido')),
+  status text not null default 'agendado' check (status in ('agendado', 'confirmado', 'em_rota', 'concluido', 'remarcado', 'cancelado')),
   notes text not null default '',
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()

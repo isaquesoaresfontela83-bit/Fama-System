@@ -3,24 +3,24 @@ import test, { after, beforeEach } from 'node:test';
 import { createServer } from 'vite';
 
 const originalFetch = globalThis.fetch;
-const runtime = { DATA_BACKEND: 'supabase', SUPABASE_URL: 'https://fixture.supabase.co', SUPABASE_SECRET_KEY: 'sb_secret_fixture', PLATFORM_OWNER_EMAIL: 'admin@example.test' };
+const runtime = { DATA_BACKEND: 'supabase', SUPABASE_URL: 'https://fixture.supabase.co', SUPABASE_PUBLISHABLE_KEY: 'sb_publishable_fixture', SUPABASE_SECRET_KEY: 'sb_secret_fixture', PLATFORM_OWNER_EMAIL: 'admin@example.test' };
 globalThis.__assistantRuntime = runtime;
 const root = new URL('..', import.meta.url).pathname;
 const vite = await createServer({ configFile: false, appType: 'custom', root, resolve: { alias: { '@': root } }, server: { middlewareMode: true, hmr: false }, plugins: [{
   name: 'assistant-settings-fixtures', enforce: 'pre',
   resolveId(id) {
     if (id === 'cloudflare:workers') return '\0assistant-env';
-    if (id.endsWith('/app/chatgpt-auth') || id.endsWith('/app/chatgpt-auth.ts')) return '\0assistant-auth';
+    if (id.endsWith('/app/system-auth') || id.endsWith('/app/system-auth.js')) return '\0assistant-auth';
   },
   load(id) {
     if (id === '\0assistant-env') return 'export const env = globalThis.__assistantRuntime;';
-    if (id === '\0assistant-auth') return 'export async function getChatGPTUser() { return globalThis.__assistantUser; }';
+    if (id === '\0assistant-auth') return 'export async function getFamaUser() { return globalThis.__assistantUser; }';
   },
 }] });
-const api = await vite.ssrLoadModule('/app/api/ai-settings/route.ts');
-const { defaultAssistantSettings, parseAssistantSettings, restrictAssistantSettings } = await vite.ssrLoadModule('/lib/fama-ai-settings.ts');
-const { answerInternal } = await vite.ssrLoadModule('/lib/fama-ai.ts');
-const { systemAssistantData, systemAssistantSources } = await vite.ssrLoadModule('/lib/fama-ai-access.ts');
+const api = await vite.ssrLoadModule('/app/api/ai-settings/route.js');
+const { defaultAssistantSettings, parseAssistantSettings, restrictAssistantSettings } = await vite.ssrLoadModule('/lib/fama-ai-settings.js');
+const { answerInternal } = await vite.ssrLoadModule('/lib/fama-ai.js');
+const { systemAssistantData, systemAssistantSources } = await vite.ssrLoadModule('/lib/fama-ai-access.js');
 let record, requests, audits, rateAllowed, failSave;
 beforeEach(() => {
   globalThis.__assistantUser = { id: 'platform-admin', email: 'admin@example.test', displayName: 'Administrador' };
@@ -29,7 +29,7 @@ beforeEach(() => {
   globalThis.fetch = async (input, init = {}) => {
     const url = new URL(String(input));
     const body = init.body ? JSON.parse(init.body) : null;
-    requests.push({ url, body });
+    requests.push({ url, body, init });
     if (url.pathname === '/rest/v1/fama_ai_settings') return Response.json(record ? [record] : []);
     if (url.pathname === '/rest/v1/rpc/fama_consume_rate_limit') return Response.json(rateAllowed);
     if (url.pathname === '/rest/v1/rpc/fama_save_ai_settings') {
@@ -51,8 +51,34 @@ test('preferences expose only settings, with no cached or fallback configuration
   assert.equal(response.status, 200);
   assert.equal(response.headers.get('cache-control'), 'no-store');
   assert.deepEqual(Object.keys(await response.json()).sort(), ['revision', 'settings', 'updatedAt']);
+  assert.equal(requests[0].init.headers.apikey, 'sb_publishable_fixture');
+  assert.equal(requests[0].init.headers.Authorization, undefined);
+  assert.equal(requests[0].init.redirect, 'manual');
+  assert.equal(requests[0].init.cache, 'no-store');
+  assert.ok(requests[0].init.signal instanceof AbortSignal);
   record = null;
   assert.equal((await api.GET()).status, 503);
+});
+
+test('public preferences reject redirects and provider authentication errors without enabling defaults', async () => {
+  for (const response of [
+    new Response(null, { status: 307, headers: { Location: 'https://other.example.test/preferences' } }),
+    Response.json({ code: 'PGRST303', message: 'JWT claims validation failed' }, { status: 401 }),
+  ]) {
+    let calls = 0;
+    globalThis.fetch = async (url, init) => {
+      calls++;
+      assert.equal(new URL(url).host, 'fixture.supabase.co');
+      assert.equal(init.headers.apikey, 'sb_publishable_fixture');
+      assert.equal(init.headers.Authorization, undefined);
+      assert.equal(init.redirect, 'manual');
+      return response;
+    };
+    const result = await api.GET();
+    assert.equal(result.status, 503);
+    assert.equal((await result.json()).settings, undefined);
+    assert.equal(calls, 1);
+  }
 });
 
 test('settings writes reject anonymous users, company administrators and cross-origin requests before database changes', async () => {
@@ -75,6 +101,7 @@ test('concurrent saves compare revisions and audit only the committed change', a
   assert.equal(audits.length, 1);
   const rpc = requests.find(item => item.url.pathname.endsWith('fama_save_ai_settings'));
   assert.equal(rpc.body.p_actor_user_id, 'platform-admin');
+  assert.equal(rpc.init.headers.apikey, 'sb_secret_fixture');
 });
 
 test('strict configuration validation, body limits and rate limits prevent writes', async () => {

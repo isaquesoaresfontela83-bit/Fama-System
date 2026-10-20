@@ -155,6 +155,8 @@ NODE
 fi
 
 echo "[sites] running exactly one bounded npm ci"
+# Fama runs ONNX in the browser; server CUDA binaries are unnecessary.
+export ONNXRUNTIME_NODE_INSTALL_CUDA=skip
 export NPM_CONFIG_MAXSOCKETS=1
 export NPM_CONFIG_FETCH_RETRIES=0
 export NPM_CONFIG_FETCH_TIMEOUT=30000

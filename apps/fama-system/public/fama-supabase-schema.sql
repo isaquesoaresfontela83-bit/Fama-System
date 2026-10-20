@@ -35,7 +35,7 @@ create table if not exists public.leads (
   phone text not null default '',
   source text not null default '',
   interest text not null default '',
-  status text not null default 'novo' check (status in ('novo', 'contato', 'visita', 'proposta', 'ganho')),
+  status text not null default 'novo' check (status in ('novo', 'contato', 'visita', 'proposta', 'negociacao', 'ganho', 'perdido')),
   estimated_value_cents bigint not null default 0,
   next_action text not null default '',
   created_at timestamptz not null default now(),

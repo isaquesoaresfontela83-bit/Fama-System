@@ -49,7 +49,7 @@ test("emits the catalog's animation and scrolling utilities", async () => {
 });
 
 test("forwards progress semantics to the primitive", async () => {
-  const { Progress } = await vite.ssrLoadModule("/components/ui/progress.tsx");
+  const { Progress } = await vite.ssrLoadModule("/components/ui/progress.jsx");
   const html = renderToStaticMarkup(React.createElement(Progress, { value: 37 }));
 
   assert.match(html, /aria-valuenow="37"/);
@@ -62,10 +62,10 @@ test("enforces the selected modules for administrators and other users", async (
     effectiveFeaturePermissions,
     hasFeaturePermission,
     normalizePermissions,
-  } = await vite.ssrLoadModule("/lib/permissions.ts");
+  } = await vite.ssrLoadModule("/lib/permissions.js");
 
   assert.deepEqual(normalizePermissions(["crm", "crm", "invalid", "warranties"]), ["crm", "warranties"]);
-  assert.equal(effectiveFeaturePermissions(null).length, 12);
+  assert.equal(effectiveFeaturePermissions(null).length, 13);
   assert.equal(hasFeaturePermission("owner", [], "finance"), true);
   assert.equal(hasFeaturePermission("admin", ["crm", "warranties"], "crm"), true);
   assert.equal(hasFeaturePermission("admin", ["crm", "warranties"], "quotes"), false);
@@ -74,7 +74,7 @@ test("enforces the selected modules for administrators and other users", async (
 });
 
 test("rejects cross-origin browser mutations", async () => {
-  const { isTrustedMutation } = await vite.ssrLoadModule("/lib/request-security.ts");
+  const { isTrustedMutation } = await vite.ssrLoadModule("/lib/request-security.js");
 
   assert.equal(isTrustedMutation(new Request("https://fama.example/api/records")), true);
   assert.equal(isTrustedMutation(new Request("https://fama.example/api/records", {
@@ -92,7 +92,7 @@ test("rejects cross-origin browser mutations", async () => {
 });
 
 test("emits chart themes for the starter's media dark mode", async () => {
-  const { ChartStyle } = await vite.ssrLoadModule("/components/ui/chart.tsx");
+  const { ChartStyle } = await vite.ssrLoadModule("/components/ui/chart.jsx");
   const html = renderToStaticMarkup(
     React.createElement(ChartStyle, {
       id: "contract",
@@ -109,7 +109,7 @@ test("emits chart themes for the starter's media dark mode", async () => {
 
 test("renders sidebar skeletons deterministically", async () => {
   const { SidebarMenuSkeleton } = await vite.ssrLoadModule(
-    "/components/ui/sidebar.tsx",
+    "/components/ui/sidebar.jsx",
   );
   const first = renderToStaticMarkup(React.createElement(SidebarMenuSkeleton));
   const second = renderToStaticMarkup(React.createElement(SidebarMenuSkeleton));

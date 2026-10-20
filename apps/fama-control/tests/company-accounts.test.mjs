@@ -9,17 +9,17 @@ const originalFetch = globalThis.fetch;
 const root = new URL('..', import.meta.url).pathname;
 const vite = await createServer({ appType: 'custom', configFile: false, root, resolve: { alias: { '@': root } }, server: { hmr: false, middlewareMode: true }, plugins: [{
   name: 'company-account-fixtures', enforce: 'pre',
-  resolveId(id) { if (id === 'cloudflare:workers') return '\0company-env'; if (id.endsWith('/app/chatgpt-auth') || id.endsWith('/app/chatgpt-auth.ts')) return '\0company-auth'; },
-  load(id) { if (id === '\0company-env') return 'export const env = globalThis.__companyRuntime;'; if (id === '\0company-auth') return `export async function getChatGPTUser() { return globalThis.__companyAdmin; }
+  resolveId(id) { if (id === 'cloudflare:workers') return '\0company-env'; if (id.endsWith('/app/system-auth') || id.endsWith('/app/system-auth.js')) return '\0company-auth'; },
+  load(id) { if (id === '\0company-env') return 'export const env = globalThis.__companyRuntime;'; if (id === '\0company-auth') return `export async function getFamaUser() { return globalThis.__companyAdmin; }
     export class AuthRequestError extends Error { constructor(message, status) { super(message); this.status = status; } }
     export async function signInWithPassword() { throw new AuthRequestError('Invalid credentials', 400); }
     export async function supabaseAuthRequest() { return null; }`; },
 }] });
-const companiesApi = await vite.ssrLoadModule('/app/api/admin/organizations/route.ts');
-const companyApi = await vite.ssrLoadModule('/app/api/admin/organizations/[id]/route.ts');
-const usersApi = await vite.ssrLoadModule('/app/api/admin/organizations/[id]/members/route.ts');
-const userApi = await vite.ssrLoadModule('/app/api/admin/members/[id]/route.ts');
-const validationApi = await vite.ssrLoadModule('/app/api/admin/validation/route.ts');
+const companiesApi = await vite.ssrLoadModule('/app/api/admin/organizations/route.js');
+const companyApi = await vite.ssrLoadModule('/app/api/admin/organizations/[id]/route.js');
+const usersApi = await vite.ssrLoadModule('/app/api/admin/organizations/[id]/members/route.js');
+const userApi = await vite.ssrLoadModule('/app/api/admin/members/[id]/route.js');
+const validationApi = await vite.ssrLoadModule('/app/api/admin/validation/route.js');
 let organizations, members, accounts, audits, requests, failRpc, failAuth, failVerify, failCompanyDelete;
 const ownerId = '10000000-0000-4000-8000-000000000001';
 const memberId = '20000000-0000-4000-8000-000000000002';
@@ -35,6 +35,7 @@ beforeEach(() => {
   audits = []; requests = []; failRpc = false; failAuth = false; failVerify = false; failCompanyDelete = false;
   globalThis.fetch = async (input, init = {}) => {
     const url = new URL(String(input)), method = init.method ?? 'GET';
+    if (url.origin === 'https://api.pwnedpasswords.com') return new Response('0'.repeat(35)+':1');
     const body = init.body ? JSON.parse(init.body) : null;
     requests.push({ path: url.pathname, method, body });
     if (url.pathname.endsWith('/rpc/fama_consume_rate_limit')) return Response.json(true);

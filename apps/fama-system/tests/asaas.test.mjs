@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { asaasMovement, parseAsaasEnvironment, validateAsaasKey } from "../lib/asaas.ts";
+import { asaasMovement, parseAsaasEnvironment, validateAsaasKey } from "../lib/asaas.js";
 
 test("separa produção e sandbox", () => {
   assert.equal(parseAsaasEnvironment("production"), "production");

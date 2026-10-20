@@ -1,5 +1,14 @@
 import assert from "node:assert/strict";
-import test from "node:test";
+import test, { before, after } from "node:test";
+
+const originalFetch = globalThis.fetch;
+before(() => {
+  globalThis.fetch = async (url) => {
+    assert.equal(String(url), "https://control.famasystem.online/api/public/plans");
+    return Response.json({ plans: [] });
+  };
+});
+after(() => { globalThis.fetch = originalFetch; });
 
 const developmentPreviewMeta =
   /<meta(?=[^>]*\bname=["']codex-preview["'])(?=[^>]*\bcontent=["']development["'])[^>]*>/i;
@@ -32,6 +41,7 @@ test("renders production branding without development metadata", async () => {
   );
 
   assert.equal(response.status, 200);
+  assert.equal(response.headers.get('cache-control'), 'no-store');
   assert.match(
     response.headers.get("content-type") ?? "",
     /^text\/html\b/i,
@@ -67,6 +77,12 @@ test("renders public plans with free-trial-first links", async () => {
   assert.match(html, /href="\/entrar\?signup=1&amp;plan=inicial"/);
   assert.match(html, /href="\/entrar\?signup=1&amp;plan=profissional"/);
   assert.match(html, /Pagar agora sem teste/);
+  assert.match(visibleHtml(html), /R\$\s*99,00/);
+  assert.match(visibleHtml(html), /R\$\s*199,00/);
+  assert.match(visibleHtml(html), /R\$\s*350,00/);
+  assert.match(visibleHtml(html), /\(61\) 99138-8546/);
+  assert.match(visibleHtml(html), /sempre com aviso prévio/);
+  assert.match(html, /href="https:\/\/wa\.me\/5561991388546\?text=/);
   assert.doesNotMatch(visibleHtml(html), /\b(undefined|null|NaN)\b/);
 });
 
@@ -94,6 +110,10 @@ test("renders public checkout as optional payment after trial", async () => {
   assert.equal(response.status, 200);
   assert.match(html, /Comece sem pagar agora/);
   assert.match(html, /Pagar agora sem usar o teste grátis/);
-  assert.match(html, /R\$\s*199,90/);
+  assert.match(html, /CPF\/CNPJ do pagador/);
+  assert.match(html, /<input(?=[^>]*\bname="buyerDocument")(?=[^>]*\brequired="")[^>]*>/);
+  assert.match(html, /R\$\s*350,00/);
+  assert.match(visibleHtml(html), /sempre com aviso prévio/);
+  assert.match(visibleHtml(html), /\(61\) 99138-8546/);
   assert.doesNotMatch(visibleHtml(html), /\b(undefined|null|NaN)\b/);
 });

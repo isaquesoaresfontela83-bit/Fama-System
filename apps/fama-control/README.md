@@ -21,12 +21,12 @@ Plataforma SaaS multiempresa para gestão de negócios de piscinas. Reúne CRM, 
 ## Estrutura principal
 
 - `app/`: interface Next/Vinext e rotas de API.
-- `db/schema.ts`: modelo do banco D1 usado como retorno seguro durante a migração.
+- `db/schema.js`: modelo do banco D1 usado como retorno seguro durante a migração.
 - `drizzle/`: migrações versionadas do banco.
 - `supabase/schema.sql`: esquema PostgreSQL, segurança multiempresa, função transacional e bucket privado.
-- `lib/supabase.ts`: acesso HTTP ao Supabase para o Worker, sem conexão TCP.
-- `lib/tenant.ts`: autorização e isolamento multiempresa.
-- `lib/quote-pdf.ts` e `lib/contract-pdf.ts`: geração dos documentos.
+- `lib/supabase.js`: acesso HTTP ao Supabase para o Worker, sem conexão TCP.
+- `lib/tenant.js`: autorização e isolamento multiempresa.
+- `lib/quote-pdf.js` e `lib/contract-pdf.js`: geração dos documentos.
 - `.openai/hosting.json`: configuração do projeto no ChatGPT Sites.
 
 ## Desenvolvimento
@@ -42,7 +42,7 @@ Comandos disponíveis:
 
 - `npm run dev`: inicia o ambiente local.
 - `npm run build`: gera o Worker e os recursos de produção.
-- `npm run db:generate`: gera uma nova migração a partir de `db/schema.ts`.
+- `npm run db:generate`: gera uma nova migração a partir de `db/schema.js`.
 - `npm run lint`: verifica a qualidade do código.
 - `npm test`: executa a compilação e os testes automatizados existentes.
 
@@ -97,3 +97,12 @@ O SQL aditivo correspondente está em `supabase/company-access.sql`. A suíte lo
 ## Central Fama IA
 
 As consultas administrativas, preferências globais e prévia ficam no painel. A documentação do copiloto, permissões e conexão generativa opcional está em [docs/FAMA_IA.md](docs/FAMA_IA.md). O planejamento e os cadastros operacionais são acessados na empresa selecionada no Fama System.
+
+## JavaScript e Python
+
+A interface React, as rotas de API, os componentes e as configurações usam JavaScript/JSX. A inferência da Fama IA é orquestrada pelo serviço Python. O servidor Fama valida identidade, plano, empresa e permissões antes de enviar somente o resumo autorizado.
+
+- `npm run check:js`: valida todos os arquivos JavaScript e JSX.
+- `npm run build`: gera o Worker e os arquivos do navegador.
+- `npm test`: compila e executa os testes de regressão.
+- Serviço Python, configuração e validação: [migração](docs/migracao-javascript-python.md).

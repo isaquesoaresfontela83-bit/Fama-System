@@ -42,3 +42,12 @@ next-env.d.ts
 /.sites-runtime/
 /outputs/
 /work/
+
+/public/fama-ai-runtime/
+
+# Python AI service
+__pycache__/
+*.py[cod]
+.venv/
+
+.site-deploy*.tar.gz

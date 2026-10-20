@@ -35,7 +35,7 @@ const vite = await createServer({
     name: 'fama-fixtures', enforce: 'pre',
     resolveId(id) {
       if (id === 'cloudflare:workers') return '\0fama-env';
-      if (id.endsWith('/app/system-auth') || id.endsWith('/app/system-auth.ts')) return '\0fama-auth';
+      if (id.endsWith('/app/system-auth') || id.endsWith('/app/system-auth.js')) return '\0fama-auth';
     },
     load(id) {
       if (id === '\0fama-env') return 'export const env = globalThis.__famaTestRuntime;';
@@ -43,43 +43,52 @@ const vite = await createServer({
     },
   }],
 });
-const plans = await vite.ssrLoadModule('/lib/plans.ts');
-const billing = await vite.ssrLoadModule('/lib/billing.ts');
-const tenant = await vite.ssrLoadModule('/lib/tenant.ts');
-const subscriptionRoute = await vite.ssrLoadModule('/app/api/billing/route.ts');
-const webhook = await vite.ssrLoadModule('/app/api/billing/asaas-webhook/route.ts');
-const fiscal = await vite.ssrLoadModule('/lib/fiscal.ts');
-const financeRoute = await vite.ssrLoadModule('/app/api/finance/route.ts');
-const supabase = await vite.ssrLoadModule('/lib/supabase.ts');
-const settingsModule = await vite.ssrLoadModule('/lib/company-settings.ts');
-const supportRoute = await vite.ssrLoadModule('/app/api/support/route.ts');
-const membersRoute = await vite.ssrLoadModule('/app/api/members/route.ts');
-const recordsRoute = await vite.ssrLoadModule('/app/api/records/route.ts');
-const adminOrganizationRoute = await vite.ssrLoadModule('/app/api/admin/organizations/[id]/route.ts');
-const launchRoute = await vite.ssrLoadModule('/app/api/admin/launch/route.ts');
-const launchOperations = await vite.ssrLoadModule('/lib/launch-readiness.ts');
-const attachmentsRoute = await vite.ssrLoadModule('/app/api/attachments/route.ts');
-const attachmentDeleteRoute = await vite.ssrLoadModule('/app/api/attachments/[id]/route.ts');
-const portal = await vite.ssrLoadModule('/lib/fiscal-portal.ts');
-const fiscalDocument = await vite.ssrLoadModule('/lib/fiscal-document.ts');
-const quoteConfig = await vite.ssrLoadModule('/lib/quote-config.ts');
-const quoteConfigRoute = await vite.ssrLoadModule('/app/api/quote-config/route.ts');
-const quoteCatalog = await vite.ssrLoadModule('/lib/pool-quote-catalog.ts');
-const quoteMath = await vite.ssrLoadModule('/lib/quote-calculation.ts');
-const inventory = await vite.ssrLoadModule('/lib/inventory.ts');
-const organizationsRoute = await vite.ssrLoadModule('/app/api/organizations/route.ts');
-let organization, membership, requests, paymentStatus, fiscalStatus, supportTickets, webhookRows, bankConnections, providerAccountStatus, receiverAccessible, attachments, signedLinksAvailable;
+const plans = await vite.ssrLoadModule('/lib/plans.js');
+const billing = await vite.ssrLoadModule('/lib/billing.js');
+const tenant = await vite.ssrLoadModule('/lib/tenant.js');
+const subscriptionRoute = await vite.ssrLoadModule('/app/api/billing/route.js');
+const webhook = await vite.ssrLoadModule('/app/api/billing/asaas-webhook/route.js');
+const fiscal = await vite.ssrLoadModule('/lib/fiscal.js');
+const fiscalWebhookConfig = await vite.ssrLoadModule('/lib/asaas-fiscal-webhook.js');
+const fiscalWebhook = await vite.ssrLoadModule('/app/api/finance/asaas-webhook/route.js');
+const operationWeatherRoute = await vite.ssrLoadModule('/app/api/operation-weather/route.js');
+const companySettingsRoute = await vite.ssrLoadModule('/app/api/company-settings/route.js');
+const financeRoute = await vite.ssrLoadModule('/app/api/finance/route.js');
+const connectionsRoute = await vite.ssrLoadModule('/app/api/finance-connections/route.js');
+const cryptoModule = await vite.ssrLoadModule('/lib/crypto.js');
+const supabase = await vite.ssrLoadModule('/lib/supabase.js');
+const settingsModule = await vite.ssrLoadModule('/lib/company-settings.js');
+const supportRoute = await vite.ssrLoadModule('/app/api/support/route.js');
+const membersRoute = await vite.ssrLoadModule('/app/api/members/route.js');
+const recordsRoute = await vite.ssrLoadModule('/app/api/records/route.js');
+const adminOrganizationRoute = await vite.ssrLoadModule('/app/api/admin/organizations/[id]/route.js');
+const launchRoute = await vite.ssrLoadModule('/app/api/admin/launch/route.js');
+const launchOperations = await vite.ssrLoadModule('/lib/launch-readiness.js');
+const attachmentsRoute = await vite.ssrLoadModule('/app/api/attachments/route.js');
+const attachmentDeleteRoute = await vite.ssrLoadModule('/app/api/attachments/[id]/route.js');
+const portal = await vite.ssrLoadModule('/lib/fiscal-portal.js');
+const fiscalDocument = await vite.ssrLoadModule('/lib/fiscal-document.js');
+const quoteConfig = await vite.ssrLoadModule('/lib/quote-config.js');
+const quoteConfigRoute = await vite.ssrLoadModule('/app/api/quote-config/route.js');
+const quoteCatalog = await vite.ssrLoadModule('/lib/pool-quote-catalog.js');
+const quoteMath = await vite.ssrLoadModule('/lib/quote-calculation.js');
+const inventory = await vite.ssrLoadModule('/lib/inventory.js');
+const organizationsRoute = await vite.ssrLoadModule('/app/api/organizations/route.js');
+let blockRules, organization, membership, requests, paymentStatus, supportTickets, webhookRows, bankConnections, providerAccountStatus, receiverAccessible, attachments, signedLinksAvailable;
+let asaasInvoices, asaasInvoiceStatus, asaasInvoiceFailure, supportsCancellation, afterAsaasInvoiceCreated;
 const json = (value, status = 200) => Response.json(value, { status });
 
 beforeEach(() => {
   for (const key of Object.keys(runtime)) delete runtime[key];
   Object.assign(runtime, { DATA_BACKEND: 'supabase', SUPABASE_URL: 'https://fixture.supabase.co', SUPABASE_SECRET_KEY: 'sb_secret_fixture', FAMA_ASAAS_API_KEY: '$aact_hmlg_123456789012345678901234567890', FAMA_ASAAS_ENVIRONMENT: 'sandbox', FAMA_ASAAS_WEBHOOK_TOKEN: 'fixture-webhook', FAMA_DATA_ENCRYPTION_KEY: 'a'.repeat(64), DB: d1 });
   globalThis.__famaTestUser = { id: 'user-fixture', email: 'fixture@example.test', displayName: 'Fixture' };
+  blockRules = {global:{overrides:{},revision:0,updatedAt:null},organization:{overrides:{},revision:0,updatedAt:null},member:{overrides:{},revision:0,updatedAt:null}};
   organization = { id: 'org-fixture', name: 'Empresa de teste', slug: 'fixture', status: 'active', plan: 'inicial', plan_status: 'active', plan_expires_at: '2030-01-01T00:00:00.000Z', billing_provider: 'asaas', billing_payment_id: 'pay_first', billing_customer_id: 'cus_fixture', billing_cycle: 'monthly', pending_plan: '', pending_billing_cycle: 'monthly' };
   membership = { id: 'member-fixture', organization_id: 'org-fixture', user_id: 'user-fixture', user_email: 'fixture@example.test', role: 'owner', status: 'active', permissions: ['finance', 'crm'] };
-  requests = []; paymentStatus = 'PENDING'; fiscalStatus = 'queued'; supportTickets = []; webhookRows = []; bankConnections = []; providerAccountStatus = 'APPROVED'; receiverAccessible = true;
+  requests = []; paymentStatus = 'PENDING'; supportTickets = []; webhookRows = []; bankConnections = []; providerAccountStatus = 'APPROVED'; receiverAccessible = true;
   attachments = [];
   signedLinksAvailable = true;
+  asaasInvoices = new Map(); asaasInvoiceStatus = 'SCHEDULED'; asaasInvoiceFailure = false; supportsCancellation = false; afterAsaasInvoiceCreated = null;
   globalThis.fetch = async (input, init = {}) => {
     if (init.redirect === 'error') throw new TypeError('Workers requires an explicit manual redirect policy.');
     const url = new URL(String(input));
@@ -94,8 +103,16 @@ beforeEach(() => {
       return json({ data: webhookRows, hasMore: false });
     }
     if (url.pathname === '/v3/webhooks/wh_fixture' && method === 'PUT') { Object.assign(webhookRows.find(row => row.id === 'wh_fixture'), body); return json(webhookRows.find(row => row.id === 'wh_fixture')); }
-    if (url.pathname === '/rest/v1/bank_connections') return json(bankConnections);
+    if (url.pathname === '/rest/v1/bank_connections') {
+      const matches = row => ['id', 'organization_id', 'provider', 'item_hash'].every(key => !url.searchParams.has(key) || url.searchParams.get(key) === `eq.${row[key]}`);
+      if (method === 'POST') { bankConnections.push(body); return json([body]); }
+      const selected = bankConnections.filter(matches);
+      if (method === 'PATCH') selected.forEach(row => Object.assign(row, body));
+      return json(selected);
+    }
+    if (url.pathname === '/rest/v1/rpc/fama_get_block_rules') return json(blockRules);
     if (url.pathname === '/rest/v1/rpc/fama_consume_rate_limit') return json(true);
+    if (url.pathname === '/rest/v1/rpc/fama_create_customer_company') return json(body.p_organization);
     if (url.pathname === '/rest/v1/organization_members') {
       if (method === 'POST') return json([body]);
       if (url.searchParams.get('status') === 'eq.invited') return json([]);
@@ -122,13 +139,25 @@ beforeEach(() => {
       const payment = url.searchParams.get('billing_payment_id');
       return json((id && id !== `eq.${organization.id}`) || (payment && payment !== `eq.${organization.billing_payment_id}`) ? [] : [organization]);
     }
-    if (url.pathname === '/v3/customers') return json({ id: 'cus_fixture' });
+    if (url.pathname === '/v3/customers') return json(method === 'POST' ? { id: 'cus_fixture' } : { data: [{ id: 'cus_fixture' }] });
+    if (url.pathname === '/v3/fiscalInfo/municipalOptions') return json({ supportsCancellation });
+    if (url.pathname === '/v3/invoices' && method === 'POST') {
+      if (asaasInvoiceFailure) return json({ errors: [{ description: 'Dados fiscais recusados.' }] }, 400);
+      const invoice = { ...body, id: `inv_${body.externalReference}`, status: 'SCHEDULED' };
+      asaasInvoices.set(invoice.id, invoice);
+      if (afterAsaasInvoiceCreated) await afterAsaasInvoiceCreated(invoice);
+      return json(invoice);
+    }
+    if (url.pathname.startsWith('/v3/invoices/')) {
+      const id = url.pathname.split('/')[3];
+      const invoice = asaasInvoices.get(id);
+      if (!invoice) return json({ errors: [{ description: 'Nota não encontrada.' }] }, 404);
+      if (url.pathname.endsWith('/cancel')) return json({ ...invoice, status: 'PROCESSING_CANCELLATION' });
+      return json({ ...invoice, status: asaasInvoiceStatus, number: asaasInvoiceStatus === 'AUTHORIZED' ? '123' : null, pdfUrl: asaasInvoiceStatus === 'AUTHORIZED' ? 'https://cdn.example.test/invoice.pdf' : null, xmlUrl: asaasInvoiceStatus === 'AUTHORIZED' ? 'https://cdn.example.test/invoice.xml' : null, validationCode: asaasInvoiceStatus === 'AUTHORIZED' ? 'fixture-code' : null, statusDescription: asaasInvoiceStatus === 'ERROR' ? 'Serviço recusado pela prefeitura.' : null });
+    }
     if (url.pathname === '/v3/payments' && method === 'POST') return json({ id: 'pay_first', invoiceUrl: 'https://sandbox.asaas.com/i/fixture', dueDate: '2026-09-30' });
     if (url.pathname.endsWith('/pixQrCode')) return json({ payload: 'fixture-pix', encodedImage: 'fixture-image' });
-    if (url.pathname === '/v3/payments/pay_first') return json({ id: 'pay_first', status: paymentStatus });
-    if (url.pathname === '/api/v1/emitir') return json({ invoiceId: 'inv_fixture', status: 'queued' }, 202);
-    if (url.pathname === '/api/v1/cancelar') return json({ invoiceId: 'inv_fixture', status: 'queued' }, 202);
-    if (url.pathname === '/api/v1/invoices/inv_fixture/status') return json({ status: fiscalStatus, numeroNfe: fiscalStatus === 'issued' ? '123' : '', pdfUrl: fiscalStatus === 'issued' ? 'https://cdn.example.test/invoice.pdf' : '' });
+    if (url.pathname === '/v3/payments/pay_first') return json({ id: 'pay_first', customer: 'cus_fixture', status: paymentStatus });
     if (url.pathname.startsWith('/rest/v1/')) return json([]);
     if (url.pathname === '/api/internal/data') return json([]);
     throw new Error(`Unexpected fixture request: ${method} ${url}`);
@@ -187,7 +216,7 @@ test('a selected plan starts a seven-day trial without creating any payment', as
   const start = Date.now();
   const response = await organizationsRoute.POST(tenantRequest('/api/organizations', { name: 'Empresa do teste grátis', plan: 'profissional', legalAccepted: true }));
   assert.equal(response.status, 201);
-  const saved = requests.find(row => row.method === 'POST' && row.url.endsWith('/rest/v1/organizations')).body;
+  const saved = requests.find(row => row.method === 'POST' && row.url.endsWith('/rest/v1/rpc/fama_create_customer_company')).body.p_organization;
   assert.equal(saved.plan, 'profissional'); assert.equal(saved.plan_status, 'trial');
   assert.ok(Date.parse(saved.plan_expires_at) >= start + 7 * 86400000);
   assert.ok(Date.parse(saved.plan_expires_at) < start + 7 * 86400000 + 5000);
@@ -262,7 +291,7 @@ test('launch diagnostics reject unauthenticated callers and expired or unbounded
 test('launch diagnostics validate real provider responses without returning keys or account details', async () => {
   launchConfiguration();
   webhookRows = [{ id: 'wh_fixture', url: launchOperations.BILLING_WEBHOOK_URL, enabled: true, interrupted: false, events: launchOperations.BILLING_WEBHOOK_EVENTS, authToken: runtime.FAMA_ASAAS_WEBHOOK_TOKEN }];
-  bankConnections = [{ id: 'conn_fixture', organization_id: 'org-fixture', institution: 'Asaas', encrypted_item_id: '$aact_prod_fixture_private' }];
+  bankConnections = [{ id: 'conn_fixture', organization_id: 'org-fixture', provider: 'asaas', institution: 'Asaas', encrypted_item_id: '$aact_prod_fixture_private' }];
   const response = await launchRoute.POST(launchRequest('readiness'));
   assert.equal(response.status, 200);
   const result = await response.json();
@@ -321,17 +350,18 @@ test('billing validity ends on the last day of shorter months', () => {
 });
 
 test('installment charges send a single total without incompatible single-payment fields', async () => {
-  await billing.createAsaasPixCheckout({ organizationId: 'org-fixture', organizationName: 'Fixture', plan: 'inicial', buyerName: 'Fixture', buyerEmail: 'fixture@example.test', billingCycle: 'annual', installments: 12 });
+  await billing.createAsaasPixCheckout({ organizationId: 'org-fixture', organizationName: 'Fixture', plan: 'inicial', buyerName: 'Fixture', buyerEmail: 'fixture@example.test', buyerDocument: '249.715.637-92', billingCycle: 'annual', installments: 12 });
+  assert.equal(requests.find(r => r.url.endsWith('/customers') && r.method === 'POST').body.cpfCnpj, '24971563792');
   const payment = requests.find(r => r.url.endsWith('/payments') && r.method === 'POST').body;
-  assert.equal(payment.installmentCount, 12); assert.equal(payment.totalValue, 508.98);
+  assert.equal(payment.installmentCount, 12); assert.equal(payment.totalValue, 1009.8);
   assert.equal(Object.hasOwn(payment, 'value'), false); assert.equal(Object.hasOwn(payment, 'installmentValue'), false);
   assert.equal(requests.some(r => r.url.endsWith('/pixQrCode')), false);
-  await assert.rejects(() => billing.createAsaasPixCheckout({ organizationId: 'x', organizationName: 'X', plan: 'inicial', buyerName: 'X', buyerEmail: 'fixture@example.test', installments: NaN }), /parcelas/);
+  await assert.rejects(() => billing.createAsaasPixCheckout({ organizationId: 'x', organizationName: 'X', plan: 'inicial', buyerName: 'X', buyerEmail: 'fixture@example.test', buyerDocument: '24971563792', installments: NaN }), /parcelas/);
 });
 
 test('unpaid upgrades preserve the current plan and only apply the upgrade after payment', async () => {
   const originalExpiry = organization.plan_expires_at;
-  const created = await subscriptionRoute.POST(tenantRequest('/api/billing', { action: 'checkout', plan: 'profissional', billingCycle: 'annual', installments: 2 }));
+  const created = await subscriptionRoute.POST(tenantRequest('/api/billing', { action: 'checkout', plan: 'profissional', buyerDocument: '24971563792', billingCycle: 'annual', installments: 2 }));
   assert.equal(created.status, 200);
   assert.equal(organization.plan, 'inicial'); assert.equal(organization.pending_plan, 'profissional'); assert.equal(organization.plan_expires_at, originalExpiry);
   const pending = await subscriptionRoute.POST(tenantRequest('/api/billing', { action: 'check' }));
@@ -343,6 +373,7 @@ test('unpaid upgrades preserve the current plan and only apply the upgrade after
 });
 
 test('replayed payment webhooks do not grant extra subscription validity', async () => {
+  paymentStatus = 'CONFIRMED';
   organization.pending_plan = 'profissional'; organization.pending_billing_cycle = 'annual';
   const request = () => new Request('https://fama.example.test/api/billing/asaas-webhook', { method: 'POST', headers: { 'asaas-access-token': 'fixture-webhook', 'Content-Type': 'application/json' }, body: JSON.stringify({ event: 'PAYMENT_CONFIRMED', payment: { id: 'pay_first', status: 'CONFIRMED' } }) });
   assert.equal((await webhook.POST(request())).status, 200);
@@ -372,36 +403,198 @@ test('data service uses the private server bridge when a direct key is unavailab
   assert.equal(request.url, 'https://control.famasystem.online/api/internal/data'); assert.equal(request.headers.get('authorization'), 'Bearer fixture-bridge'); assert.equal(request.headers.get('x-fama-data-method'), 'GET'); assert.match(request.headers.get('x-fama-data-path'), /^\/rest\/v1\/customers\?/);
 });
 
-test('fiscal calculations use an explicit ISS rate and reject unsafe provider URLs', () => {
-  const settings = { ...settingsModule.defaultCompanySettings, fiscalIssRate: '2,5', fiscalTaxRegime: 'Simples Nacional' };
-  const invoice = { id: 'inv', type: 'nfse', customerName: 'Fixture', customerDocument: '12345678901', amountCents: 12545, serviceDescription: 'Serviço', issueDate: '2026-09-30' };
-  assert.equal(fiscal.notaasInvoicePayload(settings, invoice).valores.aliquotaIss, 2.5);
-  assert.throws(() => fiscal.notaasInvoicePayload({ ...settings, fiscalIssRate: '' }, invoice), /alíquota/);
-  assert.throws(() => fiscal.notaasBaseUrl({ ...settings, fiscalApiBaseUrl: 'http://127.0.0.1/api/v1' }), /URL oficial/);
-  assert.equal(fiscal.fiscalProviderState({ status: 'error', pdfUrl: 'javascript:alert(1)' }).pdfUrl, '');
+test('legacy fiscal configurations fall back to the official portal without credentials or custom endpoints', () => {
+  for (const provider of ['notaas', 'nuvem_fiscal', 'focus_nfe', 'plugnotas', 'tecnospeed', 'custom']) {
+    const settings = settingsModule.normalizeCompanySettings({ legalName: 'Empresa', fiscalProvider: provider, fiscalApiToken: 'old-private-key', fiscalApiBaseUrl: 'https://untrusted.example.test' });
+    assert.equal(settings.fiscalProvider, 'portal_nacional');
+    assert.equal(settings.fiscalApiToken, ''); assert.equal(settings.fiscalApiBaseUrl, ''); assert.equal(settings.legalName, 'Empresa');
+    assert.equal(portal.fiscalPortalSettings(settings).apiEnabled, false);
+  }
 });
 
-test('fiscal drafts, asynchronous issuance, polling and cancellation work with the Supabase tenant backend', async () => {
-  const settings = { ...settingsModule.defaultCompanySettings, fiscalProvider: 'notaas', fiscalApiToken: 'sk_test_fixture', fiscalIssRate: '2.5', fiscalEnvironment: 'sandbox' };
-  sqlite.prepare('INSERT OR REPLACE INTO organization_settings VALUES (?, ?, ?)').run('org-fixture', JSON.stringify(settings), new Date().toISOString());
-  const draft = await financeRoute.POST(tenantRequest('/api/finance', { action: 'fiscalInvoice', type: 'nfse', customerName: 'Fixture', customerDocument: '12345678901', amount: '125.45', serviceDescription: 'Manutenção da piscina', issueDate: '2026-09-30' }));
-  assert.equal(draft.status, 201); const id = (await draft.json()).fiscalInvoice.id;
-  const listing = await financeRoute.GET(tenantRequest('/api/finance'));
-  assert.equal((await listing.json()).fiscalInvoices.some(i => i.id === id), true);
-  const sent = await financeRoute.POST(tenantRequest('/api/finance', { action: 'issueFiscalInvoice', id }));
-  assert.equal(sent.status, 200); assert.equal((await sent.json()).status, 'processando');
-  const duplicate = await financeRoute.POST(tenantRequest('/api/finance', { action: 'issueFiscalInvoice', id }));
-  assert.equal(duplicate.status, 409); assert.equal(requests.filter(r => r.url.endsWith('/emitir')).length, 1);
-  fiscalStatus = 'issued';
-  const refreshed = await financeRoute.POST(tenantRequest('/api/finance', { action: 'refreshFiscalInvoice', id }));
-  assert.equal((await refreshed.json()).officialNumber, '123');
-  const cancelled = await financeRoute.POST(tenantRequest('/api/finance', { action: 'updateFiscalInvoice', id, status: 'cancelada' }));
-  assert.equal((await cancelled.json()).status, 'cancelando');
-  fiscalStatus = 'cancelled';
-  const checked = await financeRoute.POST(tenantRequest('/api/finance', { action: 'refreshFiscalInvoice', id }));
-  assert.equal((await checked.json()).status, 'cancelada');
-  const unauthorized = await financeRoute.POST(tenantRequest('/api/finance', { action: 'issueFiscalInvoice', id: 'unknown-invoice' }));
-  assert.equal(unauthorized.status, 404);
+const fiscalCompanyKey = '$aact_hmlg_' + '2'.repeat(30);
+const asaasSettings = () => ({ ...settingsModule.defaultCompanySettings, fiscalProvider: 'asaas', fiscalApiToken: fiscalCompanyKey, email: 'fiscal@example.test', fiscalIssRate: '2,5', fiscalServiceCode: '1.01' });
+async function asaasDraft(overrides = {}) {
+  organization.plan = 'profissional';
+  sqlite.prepare('INSERT OR REPLACE INTO organization_settings VALUES (?, ?, ?)').run('org-fixture', JSON.stringify(asaasSettings()), new Date().toISOString());
+  const response = await financeRoute.POST(tenantRequest('/api/finance', { action: 'fiscalInvoice', type: 'nfse', customerName: 'Fixture', customerDocument: '12345678901', amount: '125.45', serviceDescription: 'Manutenção da piscina', issueDate: '2026-10-04', ...overrides }));
+  assert.equal(response.status, 201);
+  return (await response.json()).fiscalInvoice;
+}
+function fiscalHookRequest(organizationId, token, invoice, event = 'INVOICE_AUTHORIZED') {
+  return new Request(`https://fama.example.test/api/finance/asaas-webhook?organizationId=${organizationId}`, { method: 'POST', headers: { 'Content-Type': 'application/json', 'asaas-access-token': token }, body: JSON.stringify({ event, invoice }) });
+}
+
+test('Asaas fiscal payload uses municipal codes, configured taxes and only authorized invoices are emitted', () => {
+  const settings = { ...asaasSettings(), fiscalRetainIss: true, fiscalPisRate: '0,65' };
+  const invoice = { id: 'local-invoice', type: 'nfse', customerName: 'Fixture', customerDocument: '12345678901', amountCents: 12545, serviceDescription: 'Serviço', issueDate: '2026-10-04' };
+  const payload = fiscal.asaasInvoicePayload(settings, invoice, 'cus_fixture');
+  assert.equal(payload.customer, 'cus_fixture'); assert.equal(payload.externalReference, invoice.id);
+  assert.equal(payload.municipalServiceCode, '1.01'); assert.equal('municipalServiceId' in payload, false);
+  assert.deepEqual(payload.taxes, { retainIss: true, iss: 2.5, cofins: 0, csll: 0, inss: 0, ir: 0, pis: 0.65 });
+  assert.equal(fiscal.asaasInvoicePayload({ ...settings, fiscalServiceCodeType: 'id', fiscalServiceCode: '21234' }, invoice).municipalServiceId, '21234');
+  assert.throws(() => fiscal.asaasInvoicePayload({ ...settings, fiscalIssRate: '' }, invoice), /alíquota/);
+  assert.throws(() => fiscal.asaasInvoicePayload({ ...settings, fiscalServiceCode: '' }, invoice), /serviço municipal/);
+  assert.throws(() => fiscal.asaasInvoicePayload(settings, { ...invoice, type: 'nfe' }), /SEFAZ/);
+  assert.throws(() => fiscal.asaasInvoicePayload(settings, { ...invoice, issueDate: '2026-02-31' }), /data de emissão/);
+  assert.equal(fiscal.asaasInvoiceState({ status: 'SYNCHRONIZED' }).status, 'processando');
+  assert.equal(fiscal.asaasInvoiceState({ status: 'AUTHORIZED' }).status, 'emitida');
+  assert.equal(fiscal.asaasInvoiceState({ status: 'PROCESSING_CANCELLATION' }).status, 'cancelando');
+  assert.equal(fiscal.asaasInvoiceState({ status: 'CANCELLATION_DENIED' }).status, 'emitida');
+  assert.equal(fiscal.asaasInvoiceState({ status: 'AUTHORIZED', pdfUrl: 'javascript:alert(1)' }).pdfUrl, '');
+});
+
+test('Asaas issuance configures a tenant webhook, reuses the customer and prevents duplicate invoices', async () => {
+  const draft = await asaasDraft();
+  const sent = await financeRoute.POST(tenantRequest('/api/finance', { action: 'issueFiscalInvoice', id: draft.id }));
+  assert.equal(sent.status, 200); const result = await sent.json();
+  assert.equal(result.status, 'processando'); assert.equal(result.provider, 'asaas');
+  const hook = webhookRows.find(row => row.url.includes('/finance/asaas-webhook'));
+  assert.equal(hook.authToken, await fiscalWebhookConfig.asaasFiscalWebhookToken('org-fixture'));
+  assert.notEqual(hook.authToken, runtime.FAMA_ASAAS_WEBHOOK_TOKEN);
+  assert.ok(fiscalWebhookConfig.ASAAS_INVOICE_EVENTS.every(event => hook.events.includes(event)));
+  assert.equal(requests.filter(row => new URL(row.url).pathname === '/v3/customers' && row.method === 'POST').length, 0);
+  const outbound = requests.find(row => new URL(row.url).pathname === '/v3/invoices' && row.method === 'POST');
+  assert.equal(outbound.headers.get('access_token'), fiscalCompanyKey); assert.equal(outbound.body.value, 125.45); assert.equal(outbound.body.externalReference, draft.id);
+  assert.equal((await financeRoute.POST(tenantRequest('/api/finance', { action: 'issueFiscalInvoice', id: draft.id }))).status, 409);
+  asaasInvoiceStatus = 'SYNCHRONIZED';
+  assert.equal((await (await financeRoute.POST(tenantRequest('/api/finance', { action: 'refreshFiscalInvoice', id: draft.id }))).json()).status, 'processando');
+  asaasInvoiceStatus = 'AUTHORIZED';
+  const authorized = await (await financeRoute.POST(tenantRequest('/api/finance', { action: 'refreshFiscalInvoice', id: draft.id }))).json();
+  assert.equal(authorized.status, 'emitida'); assert.equal(authorized.officialNumber, '123'); assert.equal(authorized.accessKey, 'fixture-code');
+  assert.equal((await financeRoute.POST(tenantRequest('/api/finance', { action: 'updateFiscalInvoice', id: draft.id, status: 'cancelada' }))).status, 409);
+  supportsCancellation = true;
+  assert.equal((await (await financeRoute.POST(tenantRequest('/api/finance', { action: 'updateFiscalInvoice', id: draft.id, status: 'cancelada' }))).json()).status, 'cancelando');
+  assert.equal(requests.find(row => row.url.endsWith('/cancel')).body.cancelOnlyOnAsaas, false);
+});
+
+test('Asaas fiscal webhooks isolate companies and use authoritative state for repeated or stale events', async () => {
+  const draft = await asaasDraft();
+  const sent = await (await financeRoute.POST(tenantRequest('/api/finance', { action: 'issueFiscalInvoice', id: draft.id }))).json();
+  const invoice = { id: sent.providerReference, externalReference: draft.id, status: 'AUTHORIZED', number: 'forged' };
+  assert.equal((await fiscalWebhook.POST(fiscalHookRequest('org-fixture', runtime.FAMA_ASAAS_WEBHOOK_TOKEN, invoice))).status, 401);
+  const otherToken = await fiscalWebhookConfig.asaasFiscalWebhookToken('other-company');
+  assert.equal((await fiscalWebhook.POST(fiscalHookRequest('org-fixture', otherToken, invoice))).status, 401);
+  assert.equal((await (await fiscalWebhook.POST(fiscalHookRequest('other-company', otherToken, invoice))).json()).ignored, 'invoice_not_found');
+  asaasInvoiceStatus = 'AUTHORIZED';
+  const token = await fiscalWebhookConfig.asaasFiscalWebhookToken('org-fixture');
+  assert.equal((await fiscalWebhook.POST(fiscalHookRequest('org-fixture', token, invoice))).status, 200);
+  assert.equal((await fiscalWebhook.POST(fiscalHookRequest('org-fixture', token, { ...invoice, status: 'SCHEDULED' }, 'INVOICE_CREATED'))).status, 200);
+  const saved = sqlite.prepare('SELECT status, official_number, pdf_url, xml_url FROM fiscal_invoices WHERE id = ?').get(draft.id);
+  assert.deepEqual({ ...saved }, { status: 'emitida', official_number: '123', pdf_url: 'https://cdn.example.test/invoice.pdf', xml_url: 'https://cdn.example.test/invoice.xml' });
+  assert.equal(organization.plan, 'profissional');
+  asaasInvoiceStatus = 'CANCELED';
+  assert.equal((await fiscalWebhook.POST(fiscalHookRequest('org-fixture', token, invoice, 'INVOICE_CANCELED'))).status, 200);
+  assert.equal(sqlite.prepare('SELECT status FROM fiscal_invoices WHERE id = ?').get(draft.id).status, 'cancelada');
+});
+
+test('Asaas authorization arriving before the scheduling response does not revert the emitted invoice', async () => {
+  const draft = await asaasDraft();
+  asaasInvoiceStatus = 'AUTHORIZED';
+  afterAsaasInvoiceCreated = async invoice => {
+    const token = await fiscalWebhookConfig.asaasFiscalWebhookToken('org-fixture');
+    assert.equal((await fiscalWebhook.POST(fiscalHookRequest('org-fixture', token, invoice))).status, 200);
+  };
+  assert.equal((await financeRoute.POST(tenantRequest('/api/finance', { action: 'issueFiscalInvoice', id: draft.id }))).status, 200);
+  assert.equal(sqlite.prepare('SELECT status FROM fiscal_invoices WHERE id = ?').get(draft.id).status, 'emitida');
+});
+
+test('Asaas rejects product invoices before external requests and provider validation failures unlock drafts', async () => {
+  const product = await asaasDraft({ type: 'nfe' });
+  assert.equal((await financeRoute.POST(tenantRequest('/api/finance', { action: 'issueFiscalInvoice', id: product.id }))).status, 400);
+  assert.equal(requests.some(row => row.url.includes('asaas.com')), false);
+  assert.equal(sqlite.prepare('SELECT status FROM fiscal_invoices WHERE id = ?').get(product.id).status, 'rascunho');
+  const draft = await asaasDraft(); asaasInvoiceFailure = true;
+  assert.equal((await financeRoute.POST(tenantRequest('/api/finance', { action: 'issueFiscalInvoice', id: draft.id }))).status, 400);
+  assert.equal(sqlite.prepare('SELECT status FROM fiscal_invoices WHERE id = ?').get(draft.id).status, 'rascunho');
+});
+
+test('Asaas settings encrypt and mask the company key and reject an environment change with a saved key', async () => {
+  organization.plan = 'profissional';
+  const settings = asaasSettings();
+  const saved = await companySettingsRoute.POST(tenantRequest('/api/company-settings', { settings }));
+  assert.equal(saved.status, 200);
+  const result = (await saved.json()).settings;
+  assert.match(result.fiscalApiToken, /configurado/); assert.notEqual(result.fiscalApiToken, fiscalCompanyKey);
+  assert.equal((await companySettingsRoute.POST(tenantRequest('/api/company-settings', { settings: { ...result, fiscalEnvironment: 'production' } }))).status, 400);
+  assert.equal((await companySettingsRoute.GET(tenantRequest('/api/company-settings'))).status, 200);
+});
+
+for (const provider of ['notaas', 'nuvem_fiscal', 'focus_nfe', 'plugnotas', 'tecnospeed', 'custom']) {
+  test(`removed fiscal provider ${provider} cannot be saved or issue an invoice from a legacy configuration`, async () => {
+    organization.plan = 'profissional';
+    const settings = { ...settingsModule.defaultCompanySettings, fiscalProvider: provider, fiscalApiToken: 'old-private-key', fiscalApiBaseUrl: 'https://untrusted.example.test', fiscalIssRate: '2.5' };
+    const rejected = await companySettingsRoute.POST(tenantRequest('/api/company-settings', { settings }));
+    assert.equal(rejected.status, 400);
+    sqlite.prepare('INSERT OR REPLACE INTO organization_settings VALUES (?, ?, ?)').run('org-fixture', JSON.stringify(settings), new Date().toISOString());
+    const read = await companySettingsRoute.GET(tenantRequest('/api/company-settings'));
+    const readSettings = (await read.json()).settings;
+    assert.equal(readSettings.fiscalProvider, 'portal_nacional'); assert.equal(readSettings.fiscalApiToken, '');
+    const draft = await financeRoute.POST(tenantRequest('/api/finance', { action: 'fiscalInvoice', type: 'nfse', customerName: 'Fixture', customerDocument: '12345678901', amount: '125.45', serviceDescription: 'Manutenção', issueDate: '2026-10-05' }));
+    assert.equal(draft.status, 201); const id = (await draft.json()).fiscalInvoice.id;
+    const sent = await financeRoute.POST(tenantRequest('/api/finance', { action: 'issueFiscalInvoice', id }));
+    assert.equal(sent.status, 400); assert.equal(sqlite.prepare('SELECT status FROM fiscal_invoices WHERE id = ?').get(id).status, 'rascunho');
+    assert.equal(requests.some(request => request.url.includes('untrusted') || request.url.includes('notaas') || request.url.includes('/v3/invoices')), false);
+  });
+}
+
+test('switching to an official portal clears API credentials without exposing them', async () => {
+  const initial = await companySettingsRoute.POST(tenantRequest('/api/company-settings', { settings: asaasSettings() }));
+  assert.equal(initial.status, 200);
+  const masked = (await initial.json()).settings;
+  const saved = await companySettingsRoute.POST(tenantRequest('/api/company-settings', { settings: { ...masked, fiscalProvider: 'portal_nacional' } }));
+  assert.equal(saved.status, 200); assert.equal((await saved.json()).settings.fiscalApiToken, '');
+  const persisted = JSON.parse(sqlite.prepare('SELECT settings_json FROM organization_settings WHERE organization_id = ?').get('org-fixture').settings_json);
+  assert.equal(persisted.fiscalApiToken, '');
+});
+
+test('historical fiscal documents from removed providers remain readable and cannot trigger provider calls', async () => {
+  const invoice = await asaasDraft();
+  sqlite.prepare("UPDATE fiscal_invoices SET status = 'emitida', provider = 'notaas', provider_reference = 'legacy-invoice', pdf_url = 'https://documents.example.test/legacy.pdf' WHERE id = ?").run(invoice.id);
+  const list = await financeRoute.GET(tenantRequest('/api/finance'));
+  const historical = (await list.json()).fiscalInvoices.find(row => row.id === invoice.id);
+  assert.equal(historical.pdfUrl, 'https://documents.example.test/legacy.pdf');
+  for (const body of [{ action: 'refreshFiscalInvoice' }, { action: 'updateFiscalInvoice', status: 'cancelada' }]) {
+    const response = await financeRoute.POST(tenantRequest('/api/finance', { ...body, id: invoice.id }));
+    assert.equal(response.status, 409);
+  }
+  assert.equal(requests.some(request => request.url.includes('notaas') || request.url.includes('/v3/invoices/')), false);
+});
+
+test('bank connections omit removed gateways and their saved primary preference', async () => {
+  organization.plan = 'intermediario';
+  bankConnections = [
+    { id: 'asaas-company-connection', organization_id: 'org-fixture', provider: 'asaas', institution: 'Asaas', encrypted_item_id: 'private' },
+    { id: 'old-market-connection', organization_id: 'org-fixture', provider: 'mercado_pago', institution: 'Removed', encrypted_item_id: 'private' },
+    { id: 'old-bank-connection', organization_id: 'org-fixture', provider: 'pagbank', institution: 'Removed', encrypted_item_id: 'private' },
+    { id: 'saved-preferences', organization_id: 'org-fixture', provider: 'finance_preferences', item_hash: 'finance-preferences-v1', encrypted_item_id: await cryptoModule.encryptText(JSON.stringify({ primaryProvider: 'pagbank', primaryConnectionId: 'old-bank-connection' })) },
+  ];
+  const response = await connectionsRoute.GET(tenantRequest('/api/finance-connections'));
+  assert.equal(response.status, 200); const result = await response.json();
+  assert.deepEqual(result.connections.map(row => row.provider), ['asaas']); assert.deepEqual(result.preferences, {});
+  assert.equal(JSON.stringify(result).includes('private'), false);
+});
+
+for (const provider of ['mercado_pago', 'pagbank', 'pluggy', 'custom']) {
+  test(`financial gateway ${provider} cannot be registered or selected as primary`, async () => {
+    organization.plan = "intermediario";
+    for (const action of ['connect', 'setPrimary']) {
+      const response = await connectionsRoute.POST(tenantRequest('/api/finance-connections', { action, provider, connectionId: 'old-connection-id', credential: 'private-fixture-key' }));
+      assert.equal(response.status, 400);
+    }
+    assert.equal(requests.some(request => request.method !== 'GET' && request.url.includes('/rest/v1/bank_connections')), false);
+  });
+}
+
+test('Asaas preferences can only select a connection owned by the active company', async () => {
+  organization.plan = 'intermediario';
+  bankConnections = [{ id: 'asaas-company-connection', organization_id: 'org-fixture', provider: 'asaas', institution: 'Asaas' }, { id: 'other-company-connection', organization_id: 'org-other', provider: 'asaas' }];
+  const rejected = await connectionsRoute.POST(tenantRequest('/api/finance-connections', { action: 'setPrimary', provider: 'asaas', connectionId: 'other-company-connection' }));
+  assert.equal(rejected.status, 404);
+  const saved = await connectionsRoute.POST(tenantRequest('/api/finance-connections', { action: 'setPrimary', provider: 'asaas', connectionId: 'asaas-company-connection' }));
+  assert.equal(saved.status, 200);
+  const read = await connectionsRoute.GET(tenantRequest('/api/finance-connections'));
+  assert.equal((await read.json()).connections[0].primary, true);
 });
 
 const nationalKey = '5300108' + '1'.repeat(43);
@@ -410,6 +603,7 @@ function nationalXml({ key = nationalKey, issuer = issuerFixture, amount = '125.
   return `<?xml version="1.0"?><NFSe xmlns="http://www.sped.fazenda.gov.br/nfse"><infNFSe Id="NFS${key}"><nNFSe>123</nNFSe><emit><CNPJ>${issuer}</CNPJ></emit><DPS><infDPS><tpAmb>${environment}</tpAmb><toma><CPF>${customer}</CPF></toma><valores><vServPrest><vServ>${amount}</vServ></vServPrest></valores></infDPS></DPS></infNFSe></NFSe>`;
 }
 async function portalDraft() {
+  organization.plan = 'profissional';
   const settings = { ...settingsModule.defaultCompanySettings, legalName: 'Empresa fixture', document: issuerFixture };
   sqlite.prepare('INSERT OR REPLACE INTO organization_settings VALUES (?, ?, ?)').run('org-fixture', JSON.stringify(settings), new Date().toISOString());
   const response = await financeRoute.POST(tenantRequest('/api/finance', { action: 'fiscalInvoice', customerName: 'Fixture', customerDocument: '12345678901', amount: '125.45', serviceDescription: 'Manutenção da piscina', issueDate: '2026-09-30' }));
@@ -534,13 +728,13 @@ test('manual approval applies the requested plan and the complete billing cycle'
   assert.ok(Date.parse(organization.plan_expires_at) > Date.now() + 300 * 86400000);
 });
 
-test('support persists the actual ticket and returns the administrator response', async () => {
+test('support persists the actual ticket and keeps administrative notes private', async () => {
   const response = await supportRoute.POST(tenantRequest('/api/support', { title: 'Ajuda no cadastro', message: 'Preciso de ajuda para cadastrar um cliente.' }));
   assert.equal(response.status, 201); assert.equal(supportTickets.length, 1);
   supportTickets[0].status = 'resolvido'; supportTickets[0].admin_notes = 'Cadastro conferido.';
   const visible = await supportRoute.GET(tenantRequest('/api/support'));
   const ticket = (await visible.json()).tickets[0];
-  assert.equal(ticket.status, 'resolvido'); assert.equal(ticket.adminNotes, 'Cadastro conferido.');
+  assert.equal(ticket.status, 'resolvido'); assert.equal(ticket.adminNotes, undefined, 'internal support notes stay private');
   assert.equal(requests.some(r => r.url.endsWith('/api/public/support')), false);
 });
 
@@ -548,7 +742,7 @@ test('plan limits prevent additional users and customers at the advertised capac
   const fixtureFetch = globalThis.fetch;
   globalThis.fetch = async (input, init) => {
     const url = new URL(String(input));
-    if (url.pathname === '/rest/v1/organization_members' && url.searchParams.get('select') === 'id,status') return json([{ id: 'one', status: 'active' }, { id: 'two', status: 'invited' }]);
+    if (url.pathname === '/rest/v1/organization_members' && url.searchParams.get('select') === 'id,status') return json([{ id: 'one', status: 'active' }, { id: 'two', status: 'invited' }, { id: 'three', status: 'active' }]);
     if (url.pathname === '/rest/v1/customers') return json(Array.from({ length: 200 }, (_, i) => ({ id: `customer-${i}` })));
     return fixtureFetch(input, init);
   };
@@ -568,6 +762,7 @@ test('late upgrade webhook retains the pending plan for a later payment confirma
   const hook = (event) => new Request('https://fama.example.test/api/billing/asaas-webhook', { method: 'POST', headers: { 'Content-Type': 'application/json', 'asaas-access-token': 'fixture-webhook' }, body: JSON.stringify({ event, payment: { id: 'pay_first', customer: 'cus_fixture' } }) });
   assert.equal((await webhook.POST(hook('PAYMENT_OVERDUE'))).status, 200);
   assert.equal(organization.plan_status, 'active'); assert.equal(organization.pending_plan, 'profissional');
+  paymentStatus = 'CONFIRMED';
   assert.equal((await webhook.POST(hook('PAYMENT_CONFIRMED'))).status, 200);
   assert.equal(organization.plan, 'profissional'); assert.equal(organization.pending_plan, '');
 });
@@ -616,4 +811,99 @@ test('exempt billing reads do not refresh or create old provider charges', async
   assert.equal(response.status, 200);
   assert.equal((await response.json()).billing.billingEnabled, false);
   assert.equal(requests.some(r => r.url.includes('asaas.com')), false);
+});
+
+
+test('central removal blocks owner writes and finance provider calls without changing the owner profile',async()=>{
+  organization.plan = 'intermediario';
+  blockRules.global={overrides:{finance:false,crm:false},revision:1,updatedAt:'2026-10-03T12:00:00Z'};
+  const access=await tenant.requireTenant(tenantRequest('/api/records'));
+  assert.equal(access.organization.role,'owner');assert.equal(access.organization.moduleAccess.includes('finance'),false);
+  assert.deepEqual(membership.permissions,['finance','crm']);
+  assert.equal((await recordsRoute.POST(tenantRequest('/api/records',{entity:'leads',name:'Denied'}))).status,403);
+  assert.equal((await financeRoute.GET(tenantRequest('/api/finance'))).status,403);
+  assert.equal(requests.some(r=>r.url.includes('asaas.com')),false);
+  blockRules.member={overrides:{finance:true},revision:1,updatedAt:'2026-10-03T12:00:00Z'};
+  assert.equal((await tenant.requireTenant(tenantRequest('/api/access'))).organization.moduleAccess.includes('finance'),true);
+});
+
+function paymentHook(event, id) {
+  return new Request('https://fama.example.test/api/billing/asaas-webhook', {method:'POST',headers:{'asaas-access-token':'fixture-webhook','Content-Type':'application/json'},body:JSON.stringify({id,event,payment:{id:'pay_first',status:'CONFIRMED',customer:'cus_fixture'}})});
+}
+test('a confirmation replay after a refund cannot reactivate an unpaid entitlement',async()=>{
+  organization.pending_plan='profissional'; organization.pending_billing_cycle='annual'; paymentStatus='CONFIRMED';
+  assert.equal((await webhook.POST(paymentHook('PAYMENT_CONFIRMED','event_confirmed'))).status,200);
+  const expiry=organization.plan_expires_at;
+  paymentStatus='REFUNDED'; assert.equal((await webhook.POST(paymentHook('PAYMENT_REFUNDED','event_refund'))).status,200);
+  assert.equal(organization.plan_status,'payment_attention');
+  const replay=await webhook.POST(paymentHook('PAYMENT_CONFIRMED','event_confirmed'));
+  assert.equal((await replay.json()).ignored,'duplicate_event');
+  assert.equal(organization.plan_status,'payment_attention'); assert.equal(organization.plan_expires_at,expiry);
+  const differentId=await webhook.POST(paymentHook('PAYMENT_CONFIRMED','event_late'));
+  assert.equal((await differentId.json()).ignored,'stale_event'); assert.equal(organization.plan_status,'payment_attention');
+});
+test('an old overdue event cannot block an authoritatively paid subscription',async()=>{
+  paymentStatus='CONFIRMED'; const expiry=organization.plan_expires_at;
+  const response=await webhook.POST(paymentHook('PAYMENT_OVERDUE','event_old_overdue'));
+  assert.equal((await response.json()).ignored,'stale_event'); assert.equal(organization.plan_status,'active'); assert.equal(organization.plan_expires_at,expiry);
+});
+test('an enrolled System account cannot access tenant APIs with an aal1 session',async()=>{
+  globalThis.__famaTestUser.mfaRequired=true; globalThis.__famaTestUser.aal='aal1';
+  await assert.rejects(()=>tenant.requireUser(),error=>error.status===403); assert.equal(requests.length,0);
+});
+
+
+test('operation weather keeps encrypted keys private and restricts configuration to administrators', async () => {
+ const apiKey='0123456789abcdef0123456789abcdef';
+ const saved=await operationWeatherRoute.POST(tenantRequest('/api/operation-weather',{apiKey,location:{latitude:-15.8,longitude:-47.9,address:'Empresa'}}));
+ assert.equal(saved.status,200);assert.doesNotMatch(await saved.text(),new RegExp(apiKey));
+ const stored=sqlite.prepare('SELECT token FROM operation_weather_settings WHERE organization_id=?').get(organization.id);
+ assert.ok(stored.token.startsWith('fama:v1:'));assert.equal(await cryptoModule.decryptText(stored.token),apiKey);
+ const status=await operationWeatherRoute.GET(tenantRequest('/api/operation-weather'));
+ assert.deepEqual(await status.json(),{configured:true,provider:'openweather',mode:'commercial',hasMeteoKey:false,hasCompanyKey:true,location:{latitude:-15.8,longitude:-47.9,address:'Empresa'}});
+ membership.role='member';
+ assert.equal((await operationWeatherRoute.POST(tenantRequest('/api/operation-weather',{clearKey:true}))).status,403);
+ globalThis.__famaTestUser=null;
+ assert.equal((await operationWeatherRoute.GET(tenantRequest('/api/operation-weather'))).status,401);
+});
+
+test('operation weather validates coordinates, caches forecasts and sanitizes provider failures',async()=>{
+ runtime.OPENWEATHER_API_KEY='abcdef0123456789abcdef0123456789ab';
+ sqlite.exec('DELETE FROM operation_weather_settings');
+ const delegatedFetch=globalThis.fetch;let calls=0;let fail=false;
+ globalThis.fetch=async(input,init)=>{
+  const url=new URL(String(input));if(url.hostname!=='api.openweathermap.org')return delegatedFetch(input,init);
+  calls++;assert.equal(init.redirect,'manual');assert.equal(url.searchParams.get('units'),'metric');
+  if(fail)return Response.json({message:runtime.OPENWEATHER_API_KEY},{status:401});
+  return Response.json({city:{name:'Brasília',coord:{lat:-15.8,lon:-47.9},timezone:-10800},list:[{dt:Math.floor(Date.now()/1000)+3600,main:{temp:25},pop:.8,wind:{speed:4},weather:[{id:500,description:'chuva'}]}]});
+ };
+ assert.equal((await operationWeatherRoute.GET(tenantRequest('/api/operation-weather?forecast=1&lat=100&lon=0'))).status,400);
+ const endpoint='/api/operation-weather?forecast=1&lat=-15.8&lon=-47.9';
+ const first=await operationWeatherRoute.GET(tenantRequest(endpoint));assert.equal(first.status,200);assert.equal((await first.json()).forecast.slots[0].rainChance,80);
+ assert.equal((await operationWeatherRoute.GET(tenantRequest(endpoint))).status,200);assert.equal(calls,1);
+ fail=true;const error=await operationWeatherRoute.GET(tenantRequest(endpoint.replace('-15.8','-16.8')));
+ assert.equal(error.status,422);assert.doesNotMatch(await error.text(),new RegExp(runtime.OPENWEATHER_API_KEY));
+});
+
+
+test('Open-Meteo supports keyless evaluation and encrypted commercial credentials without exposing them',async()=>{
+ const delegatedFetch=globalThis.fetch;const seen=[];
+ globalThis.fetch=async(input,init)=>{
+  const url=new URL(String(input));if(url.hostname==='api.met.no')return Response.json({properties:{timeseries:[{time:new Date(Date.now()+3600000).toISOString(),data:{instant:{details:{air_temperature:25,wind_speed:2}},next_1_hours:{summary:{symbol_code:'clearsky_day'},details:{precipitation_amount:0}}}}]}});if(!url.hostname.endsWith('open-meteo.com'))return delegatedFetch(input,init);
+  seen.push(url);assert.equal(url.searchParams.get('wind_speed_unit'),'kmh');assert.equal(url.searchParams.get('timeformat'),'unixtime');
+  return Response.json({latitude:-15.8,longitude:-47.9,utc_offset_seconds:-10800,hourly:{time:[Math.floor(Date.now()/1000)+3600],temperature_2m:[26],precipitation_probability:[65],weather_code:[95],wind_speed_10m:[44]}});
+ };
+ const configure=body=>operationWeatherRoute.POST(tenantRequest('/api/operation-weather',body));
+ const endpoint='/api/operation-weather?forecast=1&lat=-15.8&lon=-47.9';
+ assert.equal((await configure({provider:'open-meteo',mode:'commercial',clearMeteoKey:true})).status,200);
+ const inactive=await operationWeatherRoute.GET(tenantRequest(endpoint));assert.equal(inactive.status,200);const fallback=await inactive.json();assert.equal(fallback.configured,true);assert.equal(fallback.provider,'met-norway');assert.ok(fallback.forecast.slots.length);assert.equal(seen.length,0);
+ assert.equal((await configure({provider:'open-meteo',mode:'evaluation'})).status,200);
+ const evaluation=await operationWeatherRoute.GET(tenantRequest(endpoint));const data=await evaluation.json();assert.equal(data.forecast.slots[0].rainChance,65);assert.equal(data.forecast.slots[0].windKmh,44);assert.equal(data.forecast.slots[0].storm,true);
+ assert.equal(seen[0].hostname,'api.open-meteo.com');assert.equal(seen[0].searchParams.has('apikey'),false);
+ const meteoApiKey='meteo_fixture_commercial_123456789';
+ const saved=await configure({provider:'open-meteo',mode:'commercial',meteoApiKey});assert.doesNotMatch(await saved.text(),new RegExp(meteoApiKey));
+ const stored=sqlite.prepare('SELECT meteo_token FROM operation_weather_provider WHERE organization_id=?').get(organization.id);assert.ok(stored.meteo_token.startsWith('fama:v1:'));
+ const commercial=await operationWeatherRoute.GET(tenantRequest(endpoint));assert.equal(commercial.status,200);assert.equal(seen[1].hostname,'customer-api.open-meteo.com');assert.equal(seen[1].searchParams.get('apikey'),meteoApiKey);
+ membership.organization_id='org-other';organization.id='org-other';
+ const other=await operationWeatherRoute.GET(new Request('https://fama.example.test/api/operation-weather',{headers:{'x-organization-id':'org-other'}}));const otherConfig=await other.json();assert.equal(otherConfig.hasMeteoKey,false);assert.equal(otherConfig.configured,true);assert.equal(otherConfig.provider,'met-norway');
 });

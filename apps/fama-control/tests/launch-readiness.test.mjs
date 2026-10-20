@@ -7,10 +7,15 @@ import { withLocalApi } from './localhost-http.mjs';
 const runtime = {};
 globalThis.__famaControlRuntime = runtime;
 const originalFetch = globalThis.fetch;
+let platformSettings=[];
 const sqlite = new DatabaseSync(':memory:');
 sqlite.exec(`CREATE TABLE platform_settings (key TEXT PRIMARY KEY, value TEXT NOT NULL, updated_at TEXT NOT NULL);
  CREATE TABLE support_tickets (id TEXT PRIMARY KEY, organization_id TEXT, organization_name TEXT, user_id TEXT, user_email TEXT, type TEXT, priority TEXT, title TEXT, message TEXT, status TEXT, admin_notes TEXT, created_at TEXT, updated_at TEXT);`);
-const d1 = { prepare(sql) {
+const d1 = { async batch(statements) {
+ sqlite.exec('BEGIN');
+ try { const results = []; for (const statement of statements) results.push(await statement.run()); sqlite.exec('COMMIT'); return results; }
+ catch (error) { sqlite.exec('ROLLBACK'); throw error; }
+}, prepare(sql) {
  const stmt = sqlite.prepare(sql); let values = [];
  const result = { bind(...next) { values = next; return result; }, async first() { return stmt.get(...values) ?? null; }, async all() { return { results: stmt.all(...values) }; }, async run() { return { meta: { changes: Number(stmt.run(...values).changes) } }; } };
  return result;
@@ -18,18 +23,20 @@ const d1 = { prepare(sql) {
 const root = new URL('..', import.meta.url).pathname;
 const vite = await createServer({ appType: 'custom', configFile: false, root, resolve: { alias: { '@': root } }, server: { hmr: false, middlewareMode: true }, plugins: [{
  name: 'fama-control-fixtures', enforce: 'pre',
- resolveId(id) { if (id === 'cloudflare:workers') return '\0control-env'; if (id.endsWith('/app/chatgpt-auth') || id.endsWith('/app/chatgpt-auth.ts')) return '\0control-auth'; },
- load(id) { if (id === '\0control-env') return 'export const env = globalThis.__famaControlRuntime;'; if (id === '\0control-auth') return 'export async function getChatGPTUser() { return globalThis.__famaControlUser; }'; }
+ resolveId(id) { if (id === 'cloudflare:workers') return '\0control-env'; if (id.endsWith('/app/system-auth') || id.endsWith('/app/system-auth.js')) return '\0control-auth'; },
+ load(id) { if (id === '\0control-env') return 'export const env = globalThis.__famaControlRuntime;'; if (id === '\0control-auth') return 'export async function getFamaUser() { return globalThis.__famaControlUser; }'; }
 }] });
-const bridge = await vite.ssrLoadModule('/app/api/internal/data/route.ts');
-const plans = await vite.ssrLoadModule('/app/api/admin/plans/route.ts');
-const publicPlans = await vite.ssrLoadModule('/app/api/public/plans/route.ts');
-const support = await vite.ssrLoadModule('/app/api/admin/support/route.ts');
-const supportIngress = await vite.ssrLoadModule('/app/api/public/support/route.ts');
-const adminOrganization = await vite.ssrLoadModule('/app/api/admin/organizations/[id]/route.ts');
-const securityStatus = await vite.ssrLoadModule('/app/api/admin/security/route.ts');
+const bridge = await vite.ssrLoadModule('/app/api/internal/data/route.js');
+const plans = await vite.ssrLoadModule('/app/api/admin/plans/route.js');
+const publicPlans = await vite.ssrLoadModule('/app/api/public/plans/route.js');
+const support = await vite.ssrLoadModule('/app/api/admin/support/route.js');
+const supportIngress = await vite.ssrLoadModule('/app/api/public/support/route.js');
+const adminOrganization = await vite.ssrLoadModule('/app/api/admin/organizations/[id]/route.js');
+const securityStatus = await vite.ssrLoadModule('/app/api/admin/security/route.js');
 let tickets, requests, organization;
+const { defaultPlanCatalog } = await vite.ssrLoadModule('/lib/plan-catalog.js');
 beforeEach(() => {
+ platformSettings=[];
  for (const key of Object.keys(runtime)) delete runtime[key];
  Object.assign(runtime, { DATA_BACKEND: 'supabase', SUPABASE_URL: 'https://fixture.supabase.co', SUPABASE_SECRET_KEY: 'sb_secret_fixture', FAMA_DATA_BRIDGE_SECRET: 'private-fixture-token', PLATFORM_OWNER_EMAIL: 'owner@example.test', DB: d1 });
  globalThis.__famaControlUser = { id: 'owner-fixture', email: 'owner@example.test', displayName: 'Owner' };
@@ -47,6 +54,13 @@ beforeEach(() => {
   if (url.pathname === '/rest/v1/organizations') {
    if (method === 'PATCH') Object.assign(organization, body);
    return Response.json([organization]);
+  }
+  if (url.pathname === '/rest/v1/platform_settings') {
+   const key=url.searchParams.get('key')?.replace(/^eq\./,'');
+   if(method==='POST'){platformSettings.push(body);return Response.json([body]);}
+   const rows=platformSettings.filter(row=>row.key===key);
+   if(method==='PATCH')for(const row of rows)Object.assign(row,body);
+   return Response.json(rows);
   }
   if (url.pathname === '/rest/v1/support_tickets') {
    const id = url.searchParams.get('id')?.replace(/^eq\./, '');
@@ -69,14 +83,14 @@ test('security diagnostics verify the actual rate-limit primary key', async () =
 });
 
 test('localhost HTTP validates private bridge authorization, saved plans and administrator support', async () => {
- await assert.rejects(() => originalFetch('https://outside.example.test/blocked', { method: 'POST', body: 'local fixture' }), /External network is disabled/);
  await withLocalApi({
   '/api/internal/data': bridge,
   '/api/admin/plans': plans,
   '/api/public/plans': publicPlans,
   '/api/admin/support': support,
- }, async origin => {
-  const send = (path, method = 'GET', body, headers = {}) => originalFetch(`${origin}${path}`, {
+ }, async (origin, localFetch) => {
+  await assert.rejects(() => localFetch('https://outside.example.test/blocked', { method: 'POST', body: 'local fixture' }), /External network is disabled/);
+  const send = (path, method = 'GET', body, headers = {}) => localFetch(`${origin}${path}`, {
    method, headers: { ...(body === undefined ? {} : { 'Content-Type': 'application/json' }), ...headers },
    ...(body === undefined ? {} : { body: JSON.stringify(body) }), signal: AbortSignal.timeout(10000),
   });
@@ -89,7 +103,7 @@ test('localhost HTTP validates private bridge authorization, saved plans and adm
   assert.equal(authorized.headers.get('cache-control'), 'private, no-store');
   assert.equal(requests[0].headers.get('apikey'), 'sb_secret_fixture');
   assert.equal(requests[0].headers.get('cookie'), null);
-  const catalog = [{ id: 'inicial', name: 'Inicial localhost', price: 5990, users: '2 usuários', clients: '200 clientes', modules: 'CRM' }];
+  const catalog = defaultPlanCatalog.map(plan=>plan.id==='inicial'?{...plan,name:'Inicial localhost',price:5990,users:'2 usuários',clients:'200 clientes'}:plan);
   assert.equal((await send('/api/admin/plans', 'PATCH', { plans: catalog })).status, 200);
   const visible = await send('/api/public/plans');
   assert.equal(visible.status, 200);
@@ -134,13 +148,57 @@ test('private data bridge refuses redirected responses without forwarding server
 });
 
 test('saved plan prices are immediately available to the public catalog', async () => {
- const catalog = [{ id: 'inicial', name: 'Inicial', price: 5990, users: '2 usuários', clients: '200 clientes', modules: 'CRM' }];
+ const catalog = defaultPlanCatalog.map(plan=>plan.id==='inicial'?{...plan,name:'Inicial',price:5990,description:'Descrição editada pela administração',users:'2 usuários',clients:'200 clientes',modules:'CRM\nConsulta de CEP e frete'}:plan);
  const saved = await plans.PATCH(request('/api/admin/plans', 'PATCH', { plans: catalog }));
  assert.equal(saved.status, 200); const published = await publicPlans.GET();
- assert.equal((await published.json()).plans[0].price, 5990);
+ const visible = (await published.json()).plans[0];
+ assert.equal(visible.price, 5990);
+ assert.equal(visible.description, catalog[0].description);
+ assert.equal(visible.modules, catalog[0].modules);
  assert.equal((await plans.PATCH(request('/api/admin/plans', 'PATCH', { plans: [{ ...catalog[0], price: 'invalid' }] }))).status, 400);
  globalThis.__famaControlUser.email = 'member@example.test';
  assert.equal((await plans.PATCH(request('/api/admin/plans', 'PATCH', { plans: catalog }))).status, 403);
+});
+
+test('the catalog release updates old prices once and keeps subsequent admin changes', async () => {
+ const oldCatalog = JSON.stringify([{ id: 'profissional', name: 'Pro', price: 19990, users: '10 usuários', clients: '5.000 clientes', modules: 'Antigo' }]);
+ sqlite.prepare('INSERT INTO platform_settings (key, value, updated_at) VALUES (?, ?, ?)').run('plan_catalog', oldCatalog, '2026-10-01T00:00:00Z');
+ const released = await publicPlans.GET();
+ assert.equal(released.status, 200);
+ const catalog = (await released.json()).plans;
+ assert.deepEqual(catalog.map(plan => plan.price), [9900, 19900, 35000]);
+ assert.deepEqual(catalog.map(plan => plan.users), ['Até 3 usuários', 'Até 6 usuários', 'Até 10 usuários']);
+ assert.ok(catalog.every(plan => plan.description));
+ assert.doesNotMatch(catalog[0].modules, /financeiro|Asaas|contratos|Fama IA|Frete automático/i);
+ assert.match(catalog[1].modules, /Contratos e garantias/);
+ assert.match(catalog[1].modules, /Financeiro.*Asaas e Pix/);
+ assert.doesNotMatch(catalog[1].modules, /Fama IA|Frete automático/);
+ assert.match(catalog[2].modules, /Frete automático/);
+ assert.match(catalog[2].modules, /NFS-e/);
+ assert.equal(sqlite.prepare('SELECT value FROM platform_settings WHERE key = ?').get('plan_catalog_before_2026_10_10').value, oldCatalog);
+ const edited = catalog.map(plan => ({ ...plan, price: plan.id === 'inicial' ? 10900 : plan.price }));
+ assert.equal((await plans.PATCH(request('/api/admin/plans', 'PATCH', { plans: edited }))).status, 200);
+ assert.equal((await (await publicPlans.GET()).json()).plans[0].price, 10900);
+ assert.equal(organization.plan, 'inicial');
+ assert.equal(organization.pending_billing_cycle, 'annual');
+ assert.equal(organization.plan_status, 'active');
+});
+
+test('finance Plus correction applies after earlier releases and preserves edited prices and capacity', async () => {
+ const previous = ['inicial', 'intermediario', 'profissional'].map((id, index) => ({ id, name: ['Basic', 'Plus', 'Pro'][index], price: [10900, 20900, 35000][index], users: 'Até 12 usuários', clients: 'Até 2.000 clientes', description: 'Antigo', modules: 'Todos os recursos' }));
+ sqlite.prepare('INSERT INTO platform_settings VALUES (?, ?, ?)').run('plan_catalog_release_2026_10_10', 'applied', '2026-10-10');
+ sqlite.prepare('INSERT INTO platform_settings VALUES (?, ?, ?)').run('plan_features_release_2026_10_10', 'applied', '2026-10-10');
+ sqlite.prepare('INSERT INTO platform_settings VALUES (?, ?, ?)').run('plan_catalog', JSON.stringify(previous), '2026-10-10');
+ const released = (await (await publicPlans.GET()).json()).plans;
+ assert.deepEqual(released.map(plan => plan.price), [10900, 20900, 35000]);
+ assert.ok(released.every(plan => plan.users === 'Até 12 usuários' && plan.clients === 'Até 2.000 clientes'));
+ assert.doesNotMatch(released[0].modules, /Financeiro|Asaas|Fama IA|Frete automático/);
+ assert.match(released[1].modules, /Financeiro.*Asaas e Pix/);
+ assert.match(released[2].modules, /Fama IA|Frete automático/);
+ assert.equal(sqlite.prepare('SELECT value FROM platform_settings WHERE key = ?').get('plan_catalog_before_finance_plus_2026_10_10').value, JSON.stringify(previous));
+ const edited = released.map(plan => ({ ...plan, description: 'Editado após a atualização' }));
+ assert.equal((await plans.PATCH(request('/api/admin/plans', 'PATCH', { plans: edited }))).status, 200);
+ assert.equal((await (await publicPlans.GET()).json()).plans[0].description, edited[0].description);
 });
 
 test('admin support responses update the shared ticket and unknown tickets return 404', async () => {

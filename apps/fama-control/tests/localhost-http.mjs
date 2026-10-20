@@ -1,4 +1,5 @@
 import { createServer } from 'node:http';
+const nativeFetch = globalThis.fetch;
 
 // Test transport only: no development server, public listener or production credentials.
 export async function withLocalApi(routes, run) {
@@ -31,7 +32,15 @@ export async function withLocalApi(routes, run) {
     server.listen(0, '127.0.0.1', resolve);
   });
   try {
-    return await run(`http://127.0.0.1:${server.address().port}`);
+    const origin = `http://127.0.0.1:${server.address().port}`;
+    const localFetch = async (input, init = {}) => {
+      const url = new URL(input instanceof Request ? input.url : String(input));
+      if (url.origin !== origin) throw new Error('External network is disabled in localhost API tests.');
+      // Never follow a test response to a second origin, even on machines where
+      // the native transport can reach public services.
+      return nativeFetch(input, { ...init, redirect: 'error' });
+    };
+    return await run(origin, localFetch);
   } finally {
     await new Promise((resolve, reject) => {
       server.close(error => error ? reject(error) : resolve());

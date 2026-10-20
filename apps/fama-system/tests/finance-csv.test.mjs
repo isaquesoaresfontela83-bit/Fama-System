@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { parseBankStatementCsv } from "../lib/bank-statement.ts";
+import { parseBankStatementCsv } from "../lib/bank-statement.js";
 
 test("imports a Brazilian semicolon-delimited statement with signed amounts", () => {
   const rows = parseBankStatementCsv("Data;Descrição;Valor\n13/09/2026;Pix recebido;1.234,56\n2026-09-12;Fornecedor; -42,10");

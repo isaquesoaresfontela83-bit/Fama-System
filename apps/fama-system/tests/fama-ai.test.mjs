@@ -5,7 +5,7 @@ import { readFile } from 'node:fs/promises';
 
 const vite = await createServer({ configFile: false, server: { middlewareMode: true, ws: false, hmr: false } });
 after(() => vite.close());
-const { answerInternal } = await vite.ssrLoadModule('/lib/fama-ai.ts');
+const { answerInternal } = await vite.ssrLoadModule('/lib/fama-ai.js');
 const now = new Date('2026-10-01T12:00:00');
 const appointment = (id, startAt, changes = {}) => ({ id, startAt, title: `Visita ${id}`, clientName: 'João', technician: 'Ana', status: 'agendado', address: '', kind: 'Visita', notes: '', ...changes });
 
@@ -15,7 +15,7 @@ test('assistant executes entirely locally without sending questions or records',
   try {
     const answer = answerInternal('agenda de hoje', { appointments: [appointment('1', '2026-10-01T15:00:00')] }, 'overview', now);
     assert.match(answer.text, /1 compromisso/);
-    for (const path of ['../lib/fama-ai.ts', '../app/fama-ai-panel.tsx']) {
+    for (const path of ['../lib/fama-ai.js', '../app/fama-ai-panel.jsx']) {
       const source = await readFile(new URL(path, import.meta.url), 'utf8');
       assert.doesNotMatch(source, /fetch\s*\(|XMLHttpRequest|api\.openai\.com|OPENAI_API_KEY|FAMA_AI_MODEL|https?:\/\//);
     }
@@ -104,8 +104,8 @@ test('cancelled appointments do not cause conflicts or appear as upcoming work',
   assert.doesNotMatch(answerInternal('próximos horários', data, 'overview', now).text, /Visita cancelled/);
 });
 
-const { buildAssistantWorkspace } = await vite.ssrLoadModule('/lib/fama-ai.ts');
-const { defaultAssistantSettings, restrictAssistantSettings } = await vite.ssrLoadModule('/lib/fama-ai-settings.ts');
+const { buildAssistantWorkspace } = await vite.ssrLoadModule('/lib/fama-ai.js');
+const { defaultAssistantSettings, restrictAssistantSettings } = await vite.ssrLoadModule('/lib/fama-ai-settings.js');
 
 test('workspace indicators and priorities never include data from disabled modules', () => {
   const data = { appointments: [appointment('pending', '2026-10-01T15:00:00', { technician: '' }), appointment('cancel', '2026-10-01T10:00:00', { status: 'cancelado' })], transactions: [{ id: 'hidden', description: 'Segredo financeiro', type: 'receita', amountCents: 998877, status: 'atrasado', dueDate: '2026-09-01' }], quotes: [{ id: 'hidden-quote', clientName: 'Segredo comercial', totalCents: 887766, status: 'enviado' }] };

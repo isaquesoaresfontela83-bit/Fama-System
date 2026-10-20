@@ -1,0 +1,18 @@
+import assert from 'node:assert/strict';
+import test,{after,afterEach} from 'node:test';
+import React from 'react';
+import Renderer,{act} from 'react-test-renderer';
+import {createServer} from 'vite';
+const vite=await createServer({configFile:false,root:new URL('../',import.meta.url).pathname,resolve:{alias:{'@':new URL('../',import.meta.url).pathname}},server:{middlewareMode:true,hmr:false,ws:false}});
+const {useViewPreferences,ViewCustomizer}=await vite.ssrLoadModule('/app/view-customizer.jsx');
+const original=globalThis.localStorage,originalAct=globalThis.IS_REACT_ACT_ENVIRONMENT;
+globalThis.IS_REACT_ACT_ENVIRONMENT=true;
+let api,renderer;const storage=new Map();
+globalThis.localStorage={getItem:key=>storage.get(key)||null,setItem:(key,value)=>storage.set(key,value)};
+function Harness({scope}){api=useViewPreferences(scope,{hidden:[],order:[]});return null;}
+afterEach(async()=>{if(renderer)await act(async()=>renderer.unmount());renderer=null;storage.clear();});
+after(async()=>{await vite.close();if(original===undefined)delete globalThis.localStorage;else globalThis.localStorage=original;if(originalAct===undefined)delete globalThis.IS_REACT_ACT_ENVIRONMENT;else globalThis.IS_REACT_ACT_ENVIRONMENT=originalAct;});
+test('choices persist across remounts and cannot overwrite another user or company',async()=>{storage.set('user-b:company-b',JSON.stringify({hidden:['other'],order:[]}));await act(async()=>{renderer=Renderer.create(React.createElement(Harness,{scope:'user-a:company-a'}));});await act(async()=>api[1]({hidden:['finance'],order:['agenda','finance']}));await act(async()=>renderer.update(React.createElement(Harness,{scope:'user-b:company-b'})));assert.deepEqual(api[0].hidden,['other']);assert.deepEqual(JSON.parse(storage.get('user-a:company-a')).hidden,['finance']);await act(async()=>renderer.update(React.createElement(Harness,{scope:'user-a:company-a'})));assert.deepEqual(api[0].order,['agenda','finance']);});
+test('malformed or unavailable storage leaves personalization usable',async()=>{storage.set('broken','{invalid');await act(async()=>{renderer=Renderer.create(React.createElement(Harness,{scope:'broken'}));});assert.deepEqual(api[0],{hidden:[],order:[]});const backup=globalThis.localStorage;globalThis.localStorage={getItem(){throw Error('disabled');},setItem(){throw Error('disabled');}};try{await act(async()=>renderer.update(React.createElement(Harness,{scope:'disabled'})));await act(async()=>api[1]({hidden:['x'],order:[]}));assert.deepEqual(api[0].hidden,['x']);}finally{globalThis.localStorage=backup;}});
+test('hidden and forbidden widgets never render, while stored order controls visible blocks',async()=>{storage.set('fama-view:test',JSON.stringify({hidden:['a'],order:['c','b','a','forbidden']}));await act(async()=>{renderer=Renderer.create(React.createElement(ViewCustomizer,{scope:'test',labels:['A','B','C','Private'],itemIds:['a','b','c','forbidden'],enabled:[true,true,true,false],className:'test-grid'},...['a','b','c','forbidden'].map(id=>React.createElement('section',{'data-id':id,key:id},id))));});assert.deepEqual(renderer.root.findAllByType('section').map(node=>node.props['data-id']),['c','b']);});
+test('an uncustomized older dashboard adopts the new default order and retains hidden blocks',async()=>{storage.set('fama-view:upgrade',JSON.stringify({hidden:['b'],order:[]}));await act(async()=>{renderer=Renderer.create(React.createElement(ViewCustomizer,{scope:'upgrade',labels:['A','B','C'],itemIds:['a','b','c'],defaultOrder:['c','b','a'],className:'test-grid'},...['a','b','c'].map(id=>React.createElement('section',{'data-id':id,key:id},id))));});assert.deepEqual(renderer.root.findAllByType('section').map(node=>node.props['data-id']),['c','a']);});

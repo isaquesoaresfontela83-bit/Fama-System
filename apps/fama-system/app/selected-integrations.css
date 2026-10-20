@@ -1,0 +1,47 @@
+.selected-integrations { min-width: 0; }
+.selected-integrations > summary { display: flex; align-items: center; gap: 12px; cursor: pointer; list-style: none; }
+.selected-integrations > summary > svg { width: 24px; flex: none; color: var(--primary, #38bdf8); }
+.selected-integrations > summary > span { flex: 1; min-width: 0; }
+.selected-integrations summary strong, .selected-integrations summary small { display: block; }
+.selected-integrations summary small { font-size: 12px; margin-top: 4px; opacity: .75; }
+.selected-integrations-body { display: grid; gap: 12px; margin-top: 20px; }
+.integration-card { border: 1px solid var(--border, #334155); border-radius: 12px; overflow: hidden; min-width: 0; }
+.integration-card > summary { display: flex; gap: 12px; justify-content: space-between; align-items: center; padding: 16px; cursor: pointer; list-style: none; }
+.integration-card > summary > span:first-child { min-width: 0; }
+.integration-card[open] > summary { border-bottom: 1px solid var(--border, #334155); }
+.integration-state { flex: none; font-size: 11px; border: 1px solid var(--border, #475569); border-radius: 999px; padding: 5px 9px; }
+.integration-state.ready { color: #0284c7; border-color: #0284c7; }
+.dark .integration-state.ready { color: #7dd3fc; border-color: #38bdf8; }
+.integration-card-body { padding: 16px; display: grid; gap: 16px; }
+.integration-config-form { display: grid; gap: 14px; }
+.integration-config-form .form-field { min-width: 0; display: grid; gap: 7px; }
+.integration-config-form input { min-width: 0; width: 100%; }
+.integration-config-form small svg { display: inline; height: 13px; width: 13px; vertical-align: middle; }
+.integration-check { display: flex; align-items: center; gap: 8px; font-size: 13px; }
+.integration-check input { width: 16px; height: 16px; flex: none; }
+.integration-actions { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.integration-actions a, .integration-result a, .document-integration-body > a { color: #0284c7; text-decoration: underline; text-underline-offset: 3px; }
+.dark .integration-actions a, .dark .integration-result a, .dark .document-integration-body > a { color: #7dd3fc; }
+.integration-result { display: grid; gap: 10px; padding: 14px; border: 1px solid var(--border, #334155); border-radius: 10px; overflow-wrap: anywhere; }
+.integration-result ul { display: grid; gap: 8px; padding-left: 18px; list-style: disc; }
+.integration-result dl { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 8px 16px; }
+.integration-result dt { font-weight: 600; }
+.integration-result dd { margin: 0; overflow-wrap: anywhere; }
+.integration-error { color: #b91c1c; overflow-wrap: anywhere; }
+.dark .integration-error { color: #fca5a5; }
+.integration-hint { font-size: 13px; }
+.document-integration-actions { border: 1px solid var(--border, #334155); border-radius: 10px; padding: 12px; margin: 12px 0; }
+.document-integration-actions > summary { cursor: pointer; font-size: 13px; font-weight: 600; }
+.document-integration-body { display: grid; gap: 12px; margin-top: 14px; }
+.document-integration-body .form-field { display: grid; gap: 6px; min-width: 0; }
+.document-integration-body select { width: 100%; min-width: 0; max-width: 100%; border: 1px solid var(--border, #334155); border-radius: 8px; padding: 10px; color: inherit; background: var(--background, transparent); }
+.document-integration-body small { line-height: 1.6; opacity: .8; }
+.document-email-fields { display: grid; gap: 12px; padding-top: 12px; border-top: 1px solid var(--border, #334155); }
+.document-integration-body textarea { max-height: 400px; overflow: auto; }
+@media (max-width: 600px) {
+    .integration-card > summary { align-items: flex-start; flex-direction: column; padding: 12px; }
+    .integration-card-body { padding: 12px; }
+    .integration-actions { align-items: stretch; flex-direction: column; }
+    .integration-actions > button { width: 100%; white-space: normal; height: auto; min-height: 40px; }
+    .integration-state { white-space: normal; }
+}

@@ -40,7 +40,7 @@ Os números nas imagens são exemplos e não representam os dados da sua empresa
 
 ## 5. Financeiro, bancos, cobranças e compras
 
-O espaço Financeiro reúne cinco abas: **Resumo**, **Pagar e receber**, **Cobranças**, **Bancos e conciliação** e **Compras e fornecedores**.
+O espaço Financeiro reúne **Resumo**, **Pagar e receber**, **Cobranças**, **Bancos e conciliação**, **Compras e fornecedores** e **Notas fiscais**.
 
 ### Pagar e receber
 
@@ -60,6 +60,14 @@ Use a lista para acompanhar valores de clientes ainda não recebidos e identific
 - Mercado Pago e PagBank podem ser cadastrados com segurança e escolhidos como principal. A sincronização nativa desses dois provedores fica preparada para a próxima conexão; a sincronização automática já funciona para as conexões Asaas disponíveis.
 - Ao abrir o Financeiro, o sistema tenta atualizar as conexões automaticamente. O botão **Sincronizar tudo** permite repetir a atualização manualmente e mostra o resultado de cada provedor.
 - Quem ainda não possui conta pode iniciar o cadastro pelo botão **Criar conta no Asaas**. Senha, documentos, selfie e aprovação são tratados no ambiente oficial da Asaas; depois, gere a chave de API e conecte-a ao Fama System.
+
+### Notas fiscais pela Asaas
+
+1. Habilite a emissão fiscal na conta Asaas da empresa e confira atividade, cadastro municipal e tributos com a contabilidade.
+2. Em **Configurações da empresa > Fiscal**, selecione **Asaas**, o ambiente e a chave correspondente. Informe e-mail da empresa, código municipal ou ID do serviço e alíquotas. Essa chave não é a chave da assinatura da plataforma.
+3. Abra **Notas fiscais** no menu Gestão, prepare o rascunho de NFS-e, confira cliente, descrição, valor e data e escolha **Enviar pela Asaas**. A confirmação automática é configurada na conta da empresa durante o envio. **Configurar emissão** leva às configurações da empresa e **Atualizar notas** recarrega a lista.
+4. A nota fica **Processando** até a autorização. A confirmação atualiza número, código de validação e links de PDF e XML. **Atualizar status** permite consultar o resultado. Não repita a emissão de um rascunho já enviado.
+5. O cancelamento depende da prefeitura. Quando não for permitido pela integração, use o emissor oficial e consulte novamente o status. NF-e de produtos continua pelo emissor autorizado da SEFAZ.
 
 ### Compras e fornecedores
 
@@ -97,9 +105,13 @@ Propostas e contratos podem ser gerados em PDF pelo próprio registro; confira d
 
 ### WhatsApp oficial
 
-Os botões de WhatsApp do sistema abrem mensagens pré-preenchidas para revisão e envio manual. A API oficial da Meta pode ser ativada pelo administrador depois de configurar o número comercial, o token do sistema, o identificador do número e o token de verificação do webhook como segredos do ambiente. O Fama System não pede nem exibe esses segredos no navegador.
+Os botões de WhatsApp do sistema abrem mensagens pré-preenchidas para revisão e envio manual. Para conversar com a Fama IA, siga as três etapas em **Configurações da empresa > Fama IA no WhatsApp**:
 
-Quando ativada, a API permite enviar mensagens de texto e templates aprovados e receber eventos no webhook `/api/whatsapp`. Mensagens automáticas devem respeitar opt-in do cliente e templates aprovados pela Meta.
+1. Cadastre o ID do número oficial da empresa, o token de acesso e a chave secreta do aplicativo Meta. Depois de salvos, os dados ficam recolhidos em **Alterar conexão**.
+2. Copie o endereço de recebimento e o token de verificação para o aplicativo Meta e assine o campo **messages**. A tela consulta automaticamente a confirmação, sem apagar o telefone que você estiver preenchendo.
+3. Confira o usuário, informe seu telefone pessoal e confirme que ele pertence à pessoa selecionada. Para o Brasil, basta informar DDD + número; outros países usam +DDI. Autorize o telefone e escolha **Ativar IA**.
+
+**Abrir conversa de teste** abre a pergunta “Agenda de hoje” no WhatsApp da empresa. Use um dos telefones autorizados, revise e envie a pergunta. A IA só responde aos telefones vinculados e consulta os módulos permitidos para cada usuário. Use **Pausar IA** ou **Revogar** para interromper o acesso.
 
 ## 10. Fama Control
 
