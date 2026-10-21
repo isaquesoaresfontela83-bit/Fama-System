@@ -30,6 +30,13 @@ try {
   const columns=source.prepare('PRAGMA table_info('+quote(table.name)+')').all().map(column=>column.name);
   const rows=source.prepare('SELECT * FROM '+quote(table.name)).all();
   for(const row of rows)await client.query('INSERT INTO '+quote(table.name)+' ('+columns.map(quote).join(',')+') VALUES ('+columns.map((_,i)=>'$'+(i+1)).join(',')+')',columns.map(column=>row[column]));
+  if(/\bAUTOINCREMENT\b/i.test(table.sql)){
+   const primary=source.prepare('PRAGMA table_info('+quote(table.name)+')').all().find(column=>column.pk===1);
+   if(!primary)throw new Error('A tabela incremental não possui chave primária.');
+   const sequence=source.prepare('SELECT seq FROM sqlite_sequence WHERE name=?').get(table.name);
+   const maximum=rows.reduce((value,row)=>Math.max(value,Number(row[primary.name])),Number(sequence?.seq||0));
+   await client.query('SELECT setval(pg_get_serial_sequence($1,$2),$3,$4)',[schema+'.'+table.name,primary.name,Math.max(1,maximum),maximum>=1]);
+  }
   const actual=await client.query('SELECT * FROM '+quote(table.name));
   const canonical = entries => entries.map(row => JSON.stringify(columns.map(column=>row[column]))).sort();
   if(JSON.stringify(canonical(actual.rows))!==JSON.stringify(canonical(rows)))throw new Error('Os registros importados divergiram da origem.');
