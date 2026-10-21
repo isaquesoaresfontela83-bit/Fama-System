@@ -1,15 +1,23 @@
-# WhatsApp Baileys — Fama 15.4
+# WhatsApp Baileys — servidor ativo
 
-System e Control publicados juntos em 20/10/2026, com lançamento `2026-10-20-baileys-01`. Os domínios confirmaram a mesma versão. O runtime dos sites continua independente na Cloudflare.
+O servidor `fama-baileys` foi publicado na Cloudflare e configurado no Fama Control. O serviço gerou QR real em dois testes; as sessões de teste foram encerradas. Nenhum número foi pareado e nenhuma mensagem real foi enviada.
 
-- Fama System: **Chat → WhatsApp** e **Configurações → WhatsApp Baileys**.
-- Fama Control: **Integrações → WhatsApp Baileys**. O administrador cadastra e testa o servidor; o token é criptografado no backend.
-- Serviço Node completo: `apps/fama-system/services/baileys`. Consulte seu README para instalação ou Docker.
+A versão publicada dos painéis continua em **15.4**, lançamento `2026-10-20-baileys-01`. Essa versão já usa a configuração do servidor por variáveis do Control. A atualização conjunta **15.4.1**, `2026-10-20-baileys-02`, acrescenta a conexão privada por service binding e está salva nas fontes dos dois projetos. A publicação final ficou pendente em 21/10/2026 porque a ferramenta de Cloudflare retorna erro interno, inclusive em consultas simples. Não foi alterado o público dos sites.
 
-**Pendente:** não existe servidor Baileys persistente provisionado na infraestrutura conectada. O conector informa essa condição. O QR real só será gerado quando o serviço estiver hospedado e configurado; o proprietário precisa escaneá-lo no celular. Não houve pareamento nem envio real de mensagens.
+## Conectar o telefone
 
-O serviço isola sessões por empresa, mantém credenciais e textos criptografados em SQLite, limita tentativas e não repete envios sem confirmação. Baileys é independente da API oficial da Meta, que foi preservada. O atendimento inicial suporta conversas individuais e texto; mídias recebidas aparecem identificadas, sem download, e histórico anterior não é importado.
+No Fama System, abra **Chat → WhatsApp → Atualizar → Conectar WhatsApp**. No celular, abra **Aparelhos conectados → Conectar aparelho** e escaneie o QR exibido. Aguarde o estado **Conectado**. O QR temporário é renovado automaticamente. Administradores podem consultar a configuração em **Fama Control → Integrações → WhatsApp Baileys**.
 
-Os dois pacotes passaram pela compilação independente e pelas verificações de JavaScript, sincronização e testes dirigidos. A integração usa testes simulados; nenhuma mensagem de cliente foi enviada nos testes. Verificação visual em navegador autenticado e o teste de pareamento real continuam pendentes.
+## Serviço
 
-Para compilar, entre separadamente em cada pasta de aplicação, instale com `npm ci` e execute `npm run build:cloudflare`. As credenciais de produção não estão no repositório. Confira as instruções em `deployment/README.md` de cada aplicação. O snapshot anterior do monorepo continua preservado no histórico.
+A implementação fica em `apps/fama-system/services/baileys`. O adaptador `worker/` executa Baileys na Cloudflare, com conexão WebSocket e o WASM original compilado como módulo estático. Cada empresa tem um Durable Object e armazenamento SQLite isolado. Autenticação e textos são criptografados, e os tokens ficam apenas no backend. Não é necessário provisionar uma VPS para esta instalação.
+
+A configuração de produção preserva os segredos existentes. Ao publicar a versão 15.4.1, preserve todas as credenciais do System, Control e serviço Baileys e acrescente o binding `BAILEYS_SERVICE` apontando para `fama-baileys` no Control. Não regenere a chave de criptografia do serviço.
+
+O atendimento inicial suporta conversas individuais e texto. Mídias recebidas aparecem identificadas, sem download; histórico anterior não é importado. A API oficial da Meta foi preservada.
+
+## Validação
+
+As fontes salvas passaram por sincronização, JavaScript e compilação independente dos dois aplicativos. Os testes dirigidos registraram 13 casos no System, 62 no Control, cinco no serviço Node e três no runtime Worker. O QR também foi validado no serviço real. Pareamento com o telefone do proprietário e inspeção visual autenticada continuam pendentes.
+
+Compile cada aplicação com `npm run build:cloudflare` e confira as instruções em `deployment/README.md`. Os commits de origem estão registrados em `SOURCE_MANIFEST.json`. O ramo principal antigo não deve substituir as fontes sincronizadas.

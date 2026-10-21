@@ -19,6 +19,12 @@ test('configuration is encrypted and saved only after a compatible health respon
     assert.ok(saved.startsWith('fama:v1:'));assert.ok(!saved.includes(token));assert.deepEqual(await config.readBaileysConfig(),{url:'https://public.server.com',token});
     assert.equal(providerCalls[0].url,'https://public.server.com/health');assert.equal(providerCalls[0].init.redirect,'manual');
 });
+test('managed Cloudflare service uses its private binding and never a public HTTP hop',async()=>{
+    f.runtime.BAILEYS_SERVICE_URL='https://fama-baileys.famasystem.workers.dev';f.runtime.BAILEYS_API_TOKEN='service-fixture-'.repeat(4);
+    let internalCalls=0;f.runtime.BAILEYS_SERVICE={fetch:async(url,init)=>{internalCalls++;assert.equal(url,f.runtime.BAILEYS_SERVICE_URL+'/health');assert.equal(init.headers.Authorization,'Bearer '+f.runtime.BAILEYS_API_TOKEN);return Response.json({provider:'baileys',ok:true});}};
+    const value=await config.readBaileysConfig();assert.equal((await config.baileysRequest(value,'/health')).ok,true);assert.equal(internalCalls,1);assert.equal(providerCalls.length,0);
+    delete f.runtime.BAILEYS_SERVICE;delete f.runtime.BAILEYS_SERVICE_URL;delete f.runtime.BAILEYS_API_TOKEN;
+});
 test('internal bridge rejects unauthorized and arbitrary operations before calling the provider',async()=>{
     const body={organizationId:'11111111-1111-4111-8111-111111111111',action:'connect'};
     const request=(value,token='wrong')=>new Request('https://control.example.test/api/internal/baileys',{method:'POST',headers:{Authorization:'Bearer '+token,'Content-Type':'application/json'},body:JSON.stringify(value)});

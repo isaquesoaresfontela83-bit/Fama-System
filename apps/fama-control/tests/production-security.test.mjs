@@ -25,4 +25,4 @@ for(const [method,path] of [['POST','/api/records'],['PATCH','/api/records/fixtu
   assert.equal(response.status,403);
 });
 
-test("public availability probe exposes only a small uncached service status",async()=>{const response=await worker.fetch(new Request("https://fama.example.test/api/health"),env,ctx);assert.equal(response.status,200);assert.equal(response.headers.get("cache-control"),"no-store");const payload=await response.json();assert.deepEqual(Object.keys(payload).sort(),["checkedAt","service","status","version"]);assert.equal(payload.status,"ok");});
+test("public availability probe exposes only a small uncached service status",async()=>{const response=await worker.fetch(new Request("https://fama.example.test/api/health"),env,ctx);assert.equal(response.status,200);assert.equal(response.headers.get("cache-control"),"no-store");const payload=await response.json();assert.deepEqual(Object.keys(payload).sort(),["checkedAt","releaseId","service","status","version"]);assert.equal(payload.status,"ok");assert.match(payload.releaseId,/^\d{4}-\d{2}-\d{2}-[a-z]+-\d+$/);});

@@ -5,6 +5,7 @@
   "assets": {"binding": "ASSETS", "run_worker_first": true},
   "d1_databases": [{"binding": "DB", "database_name": "fama-control-app-data", "database_id": "966f522c-d2e3-4d68-a495-13604711bbac"}],
   "services": [
+    {"binding": "BAILEYS_SERVICE", "service": "fama-baileys"},
     {"binding": "FAMA_SYSTEM", "service": "fama-system-app"},
     {"binding": "FAMA_PYTHON_SERVICE", "service": "fama-ai-python"}
   ],

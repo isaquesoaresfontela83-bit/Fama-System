@@ -1,31 +1,41 @@
 {
-  "release": "15.4",
-  "release_id": "2026-10-20-baileys-01",
-  "captured_at": "2026-10-20",
+  "release": "15.4.1",
+  "release_id": "2026-10-20-baileys-02",
+  "captured_at": "2026-10-21",
   "runtime": "Cloudflare Workers independente; Supabase preservado",
   "projects": [
     {
       "name": "fama-system",
       "path": "apps/fama-system",
-      "source_commit": "2d5ac002ad0bc6d0832989d18778402549d7154c",
-      "git_tree": "26f4c5a5e9e70c6ed8c8b0a919182cd011f83ec2",
-      "tracked_files": 601,
+      "source_commit": "c703083775ad5438fadcdcac303cb2c4916a6620",
+      "git_tree": "9e3dbb85574d11bdeb6aa9ccd99d48c3bc1078de",
+      "tracked_files": 612,
       "url": "https://famasystem.online"
     },
     {
       "name": "fama-control",
       "path": "apps/fama-control",
-      "source_commit": "02dcf97be0cdd02b54ce912053c1dc3aa2bc3c70",
-      "git_tree": "61d45834e2b2c6cf84024b1364fe87818a41a1c2",
+      "source_commit": "83383e824f6c175a60205ed76ba49b7112f94f2a",
+      "git_tree": "fab25f99d53e328f5ff7a7ff0ad029837e5d1364",
       "tracked_files": 352,
       "url": "https://control.famasystem.online"
     }
   ],
+  "publication": {
+    "live_release": "15.4",
+    "live_release_id": "2026-10-20-baileys-01",
+    "prepared_release": "15.4.1",
+    "prepared_release_id": "2026-10-20-baileys-02",
+    "status": "Publicação final dos dois painéis pendente: ferramenta Cloudflare retorna erro interno nesta sessão."
+  },
   "baileys": {
     "path": "apps/fama-system/services/baileys",
     "provider_version": "7.0.0-rc14",
-    "status": "conector publicado; servidor Node persistente e pareamento ainda pendentes"
+    "worker": "fama-baileys",
+    "url": "https://fama-baileys.famasystem.workers.dev",
+    "status": "Servidor publicado e configurado no Control; QR real validado; pareamento pelo proprietário pendente.",
+    "storage": "Durable Objects SQLite por empresa; autenticação e mensagens criptografadas"
   },
-  "previous_snapshot_commit": "f3bcf7e46c38f93dc370b011f39465b951583e32",
-  "database": "Nenhuma migração de produção aplicada neste lançamento."
+  "previous_snapshot_commit": "c66e11c72d00d45b4cd852c715523bdf4f38f850",
+  "database": "Sem migração dos bancos das aplicações; o novo serviço usa Durable Objects SQLite próprios."
 }

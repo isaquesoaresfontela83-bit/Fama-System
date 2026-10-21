@@ -29,7 +29,8 @@ export async function baileysRequest(config,path,method='GET',body) {
     if (!config || config.token.length<32) throw new RequestError('O servidor Baileys ainda não foi configurado no Fama Control.',503);
     let response;
     try {
-        response=await fetch(config.url+path,{method,redirect:'manual',signal:AbortSignal.timeout(25000),headers:{Authorization:'Bearer '+config.token,...(body?{'Content-Type':'application/json'}:{})},...(body?{body:JSON.stringify(body)}:{})});
+        const send=env.BAILEYS_SERVICE?.fetch && config.url===String(env.BAILEYS_SERVICE_URL || '') ? env.BAILEYS_SERVICE.fetch.bind(env.BAILEYS_SERVICE) : fetch;
+        response=await send(config.url+path,{method,redirect:'manual',signal:AbortSignal.timeout(25000),headers:{Authorization:'Bearer '+config.token,...(body?{'Content-Type':'application/json'}:{})},...(body?{body:JSON.stringify(body)}:{})});
     } catch { throw new RequestError('O servidor Baileys está indisponível. Confira a conexão no Fama Control.',502); }
     if (response.status>=300 && response.status<400) { await response.body?.cancel(); throw new RequestError('O servidor Baileys retornou um redirecionamento inesperado.',502); }
     let result;
