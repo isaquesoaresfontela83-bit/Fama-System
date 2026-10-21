@@ -9,6 +9,30 @@ globalThis.fetch=async()=>{throw new Error('Production route test attempted a ne
 after(()=>{globalThis.fetch=originalFetch;});
 const env={ASSETS:{fetch:async()=>new Response('Not found',{status:404})}};
 const ctx={waitUntil(){},passThroughOnException(){}};
+test('Control security headers block inline handlers and unused device/local origins',async()=>{
+  const response=await worker.fetch(new Request('http://localhost/api/records',{method:'POST',headers:{Origin:'https://attacker.example.test','Content-Type':'application/json'},body:'{}'}),env,ctx);
+  assert.equal(response.status,403);
+  assert.equal(response.headers.get('permissions-policy'),'camera=(), microphone=(self), geolocation=(), payment=()');
+  const directives=new Map(response.headers.get('content-security-policy').split(';').map(value=>value.trim().split(/\s+/)).map(([name,...values])=>[name,values]));
+  assert.deepEqual(directives.get('script-src-attr'),["'none'"]);
+  assert.equal(directives.get('connect-src').some(value=>value.includes('127.0.0.1')),false);
+});
+test('Control static and server configs agree on the restrictive security headers',async()=>{
+  const [nextConfig,blueprintText]=await Promise.all([
+    readFile(new URL('../next.config.js',import.meta.url),'utf8'),
+    readFile(new URL('../../../render.yaml',import.meta.url),'utf8'),
+  ]);
+  const blueprint=JSON.parse(blueprintText);
+  const control=blueprint.services.find(service=>service.name==='fama-control-web');
+  assert.ok(control);
+  const headers=new Map(control.headers.map(({name,value})=>[name,value]));
+  assert.match(nextConfig,/camera=\(\), microphone=\(self\), geolocation=\(\), payment=\(\)/);
+  assert.match(nextConfig,/script-src-attr 'none'/);
+  assert.doesNotMatch(nextConfig,/connect-src[^\n]*127\.0\.0\.1:17843/);
+  assert.equal(headers.get('Permissions-Policy'),'camera=(), microphone=(self), geolocation=(), payment=()');
+  assert.match(headers.get('Content-Security-Policy'),/script-src-attr 'none'/);
+  assert.doesNotMatch(headers.get('Content-Security-Policy'),/127\.0\.0\.1:17843/);
+});
 for await(const file of glob('app/api/**/route.js',{cwd:root})){
   const path='/'+file.replace(/^app\//,'').replace(/\/route\.js$/,'').replace(/\[id\]/g,'fixture');
   if(path==='/api/admin/integrations/google/callback'||/^\/api\/(?:auth|public)(?:\/|$)/.test(path)||path.endsWith('/webhook')||path.endsWith('/asaas-webhook')||path==='/api/privacy/public'||path==='/api/health')continue;

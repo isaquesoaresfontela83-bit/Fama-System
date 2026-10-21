@@ -24,12 +24,16 @@ export function PrivacyCenter({ organization }) {
     const [mfa, setMfa] = useState(null);
     const [enrollment, setEnrollment] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [loadError, setLoadError] = useState("");
     const [busy, setBusy] = useState(false);
     const load = useCallback(async () => {
+        setLoading(true);
+        setLoadError("");
         try {
-            const calls = [fetch("/api/privacy", { headers }), fetch("/api/auth/mfa")];
+            const signal = AbortSignal.timeout(15_000);
+            const calls = [fetch("/api/privacy", { headers, signal }), fetch("/api/auth/mfa", { signal })];
             if (canManage)
-                calls.push(fetch("/api/recovery", { headers }));
+                calls.push(fetch("/api/recovery", { headers, signal }));
             const responses = await Promise.all(calls);
             const privacyPayload = await responses[0].json();
             const mfaPayload = await responses[1].json();
@@ -47,7 +51,11 @@ export function PrivacyCenter({ organization }) {
             }
         }
         catch (cause) {
-            toast.error(cause instanceof Error ? cause.message : "Não foi possível carregar a área de privacidade.");
+            const message = cause instanceof Error && cause.name === "TimeoutError"
+                ? "A resposta demorou mais do que o esperado. Verifique a conexão e tente novamente."
+                : cause instanceof Error ? cause.message : "Não foi possível carregar a área de privacidade.";
+            setLoadError(message);
+            toast.error(message);
         }
         finally {
             setLoading(false);
@@ -141,6 +149,7 @@ export function PrivacyCenter({ organization }) {
         return <div className="module-stack"><Skeleton className="h-40 w-full"/><Skeleton className="h-64 w-full"/></div>;
     const verifiedFactor = mfa?.factors.find((factor) => factor.status === "verified");
     return <div className="privacy-grid">
+    {loadError && <section className="surface" role="alert"><p>{loadError}</p><Button variant="outline" onClick={() => void load()} disabled={loading}>Tentar novamente</Button></section>}
     <section className="surface privacy-security-card">
       <div className="panel-heading"><div><small>PROTEÇÃO DA CONTA</small><h2>Segurança e cópia dos dados</h2></div><Badge variant="secondary">{mfa?.aal === "aal2" ? "Proteção reforçada" : "Proteção padrão"}</Badge></div>
       <div className="privacy-actions">

@@ -8,10 +8,10 @@ const headers = [
     ['X-Frame-Options', 'DENY'],
     ['Referrer-Policy', 'strict-origin-when-cross-origin'],
     ['Strict-Transport-Security', 'max-age=31536000; includeSubDomains'],
-    ['Permissions-Policy', 'camera=(self), microphone=(self), geolocation=(self), payment=()'],
+    ['Permissions-Policy', 'camera=(), microphone=(self), geolocation=(), payment=()'],
     ['Cross-Origin-Opener-Policy', 'same-origin-allow-popups'],
     ['Cross-Origin-Resource-Policy', 'same-origin'],
-    ['Content-Security-Policy', "default-src 'self'; base-uri 'self'; frame-ancestors 'none'; frame-src 'self' https://www.openstreetmap.org https://accounts.google.com https://embed.waze.com; object-src 'none'; img-src 'self' data: blob: https:; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval' https://accounts.google.com/gsi/client; worker-src 'self'; connect-src 'self' http://127.0.0.1:17843 https://accounts.google.com https://www.googleapis.com https://cep.awesomeapi.com.br https://brasilapi.com.br https://firebaseinstallations.googleapis.com https://fcmregistrations.googleapis.com https://fcm.googleapis.com https://*.supabase.co https://huggingface.co https://*.hf.co https://*.huggingface.co; form-action 'self'"],
+    ['Content-Security-Policy', "default-src 'self'; base-uri 'self'; frame-ancestors 'none'; frame-src 'self' https://www.openstreetmap.org https://accounts.google.com https://embed.waze.com; object-src 'none'; img-src 'self' data: blob: https:; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval' https://accounts.google.com/gsi/client; script-src-attr 'none'; worker-src 'self'; connect-src 'self' https://accounts.google.com https://www.googleapis.com https://cep.awesomeapi.com.br https://brasilapi.com.br https://firebaseinstallations.googleapis.com https://fcmregistrations.googleapis.com https://fcm.googleapis.com https://*.supabase.co https://huggingface.co https://*.hf.co https://*.huggingface.co; form-action 'self'"],
 ].map(([key, value]) => ({ key, value }));
 
 export const securityHeaders = headers;
