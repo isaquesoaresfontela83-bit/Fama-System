@@ -39,7 +39,7 @@ Os dados operacionais e a autenticação usam serviços diferentes. Preserve amb
 
 O nome de [app/chatgpt-auth.ts](app/chatgpt-auth.ts) foi mantido por compatibilidade: a implementação desta revisão lê a sessão própria `fama_session`. Ele não representa um requisito de conta ChatGPT para o usuário.
 
-Nesta `main`, o endpoint de login ainda contém a URL e a chave publicável do Supabase. A proposta que transfere esses valores para variáveis de ambiente está em revisão separada e exige configurar o ambiente antes de integrar.
+O endpoint de login desta revisão lê `SUPABASE_URL` e `SUPABASE_PUBLISHABLE_KEY` do ambiente. Configure os dois valores e confirme `FAMA_SESSION_SECRET` antes de integrar ou publicar esta revisão.
 
 ## Mapa do repositório
 
