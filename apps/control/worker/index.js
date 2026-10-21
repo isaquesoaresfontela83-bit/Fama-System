@@ -11,7 +11,7 @@ function withSecurityHeaders(response) {
     headers.set("Permissions-Policy", "camera=(), microphone=(self), geolocation=(), payment=()");
     headers.set("Cross-Origin-Opener-Policy", "same-origin");
     headers.set("Cross-Origin-Resource-Policy", "same-origin");
-    headers.set("Content-Security-Policy", "default-src 'self'; base-uri 'self'; frame-ancestors 'none'; frame-src 'none'; object-src 'none'; img-src 'self' data: blob: https:; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval'; worker-src 'self'; connect-src 'self' https://*.supabase.co https://huggingface.co https://*.hf.co https://*.huggingface.co; form-action 'self'");
+    headers.set("Content-Security-Policy", "default-src 'self'; base-uri 'self'; frame-ancestors 'none'; frame-src 'none'; object-src 'none'; img-src 'self' data: blob: https:; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval'; script-src-attr 'none'; worker-src 'self'; connect-src 'self' https://*.supabase.co https://huggingface.co https://*.hf.co https://*.huggingface.co; form-action 'self'");
     if (headers.get("Content-Type")?.includes("text/html"))
         headers.set("Cache-Control", "no-store");
     return new Response(response.body, { status: response.status, statusText: response.statusText, headers });

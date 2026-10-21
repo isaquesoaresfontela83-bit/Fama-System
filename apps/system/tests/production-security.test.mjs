@@ -18,9 +18,28 @@ test('production headers allow the real map and device geolocation without deleg
   assert.equal(response.status,403);
   assert.equal(response.headers.get('permissions-policy'),'camera=(self), microphone=(self), geolocation=(self), payment=()');
   const directives=new Map(response.headers.get('content-security-policy').split(';').map(value=>value.trim().split(/\s+/)).map(([name,...values])=>[name,values]));
+  assert.deepEqual(directives.get('script-src-attr'),["'none'"]);
+  assert.ok(directives.get('connect-src').includes('http://127.0.0.1:17843/status'));
+  assert.ok(directives.get('connect-src').includes('http://127.0.0.1:17843/scan'));
+  assert.equal(directives.get('connect-src').includes('http://127.0.0.1:17843'),false);
   assert.deepEqual(directives.get('frame-src'),["'self'",'https://www.openstreetmap.org','https://accounts.google.com','https://embed.waze.com']);
   assert.deepEqual(directives.get('frame-ancestors'),["'none'"]);
   assert.equal(response.headers.get('x-frame-options'),'DENY');
+});
+test('source CSP restricts inline handlers and limits the local scanner to its two endpoints',async()=>{
+  const [config,blueprintText]=await Promise.all([
+    readFile(new URL('../next.config.js',import.meta.url),'utf8'),
+    readFile(new URL('../../../render.yaml',import.meta.url),'utf8'),
+  ]);
+  const blueprint=JSON.parse(blueprintText);
+  const service=blueprint.services.find(item=>item.name==='fama-system-web');
+  assert.ok(service);
+  const headers=new Map(service.headers.map(({name,value})=>[name,value]));
+  for(const policy of [config,headers.get('Content-Security-Policy')]){
+    assert.match(policy,/script-src-attr 'none'/);
+    assert.match(policy,/http:\/\/127\.0\.0\.1:17843\/status http:\/\/127\.0\.0\.1:17843\/scan/);
+    assert.doesNotMatch(policy,/connect-src[^\n]*http:\/\/127\.0\.0\.1:17843(?:\s|;)/);
+  }
 });
 for await(const file of glob('app/api/**/route.js',{cwd:root})){
   const path='/'+file.replace(/^app\//,'').replace(/\/route\.js$/,'').replace(/\[id\]/g,'fixture');
