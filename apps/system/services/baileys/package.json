@@ -1,0 +1,9 @@
+{
+  "name": "fama-whatsapp-baileys",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "engines": { "node": ">=22.13.0" },
+  "scripts": { "start": "node server.mjs", "test": "node --test *.test.mjs" },
+  "dependencies": { "@whiskeysockets/baileys": "7.0.0-rc14", "qrcode": "1.5.4" }
+}

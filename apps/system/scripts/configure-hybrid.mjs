@@ -1,0 +1,18 @@
+import { writeFile } from 'node:fs/promises';
+import { fileURLToPath } from 'node:url';
+import { resolve } from 'node:path';
+import { securityHeaders } from '../next.config.js';
+const root=fileURLToPath(new URL('../',import.meta.url));
+const argument=process.argv.indexOf('--api');
+if(argument<0)throw new Error('Informe --api seguido do endereço HTTPS real do backend publicado na Render.');
+const api=new URL(process.argv[argument+1]);
+if(api.protocol!=='https:'||api.username||api.password||api.pathname!=='/'||api.search||api.hash)throw new Error('Use a origem HTTPS real, sem credenciais nem caminhos.');
+const control=process.argv.includes('--control');
+const app=control?'control':'system';
+const routes=[{type:'rewrite',source:'/api/*',destination:api.origin+'/api/*'},{type:'rewrite',source:'/_next/*',destination:api.origin+'/_next/*'}];
+if(!control)for(const path of ['/configurar-asaas','/configurar-asaas/submit','/atualizar-leitor'])routes.push({type:'rewrite',source:path,destination:api.origin+path});
+routes.push({type:'rewrite',source:'/*',destination:'/index.html'});
+const blueprint={services:[{type:'web',runtime:'static',name:'fama-'+app+'-web',buildCommand:'npm ci --ignore-scripts --no-audit --no-fund && npm run build:hybrid-static',staticPublishPath:'hybrid-dist',routes,headers:securityHeaders.map(({key,value})=>({path:'/*',name:key,value})),envVars:[{key:'NODE_VERSION',value:'24'}]}]};
+const destination=resolve(root,'deployment/hybrid/render-static.json');
+await writeFile(destination,JSON.stringify(blueprint,null,2)+'\n');
+console.log('Configuração estática gerada em '+destination+'. Configure FAMA_PUBLIC_URL no backend com o domínio real desta interface.');

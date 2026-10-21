@@ -1,0 +1,15 @@
+{
+  "$schema": "../node_modules/wrangler/config-schema.json",
+  "name": "fama-ai-python",
+  "main": "worker.py",
+  "compatibility_date": "2026-10-16",
+  "compatibility_flags": ["python_workers", "disable_python_external_sdk"],
+  "ai": {"binding": "AI"},
+  "vars": {
+    "FAMA_AI_MODEL": "@cf/meta/llama-3.3-70b-instruct-fp8-fast",
+    "FAMA_AI_GENERATIVE_ENABLED": "true",
+    "FAMA_AI_MAX_TOKENS": "2048",
+    "FAMA_AI_TIMEOUT_MS": "20000"
+  },
+  "observability": {"enabled": true}
+}

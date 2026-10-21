@@ -1,0 +1,11 @@
+{
+  "name": "fama-baileys",
+  "main": "dist/index.js",
+  "no_bundle": true,
+  "compatibility_date": "2026-10-20",
+  "compatibility_flags": ["nodejs_compat"],
+  "durable_objects": {"bindings": [{"name": "WHATSAPP", "class_name": "WhatsAppCompany"}]},
+  "migrations": [{"tag": "v1", "new_sqlite_classes": ["WhatsAppCompany"]}],
+  "rules": [{"type": "CompiledWasm", "globs": ["**/*.wasm"]}],
+  "observability": {"enabled": true}
+}

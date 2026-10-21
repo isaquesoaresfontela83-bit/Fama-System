@@ -1,10 +1,5 @@
-# Preferência permanente do proprietário
+# Instruções permanentes
 
-Fama System e Fama Control devem ser atualizados juntos. Esta regra foi solicitada explicitamente em 20/10/2026 e vale para os próximos trabalhos nos dois projetos.
+Atualize Fama System e Fama Control juntos, com a mesma versão e identificador. Leia os AGENTS.md das duas aplicações antes de editar.
 
-- Ao alterar qualquer um, recuperar a fonte atual dos dois e verificar o impacto no outro: funcionalidades, administração, permissões, planos, integrações e contratos de API.
-- Implementar o controle administrativo correspondente às funções do System. IPinfo Lite e GitHub REST ficam no Fama Control; chamadas e credenciais dos provedores ficam no backend.
-- Usar a mesma versão e o mesmo identificador de lançamento em `lib/fama-release.js` nos dois. Executar `node scripts/verify-companion.mjs <caminho-do-outro-projeto>` antes de publicar.
-- Validar os dois pacotes antes da primeira publicação; publicar o conjunto na instalação independente da Cloudflare e conferir os dois domínios. Preservar dados, planos, credenciais e público atual.
-- Só informar atualização conjunta concluída após confirmação das duas publicações. Se uma falhar, corrigir ou restaurar a versão compatível e informar a pendência com clareza.
-- Manter estas instruções versionadas nos dois projetos e no repositório compartilhado. Não substituir produção pelo ramo principal antigo sem sincronizar a fonte publicada.
+Destino aprovado: interfaces estáticas, APIs Render gratuitas e persistência Supabase. Preserve dados e chaves originais. Não use SQLite ou sessões Baileys no disco efêmero. A transferência privada aguarda autorização explícita. Não altere os domínios antes da importação e validação conjunta.

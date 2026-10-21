@@ -1,0 +1,114 @@
+name: fama
+
+x-web: &web
+  restart: unless-stopped
+  init: true
+  security_opt: [no-new-privileges:true]
+  cap_drop: [ALL]
+  networks: [fama]
+
+services:
+  system:
+    <<: *web
+    build:
+      context: ../..
+      dockerfile: deployment/vps/Dockerfile
+    env_file: system.env
+    environment:
+      FAMA_SQLITE_PATH: /data/fama.sqlite
+      FAMA_ALLOW_EMPTY_DATABASE: ${FAMA_ALLOW_EMPTY_DATABASE:-false}
+      FAMA_RUNTIME: vps
+      FAMA_PUBLIC_URL: https://${SYSTEM_HOST}
+      FAMA_INTERNAL_CONTROL_URL: http://control:3000
+      FAMA_CONTROL_PUBLIC_URL: https://${CONTROL_HOST}
+      FAMA_INTERNAL_PYTHON_URL: http://python:8000
+      FAMA_AI_PYTHON_URL: https://fama-ai.service
+      FAMA_AI_PYTHON_TOKEN: ${FAMA_AI_SERVICE_TOKEN}
+      FAMA_AI_PROVIDER: local-python
+      FAMA_AI_MODEL: '@local/ollama/qwen2.5-1.5b-instruct'
+      FAMA_AI_GENERATIVE_ENABLED: ${FAMA_AI_GENERATIVE_ENABLED:-false}
+      FAMA_DATA_BRIDGE_SECRET: ${FAMA_DATA_BRIDGE_SECRET}
+    volumes: [system-data:/data]
+
+  control:
+    <<: *web
+    build:
+      context: ../../../control
+      dockerfile: deployment/vps/Dockerfile
+    env_file: control.env
+    environment:
+      FAMA_SQLITE_PATH: /data/fama.sqlite
+      FAMA_BACKUP_DIRECTORY: /data/backups
+      FAMA_ALLOW_EMPTY_DATABASE: ${FAMA_ALLOW_EMPTY_DATABASE:-false}
+      FAMA_RUNTIME: vps
+      FAMA_PUBLIC_URL: https://${CONTROL_HOST}
+      FAMA_INTERNAL_SYSTEM_URL: http://system:3000
+      FAMA_SYSTEM_PUBLIC_URL: https://${SYSTEM_HOST}
+      FAMA_INTERNAL_PYTHON_URL: http://python:8000
+      FAMA_AI_PYTHON_URL: https://fama-ai.service
+      FAMA_AI_PYTHON_TOKEN: ${FAMA_AI_SERVICE_TOKEN}
+      FAMA_AI_PROVIDER: local-python
+      FAMA_AI_MODEL: '@local/ollama/qwen2.5-1.5b-instruct'
+      FAMA_AI_GENERATIVE_ENABLED: ${FAMA_AI_GENERATIVE_ENABLED:-false}
+      FAMA_DATA_BRIDGE_SECRET: ${FAMA_DATA_BRIDGE_SECRET}
+      FAMA_INTERNAL_BAILEYS_URL: http://baileys:3010
+      BAILEYS_SERVICE_URL: https://baileys.famasystem.online
+      BAILEYS_API_TOKEN: ${BAILEYS_API_TOKEN}
+    volumes: [control-data:/data]
+
+  python:
+    <<: *web
+    build:
+      context: ../..
+      dockerfile: deployment/vps/ai.Dockerfile
+    environment:
+      FAMA_AI_SERVICE_TOKEN: ${FAMA_AI_SERVICE_TOKEN}
+      FAMA_AI_PROVIDER: local-python
+      FAMA_AI_MODEL: '@local/ollama/qwen2.5-1.5b-instruct'
+      FAMA_AI_GENERATIVE_ENABLED: ${FAMA_AI_GENERATIVE_ENABLED:-false}
+      OLLAMA_URL: http://ollama:11434
+      OLLAMA_MODEL: ${OLLAMA_MODEL:-qwen2.5:1.5b}
+
+  baileys:
+    <<: *web
+    build:
+      context: ../../services/baileys
+    environment:
+      HOST: 0.0.0.0
+      PORT: '3010'
+      BAILEYS_DATABASE: /data/baileys.sqlite
+      BAILEYS_API_TOKEN: ${BAILEYS_API_TOKEN}
+      BAILEYS_ENCRYPTION_KEY: ${BAILEYS_ENCRYPTION_KEY}
+    volumes: [baileys-data:/data]
+
+  proxy:
+    <<: *web
+    image: caddy:2
+    ports: ['80:80', '443:443', '443:443/udp']
+    environment:
+      SYSTEM_HOST: ${SYSTEM_HOST}
+      SYSTEM_WWW_HOST: ${SYSTEM_WWW_HOST}
+      CONTROL_HOST: ${CONTROL_HOST}
+      ACME_EMAIL: ${ACME_EMAIL}
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy-data:/data
+      - caddy-config:/config
+    depends_on: [system, control]
+
+  ollama:
+    <<: *web
+    image: ollama/ollama:latest
+    profiles: [local-model]
+    volumes: [model-data:/root/.ollama]
+
+networks:
+  fama: {}
+
+volumes:
+  system-data: {}
+  control-data: {}
+  baileys-data: {}
+  caddy-data: {}
+  caddy-config: {}
+  model-data: {}

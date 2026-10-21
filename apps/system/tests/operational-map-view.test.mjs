@@ -1,0 +1,28 @@
+import assert from 'node:assert/strict';
+import test,{after} from 'node:test';
+import React from 'react';
+import Renderer,{act} from 'react-test-renderer';
+import {createServer} from 'vite';
+const root=new URL('../',import.meta.url).pathname;
+const calls=[],handlers=[],map={setView(...args){calls.push(['view',...args]);return this;},fitBounds(...args){calls.push(['bounds',...args]);},invalidateSize(){},remove(){calls.push(['remove']);}};
+const group={addTo(){return this;},clearLayers(){calls.push(['clear']);}};
+const marker={addTo(){return this;},bindTooltip(node){calls.push(['tooltip',node.textContent]);return this;},on(type,fn){handlers.push({type,fn});return this;}};
+globalThis.__mapFixture={map(){calls.push(['create']);return map;},control:{zoom:()=>({addTo(){}}),scale:()=>({addTo(){}})},tileLayer:(url,opts)=>{calls.push(['tiles',url,opts]);return {remove(){},addTo(){return this;},on(){return this;}};},layerGroup:()=>group,divIcon:x=>x,marker:()=>marker,circle:()=>({addTo(){}}),latLngBounds:p=>p};
+const vite=await createServer({configFile:false,root,ssr:{noExternal:['leaflet']},resolve:{alias:{'@':root}},server:{middlewareMode:true,hmr:false,ws:false},plugins:[{name:'map-fixture',enforce:'pre',resolveId(id){if(id==='leaflet')return '\0map-fixture';},load(id){if(id==='\0map-fixture')return 'const L=globalThis.__mapFixture;export const {map,control,tileLayer,layerGroup,divIcon,marker,circle,latLngBounds}=L;';}}]});
+const mockLibrary=await vite.ssrLoadModule('leaflet');assert.equal(typeof mockLibrary.map,'function');
+const {OperationalMapView}=await vite.ssrLoadModule('/app/operational-map-view.jsx');
+const originalDocument=globalThis.document;globalThis.document={createElement:()=>({textContent:''})};globalThis.IS_REACT_ACT_ENVIRONMENT=true;
+after(async()=>{await vite.close();globalThis.document=originalDocument;delete globalThis.__mapFixture;delete globalThis.IS_REACT_ACT_ENVIRONMENT;});
+test('map keeps one Leaflet instance through location changes, permits pin selection and cleans up',async()=>{
+ let selected='';const props={point:{latitude:-15.8,longitude:-47.9,address:'Ponto',source:'manual'},origin:null,markers:[{latitude:-15.81,longitude:-47.91,address:'Local',appointmentId:'visit',label:'<img onerror=attack>',source:'manual'}],onSelect:id=>{selected=id;}};let view;
+ try{await act(async()=>{view=Renderer.create(React.createElement(OperationalMapView,props),{createNodeMock:node=>node.props.className==='operational-map-canvas'?{}:null});});
+  await act(async()=>{await new Promise(resolve=>setTimeout(resolve,30));});
+  assert.equal(calls.filter(c=>c[0]==='create').length,1);assert.ok(calls.some(c=>c[0]==='tooltip'&&c[1]==='<img onerror=attack>'));
+  const tile=calls.find(c=>c[0]==='tiles');assert.equal(tile[1],'https://tile.openstreetmap.org/{z}/{x}/{y}.png');assert.equal(tile[2].keepBuffer,0);
+  await act(async()=>handlers.find(h=>h.type==='click').fn());assert.equal(selected,'visit');
+  await act(async()=>view.update(React.createElement(OperationalMapView,{...props,point:{...props.point,latitude:-15.9}})));
+  assert.equal(calls.filter(c=>c[0]==='create').length,1);assert.ok(calls.some(c=>c[0]==='view'&&c[1][0]===-15.9));
+  await act(async()=>view.root.findAllByType('button').find(b=>b.children.includes('Ver pontos')).props.onClick());assert.ok(calls.some(c=>c[0]==='bounds'));
+  await act(async()=>view.root.findAllByType('button').find(b=>b.props['aria-label']==='Ampliar mapa').props.onClick());assert.equal(view.root.findAllByType('div').some(d=>d.props.className==='operational-map-view expanded'),true);
+ }finally{if(view)await act(async()=>view.unmount());}assert.equal(calls.filter(c=>c[0]==='remove').length,1);
+});

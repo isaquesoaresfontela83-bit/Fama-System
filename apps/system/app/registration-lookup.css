@@ -1,0 +1,10 @@
+.registration-lookup-action { display: flex; gap: .5rem; align-items: center; flex-wrap: wrap; }
+.registration-lookup-action select { flex: 1; min-width: 140px; }
+.registration-lookup-action button { font-size: .875rem; }
+.registration-lookup-result { display: grid; gap: .5rem; padding: 1rem; border: 1px solid var(--border); border-radius: .75rem; background: var(--muted); }
+.registration-lookup-result p { font-size: 1rem; line-height: 1.5; overflow-wrap: anywhere; margin: 0; }
+.registration-lookup-result small, .registration-lookup-help, .registration-lookup-error { font-size: .875rem; line-height: 1.5; }
+.registration-lookup-result small, .registration-lookup-help { color: var(--muted-foreground); }
+.registration-lookup-result button { justify-self: start; margin: .25rem 0; }
+.registration-lookup-error { color: var(--destructive); }
+@media (max-width: 600px) { .registration-lookup-action > * { width: 100%; } }

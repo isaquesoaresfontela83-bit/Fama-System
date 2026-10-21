@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 620" role="img" aria-labelledby="title desc">
+  <title id="title">Visão do Financeiro do Fama System</title>
+  <desc id="desc">Referência visual do resumo financeiro com saldo, contas, bancos e inteligência operacional.</desc>
+  <rect width="1200" height="620" rx="24" fill="#f7fbff"/>
+  <rect x="30" y="28" width="1140" height="564" rx="18" fill="#fff" stroke="#d8e6f2"/>
+  <rect x="30" y="28" width="215" height="564" rx="18" fill="#102e5f"/>
+  <text x="62" y="72" fill="#fff" font-family="Arial,sans-serif" font-size="22" font-weight="800">FAMA SYSTEM</text>
+  <text x="62" y="112" fill="#9fd9f1" font-family="Arial,sans-serif" font-size="13" font-weight="700">OPERAÇÃO</text>
+  <text x="62" y="153" fill="#fff" font-family="Arial,sans-serif" font-size="16" font-weight="700">Visão geral</text>
+  <text x="62" y="196" fill="#d4e8f7" font-family="Arial,sans-serif" font-size="16">CRM</text>
+  <text x="62" y="238" fill="#d4e8f7" font-family="Arial,sans-serif" font-size="16">Agenda</text>
+  <rect x="49" y="259" width="175" height="45" rx="10" fill="#1a78a7"/>
+  <text x="62" y="288" fill="#fff" font-family="Arial,sans-serif" font-size="16" font-weight="700">Financeiro</text>
+  <text x="62" y="348" fill="#9fd9f1" font-family="Arial,sans-serif" font-size="13" font-weight="700">GESTÃO</text>
+  <text x="62" y="390" fill="#d4e8f7" font-family="Arial,sans-serif" font-size="16">Clientes e piscinas</text>
+  <text x="62" y="432" fill="#d4e8f7" font-family="Arial,sans-serif" font-size="16">Estoque</text>
+  <text x="62" y="474" fill="#d4e8f7" font-family="Arial,sans-serif" font-size="16">Equipe</text>
+  <text x="280" y="74" fill="#12366f" font-family="Arial,sans-serif" font-size="28" font-weight="800">Financeiro</text>
+  <text x="280" y="101" fill="#71869a" font-family="Arial,sans-serif" font-size="14">Resumo operacional da empresa selecionada</text>
+  <rect x="950" y="50" width="170" height="40" rx="9" fill="#0b72e7"/>
+  <text x="1035" y="76" fill="#fff" font-family="Arial,sans-serif" font-size="14" font-weight="800" text-anchor="middle">Sincronizar tudo</text>
+  <g font-family="Arial,sans-serif">
+    <rect x="280" y="132" width="200" height="112" rx="12" fill="#effbff" stroke="#c3eaf3"/><text x="300" y="162" fill="#6a829b" font-size="13">Saldo bancário</text><text x="300" y="205" fill="#12366f" font-size="25" font-weight="800">R$ 18.450,00</text>
+    <rect x="498" y="132" width="200" height="112" rx="12" fill="#f3f8ff" stroke="#d4e2f2"/><text x="518" y="162" fill="#6a829b" font-size="13">A receber</text><text x="518" y="205" fill="#12366f" font-size="25" font-weight="800">R$ 7.280,00</text>
+    <rect x="716" y="132" width="200" height="112" rx="12" fill="#fff8ed" stroke="#f4dfb4"/><text x="736" y="162" fill="#84652c" font-size="13">Em atraso</text><text x="736" y="205" fill="#aa6a00" font-size="25" font-weight="800">R$ 1.240,00</text>
+  </g>
+  <rect x="280" y="274" width="555" height="245" rx="14" fill="#fff" stroke="#d8e6f2"/>
+  <text x="304" y="310" fill="#12366f" font-family="Arial,sans-serif" font-size="17" font-weight="800">Resumo financeiro</text>
+  <text x="304" y="350" fill="#6a829b" font-family="Arial,sans-serif" font-size="14">Receitas recebidas</text><text x="720" y="350" fill="#168a67" font-family="Arial,sans-serif" font-size="15" font-weight="700" text-anchor="end">R$ 24.800,00</text>
+  <text x="304" y="393" fill="#6a829b" font-family="Arial,sans-serif" font-size="14">Despesas previstas</text><text x="720" y="393" fill="#c65b4d" font-family="Arial,sans-serif" font-size="15" font-weight="700" text-anchor="end">R$ 9.620,00</text>
+  <text x="304" y="436" fill="#6a829b" font-family="Arial,sans-serif" font-size="14">Saldo projetado</text><text x="720" y="436" fill="#12366f" font-family="Arial,sans-serif" font-size="15" font-weight="700" text-anchor="end">R$ 15.180,00</text>
+  <rect x="857" y="274" width="263" height="245" rx="14" fill="#effbff" stroke="#c3eaf3"/>
+  <text x="883" y="310" fill="#12366f" font-family="Arial,sans-serif" font-size="17" font-weight="800">IA financeira</text>
+  <text x="883" y="349" fill="#426976" font-family="Arial,sans-serif" font-size="13">Prioridades de hoje</text>
+  <text x="883" y="383" fill="#426976" font-family="Arial,sans-serif" font-size="13">• Cobrança em atraso</text>
+  <text x="883" y="412" fill="#426976" font-family="Arial,sans-serif" font-size="13">• Conferir conciliação</text>
+  <text x="883" y="441" fill="#426976" font-family="Arial,sans-serif" font-size="13">• Revisar próximos vencimentos</text>
+</svg>
