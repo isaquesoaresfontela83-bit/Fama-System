@@ -1,3 +1,4 @@
+import { ensureCustomerColumns } from '@/lib/customer-selection';
 import { database, dateTime, numberValue, optionalText } from "@/lib/database";
 import { readJsonObject } from "@/lib/request-body";
 import { camelizeRow, deleteRows, selectOne, snakeRow, updateRows, usesSupabase } from "@/lib/supabase";
@@ -22,21 +23,21 @@ const configs = {
         updateColumn: "status",
         inputKey: "status",
         allowed: new Set(["rascunho", "enviado", "aprovado", "recusado"]),
-        select: `SELECT id, quote_number AS quoteNumber, client_name AS clientName, service, materials_cents AS materialsCents, labor_cents AS laborCents, discount_cents AS discountCents, total_cents AS totalCents, status, valid_until AS validUntil, notes, created_at AS createdAt FROM quotes WHERE id = ? AND organization_id = ?`,
+        select: `SELECT id, quote_number AS quoteNumber, customer_id AS customerId, client_name AS clientName, service, materials_cents AS materialsCents, labor_cents AS laborCents, discount_cents AS discountCents, total_cents AS totalCents, status, valid_until AS validUntil, notes, created_at AS createdAt FROM quotes WHERE id = ? AND organization_id = ?`,
     },
     appointments: {
         table: "appointments",
         updateColumn: "status",
         inputKey: "status",
         allowed: new Set(["agendado", "em_rota", "concluido", "remarcado", "cancelado"]),
-        select: `SELECT id, title, client_name AS clientName, start_at AS startAt, address, technician, kind, status, notes FROM appointments WHERE id = ? AND organization_id = ?`,
+        select: `SELECT id, title, customer_id AS customerId, client_name AS clientName, start_at AS startAt, address, technician, kind, status, notes FROM appointments WHERE id = ? AND organization_id = ?`,
     },
     workOrders: {
         table: "work_orders",
         updateColumn: "status",
         inputKey: "status",
         allowed: new Set(["aberta", "em_execucao", "concluida"]),
-        select: `SELECT id, os_number AS osNumber, client_name AS clientName, service, scheduled_at AS scheduledAt, technician, status, ph, chlorine, alkalinity, products_used AS productsUsed, notes, amount_cents AS amountCents FROM work_orders WHERE id = ? AND organization_id = ?`,
+        select: `SELECT id, os_number AS osNumber, customer_id AS customerId, client_name AS clientName, service, scheduled_at AS scheduledAt, technician, status, ph, chlorine, alkalinity, products_used AS productsUsed, notes, amount_cents AS amountCents FROM work_orders WHERE id = ? AND organization_id = ?`,
     },
     transactions: {
         table: "transactions",
@@ -56,14 +57,14 @@ const configs = {
         updateColumn: "status",
         inputKey: "status",
         allowed: new Set(["ativa", "agendada", "concluida", "expirada"]),
-        select: `SELECT id, warranty_number AS warrantyNumber, client_name AS clientName, item, origin_reference AS originReference, purchase_date AS purchaseDate, expires_at AS expiresAt, scheduled_at AS scheduledAt, appointment_id AS appointmentId, technician, status, notes, created_at AS createdAt FROM warranties WHERE id = ? AND organization_id = ?`,
+        select: `SELECT id, warranty_number AS warrantyNumber, customer_id AS customerId, client_name AS clientName, item, origin_reference AS originReference, purchase_date AS purchaseDate, expires_at AS expiresAt, scheduled_at AS scheduledAt, appointment_id AS appointmentId, technician, status, notes, created_at AS createdAt FROM warranties WHERE id = ? AND organization_id = ?`,
     },
     contracts: {
         table: "contracts",
         updateColumn: "status",
         inputKey: "status",
         allowed: new Set(["rascunho", "ativo", "suspenso", "encerrado"]),
-        select: `SELECT id, contract_number AS contractNumber, client_name AS clientName, client_document AS clientDocument, client_address AS clientAddress, service, start_date AS startDate, end_date AS endDate, frequency, monthly_cents AS monthlyCents, payment_day AS paymentDay, status, terms, created_at AS createdAt FROM contracts WHERE id = ? AND organization_id = ?`,
+        select: `SELECT id, contract_number AS contractNumber, customer_id AS customerId, client_name AS clientName, client_document AS clientDocument, client_address AS clientAddress, service, start_date AS startDate, end_date AS endDate, frequency, monthly_cents AS monthlyCents, payment_day AS paymentDay, status, terms, created_at AS createdAt FROM contracts WHERE id = ? AND organization_id = ?`,
     },
 };
 const deleteTables = {
@@ -81,6 +82,7 @@ const deleteTables = {
 export async function PATCH(request, context) {
     try {
         const { user, organization } = await requireTenant(request);
+        await ensureCustomerColumns();
         await assertRateLimit(request, "record_update", user.id, 90, 60);
         const { id } = await context.params;
         const body = await readJsonObject(request);

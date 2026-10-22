@@ -44,7 +44,7 @@ const post = (body, headers) => route.POST(f.request('POST', '/api/admin/apis', 
 test('the complete inventory separates configuration from proof and returns no credentials or customer data', async () => {
     const response = await route.GET(); assert.equal(response.status, 200); assert.match(response.headers.get('cache-control'), /no-store/);
     const data = await response.json(); assert.equal(data.apis.length, apiCatalog.length); assert.ok(data.apis.length > 30); assert.equal(new Set(data.apis.map(item => item.id)).size, data.apis.length); assert.equal(data.release.synchronized, true);
-    assert.equal(data.apis.find(item => item.id === 'drive').status, 'configured'); assert.equal(data.apis.find(item => item.id === 'resend').status, 'unconfigured'); assert.equal(data.apis.find(item => item.id === 'github').status, 'public');
+    assert.equal(data.apis.find(item => item.id === 'drive').status, 'configured'); assert.equal(data.apis.some(item => item.id === 'resend'), false); assert.equal(data.apis.find(item => item.id === 'github').status, 'public');
     assert.ok(data.apis.every(item => item.instances.length === item.scopes.length)); assert.deepEqual(external, ['integration_status']);
     assert.doesNotMatch(JSON.stringify(data), /must-not-leak|private-bridge-fixture|sb_secret_fixture|token_ciphertext/);
 });
@@ -64,7 +64,7 @@ test('read-only diagnostics are explicit, allowlisted and independent by applica
     assert.equal((await post({ id: 'https://foreign.example', scope: 'system' })).status, 400); assert.equal((await post({ id: 'github', scope: 'system' })).status, 400);
     let value = await (await post({ id: 'github', scope: 'control' })).json(); assert.equal(value.observation.status, 'verified'); assert.deepEqual(external, ['github_rest_get']);
     value = await (await post({ id: 'brasilapi', scope: 'system' })).json(); assert.equal(value.observation.status, 'verified'); assert.equal(value.scope, 'system'); assert.doesNotMatch(JSON.stringify(value), /must-not-leak/);
-    value = await (await post({ id: 'resend', scope: 'control' })).json(); assert.equal(value.observation.status, 'unconfigured'); assert.ok(!external.includes('resend_send'));
+    assert.equal((await post({ id: 'resend', scope: 'control' })).status,400); assert.ok(!external.includes('resend_send'));
     mode = 'system-down'; value = await (await post({ id: 'brasilapi', scope: 'system' })).json(); assert.equal(value.observation.status, 'unavailable'); assert.ok(value.observation.checkedAt);
 });
 test('administration and diagnostics require the owner, a trusted origin and an actual session', async () => {

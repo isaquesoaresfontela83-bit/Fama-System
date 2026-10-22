@@ -12,6 +12,7 @@ import '../../app/control-premium.css';
 import '../../app/control-integrations.css';
 import '../../app/control-apis.css';
 import '../../app/professional.css';
+import '../../app/readability.css';
 installHybridNetwork();
 function App(){
  const [session,setSession]=useState(null),[error,setError]=useState(''),[attempt,retry]=useState(0);

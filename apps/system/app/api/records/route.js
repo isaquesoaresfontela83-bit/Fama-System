@@ -1,3 +1,4 @@
+import { ensureCustomerColumns,resolveCustomerSelection } from '@/lib/customer-selection';
 import { cents, database, dateTime, numberValue, optionalText, reference, requiredText } from "@/lib/database";
 import { readJsonObject } from "@/lib/request-body";
 import { calendarDate } from "@/lib/calendar";
@@ -32,6 +33,8 @@ async function createRecord(request, context) {
         if (!Object.hasOwn(entityPermissions, entity) || !hasFeaturePermission(organization.role, organization.permissions, entityPermissions[entity], organization.moduleAccess)) {
             throw new RequestError("Seu perfil não possui acesso a este módulo.", 403);
         }
+        await ensureCustomerColumns();
+        const selectedCustomerId=await resolveCustomerSelection(entity,body,organization.id);
         const id = crypto.randomUUID();
         const createdAt = new Date().toISOString();
         const db = database();
@@ -104,6 +107,7 @@ async function createRecord(request, context) {
                 id,
                 quoteNumber: reference("ORC"),
                 clientName: requiredText(body.clientName, "Cliente"),
+                customerId: selectedCustomerId,
                 service: calculatedItems.length ? calculatedItems.map((item) => String(item.name)).join(", ") : requiredText(body.service, "Serviço"),
                 materialsCents,
                 laborCents,
@@ -118,8 +122,8 @@ async function createRecord(request, context) {
                 await saveSupabaseRecord("quotes", organization.id, record, createdAt);
                 return Response.json({ record }, { status: 201 });
             }
-            await db.prepare(`INSERT INTO quotes (id, organization_id, quote_number, client_name, service, materials_cents, labor_cents, discount_cents, total_cents, status, valid_until, notes, created_at, updated_at)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`).bind(record.id, organization.id, record.quoteNumber, record.clientName, record.service, record.materialsCents, record.laborCents, record.discountCents, record.totalCents, record.status, record.validUntil, record.notes, createdAt, createdAt).run();
+            await db.prepare(`INSERT INTO quotes (id, organization_id, customer_id, quote_number, client_name, service, materials_cents, labor_cents, discount_cents, total_cents, status, valid_until, notes, created_at, updated_at)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`).bind(record.id, organization.id, record.customerId, record.quoteNumber, record.clientName, record.service, record.materialsCents, record.laborCents, record.discountCents, record.totalCents, record.status, record.validUntil, record.notes, createdAt, createdAt).run();
             return Response.json({ record }, { status: 201 });
         }
         if (entity === "appointments") {
@@ -127,6 +131,7 @@ async function createRecord(request, context) {
                 id,
                 title: requiredText(body.title, "Compromisso"),
                 clientName: requiredText(body.clientName, "Cliente"),
+                customerId: selectedCustomerId,
                 startAt: dateTime(requiredText(body.startAt, "Data e hora")),
                 address: optionalText(body.address),
                 technician: optionalText(body.technician),
@@ -146,8 +151,8 @@ async function createRecord(request, context) {
                 }
                 return Response.json({ record, recurringCreated: repeatCount }, { status: 201 });
             }
-            await db.prepare(`INSERT INTO appointments (id, organization_id, title, client_name, start_at, address, technician, kind, status, notes, created_at, updated_at)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`).bind(record.id, organization.id, record.title, record.clientName, record.startAt, record.address, record.technician, record.kind, record.status, record.notes, createdAt, createdAt).run();
+            await db.prepare(`INSERT INTO appointments (id, organization_id, customer_id, title, client_name, start_at, address, technician, kind, status, notes, created_at, updated_at)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`).bind(record.id, organization.id, record.customerId, record.title, record.clientName, record.startAt, record.address, record.technician, record.kind, record.status, record.notes, createdAt, createdAt).run();
             return Response.json({ record }, { status: 201 });
         }
         if (entity === "workOrders") {
@@ -155,6 +160,7 @@ async function createRecord(request, context) {
                 id,
                 osNumber: reference("OS"),
                 clientName: requiredText(body.clientName, "Cliente"),
+                customerId: selectedCustomerId,
                 service: requiredText(body.service, "Serviço"),
                 scheduledAt: dateTime(body.scheduledAt),
                 technician: optionalText(body.technician),
@@ -170,8 +176,8 @@ async function createRecord(request, context) {
                 await saveSupabaseRecord("work_orders", organization.id, record, createdAt);
                 return Response.json({ record }, { status: 201 });
             }
-            await db.prepare(`INSERT INTO work_orders (id, organization_id, os_number, client_name, service, scheduled_at, technician, status, ph, chlorine, alkalinity, products_used, notes, amount_cents, created_at, updated_at)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, NULL, NULL, NULL, '', ?, ?, ?, ?)`).bind(record.id, organization.id, record.osNumber, record.clientName, record.service, record.scheduledAt, record.technician, record.status, record.notes, record.amountCents, createdAt, createdAt).run();
+            await db.prepare(`INSERT INTO work_orders (id, organization_id, customer_id, os_number, client_name, service, scheduled_at, technician, status, ph, chlorine, alkalinity, products_used, notes, amount_cents, created_at, updated_at)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, NULL, NULL, NULL, '', ?, ?, ?, ?)`).bind(record.id, organization.id, record.customerId, record.osNumber, record.clientName, record.service, record.scheduledAt, record.technician, record.status, record.notes, record.amountCents, createdAt, createdAt).run();
             return Response.json({ record }, { status: 201 });
         }
         if (entity === "customers") {
@@ -278,6 +284,7 @@ async function createRecord(request, context) {
                 id,
                 warrantyNumber: reference("GAR"),
                 clientName: requiredText(body.clientName, "Cliente"),
+                customerId: selectedCustomerId,
                 item: requiredText(body.item, "Item ou serviço coberto"),
                 originReference: optionalText(body.originReference),
                 purchaseDate,
@@ -293,8 +300,8 @@ async function createRecord(request, context) {
                 await saveSupabaseRecord("warranties", organization.id, record, createdAt);
                 return Response.json({ record }, { status: 201 });
             }
-            await db.prepare(`INSERT INTO warranties (id, organization_id, warranty_number, client_name, item, origin_reference, purchase_date, expires_at, scheduled_at, appointment_id, technician, status, notes, created_at, updated_at)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, '', '', '', ?, ?, ?, ?)`).bind(record.id, organization.id, record.warrantyNumber, record.clientName, record.item, record.originReference, record.purchaseDate, record.expiresAt, record.status, record.notes, createdAt, createdAt).run();
+            await db.prepare(`INSERT INTO warranties (id, organization_id, customer_id, warranty_number, client_name, item, origin_reference, purchase_date, expires_at, scheduled_at, appointment_id, technician, status, notes, created_at, updated_at)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, '', '', '', ?, ?, ?, ?)`).bind(record.id, organization.id, record.customerId, record.warrantyNumber, record.clientName, record.item, record.originReference, record.purchaseDate, record.expiresAt, record.status, record.notes, createdAt, createdAt).run();
             return Response.json({ record }, { status: 201 });
         }
         if (entity === "contracts") {
@@ -308,6 +315,7 @@ async function createRecord(request, context) {
                 id,
                 contractNumber: reference("CTR"),
                 clientName: requiredText(body.clientName, "Cliente"),
+                customerId: selectedCustomerId,
                 clientDocument: optionalText(body.clientDocument),
                 clientAddress: optionalText(body.clientAddress),
                 service: requiredText(body.service, "Objeto do contrato"),
@@ -324,8 +332,8 @@ async function createRecord(request, context) {
                 await saveSupabaseRecord("contracts", organization.id, record, createdAt);
                 return Response.json({ record }, { status: 201 });
             }
-            await db.prepare(`INSERT INTO contracts (id, organization_id, contract_number, client_name, client_document, client_address, service, start_date, end_date, frequency, monthly_cents, payment_day, status, terms, created_at, updated_at)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`).bind(record.id, organization.id, record.contractNumber, record.clientName, record.clientDocument, record.clientAddress, record.service, record.startDate, record.endDate, record.frequency, record.monthlyCents, record.paymentDay, record.status, record.terms, createdAt, createdAt).run();
+            await db.prepare(`INSERT INTO contracts (id, organization_id, customer_id, contract_number, client_name, client_document, client_address, service, start_date, end_date, frequency, monthly_cents, payment_day, status, terms, created_at, updated_at)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`).bind(record.id, organization.id, record.customerId, record.contractNumber, record.clientName, record.clientDocument, record.clientAddress, record.service, record.startDate, record.endDate, record.frequency, record.monthlyCents, record.paymentDay, record.status, record.terms, createdAt, createdAt).run();
             return Response.json({ record }, { status: 201 });
         }
         return Response.json({ error: "Tipo de registro inválido." }, { status: 400 });

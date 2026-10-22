@@ -23,17 +23,17 @@ beforeEach(()=>{
 afterEach(async()=>{if(renderer)await act(async()=>renderer.unmount());renderer=null;});
 after(async()=>{globalThis.fetch=original;delete globalThis.IS_REACT_ACT_ENVIRONMENT;await vite.close();});
 async function open(){await act(async()=>{renderer=Renderer.create(React.createElement(ControlIntegrationManager));});}
-test('the central exposes six protected configuration forms and performs no sends or connection tests on load',async()=>{
- await open();assert.equal(renderer.root.findAllByType('article').length,6);assert.ok(calls.every(call=>!call.init.method));
- assert.equal(renderer.root.findAllByType('a').length,0);const output=JSON.stringify(renderer.toJSON());assert.match(output,/Documentos e monitoramento/);assert.match(output,/Atividade no Fama/);assert.doesNotMatch(output,/supabase.com|Abrir Resend|Abrir Sentry/);
+test('the central exposes five protected configuration forms and performs no sends or connection tests on load',async()=>{
+ await open();assert.equal(renderer.root.findAllByType('article').length,5);assert.ok(calls.every(call=>!call.init.method));
+ assert.equal(renderer.root.findAllByType('a').length,0);const output=JSON.stringify(renderer.toJSON());assert.match(output,/Documentos e monitoramento/);assert.match(output,/Atividade no Fama/);assert.doesNotMatch(output,/supabase.com|Resend|Enviar documento por e-mail|Abrir Sentry/);
 });
 test('saving a replacement key sends it only to the local protected route and clears it from the form',async()=>{
- await open();const field=renderer.root.findByProps({'aria-label':'Resend: Chave de envio'});
+ await open();const field=renderer.root.findByProps({'aria-label':'OCR.space: Chave de leitura de documentos'});
  await act(async()=>field.props.onChange({target:{value:'replacement-private-fixture'}}));
- const article=renderer.root.findAllByType('article').find(node=>label(node).includes('Resend'));
+ const article=renderer.root.findAllByType('article').find(node=>label(node).includes('OCR.space'));
  await act(async()=>article.findByType('form').props.onSubmit({preventDefault(){}}));
  const write=calls.find(call=>call.init.method==='PATCH');assert.equal(write.url,'/api/admin/integrations/config');const body=JSON.parse(write.init.body);assert.equal(body.fields.apiKey,'replacement-private-fixture');assert.equal(body.expectedRevision,1);
- assert.equal(renderer.root.findByProps({'aria-label':'Resend: Chave de envio'}).props.value,'');assert.doesNotMatch(JSON.stringify(renderer.toJSON()),/replacement-private-fixture/);
+ assert.equal(renderer.root.findByProps({'aria-label':'OCR.space: Chave de leitura de documentos'}).props.value,'');assert.doesNotMatch(JSON.stringify(renderer.toJSON()),/replacement-private-fixture/);
 });
 test('selecting a document never uploads it until an action is clicked, and OCR results stay inside the central',async()=>{
  await open();const bytes=new TextEncoder().encode('%PDF-1.4\nfixture');

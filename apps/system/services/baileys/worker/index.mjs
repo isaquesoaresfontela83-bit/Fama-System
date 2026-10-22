@@ -4,18 +4,11 @@ import QRCode from 'qrcode';
 import { EncryptedStore } from '../encrypted-store.mjs';
 import { Sessions, authorized, companyValid } from '../session-core.mjs';
 import { DurableSqlite } from './sqlite.mjs';
+import { companyRequestBody } from './body.mjs';
 
 const json=(body,status=200)=>Response.json(body,{status,headers:{'Cache-Control':'private,no-store','X-Content-Type-Options':'nosniff'}});
 const fail=(message,status=400)=>Object.assign(new Error(message),{status});
-async function readBody(request){
-    if(!/^application\/json(?:;|$)/i.test(request.headers.get('Content-Type') || ''))throw fail('Envie JSON.',415);
-    const reader=request.body?.getReader();if(!reader)throw fail('Envie uma solicitação válida.');
-    const chunks=[];let size=0;
-    try{for(;;){const item=await reader.read();if(item.done)break;size+=item.value.length;if(size>24000)throw fail('Solicitação muito grande.',413);chunks.push(item.value);}}
-    finally{await reader.cancel().catch(()=>{});}
-    const bytes=new Uint8Array(size);let offset=0;for(const chunk of chunks){bytes.set(chunk,offset);offset+=chunk.length;}
-    try{const value=JSON.parse(new TextDecoder().decode(bytes));if(!value || typeof value!=='object' || Array.isArray(value))throw new Error();return value;}catch{throw fail('JSON inválido.');}
-}
+
 
 export class WhatsAppCompany extends DurableObject {
     constructor(ctx,env){
@@ -52,7 +45,8 @@ export class WhatsAppCompany extends DurableObject {
         if(++this.limit.count>30)throw fail('Aguarde antes de tentar novamente.',429);
         if(action==='session' && method==='POST'){
             this.meta('requestedAt',Date.now());
-            const result=await this.sessions.connect(company);await this.ctx.storage.setAlarm(Date.now()+60000);return result;
+            if(Object.keys(body||{}).some(key=>key!=='reconnect')||(body?.reconnect!==undefined&&typeof body.reconnect!=='boolean'))throw Object.assign(new Error('Operação inválida.'),{status:400});
+            const result=await this.sessions.connect(company,{reconnect:body?.reconnect===true});await this.ctx.storage.setAlarm(Date.now()+60000);return result;
         }
         if(action==='session' && method==='DELETE'){
             const result=await this.sessions.disconnect(company);await this.ctx.storage.deleteAlarm();return result;
@@ -76,8 +70,7 @@ export default {
             if(url.pathname==='/health' && request.method==='GET')return json({provider:'baileys',ok:true,version:'1.1.0',runtime:'cloudflare-durable-objects'});
             const match=url.pathname.match(/^\/v1\/companies\/([^/]+)\/(session|conversations|messages)$/);
             if(!match || !companyValid(match[1]))return json({error:'Operação inválida.'},404);
-            const body=request.method==='POST' && match[2]==='messages'?await readBody(request):{};
-            if(Object.keys(body).some(key=>!['phone','text','clientId'].includes(key)))throw fail('Solicitação inválida.');
+            const body=await companyRequestBody(request,match[2]);
             const stub=env.WHATSAPP.getByName(match[1]);
             const result=await stub.handle(match[1],match[2],request.method,body,url.searchParams.get('phone') || '');
             return result.ok?json(result.data):json({error:result.error},result.status);

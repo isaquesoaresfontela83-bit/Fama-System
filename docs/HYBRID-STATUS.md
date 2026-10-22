@@ -1,47 +1,38 @@
-# Estado da implantação híbrida — 21/10/2026
+# Estado da implantação híbrida — 22/10/2026
 
-Lançamento conjunto: **15.7.0 / 2026-10-21-hybrid-01**.
+Fonte preparada: **15.8.0 / 2026-10-22-customers-agenda-01**, branch `release/15.8.0-prepared`. Consulte [RELEASE-15.8.0.md](RELEASE-15.8.0.md) para funcionalidades e validação. System e Control mantêm o frontend original e precisam ser publicados juntos. AppDeploy está proibido, inclusive para prévias.
 
-## Publicações de teste
+## Destinos existentes
 
-- Fama System: https://fama-system.isaquesoaresfontela8.chatgpt.site — versão Sites 233; fonte `d526ed356a2cdf655c0f8acfd3e679883bbbc68f`.
-- Fama Control: https://fama-control.isaquesoaresfontela8.chatgpt.site — versão Sites 85; fonte `b4585365bfcf975c5dc96b2e9bcc3ad52c07548d`.
-- Os dois endpoints `/api/health` retornaram HTTP 200, versão 15.7.0 e o mesmo release ID. Os endpoints temporários de transferência estão desativados (401 sem autorização), e as variáveis FAMA_MIGRATION_* foram removidas.
-- Os domínios principais `famasystem.online` e `control.famasystem.online` continuam na instalação anterior, que informou 15.4 nas verificações desta sessão. Não houve troca de DNS.
+Workspace Render confirmado: Fama system (`tea-dbcgqg3rjlhs73be8ojg`). Repositório verificado e com permissão de escrita: `isaquesoaresfontela83-bit/Fama-System`. Auto-deploy desativado nos quatro serviços.
 
-## Render
+| Aplicação | Serviço | Endereço |
+| --- | --- | --- |
+| System API | srv-dbchh71kjs5s73ef2ggg | https://fama-system-api.onrender.com |
+| Control API | srv-dbchhduktt5c73cukph0 | https://fama-control-api.onrender.com |
+| System estático | srv-dbcl9r6i0phs73f77jhg | https://fama-system-web.onrender.com |
+| Control estático | srv-dbcl9t2vcj2c73f1mdj0 | https://fama-control-web.onrender.com |
 
-Workspace confirmado pelo contexto existente e pela descoberta: Fama system (`tea-dbcgqg3rjlhs73be8ojg`).
+Os estáticos existentes publicaram a fonte 15.7.2 (`0da6e94a9c063ae66bedadfa9063f15fbd3f3a66`). As APIs continuam sem iniciar: último deploy informado `update_failed`, fonte `85b8b290e1380f934141c8a1c04b22e599e6befc`, com `FAMA_POSTGRES_URL` ausente. Não criar outros serviços de teste nem publicar `main`, que contém fonte antiga.
 
-| Aplicação | Serviço gratuito | Painel | URL reservada |
-| --- | --- | --- | --- |
-| System | srv-dbchh71kjs5s73ef2ggg | https://dashboard.render.com/web/srv-dbchh71kjs5s73ef2ggg | https://fama-system-api.onrender.com |
-| Control | srv-dbchhduktt5c73cukph0 | https://dashboard.render.com/web/srv-dbchhduktt5c73cukph0 | https://fama-control-api.onrender.com |
+Os domínios principais permanecem nos Workers independentes `fama-system-app` e `fama-control-app` da conta Cloudflare `0b7f140d49afd304babf88f180bab819`. Nenhuma troca de domínio foi realizada nesta preparação.
 
-Branch: `deploy/hybrid-15.7.0`. Commit compilado: `85b8b290e1380f934141c8a1c04b22e599e6befc`. Deploys: System `dep-dbchin7b9u1s73cqbt20`; Control `dep-dbchip8m7kps73a07te0`.
+Projeto Supabase existente: `mupnsdqahoybhmkpufmx`, região sa-east-1. Os esquemas `fama_system_runtime` e `fama_control_runtime` e seus marcadores já existem. Sua existência não comprova que os dados atuais dos dois Workers foram copiados ou que as chaves de produção foram preservadas. Nunca sobrescrever esses esquemas com importação vazia.
 
-Os dois builds corrigidos compilaram e exportaram suas imagens. As APIs **ainda não estão operacionais**: o início foi interrompido pelo verificador de persistência porque `FAMA_POSTGRES_URL` ainda não está configurada. Nenhuma base vazia foi criada. Auto-deploy está desativado.
+## Bloqueio específico da transferência
 
-O `render.yaml` na raiz define duas APIs e duas interfaces estáticas com proxy das rotas API na mesma origem. Foi validado estruturalmente contra o schema oficial Render 2020-12. Ainda precisa ser aplicado pelo painel ou API de Blueprints; a ferramenta MCP de criação de estáticos não expõe regras de rewrite. Os sites estáticos Render ainda não foram criados. Não declarar proxy/cookies como homologados antes da validação real.
+O proprietário autorizou em 21/10 copiar os bancos auxiliares para o Supabase e configurar as chaves originais no Render. Em 22/10 confirmou duas vezes a publicação conjunta (“Autorizo” e “Sim autorizo”). A revisão automática, ainda assim, rejeitou a transferência criptografada de produção para a pasta local temporária, por considerar ausente autorização específica para esse trânsito sensível.
 
-## Verificações
+Não contornar essa rejeição por outro endpoint, mecanismo de cópia ou execução indireta. Nenhum banco ou segredo original foi recebido na tentativa rejeitada. As três variáveis temporárias `FAMA_MIGRATION_*` foram removidas dos dois Workers, com sucesso confirmado pelo conector. O receptor temporário continha somente a chave RSA criada para a tentativa, sem dados de produção.
 
-- 4 testes híbridos do System e 4 do Control passaram nesta sessão, incluindo migração em banco de testes, isolamento de esquemas, preservação de valores criptografados, recusa de sobrescrita e transporte de rede sem repetição de mutações.
-- 2 testes do WASM comprimido do System passaram.
-- A verificação de versão, lançamento, catálogo, integrações e permissões dos dois projetos passou.
-- Corrigido o empacotamento de arquivos WASM acima de 25 MiB e a exclusão indevida de `vendor/` pelo contexto Docker.
+As autorizações gerais de publicação estão satisfeitas. A única confirmação adicional necessária decorre da revisão automática e diz respeito a receber os bancos e as chaves originais em ambiente temporário privado de migração, para transferi-los aos destinos aprovados e apagar as cópias ao concluir. Nunca solicitar que o usuário cole segredos no chat.
 
-## Bloqueio e continuação
+## Continuação após resolver o bloqueio
 
-A revisão automática de aprovação bloqueou a solicitação autenticada de um snapshot privado pelo endpoint de transferência. Motivo informado: falta de autorização explícita do usuário para essa transferência sensível. Não houve captura de banco nesta sessão. Não contornar o bloqueio com outra consulta, endpoint, cópia indireta ou credencial.
-
-Antes de retomar, obter autorização explícita do usuário para copiar os bancos auxiliares atuais para o Supabase, transportar as chaves originais de criptografia e demais credenciais de backend para a Render e concluir a configuração pelo painel da Render quando necessário.
-
-Depois da autorização:
-
-1. Confirmar a fonte real dos bancos atuais dos dois domínios e sua correspondência com as cópias de teste; não presumir que os D1 são iguais.
-2. Obter backups atuais e chaves originais por transferência autenticada e criptografada. Criar a conexão PostgreSQL de menor privilégio e validar TLS.
-3. Importar em esquemas privados separados, conferir todos os registros e preservar os valores criptografados; nunca usar `--empty-test` em produção.
-4. Configurar as variáveis privadas nas duas APIs, os endereços internos e a mesma chave de ponte; preservar as configurações e chaves dos provedores.
-5. Aplicar o Blueprint para as interfaces e regras de proxy, configurar FAMA_PUBLIC_URL com os endereços reais e testar login, MFA, alternância, cookies, isolamento de empresa, planos, pagamentos, APIs e backups.
-6. Só então trocar os domínios e conferir ambos. Manter retorno compatível e remover qualquer mecanismo temporário de transferência.
+1. Obter cópias atuais dos D1 associados aos Workers reais e suas configurações originais por transferência autenticada e criptografada. Não presumir que as antigas cópias Sites equivalem aos domínios reais.
+2. Comparar os registros atuais com os esquemas privados existentes no Supabase. O importador recusa sobrescrever tabelas; reconciliar diferenças sem apagar dados. Criar conexão de menor privilégio com TLS verificado, preservando a chave de criptografia original.
+3. Aplicar a migração aditiva `apps/system/deployment/hybrid/customer-agenda.sql`, já testada localmente, ao banco operacional existente. Ainda não aplicada nesta preparação. Não executar o schema completo em produção.
+4. Configurar os dois backends Render com os segredos originais, a conexão PostgreSQL e as URLs internas. Não usar SQLite ou sessões Baileys no disco efêmero. O serviço Baileys persistente existente permanece separado.
+5. Atualizar os quatro serviços para a mesma fonte validada. Conferir proxy na mesma origem, cookies, login/MFA/recuperação, permissões, empresas, dados criptografados e módulos administrativos. As branches atualmente configuradas são `deploy/hybrid-15.7.0` (APIs) e `release/15.7.2` (estáticos); qualquer avanço deve ser fast-forward, sem force push.
+6. Somente após a validação conjunta, trocar e conferir os dois domínios. Habilitar o cron da agenda apenas com os segredos no Vault e endpoint real validado. O SQL não ativa preferências das empresas; o envio depende de escolha explícita de seu administrador e Baileys conectado.
+7. Remover qualquer configuração temporária de transferência e apagar as cópias locais sensíveis. Só informar publicação concluída depois de os dois sistemas confirmarem a versão nova nos destinos reais.

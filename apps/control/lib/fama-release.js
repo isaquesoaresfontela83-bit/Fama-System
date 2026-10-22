@@ -1,3 +1,3 @@
-export const FAMA_VERSION = "15.7.2";
+export const FAMA_VERSION = "15.8.0";
 export const FAMA_RELEASE_DATE = "22/10/2026";
-export const FAMA_RELEASE_ID = "2026-10-22-services-01";
+export const FAMA_RELEASE_ID = "2026-10-22-customers-agenda-01";

@@ -16,17 +16,24 @@ export class Sessions {
         return { provider:'baileys', status:item?.status || 'disconnected', phone:item?.phone || '',
             qr:item?.expiresAt > Date.now() ? item.qr : null, qrExpiresAt:item?.expiresAt > Date.now() ? item.expiresAt : null };
     }
-    async connect(company) {
+    async connect(company,{reconnect=false}={}) {
         let item=this.items.get(company);
         if (item?.opening) { await item.opening; return this.view(company); }
+        if (item && (reconnect || (item.status==='qr'&&item.expiresAt<=Date.now()) || (['connecting','reconnecting'].includes(item.status)&&Date.now()-(item.startedAt||Date.now())>60000))) {
+            clearTimeout(item.timer);item.timer=null;item.generation=(item.generation||0)+1;
+            const previous=item.socket;item.socket=null;item.qr=null;item.expiresAt=0;item.attempts=0;
+            try { previous?.end(undefined); } catch {}
+        }
         if (item?.socket || item?.timer) return this.view(company);
         if (!item && this.items.size>=this.maximum) throw fail('Limite de conexões do servidor atingido.',409);
         if (!item) { item={ status:'connecting', attempts:0 }; this.items.set(company,item); }
-        item.stopped=false; item.status='connecting'; this.store.enable(company,true);
+        item.stopped=false; item.status='connecting'; item.startedAt=Date.now(); this.store.enable(company,true);
         item.opening=this.open(company,item).catch(() => { item.status='error'; throw fail('Não foi possível abrir a conexão com o WhatsApp.',502); }).finally(() => { item.opening=null; });
         await item.opening; return this.view(company);
     }
     async open(company,item) {
+        const generation=(item.generation||0)+1;item.generation=generation;
+        const current=()=>item.generation===generation&&!item.stopped;
         const { initAuthCreds, proto, makeWASocket, default:defaultSocket }=this.baileys;
         const creds=this.store.getAuth(company,'creds') || initAuthCreds();
         const keys={
@@ -35,7 +42,7 @@ export class Sessions {
                 if (type==='app-state-sync-key' && value) value=proto.Message.AppStateSyncKeyData.fromObject(value);
                 return [id,value];
             }).filter(([,value]) => value!==null)),
-            set:async data => { for (const [type,values] of Object.entries(data)) for (const [id,value] of Object.entries(values)) this.store.setAuth(company,'key:'+type+':'+id,value); },
+            set:async data => { if(!current())return; for (const [type,values] of Object.entries(data)) for (const [id,value] of Object.entries(values)) this.store.setAuth(company,'key:'+type+':'+id,value); },
         };
         const sock=(makeWASocket || defaultSocket)({ auth:{creds,keys}, logger, browser:['Fama System','Chrome','1.0.0'], markOnlineOnConnect:false, syncFullHistory:false,
             shouldSyncHistoryMessage:message=>{const types=proto.HistorySync?.HistorySyncType;return Boolean(types && [types.INITIAL_BOOTSTRAP,types.PUSH_NAME].includes(message.syncType));},
@@ -82,7 +89,7 @@ export class Sessions {
     async disconnect(company) {
         const item=this.items.get(company);
         if (item) {
-            item.stopped=true; clearTimeout(item.timer);
+            item.stopped=true; item.generation=(item.generation||0)+1; clearTimeout(item.timer);
             const sock=item.socket; item.socket=null; item.qr=null;
             try { if (sock) await Promise.race([sock.logout(),new Promise(resolve=>{ const timer=setTimeout(resolve,3000); timer.unref?.(); })]); } catch {}
             try { sock?.end(undefined); } catch {}
@@ -107,6 +114,6 @@ export class Sessions {
         this.store.record(company,{...result,phone:body.phone,text,direction:'out',timestamp:Date.now()});
         this.store.finish(company,body.clientId,result); return result;
     }
-    stop() { for (const item of this.items.values()) { item.stopped=true; clearTimeout(item.timer); try { item.socket?.end(undefined); } catch {} } }
+    stop() { for (const item of this.items.values()) { item.stopped=true; item.generation=(item.generation||0)+1; clearTimeout(item.timer); try { item.socket?.end(undefined); } catch {} } }
 }
 

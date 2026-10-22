@@ -27,8 +27,8 @@ beforeEach(()=>{
 });
 after(async()=>{delete globalThis.__operationAccessToken;sql.close();await f.close();});
 const post=(body,headers={})=>route.POST(f.request('POST','/api/admin/integrations',body,headers));
-test('Control reports all six services, safe missing-credential states, and actual companion synchronization',async()=>{
- const response=await route.GET();assert.equal(response.status,200);assert.match(response.headers.get('cache-control'),/no-store/);const data=await response.json();assert.equal(data.providers.length,6);assert.equal(data.release.synchronized,true);
+test('Control reports all five services, safe missing-credential states, and actual companion synchronization',async()=>{
+ const response=await route.GET();assert.equal(response.status,200);assert.match(response.headers.get('cache-control'),/no-store/);const data=await response.json();assert.equal(data.providers.length,5);assert.equal(data.release.synchronized,true);
  assert.equal(data.providers.find(item=>item.id==='drive').configured,false);assert.equal(data.providers.find(item=>item.id==='ipinfo').configured,false);assert.equal(data.providers.find(item=>item.id==='ipinfo').available,true);assert.equal(data.providers.find(item=>item.id==='github').available,true);assert.doesNotMatch(JSON.stringify(data),/must-not-reach-browser|access-token/);
 });
 test('older and unreachable System releases are never reported as synchronized',async()=>{

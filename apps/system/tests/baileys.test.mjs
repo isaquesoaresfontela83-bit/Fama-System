@@ -22,6 +22,10 @@ test('only owner or admin can see QR or change the session',async()=>{
 test('unconfigured status is explicit and no fake QR is provided',async()=>{
     f.runtime.FAMA_CONTROL.fetch=async()=>Response.json({configured:false});const response=await api.GET(request());assert.equal(response.status,200);const data=await response.json();assert.equal(data.status,'not_configured');assert.equal(data.configured,false);assert.equal(data.qr,undefined);
 });
+test('only administrators can renew the QR and the operation stays scoped to the company',async()=>{
+    assert.equal((await api.POST(request('POST',{action:'reconnect'}))).status,200);assert.equal(calls[0].body.action,'reconnect');assert.equal(calls[0].body.organizationId,org);
+    calls=[];f.member().role='technician';f.member().permissions=['chat'];assert.equal((await api.POST(request('POST',{action:'reconnect'}))).status,403);assert.equal(calls.length,0);
+});
 test('cross-origin sends and invalid payloads never call the provider',async()=>{
     const cross=request('POST',{action:'connect'});cross.headers.set('Origin','https://evil.test');assert.equal((await api.POST(cross)).status,403);assert.equal(calls.length,0);
     assert.equal((await api.POST(request('POST',{action:'send',phone:'123',text:'Olá',clientId:crypto.randomUUID()}))).status,400);assert.equal(calls.length,0);

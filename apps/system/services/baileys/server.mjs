@@ -7,11 +7,13 @@ import { Store } from './store.mjs';
 import { Sessions, authorized, companyValid } from './session-core.mjs';
 export { Sessions, authorized, companyValid } from './session-core.mjs';
 const fail = (message,status=400) => Object.assign(new Error(message),{status});
+const phoneValid = value => typeof value==='string' && /^[1-9]\d{9,14}$/.test(value);
 
-async function bodyJson(request) {
+async function bodyJson(request,{allowEmpty=false}={}) {
     if (!/^application\/json(?:;|$)/i.test(request.headers['content-type'] || '')) throw fail('Envie JSON.',415);
     let size=0,parts=[];
     for await (const chunk of request) { size+=chunk.length; if(size>24000)throw fail('Solicitação muito grande.',413); parts.push(chunk); }
+    if(allowEmpty && size===0)return {};
     try { const value=JSON.parse(Buffer.concat(parts).toString()); if(!value || Array.isArray(value) || typeof value!=='object')throw new Error(); return value; } catch { throw fail('JSON inválido.'); }
 }
 export function service({secret,sessions,store}) {
@@ -37,7 +39,7 @@ export function service({secret,sessions,store}) {
             if(Date.now()-current.since>60000){current.since=Date.now();current.count=0;}
             limits.set(company,current); if(++current.count>30)throw fail('Aguarde antes de tentar novamente.',429);
             if(action==='session' && request.method==='DELETE')return reply(await sessions.disconnect(company));
-            if(action==='session' && request.method==='POST')return reply(await sessions.connect(company));
+            if(action==='session' && request.method==='POST'){const body=await bodyJson(request,{allowEmpty:true});if(Object.keys(body).some(key=>key!=='reconnect')||(body.reconnect!==undefined&&typeof body.reconnect!=='boolean'))throw fail('Operação inválida.');return reply(await sessions.connect(company,{reconnect:body.reconnect===true}));}
             if(action==='messages' && request.method==='POST')return reply(await sessions.send(company,await bodyJson(request)));
             reply({error:'Método não permitido.'},405);
         } catch(error) { reply({error:error.status ? error.message : 'O serviço não confirmou a operação. Confira a conexão e o celular.'},error.status || 502); }

@@ -45,6 +45,17 @@ test('duplicate send is persisted and an uncertain send is never retried',async(
         await assert.rejects(f.sessions.send(a,uncertain),error=>error.status===409 && /sem confirmação/.test(error.message));
     }finally{f.close();}
 });
+test('renewing an expired QR preserves credentials and ignores events from the replaced socket',async()=>{
+    const f=fixture();try{
+        f.store.setAuth(a,'creds',{registered:false,private:'preserved-session'});
+        await f.sessions.connect(a);const old=f.sockets[0];
+        old.ev.emit('connection.update',{qr:'old-qr'});await tick();f.sessions.items.get(a).expiresAt=Date.now()-1;
+        await f.sessions.connect(a);assert.equal(f.sockets.length,2);assert.equal(f.sessions.view(a).qr,null);assert.equal(f.store.getAuth(a,'creds').private,'preserved-session');
+        old.ev.emit('creds.update',{private:'stale'});old.ev.emit('connection.update',{connection:'close',lastDisconnect:{error:{output:{statusCode:401}}}});await tick();
+        assert.equal(f.store.getAuth(a,'creds').private,'preserved-session');assert.equal(f.sessions.view(a).status,'connecting');
+        f.sockets[1].ev.emit('connection.update',{connection:'open'});await tick();await f.sessions.connect(a,{reconnect:true});assert.equal(f.sockets.length,3);assert.equal(f.store.getAuth(a,'creds').private,'preserved-session');
+    }finally{f.close();}
+});
 test('received direct messages stay isolated; groups and old sockets cannot write',async()=>{
     const f=fixture();try{
         await f.sessions.connect(a);const sock=f.sockets[0];
@@ -60,6 +71,8 @@ test('HTTP rejects missing credentials, traversal, oversized body and exposes no
         assert.equal((await fetch(base+'/health')).status,401);assert.equal((await fetch(base+'/health',{headers})).status,200);
         assert.equal((await fetch(base+'/v1/companies/invalid/session',{headers})).status,404);
         const r=await fetch(base+'/v1/companies/'+a+'/session',{headers,method:'POST'});assert.equal(r.status,200);assert.doesNotMatch(await r.text(),/creds|keys|private/);
+        assert.equal((await fetch(base+'/v1/companies/'+a+'/messages?phone=5561999999999',{headers})).status,200);
+        assert.equal((await fetch(base+'/v1/companies/'+a+'/messages?phone=invalid',{headers})).status,400);
         assert.equal((await fetch(base+'/v1/companies/'+a+'/messages',{headers,method:'POST',body:JSON.stringify({text:'a'.repeat(25000)})})).status,413);
     }finally{server.closeAllConnections();await new Promise(resolve=>server.close(resolve));f.close();}
 });

@@ -16,3 +16,7 @@ O proprietário escolheu uma VPS gratuita para System e Control. Preparar e test
 ## Hospedagem híbrida autorizada em 21/10/2026
 
 O proprietário escolheu telas estáticas, backend Render gratuito e persistência no Supabase. Não trocar os domínios antes da importação e validação dos dois sistemas. Não usar SQLite nem sessões Baileys no disco efêmero da Render. Manter os segredos apenas no backend.
+
+## Publicação 15.8.0 em 22/10/2026
+
+As duas confirmações de publicação foram recebidas (“Autorizo” e “Sim autorizo”). Não pedir novamente confirmação geral. Nunca usar AppDeploy, inclusive para prévias. Preservar o frontend original. Ver o AGENTS.md da raiz para o bloqueio específico da revisão automática sobre a transferência dos bancos e segredos de produção ao ambiente local de migração; não contornar esse bloqueio. Os domínios aguardam a validação conjunta das APIs.

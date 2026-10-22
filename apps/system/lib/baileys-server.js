@@ -44,7 +44,7 @@ export async function baileysPOST(request) {
     try {
         if(!isTrustedMutation(request))throw new RequestError('Origem inválida.',403);
         const {organization,user}=await access(request), input=await readJsonObject(request,24000);
-        if(!['connect','disconnect','send'].includes(input.action) || Object.keys(input).some(key=>!['action','phone','text','clientId'].includes(key)))throw new RequestError('Operação inválida.',400);
+        if(!['connect','reconnect','disconnect','send'].includes(input.action) || Object.keys(input).some(key=>!['action','phone','text','clientId'].includes(key)))throw new RequestError('Operação inválida.',400);
         if(input.action!=='send' && !['owner','admin'].includes(organization.role))throw new RequestError('Somente administradores podem conectar ou desconectar o WhatsApp.',403);
         await assertRateLimit(request,'baileys_'+input.action,organization.id+':'+user.id,input.action==='send'?20:8,60);
         const body={};

@@ -6,7 +6,6 @@ export const integrationFields = {
         { id: 'refreshToken', label: 'Autorização salva do Google (opcional ao conectar)', secret: true },
         { id: 'folderId', label: 'Identificador da pasta de documentos', secret: false },
     ],
-    resend: [{ id: 'apiKey', label: 'Chave de envio', secret: true }, { id: 'from', label: 'E-mail remetente verificado', secret: false }],
     sentry: [{ id: 'dsn', label: 'Conexão de monitoramento (DSN)', secret: true }, { id: 'apiToken', label: 'Token de leitura de erros (opcional)', secret: true }, { id: 'organization', label: 'Organização no Sentry (opcional)', secret: false }, { id: 'projectId', label: 'Número do projeto no Sentry (opcional)', secret: false }],
     ocrspace: [{ id: 'apiKey', label: 'Chave de leitura de documentos', secret: true }],
     ipinfo: [{ id: 'token', label: 'Token IPinfo Lite (opcional)', secret: true }],
@@ -14,10 +13,10 @@ export const integrationFields = {
 };
 export const integrationRequirements = {
     drive: ['clientId', 'clientSecret', 'refreshToken', 'folderId'],
-    resend: ['apiKey', 'from'], sentry: ['dsn'], ocrspace: ['apiKey'], ipinfo: [], github: [],
+    sentry: ['dsn'], ocrspace: ['apiKey'], ipinfo: [], github: [],
 };
 export const integrationActions = {
-    drive_upload: 'drive', drive_list: 'drive', resend_send: 'resend', resend_status: 'resend',
+    drive_upload: 'drive', drive_list: 'drive',
     ocr_extract: 'ocrspace', sentry_capture: 'sentry', sentry_issues: 'sentry',
     ipinfo_lookup: 'ipinfo', ipinfo_lite_lookup: 'ipinfo', github_rest_get: 'github',
 };

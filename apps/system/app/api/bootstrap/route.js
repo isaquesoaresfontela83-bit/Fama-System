@@ -1,3 +1,4 @@
+import { ensureCustomerColumns } from '@/lib/customer-selection';
 import { database } from "@/lib/database";
 import { camelizeRow, selectRows, usesSupabase } from "@/lib/supabase";
 import { requireTenant, tenantError } from "@/lib/tenant";
@@ -20,15 +21,15 @@ const queries = [
      estimated_value_cents AS estimatedValueCents, next_action AS nextAction,
      created_at AS createdAt
    FROM leads WHERE organization_id = ? ORDER BY created_at DESC`,
-    `SELECT id, quote_number AS quoteNumber, client_name AS clientName, service,
+    `SELECT id, quote_number AS quoteNumber, customer_id AS customerId, client_name AS clientName, service,
      materials_cents AS materialsCents, labor_cents AS laborCents,
      discount_cents AS discountCents, total_cents AS totalCents, status,
      valid_until AS validUntil, notes, created_at AS createdAt
    FROM quotes WHERE organization_id = ? ORDER BY created_at DESC`,
-    `SELECT id, title, client_name AS clientName, start_at AS startAt, address,
+    `SELECT id, title, customer_id AS customerId, client_name AS clientName, start_at AS startAt, address,
      technician, kind, status, notes
    FROM appointments WHERE organization_id = ? ORDER BY start_at ASC`,
-    `SELECT id, os_number AS osNumber, client_name AS clientName, service,
+    `SELECT id, os_number AS osNumber, customer_id AS customerId, client_name AS clientName, service,
      scheduled_at AS scheduledAt, technician, status, ph, chlorine, alkalinity,
      products_used AS productsUsed, notes, amount_cents AS amountCents
    FROM work_orders WHERE organization_id = ? ORDER BY scheduled_at DESC`,
@@ -43,12 +44,12 @@ const queries = [
    FROM transactions WHERE organization_id = ? ORDER BY due_date DESC`,
     `SELECT id, name, role, phone, color, active, created_at AS createdAt
    FROM employees WHERE organization_id = ? ORDER BY name ASC`,
-    `SELECT id, warranty_number AS warrantyNumber, client_name AS clientName, item,
+    `SELECT id, warranty_number AS warrantyNumber, customer_id AS customerId, client_name AS clientName, item,
      origin_reference AS originReference, purchase_date AS purchaseDate,
      expires_at AS expiresAt, scheduled_at AS scheduledAt, appointment_id AS appointmentId, technician, status,
      notes, created_at AS createdAt
    FROM warranties WHERE organization_id = ? ORDER BY expires_at ASC`,
-    `SELECT id, contract_number AS contractNumber, client_name AS clientName,
+    `SELECT id, contract_number AS contractNumber, customer_id AS customerId, client_name AS clientName,
      client_document AS clientDocument, client_address AS clientAddress, service,
      start_date AS startDate, end_date AS endDate, frequency,
      monthly_cents AS monthlyCents, payment_day AS paymentDay, status, terms,
@@ -58,6 +59,7 @@ const queries = [
 export async function GET(request) {
     try {
         const { organization } = await requireTenant(request);
+        await ensureCustomerColumns();
         const allowed = (entity) => {
             const permission = entityPermissions[entity];
             return Boolean(permission && hasFeaturePermission(organization.role, organization.permissions, permission, organization.moduleAccess));

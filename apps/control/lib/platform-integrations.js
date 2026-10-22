@@ -43,7 +43,6 @@ function validateFields(provider, fields) {
         if (!integrationFields[provider].some(field => field.id === name) || typeof value !== 'string' || value.length > 6000 || /[\r\n\0]/.test(value)) throw new RequestError('Confira os campos da integração.', 400);
     }
     if (provider === 'drive' && fields.folderId && !/^[A-Za-z0-9_-]{5,200}$/.test(fields.folderId)) throw new RequestError('Informe o identificador da pasta do Google Drive.', 400);
-    if (provider === 'resend' && fields.from && !validEmail(fields.from)) throw new RequestError('Informe um único e-mail remetente verificado.', 400);
     if (provider === 'github' && fields.repository && !repositoryValid(fields.repository)) throw new RequestError('Informe proprietário/repositório.', 400);
     if (provider === 'sentry') {
         if (fields.dsn) sentryTarget(fields.dsn);
@@ -71,8 +70,6 @@ export async function savePlatformIntegration(input) {
     if (!result.meta?.changes) throw new RequestError('Outra alteração foi salva. Confira novamente antes de editar.', 409);
     return safeIntegrationConfig(provider, { ...config, revision, updatedAt: now });
 }
-export function validEmail(value) { return typeof value === 'string' && value.length <= 254 && /^[^\s<>@,;\r\n]+@[^\s<>@,;\r\n]+\.[^\s<>@,;\r\n]+$/.test(value); }
-async function digest(value) { return Buffer.from(await crypto.subtle.digest('SHA-256', new TextEncoder().encode(value))).toString('hex'); }
 async function upstream(url, init = {}) {
     let response;
     try { response = await fetch(url, { ...init, redirect: 'manual', signal: AbortSignal.timeout(25000) }); }
@@ -105,29 +102,6 @@ function sentryTarget(value) {
     if (url.protocol !== 'https:' || !/^[A-Za-z0-9]+$/.test(url.username) || url.password || url.port || url.search || url.hash || !/^\/\d+$/.test(url.pathname) || !(url.hostname === 'sentry.io' || /\.ingest(?:\.(?:us|de))?\.sentry\.io$/.test(url.hostname))) throw new RequestError('Informe o DSN original de ingestão do Sentry.', 400);
     return { url: `https://${url.hostname}/api${url.pathname}/store/`, key: url.username };
 }
-async function sendMail(config, input, scope) {
-    const file = filePayload(input);
-    if (!validEmail(input.to) || typeof input.subject !== 'string' || !input.subject.trim() || input.subject.length > 180 || /[\r\n]/.test(input.subject) || typeof input.text !== 'string' || input.text.length > 4000 || !/^[a-f0-9-]{36}$/i.test(input.request_id || '')) throw new RequestError('Confira o destinatário, assunto e mensagem.', 400);
-    const db = await integrationStore(), id = await digest('resend:' + scope + ':' + input.request_id);
-    const hash = await digest(JSON.stringify([input.to, input.subject, input.text, file.name, file.base64]));
-    const old = await db.prepare('SELECT * FROM fama_provider_activity WHERE id=?').bind(id).first();
-    if (old) {
-        if (old.payload_hash !== hash) throw new RequestError('Este envio já possui outro conteúdo. Prepare um novo envio.', 409);
-        if (old.status === 'accepted') return { id: old.result_id, alreadySent: true };
-        throw new RequestError('O envio anterior está em confirmação. Confira a atividade antes de repetir.', 409);
-    }
-    const claim = await db.prepare("INSERT OR IGNORE INTO fama_provider_activity(id,provider,action,scope,payload_hash,status,created_at) VALUES (?,'resend','resend_send',?,?,'processing',?)").bind(id, scope, hash, new Date().toISOString()).run();
-    if (!claim.meta?.changes) throw new RequestError('Este envio já está sendo processado.', 409);
-    try {
-        const data = await upstream('https://api.resend.com/emails', { method: 'POST', headers: { Authorization: 'Bearer ' + config.fields.apiKey, 'Content-Type': 'application/json', 'Idempotency-Key': id }, body: JSON.stringify({ from: config.fields.from, to: [input.to], subject: input.subject, text: input.text, attachments: [{ filename: file.name, content: file.base64, content_type: file.mime }] }) });
-        if (typeof data.id !== 'string' || !data.id) throw new RequestError('O envio não foi confirmado.', 502);
-        await db.prepare("UPDATE fama_provider_activity SET status='accepted',result_id=? WHERE id=?").bind(data.id.slice(0,100), id).run();
-        return { id: data.id.slice(0,100) };
-    } catch (error) {
-        await db.prepare("UPDATE fama_provider_activity SET status='uncertain' WHERE id=?").bind(id).run();
-        throw error;
-    }
-}
 export async function runPlatformIntegration(action, input = {}, scope = 'platform') {
     const provider = Object.hasOwn(integrationActions, action) ? integrationActions[action] : null;
     if (!provider) throw new RequestError('Ação de integração inválida.', 400);
@@ -137,7 +111,6 @@ export async function runPlatformIntegration(action, input = {}, scope = 'platfo
     if (!configured(provider, config)) return null; // Draft setup keeps the previous connection available.
     const fields = config.fields;
     let data, source;
-    if (action === 'resend_send') return { data: await sendMail(config, input, scope) };
     if (action === 'drive_upload' || action === 'drive_list') {
         const authorization = { Authorization: 'Bearer ' + await driveToken(fields) };
         if (action === 'drive_list') {
@@ -180,13 +153,6 @@ export async function runPlatformIntegration(action, input = {}, scope = 'platfo
         const network = String(result.org || '').match(/^(AS\d+)\s*(.*)$/);
         data = { ip: String(result.ip || input.ip), country: result.country_name ?? result.country ?? null, country_code: result.country_code ?? result.country ?? null, asn: result.asn ?? network?.[1] ?? null, as_name: result.as_name ?? network?.[2] ?? null };
         source = fields.token ? 'ipinfo_lite' : 'ipinfo_public';
-    } else if (action === 'resend_status') {
-        if (!/^[A-Za-z0-9-]{1,100}$/.test(input.id || '')) throw new RequestError('Envio inválido.', 400);
-        const db = await integrationStore();
-        const receipt = await db.prepare("SELECT id FROM fama_provider_activity WHERE provider='resend' AND result_id=? AND scope=? AND status='accepted'").bind(input.id, scope).first();
-        if (!receipt) throw new RequestError('Envio não encontrado neste acesso.', 404);
-        const result = await upstream('https://api.resend.com/emails/' + input.id, { headers: { Authorization: 'Bearer ' + fields.apiKey } });
-        data = { id: String(result.id), status: String(result.last_event || 'sent').slice(0,50) };
     }
     return { data, ...(source ? { source } : {}) };
 }
@@ -201,11 +167,8 @@ export async function testPlatformIntegration(provider) {
     if (provider === 'github') await runPlatformIntegration('github_rest_get', { path: `repos/${config.fields.repository || defaultFamaRepository}/commits` });
     if (provider === 'ipinfo') await runPlatformIntegration('ipinfo_lookup', { ip: '8.8.8.8' });
     if (provider === 'sentry') await runPlatformIntegration('sentry_capture', { test: true });
-    if (provider === 'resend') {
-        try { await upstream('https://api.resend.com/domains', { headers: { Authorization: 'Bearer ' + config.fields.apiKey } }); }
-        catch (error) { if (error.status === 424) return { verified: false, message: 'Não foi possível validar por consulta. A chave pode ter permissão apenas de envio; valide enviando um documento para um destinatário revisado.' }; throw error; }
-    }
-    return { verified: true, message: provider === 'resend' ? 'Consulta ao Resend confirmada. O remetente será validado ao enviar um documento.' : 'Conexão confirmada pelo provedor.', checkedAt: new Date().toISOString() };
+
+    return { verified: true, message: 'Conexão confirmada pelo provedor.', checkedAt: new Date().toISOString() };
 }
 export async function recordIntegrationActivity(provider, action, status, resultId = '') {
     const db = await integrationStore();

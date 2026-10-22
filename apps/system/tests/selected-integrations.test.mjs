@@ -47,9 +47,9 @@ after(async()=>{delete globalThis.__operationAccessToken;sql.close();await f.clo
 const action=(provider,more={},headers={})=>documents.POST(f.request('POST','/api/integrations/documents',{provider,attachmentId:'file-one',...more},headers));
 const mail=()=>({recipient:'client@example.test',subject:'Documento solicitado',message:'Segue o documento.',operationId:crypto.randomUUID()});
 
-test('System exposes only the four operational integrations and gets their status from the protected backend',async()=>{
+test('System exposes only the three operational integrations and gets their status from the protected backend',async()=>{
  const response=await settings.GET(f.request('GET','/api/integrations'));assert.equal(response.status,200);
- const data=await response.json();assert.deepEqual(data.integrations.map(item=>item.provider),['drive','resend','sentry','ocrspace']);
+ const data=await response.json();assert.deepEqual(data.integrations.map(item=>item.provider),['drive','sentry','ocrspace']);
  assert.ok(data.integrations.every(item=>item.configured&&item.managedBy==='platform'));assert.equal(backend.length,1);
  assert.equal(backend[0].headers.get('authorization'),'Bearer fixture-user-access-token');assert.equal(backend[0].body.organization_id,'org-one');
  assert.doesNotMatch(JSON.stringify(data),/access-token|client_secret|refresh_token|api_key/);
@@ -78,15 +78,9 @@ test('OCR enforces size and signature before sending a partial result for review
  f.tables.attachments[0].size_bytes=2*1024*1024;assert.equal((await action('ocrspace')).status,413);assert.equal(backend.length,1);
  await assert.rejects(server.extractDocumentText('org-one',new Uint8Array([1,2,3]),'image/png'),/válido/);
 });
-test('Resend deduplicates accepted and concurrent requests and preserves the operation key',async()=>{
- const input=mail();assert.equal((await action('resend',{...input,recipient:'one@example.test,two@example.test'})).status,400);
- gate=new Promise(resolve=>{releaseGate=resolve;});const pending=action('resend',input);
- for(let i=0;i<100&&backend.length===0;i++)await new Promise(resolve=>setTimeout(resolve,1));
- assert.equal((await action('resend',input)).status,409);releaseGate();assert.equal((await pending).status,200);
- const again=await action('resend',input);assert.equal(again.status,200);assert.equal((await again.json()).alreadySent,true);assert.equal(backend.length,1);assert.equal(backend[0].body.request_id,input.operationId);
-});
-for(const failure of ['timeout','server-error'])test('uncertain '+failure+' cannot send an automatic duplicate',async()=>{
- mode=failure;const input=mail();assert.equal((await action('resend',input)).status,502);assert.equal((await action('resend',input)).status,409);assert.equal(backend.length,1);assert.equal(sql.prepare('SELECT status FROM fama_integration_operations').get().status,'uncertain');
+test('retired Resend document actions fail before loading an attachment or calling the backend',async()=>{
+ assert.equal((await action('resend',mail())).status,400);assert.equal(backend.length,0);assert.equal(f.businessWrites().length,0);assert.ok(f.calls.every(call=>!call.url.pathname.endsWith('/attachments')&&!call.url.pathname.startsWith('/storage/')));
+ await assert.rejects(bridge.integrationBackend('fama-system-integrations','resend_send'),error=>error.status===400);assert.equal(backend.length,0);
 });
 test('Sentry sends a fixed technical message without client data or stack URLs',async()=>{
  const response=await sentry.POST(f.request('POST','/api/integrations/sentry',{kind:'browser_error',message:'customer@example.test',frames:[{filename:'https://foreign.example/private?token=secret'}]}));assert.equal(response.status,200);assert.equal((await response.json()).eventId,'fixture-event');assert.doesNotMatch(JSON.stringify(backend[0].body),/customer@example|foreign.example|token=secret|frames/);
@@ -104,7 +98,7 @@ test('System uses the protected Control bridge and merges central settings with 
  const calls=[];f.runtime.FAMA_CONTROL={async fetch(url,init){calls.push({url,init});assert.equal(new Headers(init.headers).get('authorization'),'Bearer '+secret);return Response.json({handled:true,integrations:[{provider:'drive',managed:true,configured:false},{provider:'resend',managed:false,configured:false}]});}};
  try {
   const response=await settings.GET(f.request('GET','/api/integrations'));assert.equal(response.status,200);const data=await response.json();
-  assert.equal(data.integrations.find(item=>item.provider==='drive').configured,false);assert.equal(data.integrations.find(item=>item.provider==='resend').configured,true);assert.equal(backend.length,1);assert.equal(calls.length,1);assert.equal(calls[0].url,'https://control.famasystem.online/api/internal/integrations');assert.doesNotMatch(JSON.stringify(data),/private-control|access-token/);
+  assert.equal(data.integrations.find(item=>item.provider==='drive').configured,false);assert.equal(data.integrations.some(item=>item.provider==='resend'),false);assert.equal(backend.length,1);assert.equal(calls.length,1);assert.equal(calls[0].url,'https://control.famasystem.online/api/internal/integrations');assert.doesNotMatch(JSON.stringify(data),/private-control|access-token/);
  } finally {delete f.runtime.FAMA_CONTROL;delete f.runtime.FAMA_DATA_BRIDGE_SECRET;}
 });
 test('a central operation replaces the legacy backend, while a paused central integration fails closed',async()=>{

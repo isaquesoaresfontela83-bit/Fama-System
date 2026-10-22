@@ -5,7 +5,7 @@ import { readLimitedBody } from '@/lib/request-body';
 import { runPlatformIntegration } from '@/lib/platform-integrations';
 
 const actions = {
-    'fama-system-integrations': new Set(['integration_status', 'drive_upload', 'resend_send', 'ocr_extract', 'sentry_capture']),
+    'fama-system-integrations': new Set(['integration_status', 'drive_upload', 'ocr_extract', 'sentry_capture']),
     'fama-control-admin': new Set(['integration_status', 'github_rest_get', 'ipinfo_lookup', 'ipinfo_lite_lookup']),
 };
 

@@ -26,6 +26,7 @@ import '../../app/account-switcher.css';
 import '../../app/workspace-navigation.css';
 import '../../app/selected-integrations.css';
 
+import '../../app/readability.css';
 installHybridNetwork();
 const query=Object.fromEntries(new URLSearchParams(window.location.search));
 const path=window.location.pathname.replace(/\/$/,'') || '/';

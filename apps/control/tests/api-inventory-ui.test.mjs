@@ -12,7 +12,7 @@ let renderer, calls, navigate, payload;
 const label = node => (node.children || []).map(child => typeof child === 'string' || typeof child === 'number' ? String(child) : label(child)).join(' ');
 beforeEach(() => {
     calls = []; navigate = [];
-    payload = { apis: apiCatalog.map(item => ({ ...item, status: item.id === 'resend' ? 'unconfigured' : 'configured', instances: item.scopes.map(scope => ({ scope, status: item.id === 'resend' ? 'unconfigured' : 'configured', detail: 'Configuração cadastrada; não testada.', checkedAt: null })) })), checkedAt: '2026-10-21T12:00:00Z', release: { control: { version: '15.5.1' }, system: { version: '15.5.1' }, synchronized: true } };
+    payload = { apis: apiCatalog.map(item => ({ ...item, status: item.id === 'ocrspace' ? 'unconfigured' : 'configured', instances: item.scopes.map(scope => ({ scope, status: item.id === 'ocrspace' ? 'unconfigured' : 'configured', detail: 'Configuração cadastrada; não testada.', checkedAt: null })) })), checkedAt: '2026-10-21T12:00:00Z', release: { control: { version: '15.5.1' }, system: { version: '15.5.1' }, synchronized: true } };
     globalThis.fetch = async (url, init = {}) => {
         assert.equal(url, '/api/admin/apis'); calls.push({ url, init });
         if (init.method === 'POST') { const input = JSON.parse(init.body); return Response.json({ ...input, observation: { status: 'verified', detail: 'Consulta confirmada.', checkedAt: '2026-10-21T12:02:00Z' } }); }
@@ -30,7 +30,7 @@ test('all APIs load through one local read and management stays inside the Contr
 test('search, area and status filters compose and provide an empty state', async () => {
     await open(); await act(async () => renderer.root.findByProps({ 'aria-label': 'Buscar API' }).props.onChange({ target: { value: 'assinaturas' } })); assert.equal(renderer.root.findAllByType('article').length, 1); assert.match(label(renderer.root.findByType('article')), /Asaas/);
     await act(async () => renderer.root.findByProps({ 'aria-label': 'Filtrar por área' }).props.onChange({ target: { value: 'Clima' } })); assert.equal(renderer.root.findAllByType('article').length, 0); assert.match(label(renderer.root), /Nenhuma API/);
-    await act(async () => { renderer.root.findByProps({ 'aria-label': 'Buscar API' }).props.onChange({ target: { value: '' } }); renderer.root.findByProps({ 'aria-label': 'Filtrar por área' }).props.onChange({ target: { value: 'all' } }); renderer.root.findByProps({ 'aria-label': 'Filtrar por status' }).props.onChange({ target: { value: 'attention' } }); }); assert.equal(renderer.root.findAllByType('article').length, 1); assert.equal(renderer.root.findByType('article').props['data-api-id'], 'resend');
+    await act(async () => { renderer.root.findByProps({ 'aria-label': 'Buscar API' }).props.onChange({ target: { value: '' } }); renderer.root.findByProps({ 'aria-label': 'Filtrar por área' }).props.onChange({ target: { value: 'all' } }); renderer.root.findByProps({ 'aria-label': 'Filtrar por status' }).props.onChange({ target: { value: 'attention' } }); }); assert.equal(renderer.root.findAllByType('article').length, 1); assert.equal(renderer.root.findByType('article').props['data-api-id'], 'ocrspace');
 });
 test('a diagnostic runs only after clicking and updates only the requested scope', async () => {
     await open(); assert.ok(calls.every(call => !call.init.method));

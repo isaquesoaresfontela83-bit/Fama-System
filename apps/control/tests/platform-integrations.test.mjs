@@ -23,7 +23,6 @@ beforeEach(async()=>{
   if(target.hostname==='www.googleapis.com'&&target.pathname.includes('/files/'))return Response.json(target.pathname.endsWith('/fixture-folder')?{id:'fixture-folder',mimeType:'application/vnd.google-apps.folder',capabilities:{canAddChildren:true}}:{id:'fixture-file',name:'documento.pdf',mimeType:'application/pdf',size:100,parents:[mode==='foreign-file'?'another-folder':'fixture-folder']});
   if(target.hostname==='www.googleapis.com'&&init.method==='POST')return Response.json({id:'fixture-new-folder'});
   if(target.hostname==='www.googleapis.com')return Response.json({files:[{id:'fixture-file',name:'documento.pdf',mimeType:'application/pdf'}]});
-  if(target.hostname==='api.resend.com')return Response.json(target.pathname==='/domains'?{data:[]}:init.method==='POST'?{id:'fixture-email-id'}:{id:'fixture-email-id',last_event:'delivered'});
   if(target.hostname==='api.ocr.space')return Response.json({ParsedResults:[{ParsedText:'Texto revisável'}],IsErroredOnProcessing:false});
   if(target.hostname==='o123.ingest.sentry.io')return Response.json({id:'fixture-event'});
   if(target.hostname==='sentry.io')return Response.json([{id:'issue',title:'Falha técnica',count:'2'}]);
@@ -36,10 +35,10 @@ after(async()=>{sql.close();delete globalThis.__operationAccessToken;await f.clo
 const save=(provider,more={})=>server.savePlatformIntegration({provider,enabled:true,expectedRevision:0,fields:fields[provider],...more});
 const request=(body,token='private-internal-token')=>new Request('https://control.example.test/api/internal/integrations',{method:'POST',headers:{Authorization:'Bearer '+token,'Content-Type':'application/json'},body:JSON.stringify(body)});
 test('configuration encrypts every credential, never returns secrets, preserves blank inputs and rejects stale changes',async()=>{
- const first=await save('resend');assert.equal(first.configured,true);assert.equal(first.fields.apiKey,undefined);assert.equal(first.present.apiKey,true);
- const row=sql.prepare('SELECT encrypted_config FROM fama_platform_integrations').get();assert.match(row.encrypted_config,/^fama:v1:/);assert.ok(!row.encrypted_config.includes(fields.resend.apiKey));assert.equal(calls.length,0);
- const next=await save('resend',{expectedRevision:1,fields:{apiKey:'',from:'new@example.test'}});assert.equal(next.revision,2);assert.equal((await server.readPlatformIntegration('resend')).fields.apiKey,fields.resend.apiKey);
- await assert.rejects(save('resend'),error=>error.status===409);
+ const first=await save('ocrspace');assert.equal(first.configured,true);assert.equal(first.fields.apiKey,undefined);assert.equal(first.present.apiKey,true);
+ const row=sql.prepare('SELECT encrypted_config FROM fama_platform_integrations').get();assert.match(row.encrypted_config,/^fama:v1:/);assert.ok(!row.encrypted_config.includes(fields.ocrspace.apiKey));assert.equal(calls.length,0);
+ const next=await save('ocrspace',{expectedRevision:1,fields:{apiKey:''}});assert.equal(next.revision,2);assert.equal((await server.readPlatformIntegration('ocrspace')).fields.apiKey,fields.ocrspace.apiKey);
+ await assert.rejects(save('ocrspace'),error=>error.status===409);
  await assert.rejects(save('github',{fields:{token:'bad\r\nheader'}}),error=>error.status===400);
  delete f.runtime.FAMA_DATA_ENCRYPTION_KEY;await assert.rejects(save('github'),error=>error.status===503);
 });
@@ -52,7 +51,7 @@ test('only platform administrators with trusted origins can read or change confi
 test('provider configuration and summaries make no provider calls, and draft setup preserves the previous connection',async()=>{
  await save('drive',{fields:{clientId:'fixture-client',clientSecret:'private-google-secret'}});
  assert.equal(await server.runPlatformIntegration('drive_upload',{file}),null);
- const summary=await (await config.GET()).json();assert.equal(summary.integrations.length,6);assert.doesNotMatch(JSON.stringify(summary),/private-google-secret|encrypted_config/);assert.equal(calls.length,0);
+ const summary=await (await config.GET()).json();assert.equal(summary.integrations.length,5);assert.doesNotMatch(JSON.stringify(summary),/private-google-secret|encrypted_config/);assert.equal(calls.length,0);
 });
 test('internal operations reject missing authentication and non-operational administrative actions',async()=>{
  assert.equal((await internal.POST(request({action:'integration_status',organization_id:'org-one'},'wrong'))).status,401);
@@ -79,17 +78,11 @@ test('OCR validates real file signatures and size before any provider call',asyn
  await assert.rejects(server.runPlatformIntegration('ocr_extract',{file:{...file,base64:Buffer.alloc(1024*1024+1).toString('base64')}}),error=>error.status===413);assert.equal(calls.length,count);
  const testResult=await server.testPlatformIntegration('ocrspace');assert.equal(testResult.verified,false);assert.equal(calls.length,count);
 });
-test('Resend keeps idempotency across retries, prevents changed content, and isolates tenant receipts',async()=>{
- await save('resend');const body={file,to:'client@example.test',subject:'Documento',text:'Segue o documento',request_id:crypto.randomUUID()};
- const first=await server.runPlatformIntegration('resend_send',body,'org-one');assert.equal(first.data.id,'fixture-email-id');
- assert.equal((await server.runPlatformIntegration('resend_send',body,'org-one')).data.alreadySent,true);assert.equal(calls.length,1);
- await assert.rejects(server.runPlatformIntegration('resend_send',{...body,to:'another@example.test'},'org-one'),error=>error.status===409);
- await assert.rejects(server.runPlatformIntegration('resend_status',{id:first.data.id},'another-org'),error=>error.status===404);
- assert.equal((await server.runPlatformIntegration('resend_status',{id:first.data.id},'org-one')).data.status,'delivered');
-});
-test('uncertain e-mail requests stay blocked after provider timeouts and never send an automatic duplicate',async()=>{
- await save('resend');mode='timeout';const body={file,to:'client@example.test',subject:'Documento',text:'Segue',request_id:crypto.randomUUID()};
- await assert.rejects(server.runPlatformIntegration('resend_send',body));await assert.rejects(server.runPlatformIntegration('resend_send',body),error=>error.status===409);assert.equal(calls.length,1);assert.equal(sql.prepare('SELECT status FROM fama_provider_activity').get().status,'uncertain');
+test('retired Resend configuration and send routes reject calls before contacting a provider',async()=>{
+ await assert.rejects(save('resend'),error=>error.status===400);
+ assert.equal((await actions.POST(f.request('POST','/api/admin/integrations/actions',{action:'resend_send',file,to:'client@example.test'}))).status,400);
+ assert.equal((await internal.POST(request({action:'resend_send',organization_id:'org-one',file}))).status,400);
+ await assert.rejects(server.runPlatformIntegration('resend_send',{file}),error=>error.status===400);assert.equal(calls.length,0);
 });
 test('Sentry rejects arbitrary ingestion hosts and sends a fixed message with no user content',async()=>{
  for(const dsn of ['https://key@127.0.0.1/1','https://key@foreign.example/1','https://key:secret@o123.ingest.sentry.io/1'])await assert.rejects(save('sentry',{fields:{dsn}}),error=>error.status===400);

@@ -4,7 +4,7 @@ import { RequestError } from '@/lib/request-error';
 import { readLimitedBody } from '@/lib/request-body';
 
 const actions = {
-    'fama-system-integrations': new Set(['integration_status', 'drive_upload', 'resend_send', 'ocr_extract', 'sentry_capture']),
+    'fama-system-integrations': new Set(['integration_status', 'drive_upload', 'ocr_extract', 'sentry_capture']),
     'fama-control-admin': new Set(['integration_status', 'github_rest_get', 'ipinfo_lookup', 'ipinfo_lite_lookup']),
 };
 
@@ -34,12 +34,12 @@ export async function integrationBackend(service, action, input = {}) {
     const token = await getSupabaseAccessToken();
     if (!token) throw new RequestError('Entre novamente na sua conta para usar esta integração.', 401);
     let overrides = null;
-    const statusKeys = { drive: 'google_drive', resend: 'resend', sentry: 'sentry', ocrspace: 'ocr_space' };
+    const statusKeys = { drive: 'google_drive', sentry: 'sentry', ocrspace: 'ocr_space' };
     if (service === 'fama-system-integrations') {
         const central = await centralOperation(action, input);
         if (action === 'integration_status' && Array.isArray(central?.integrations)) {
             overrides = Object.fromEntries(central.integrations.filter(item => item.managed && statusKeys[item.provider]).map(item => [statusKeys[item.provider], { configured: item.configured === true }]));
-            if (Object.keys(overrides).length === 4) return { data: overrides };
+            if (Object.keys(overrides).length === 3) return { data: overrides };
         } else if (central?.handled) return { data: central.data };
     }
     let origin;

@@ -5,7 +5,7 @@ import { assertRateLimit } from '@/lib/security';
 import { integrationActions, integrationFields } from '@/lib/integration-settings';
 import { runPlatformIntegration, testPlatformIntegration, recordIntegrationActivity } from '@/lib/platform-integrations';
 const headers = { 'Cache-Control': 'private,no-store' };
-const actions = new Set(['drive_upload', 'drive_list', 'resend_send', 'resend_status', 'ocr_extract', 'sentry_issues']);
+const actions = new Set(['drive_upload', 'drive_list', 'ocr_extract', 'sentry_issues']);
 export async function POST(request) {
     let provider, action;
     try {
@@ -17,7 +17,7 @@ export async function POST(request) {
         await assertRateLimit(request, 'admin_integration_action', admin.id, 20, 60);
         const result = action === 'test' ? await testPlatformIntegration(provider) : (await runPlatformIntegration(action, input, 'platform'))?.data;
         if (!result) throw new RequestError('Salve a configuração desta integração no Fama Control para usar esta ação.', 424);
-        if (action !== 'resend_send') await recordIntegrationActivity(provider, action, action === 'test' && !result.verified ? 'review' : 'confirmed', result.id || result.event_id || '');
+        await recordIntegrationActivity(provider, action, action === 'test' && !result.verified ? 'review' : 'confirmed', result.id || result.event_id || '');
         return Response.json(result, { headers });
     } catch (error) {
         // Authorization failures and user content are never recorded in provider history.

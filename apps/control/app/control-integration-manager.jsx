@@ -1,6 +1,6 @@
 'use client';
 import { useEffect, useRef, useState } from 'react';
-import { Save, ShieldCheck, RefreshCw, FileText, CloudUpload, FileSearch, Mail, Link2 } from 'lucide-react';
+import { Save, ShieldCheck, RefreshCw, FileText, CloudUpload, FileSearch, Link2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -39,9 +39,9 @@ function ConfigurationCard({ definition, value, legacy, onSave, onTest, onConnec
 
 export function ControlIntegrationManager({ legacyProviders, onChanged }) {
     const [state, setState] = useState(null), [error, setError] = useState(''), [notice, setNotice] = useState(''), [revision, setRevision] = useState(0), [busy, setBusy] = useState('');
-    const [file, setFile] = useState(null), [recipient, setRecipient] = useState(''), [subject, setSubject] = useState('Documento enviado pelo Fama'), [message, setMessage] = useState('Segue o documento solicitado.');
+    const [file, setFile] = useState(null);
     const [text, setText] = useState(''), [driveFiles, setDriveFiles] = useState(null), [issues, setIssues] = useState(null);
-    const operation = useRef(null), controller = useRef(null);
+    const controller = useRef(null);
     useEffect(() => { const abort = new AbortController(); controller.current = abort; return () => abort.abort(); }, []);
     useEffect(() => {
         const abort = new AbortController();
@@ -83,35 +83,27 @@ export function ControlIntegrationManager({ legacyProviders, onChanged }) {
     }
     function documentAction(provider) { return run(provider, async () => {
         if (provider === 'ocrspace' && file?.size > 1024 * 1024) throw new Error('A leitura de texto aceita até 1 MB.');
-        operation.current ||= crypto.randomUUID();
-        const result = await action({ action: { drive: 'drive_upload', resend: 'resend_send', ocrspace: 'ocr_extract' }[provider], file: await encodedFile(), ...(provider === 'resend' ? { to: recipient, subject, text: message, request_id: operation.current } : {}) });
+        const result = await action({ action: { drive: 'drive_upload', ocrspace: 'ocr_extract' }[provider], file: await encodedFile() });
         if (provider === 'ocrspace') { setText(result.text); setNotice(result.partial ? 'Leitura parcial. Revise o texto extraído.' : 'Texto extraído. Revise antes de utilizar.'); }
         else if (provider === 'drive') setNotice('Cópia criada na pasta de documentos do Google Drive.');
-        else setNotice(result.alreadySent ? 'Este envio já havia sido aceito; nenhuma duplicata foi enviada.' : 'E-mail aceito pelo Resend. A aceitação ainda não confirma entrega.');
     }); }
     const ready = provider => state?.integrations?.some(item => item.provider === provider && item.available);
     const stateLabel = value => ({ saved: 'Configuração salva', confirmed: 'Confirmado', accepted: 'Aceito pelo provedor', processing: 'Em processamento', uncertain: 'Sem confirmação', review: 'Precisa de validação' }[value] || value);
     return <div className="integration-manager">
-        <p className="control-muted">Configure, ative, teste e acompanhe as seis integrações aqui. Na primeira conexão, cada provedor ainda pode exigir cadastro, credenciais ou autorização da própria conta.</p>
+        <p className="control-muted">Configure, ative, teste e acompanhe as integrações aqui. Na primeira conexão, cada provedor ainda pode exigir cadastro, credenciais ou autorização da própria conta.</p>
         {error && <p className="control-error" role="alert">{error}</p>}
         {notice && <p className="integration-notice" role="status">{notice}</p>}
         <div className="control-integration-grid">{integrationProviders.map(definition => <ConfigurationCard key={definition.id} definition={definition} value={state?.integrations?.find(item => item.provider === definition.id)} legacy={legacyProviders?.find(item => item.id === definition.id)} onSave={save} onTest={test} onConnect={connect} busy={Boolean(busy)}/>)}</div>
         {!state && <Button variant="outline" onClick={() => setRevision(value => value + 1)} disabled={Boolean(busy)}><RefreshCw />Conferir central novamente</Button>}
         <section className="integration-document-center" aria-label="Documentos e consultas das integrações"><h3><FileText />Documentos e monitoramento</h3>
-            <label className="form-field"><span>Documento para Drive, e-mail ou leitura de texto</span><Input type="file" accept="application/pdf,image/png,image/jpeg" disabled={Boolean(busy)} onChange={event => { setFile(event.target.files?.[0] || null); setText(''); operation.current = null; }}/></label>
-            <p className="integration-form-help">O arquivo só é enviado ao clicar em uma ação. Drive e e-mail aceitam até 5 MB; extração de texto, até 1 MB.</p>
+            <label className="form-field"><span>Documento para Drive ou leitura de texto</span><Input type="file" accept="application/pdf,image/png,image/jpeg" disabled={Boolean(busy)} onChange={event => { setFile(event.target.files?.[0] || null); setText(''); }}/></label>
+            <p className="integration-form-help">O arquivo só é enviado ao clicar em uma ação. Drive aceita até 5 MB; extração de texto, até 1 MB.</p>
             <div className="integration-card-actions"><Button variant="outline" disabled={Boolean(busy) || !file || !ready('drive')} onClick={() => void documentAction('drive')}><CloudUpload />Copiar documento para o Drive</Button><Button variant="outline" disabled={Boolean(busy) || !file || !ready('ocrspace')} onClick={() => void documentAction('ocrspace')}><FileSearch />Extrair texto</Button></div>
             {text && <label className="form-field"><span>Texto extraído para revisão</span><Textarea readOnly value={text} rows={10}/></label>}
-            <form className="integration-email-form" onSubmit={event => { event.preventDefault(); void documentAction('resend'); }}><h4><Mail />Enviar documento por e-mail</h4>
-                <label className="form-field"><span>Destinatário</span><Input type="email" value={recipient} required disabled={Boolean(busy)} onChange={event => { setRecipient(event.target.value); operation.current = null; }}/></label>
-                <label className="form-field"><span>Assunto</span><Input value={subject} maxLength={180} required disabled={Boolean(busy)} onChange={event => { setSubject(event.target.value); operation.current = null; }}/></label>
-                <label className="form-field"><span>Mensagem</span><Textarea value={message} maxLength={4000} disabled={Boolean(busy)} onChange={event => { setMessage(event.target.value); operation.current = null; }}/></label>
-                <p>Confira o destinatário e o arquivo <strong>{file?.name || 'ainda não selecionado'}</strong> antes de enviar.</p><Button type="submit" disabled={Boolean(busy) || !file || !ready('resend')}>Confirmar e enviar documento</Button>
-            </form>
             <div className="integration-card-actions"><Button variant="outline" disabled={Boolean(busy) || !ready('drive')} onClick={() => void run('files', async () => { setDriveFiles((await action({ action: 'drive_list' })).files); })}>Ver documentos do Drive</Button><Button variant="outline" disabled={Boolean(busy) || !ready('sentry')} onClick={() => void run('issues', async () => { setIssues((await action({ action: 'sentry_issues' })).issues); })}>Consultar erros do Sentry</Button></div>
             {driveFiles && <div className="integration-result-list"><h4>Documentos na pasta do Fama</h4>{driveFiles.length ? <ul>{driveFiles.map(item => <li key={item.id}><span>{item.name}</span>{['application/pdf','image/png','image/jpeg'].includes(item.mimeType) && <a href={'/api/admin/integrations/documents?id=' + encodeURIComponent(item.id)} download>Baixar documento</a>}</li>)}</ul> : <p>Nenhum documento nesta pasta.</p>}</div>}
             {issues && <div className="integration-result-list"><h4>Erros pendentes no Sentry</h4>{issues.length ? <ul>{issues.map(item => <li key={item.id}>{item.title} · {item.count} ocorrência(s)</li>)}</ul> : <p>Nenhum erro retornado pelo projeto.</p>}</div>}
         </section>
-        <section className="integration-history"><h3>Atividade no Fama</h3><p>Operações iniciadas por esta central e envios de documentos. Não inclui ações realizadas diretamente nos provedores.</p>{state?.activity?.length ? <ul>{state.activity.map((item,index) => <li key={`${item.createdAt}-${index}`}><strong>{integrationProviders.find(provider => provider.id === item.provider)?.name || item.provider}</strong><span>{stateLabel(item.status)}</span><time>{new Date(item.createdAt).toLocaleString('pt-BR', { timeZone: 'America/Sao_Paulo' })}</time>{item.action === 'resend_send' && item.status === 'accepted' && <Button variant="outline" size="sm" disabled={Boolean(busy)} onClick={() => void run('delivery', async () => { const result = await action({ action: 'resend_status', id: item.resultId }); setNotice('Situação do envio no Resend: ' + result.status); })}>Consultar entrega</Button>}</li>)}</ul> : <p>Nenhuma atividade registrada nesta central.</p>}</section>
+        <section className="integration-history"><h3>Atividade no Fama</h3><p>Operações iniciadas por esta central e envios de documentos. Não inclui ações realizadas diretamente nos provedores.</p>{state?.activity?.length ? <ul>{state.activity.map((item,index) => <li key={`${item.createdAt}-${index}`}><strong>{integrationProviders.find(provider => provider.id === item.provider)?.name || item.provider}</strong><span>{stateLabel(item.status)}</span><time>{new Date(item.createdAt).toLocaleString('pt-BR', { timeZone: 'America/Sao_Paulo' })}</time></li>)}</ul> : <p>Nenhuma atividade registrada nesta central.</p>}</section>
     </div>;
 }

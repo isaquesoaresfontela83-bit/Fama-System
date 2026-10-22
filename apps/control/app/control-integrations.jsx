@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { defaultFamaRepository } from '@/lib/integration-catalog';
 import { requestJson } from '@/lib/client-request';
+import { ControlAgendaAutomation } from './control-agenda-automation';
 import { ControlBaileys } from './control-baileys';
 import { ControlIntegrationManager } from './control-integration-manager';
 
@@ -34,7 +35,7 @@ export function ControlIntegrations() {
     return <section className="control-panel control-integrations">
         <div className="control-panel-heading"><div><p className="control-kicker">CONEXÕES DA PLATAFORMA</p><h2><Link2 />Integrações</h2></div><Button variant="outline" disabled={!data && !error} onClick={() => setRevision(value => value + 1)}><RefreshCw />Conferir novamente</Button></div>
         <p className="control-muted">A central reúne as configurações, os testes, os documentos e as consultas da plataforma.</p>
-        <ControlBaileys/>
+        <ControlBaileys/><ControlAgendaAutomation/>
         <ControlIntegrationManager legacyProviders={data?.providers} onChanged={() => setRevision(value => value + 1)}/>
         {!data && !error && <p role="status">Conferindo integrações e versões…</p>}
         {error && <p className="control-error" role="alert">{error}</p>}

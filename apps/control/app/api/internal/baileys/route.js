@@ -14,11 +14,11 @@ export async function POST(request) {
         if(input.action==='configured')return Response.json({configured:Boolean(config)},{headers});
         if(!uuid.test(input.organizationId || ''))throw new RequestError('Empresa inválida.',400);
         const base='/v1/companies/'+input.organizationId;
-        const operations={status:['/session','GET'],connect:['/session','POST'],disconnect:['/session','DELETE'],conversations:['/conversations','GET'],messages:['/messages?phone='+encodeURIComponent(input.phone || ''),'GET'],send:['/messages','POST']};
+        const operations={status:['/session','GET'],connect:['/session','POST'],reconnect:['/session','POST'],disconnect:['/session','DELETE'],conversations:['/conversations','GET'],messages:['/messages?phone='+encodeURIComponent(input.phone || ''),'GET'],send:['/messages','POST']};
         const operation=operations[input.action];
         if(!operation)throw new RequestError('Operação inválida.',400);
         if(['messages','send'].includes(input.action) && !/^[1-9]\d{9,14}$/.test(input.phone || ''))throw new RequestError('Telefone inválido.',400);
-        const value=await baileysRequest(config,base+operation[0],operation[1],input.action==='send'?{phone:input.phone,text:input.text,clientId:input.clientId}:undefined);
+        const value=await baileysRequest(config,base+operation[0],operation[1],input.action==='send'?{phone:input.phone,text:input.text,clientId:input.clientId}:input.action==='reconnect'?{reconnect:true}:input.action==='connect'?{}:undefined);
         // The secret and server address never cross this internal bridge.
         return Response.json(value,{headers});
     } catch(error) { return tenantError(error,'Não foi possível acessar o servidor Baileys.'); }

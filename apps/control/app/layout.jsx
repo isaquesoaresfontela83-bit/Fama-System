@@ -4,6 +4,7 @@ import "./control-premium.css";
 import "./control-integrations.css";
 import "./control-apis.css";
 import "./professional.css";
+import "./readability.css";
 export const metadata = {
     title: "Fama Control — Administração privada",
     description: "Painel privado do proprietário para administrar o Fama System com segurança.",

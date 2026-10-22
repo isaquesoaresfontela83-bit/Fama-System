@@ -4,6 +4,7 @@ import "./globals.css";
 import "./refined-layout.css";
 import "./operations-center.css";
 import "./professional.css";
+import "./readability.css";
 import "./account-switcher.css";
 import "./workspace-navigation.css";
 import "./selected-integrations.css";

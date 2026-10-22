@@ -1,0 +1,12 @@
+import assert from 'node:assert/strict';
+import test,{after,afterEach} from 'node:test';
+import React from 'react';
+import {act,create} from 'react-test-renderer';
+import {createServer} from 'vite';
+const root=new URL('..',import.meta.url).pathname,vite=await createServer({configFile:false,root,resolve:{alias:{'@':root}},server:{middlewareMode:true,hmr:false,ws:false},optimizeDeps:{noDiscovery:true,include:[]}});
+const {CustomerPicker,CustomerProfile}=await vite.ssrLoadModule('/app/customer-picker.jsx');
+let renderer;globalThis.IS_REACT_ACT_ENVIRONMENT=true;
+const customers=[{id:'a',name:'Ana',phone:'61999999999',address:'Rua A',poolType:'Fibra',notes:JSON.stringify({text:'Informações gerais',details:{filterType:'Filtro A',pump:'Bomba A'}})},{id:'b',name:'Ana',phone:'61988888888',address:'Rua B',notes:''}],text=()=>JSON.stringify(renderer.toJSON());
+afterEach(async()=>{if(renderer){await act(async()=>renderer.unmount());renderer=null;}});after(async()=>{delete globalThis.IS_REACT_ACT_ENVIRONMENT;await vite.close();});
+test('same-name selection submits the chosen ID and shows its registered address',async()=>{let selected;await act(async()=>{renderer=create(React.createElement(CustomerPicker,{customers,onSelect:value=>{selected=value;}}));});await act(async()=>renderer.root.findByType('select').props.onChange({target:{value:'b'}}));assert.equal(selected.id,'b');assert.equal(renderer.root.findByProps({name:'customerId'}).props.value,'b');assert.equal(renderer.root.findByProps({name:'clientName'}).props.value,'Ana');assert.match(text(),/Rua B/);});
+test('profile exposes general, contact, pool and history without mixing clients',async()=>{await act(async()=>{renderer=create(React.createElement(CustomerProfile,{customer:customers[0],history:React.createElement('p',null,'Histórico do cadastro A')}));});assert.match(text(),/Informações gerais/);const click=async label=>{const button=renderer.root.findAllByType('button').find(item=>item.children.includes(label));await act(async()=>button.props.onClick());};await click('Contato');assert.match(text(),/61999999999/);assert.doesNotMatch(text(),/61988888888/);await click('Piscina');assert.match(text(),/Filtro A/);assert.match(text(),/Bomba A/);await click('Histórico');assert.match(text(),/Histórico do cadastro A/);});

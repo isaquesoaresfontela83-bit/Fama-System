@@ -1,3 +1,4 @@
+import { resolveCustomerSelection } from './customer-selection';
 import { cents, dateTime } from "@/lib/database";
 import { calendarDate } from "@/lib/calendar";
 import { RequestError } from "@/lib/request-error";
@@ -21,6 +22,8 @@ function number(value, maximum = 1_000_000_000) {
 }
 export async function editedRecord(entity, body, existing, { organizationId, canManageCosts }) {
     const patch = {};
+    const selectedCustomerId=await resolveCustomerSelection(entity,body,organizationId,existing);
+    if(selectedCustomerId)patch.customerId=selectedCustomerId;
     const notes = recordNotes(existing.notes);
     let noteChanged = false;
     const assign = (key, validate = value => text(value)) => { if (Object.hasOwn(body, key)) patch[key] = validate(body[key]); };

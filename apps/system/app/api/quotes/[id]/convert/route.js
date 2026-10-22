@@ -1,3 +1,4 @@
+import { ensureCustomerColumns } from '@/lib/customer-selection';
 import { database, reference } from "@/lib/database";
 import { decryptRecordFields, encryptRecordFields, encryptedFieldsByEntity } from "@/lib/crypto";
 import { camelizeRow, insertRow, selectOne, snakeRow, SupabaseRequestError, updateRows, usesSupabase } from "@/lib/supabase";
@@ -26,6 +27,7 @@ export async function POST(request, context) {
         }
         await assertRateLimit(request, "quote_convert", user.id, 20, 60);
         const { id } = await context.params;
+        await ensureCustomerColumns();
         const db = database();
         const raw = usesSupabase()
             ? await selectOne("quotes", { id, organization_id: organization.id })
@@ -74,7 +76,7 @@ export async function POST(request, context) {
         }
         const createdAt = new Date().toISOString();
         const workOrder = {
-            id: workOrderId, osNumber: reference("OS"), clientName: String(quote.clientName ?? quote.client_name ?? ""),
+            id: workOrderId, customerId: quote.customerId ?? quote.customer_id ?? null, osNumber: reference("OS"), clientName: String(quote.clientName ?? quote.client_name ?? ""),
             service: String(quote.service ?? ""), scheduledAt: "", technician: "", status: "aberta", ph: null, chlorine: null,
             alkalinity: null, productsUsed: String(details.poolItems ?? details.products ?? ""),
             notes: JSON.stringify({ text: [`Criada do orçamento ${String(quote.quoteNumber ?? quote.quote_number ?? "")}`, noteText].filter(Boolean).join("\n\n"), details: { sourceQuoteId: id, sourceQuoteNumber: String(quote.quoteNumber ?? quote.quote_number ?? ""), paymentTerms: details.paymentTerms ?? "" } }),
@@ -96,8 +98,8 @@ export async function POST(request, context) {
             }
         }
         else {
-            const inserted = await db.prepare(`INSERT OR IGNORE INTO work_orders (id, organization_id, os_number, client_name, service, scheduled_at, technician, status, ph, chlorine, alkalinity, products_used, notes, amount_cents, created_at, updated_at)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`).bind(workOrder.id, organization.id, workOrder.osNumber, workOrder.clientName, workOrder.service, workOrder.scheduledAt, workOrder.technician, workOrder.status, null, null, null, workOrder.productsUsed, workOrder.notes, workOrder.amountCents, createdAt, createdAt).run();
+            const inserted = await db.prepare(`INSERT OR IGNORE INTO work_orders (id, organization_id, customer_id, os_number, client_name, service, scheduled_at, technician, status, ph, chlorine, alkalinity, products_used, notes, amount_cents, created_at, updated_at)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`).bind(workOrder.id, organization.id, workOrder.customerId ?? null, workOrder.osNumber, workOrder.clientName, workOrder.service, workOrder.scheduledAt, workOrder.technician, workOrder.status, null, null, null, workOrder.productsUsed, workOrder.notes, workOrder.amountCents, createdAt, createdAt).run();
             if (!inserted.meta.changes) {
                 const concurrent = await findWorkOrder(workOrderId);
                 if (!concurrent)

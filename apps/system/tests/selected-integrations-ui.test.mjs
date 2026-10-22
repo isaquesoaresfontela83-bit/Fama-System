@@ -25,10 +25,10 @@ test('Drive posts only an attachment ID to the local backend without browser OAu
 test('missing connections leave document actions disabled and never trigger a send on load',async()=>{
  globalThis.fetch=async(url,init={})=>{calls.push({url,init});return Response.json({drive:{configured:false},resend:{configured:false},ocrspace:{configured:false}});};
  await openDocuments();assert.equal(calls.length,1);assert.equal(calls[0].init.method,undefined);
- for(const text of ['Copiar para o Drive','Enviar por e-mail','Extrair texto'])assert.equal(renderer.root.findAllByType('button').find(node=>label(node).includes(text)).props.disabled,true);
+ for(const text of ['Copiar para o Drive','Extrair texto'])assert.equal(renderer.root.findAllByType('button').find(node=>label(node).includes(text)).props.disabled,true);
 });
-test('System settings contain only four operational services and never ask users for provider credentials',async()=>{
+test('System settings contain only three operational services and never ask users for provider credentials',async()=>{
  globalThis.fetch=async()=>Response.json({integrations:selectedIntegrations.map(({id})=>({provider:id,configured:false,managedBy:'platform'}))});
  await act(async()=>{renderer=Renderer.create(React.createElement(SelectedIntegrationsPanel,{organizationId:'org-one'}));});
- const rendered=JSON.stringify(renderer.toJSON());assert.match(rendered,/Google Drive/);assert.match(rendered,/OCR.space/);assert.doesNotMatch(rendered,/IPinfo|GitHub|Conectada|Conectado/);assert.equal(renderer.root.findAllByType('input').length,0);assert.equal(renderer.root.findAllByType('article').length,4);
+ const rendered=JSON.stringify(renderer.toJSON());assert.match(rendered,/Google Drive/);assert.match(rendered,/OCR.space/);assert.doesNotMatch(rendered,/IPinfo|GitHub|Resend|Conectada|Conectado/);assert.equal(renderer.root.findAllByType('input').length,0);assert.equal(renderer.root.findAllByType('article').length,3);
 });

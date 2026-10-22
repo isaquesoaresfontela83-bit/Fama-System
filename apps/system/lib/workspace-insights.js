@@ -18,11 +18,8 @@ export function workspaceRecords(data, allowed) {
 export function searchWorkspace(records, query) { const terms = normalizeSearch(query).split(' ').filter(Boolean); if (!terms.length)
     return []; return records.filter(item => terms.every(term => normalizeSearch(item.title + ' ' + item.detail + ' ' + (item.record.notes || '')).includes(term))).slice(0, 60); }
 export function customerHistory(data, customer, allowed) {
-    // Older operational records store a name rather than a customer ID. Never merge ambiguous names.
-    const name = normalizeSearch(customer.name);
-    if (!name || data.customers.filter(c => normalizeSearch(c.name) === name).length !== 1)
-        return [];
-    return workspaceRecords(data, allowed).filter(item => ['quotes', 'appointments', 'workOrders', 'contracts', 'warranties'].includes(item.entity) && normalizeSearch(item.record.clientName || '') === name).sort((a, b) => (b.date || '').localeCompare(a.date || ''));
+    const name=normalizeSearch(customer.name),unique=Boolean(name)&&data.customers.filter(c=>normalizeSearch(c.name)===name).length===1;
+    return workspaceRecords(data,allowed).filter(item=>['quotes','appointments','workOrders','contracts','warranties'].includes(item.entity) && (item.record.customerId ? item.record.customerId===customer.id : unique&&normalizeSearch(item.record.clientName||'')===name)).sort((a,b)=>(b.date||'').localeCompare(a.date||''));
 }
 export function workspaceAlerts(data, allowed, lowStock, today = dateKey(new Date().toISOString())) {
     const records = workspaceRecords(data, allowed), result = [];

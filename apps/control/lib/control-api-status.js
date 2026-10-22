@@ -76,7 +76,7 @@ async function probeControlApi(id) {
         if (value.provider !== 'baileys' || value.ok !== true) throw new Error('Invalid health');
         return observation('verified', 'Servidor Baileys respondeu. A sessão WhatsApp de cada empresa é conferida separadamente.', new Date().toISOString());
     }
-    if (['drive','resend','github','ipinfo'].includes(id)) {
+    if (['drive','github','ipinfo'].includes(id)) {
         const summary = await platformIntegrationSummary(), local = summary.find(item => item.provider === id);
         if (local.managed && !local.enabled) return observation('paused', 'Integração pausada na central do Control.');
         if (local.managed && local.configured) {
