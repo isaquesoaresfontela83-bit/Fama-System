@@ -1,12 +1,14 @@
 import { database, dateTime, numberValue, optionalText } from "@/lib/database";
 import { readJsonObject } from "@/lib/request-body";
-import { camelizeRow, deleteRows, selectOne, updateRows, usesSupabase } from "@/lib/supabase";
+import { camelizeRow, deleteRows, selectOne, snakeRow, updateRows, usesSupabase } from "@/lib/supabase";
 import { requireTenant, tenantError } from "@/lib/tenant";
 import { entityPermissions, hasFeaturePermission } from "@/lib/permissions";
 import { decryptRecordFields, encryptRecordFields, encryptedFieldsByEntity } from "@/lib/crypto";
 import { archiveForRecovery, assertRateLimit } from "@/lib/security";
 import { adjustInventoryStock } from "@/lib/inventory";
 import { costCents, costFields } from "@/lib/service-profit";
+import { editedRecord } from "@/lib/record-edit";
+import { recordNotes } from "@/lib/record-edit-fields";
 const configs = {
     leads: {
         table: "leads",
@@ -86,6 +88,51 @@ export async function PATCH(request, context) {
         if (!Object.hasOwn(entityPermissions, entity) || !hasFeaturePermission(organization.role, organization.permissions, entityPermissions[entity], organization.moduleAccess)) {
             return Response.json({ error: "Seu perfil não possui acesso a este módulo." }, { status: 403 });
         }
+        if (entity === "workOrders" && body.status === "em_execucao" && !body.action) body.action = "start";
+        if (body.action === "edit" || (entity === "workOrders" && body.action === "start")) {
+            const table = deleteTables[entity];
+            if (!table) return Response.json({ error: "Tipo de registro inválido." }, { status: 400 });
+            const db = database();
+            const stored = usesSupabase()
+                ? await selectOne(table, { id, organization_id: organization.id })
+                : await db.prepare(`SELECT * FROM ${table} WHERE id = ? AND organization_id = ?`).bind(id, organization.id).first();
+            if (!stored) return Response.json({ error: "Registro não encontrado." }, { status: 404 });
+            const existing = await decryptRecordFields(camelizeRow(stored), encryptedFieldsByEntity[entity] ?? []);
+            if (entity === "employees") existing.active = Boolean(existing.active);
+            let patch;
+            if (body.action === "start") {
+                if (existing.status === "concluida") return Response.json({ error: "O serviço já foi concluído." }, { status: 409 });
+                if (existing.status === "em_execucao") return Response.json({ record: existing });
+                const notes = recordNotes(existing.notes);
+                notes.details.executionStartedAt = new Date().toISOString();
+                notes.details.executionStartedBy = user.id;
+                patch = { status: "em_execucao", notes: JSON.stringify(notes) };
+            } else {
+                if (!body.expected || typeof body.expected !== "object" || Array.isArray(body.expected) || body.expected.id !== id)
+                    return Response.json({ error: "Reabra o registro antes de editar." }, { status: 400 });
+                for (const [key, value] of Object.entries(body.expected)) {
+                    if (key in existing && JSON.stringify(existing[key]) !== JSON.stringify(value))
+                        return Response.json({ error: "Este registro mudou durante a edição. Atualize e reabra para conferir os dados." }, { status: 409 });
+                }
+                patch = await editedRecord(entity, body, existing, { organizationId: organization.id, canManageCosts: hasFeaturePermission(organization.role, organization.permissions, "finance", organization.moduleAccess) });
+            }
+            const updatedAt = new Date().toISOString();
+            const values = { ...snakeRow(patch), updated_at: updatedAt };
+            const filters = { id, organization_id: organization.id, ...(stored.updated_at ? { updated_at: stored.updated_at } : {}) };
+            if (usesSupabase()) {
+                const protectedValues = await encryptRecordFields(values, (encryptedFieldsByEntity[entity] ?? []).map(key => key.replace(/[A-Z]/g, letter => `_${letter.toLowerCase()}`)));
+                const rows = await updateRows(table, protectedValues, filters);
+                if (!rows.length) return Response.json({ error: "O registro mudou. Atualize antes de salvar novamente." }, { status: 409 });
+                return Response.json({ record: await decryptRecordFields(camelizeRow(rows[0]), encryptedFieldsByEntity[entity] ?? []) });
+            }
+            const columns = Object.keys(values);
+            const result = await db.prepare(`UPDATE ${table} SET ${columns.map(column => `${column} = ?`).join(", ")} WHERE id = ? AND organization_id = ?${stored.updated_at ? " AND updated_at = ?" : ""}`)
+                .bind(...columns.map(column => typeof values[column] === "boolean" ? Number(values[column]) : values[column]), id, organization.id, ...(stored.updated_at ? [stored.updated_at] : [])).run();
+            if (!result.meta.changes) return Response.json({ error: "O registro mudou. Atualize antes de salvar novamente." }, { status: 409 });
+            const record = camelizeRow(await db.prepare(`SELECT * FROM ${table} WHERE id = ? AND organization_id = ?`).bind(id, organization.id).first());
+            if (entity === "employees") record.active = Boolean(record.active);
+            return Response.json({ record });
+        }
         const config = configs[entity];
         if (!config)
             return Response.json({ error: "Tipo de registro inválido." }, { status: 400 });
@@ -128,6 +175,7 @@ export async function PATCH(request, context) {
             const clear = usesSupabase()
                 ? await decryptRecordFields(camelizeRow(existing), ["notes"])
                 : existing;
+            if (clear.status === "concluida") return Response.json({ error: "O serviço já foi concluído e seu relatório foi preservado." }, { status: 409 });
             let noteText = "";
             let details = {};
             try {
@@ -188,6 +236,11 @@ export async function PATCH(request, context) {
         }
         if (entity === "workOrders" && optionalText(body.status) === "concluida") {
             return Response.json({ error: "Conclua a ordem pelo relatório técnico para registrar a confirmação do cliente." }, { status: 400 });
+        }
+        if (entity === "workOrders") {
+            const existing = usesSupabase() ? await selectOne("work_orders", { id, organization_id: organization.id }) : await db.prepare(config.select).bind(id, organization.id).first();
+            if (!existing) return Response.json({ error: "Ordem de serviço não encontrada." }, { status: 404 });
+            if (existing.status === "concluida") return Response.json({ error: "O serviço foi concluído e seu relatório foi preservado." }, { status: 409 });
         }
         const raw = body[config.inputKey];
         const value = entity === "inventory" ? Math.max(0, numberValue(raw)) : optionalText(raw);

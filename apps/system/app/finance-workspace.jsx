@@ -22,7 +22,7 @@ const money = (cents) => new Intl.NumberFormat("pt-BR", { style: "currency", cur
 const date = (value) => value
     ? new Intl.DateTimeFormat("pt-BR", { timeZone: "UTC" }).format(new Date(`${value.slice(0, 10)}T12:00:00Z`))
     : "—";
-export function FinanceWorkspace({ organizationId, transactions, tab, onTabChange, onStatus, onSelect, onOpenEntry, onReconciled, onPurchasePayable, onAssistant, fiscalOnly = false, invoicesEnabled = false, onFiscalSettings, quotes = [], }) {
+export function FinanceWorkspace({ onEdit, organizationId, transactions, tab, onTabChange, onStatus, onSelect, onOpenEntry, onReconciled, onPurchasePayable, onAssistant, fiscalOnly = false, invoicesEnabled = false, onFiscalSettings, quotes = [], }) {
     const hasAssistant = Boolean(onAssistant);
     const [data, setData] = useState(empty);
     const [loading, setLoading] = useState(true);
@@ -821,7 +821,7 @@ export function FinanceWorkspace({ organizationId, transactions, tab, onTabChang
             </div>
             <TransactionTable items={[...receivable, ...payable]
                 .sort((a, b) => a.dueDate.localeCompare(b.dueDate))
-                .slice(0, 8)} onStatus={onStatus} onSelect={onSelect}/>
+                .slice(0, 8)} onStatus={onStatus} onSelect={onSelect} onEdit={onEdit}/>
           </section>
         </>)}
       {tab === "contas" && (<section className="surface finance-snapshot">
@@ -842,7 +842,7 @@ export function FinanceWorkspace({ organizationId, transactions, tab, onTabChang
             </div>
           </div>
           <Input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Filtrar por descrição ou categoria"/>
-          <TransactionTable items={filtered(transactions)} onStatus={onStatus} onSelect={onSelect}/>
+          <TransactionTable items={filtered(transactions)} onStatus={onStatus} onSelect={onSelect} onEdit={onEdit}/>
         </section>)}
       {tab === "cobrancas" && (<section className="surface finance-snapshot">
           <div className="panel-heading">
@@ -1474,7 +1474,7 @@ export function FinanceWorkspace({ organizationId, transactions, tab, onTabChang
         </p>)}
     </div>);
 }
-function TransactionTable({ items, onStatus, onSelect, }) {
+function TransactionTable({ items, onStatus, onSelect, onEdit, }) {
     return (<Table>
       <TableHeader>
         <TableRow>
@@ -1483,7 +1483,7 @@ function TransactionTable({ items, onStatus, onSelect, }) {
           <TableHead>Vencimento</TableHead>
           <TableHead>Tipo</TableHead>
           <TableHead>Valor</TableHead>
-          <TableHead>Status</TableHead>
+          <TableHead>Status</TableHead><TableHead>Ações</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
@@ -1512,6 +1512,7 @@ function TransactionTable({ items, onStatus, onSelect, }) {
                 <NativeSelectOption value="pago">Pago</NativeSelectOption>
               </NativeSelect>
             </TableCell>
+            <TableCell>{onEdit && <Button type="button" variant="outline" size="sm" onClick={() => onEdit(item)}>Editar</Button>}</TableCell>
           </TableRow>))}
       </TableBody>
     </Table>);
