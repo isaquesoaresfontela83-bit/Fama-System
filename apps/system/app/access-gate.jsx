@@ -1,4 +1,5 @@
 "use client";
+import { FAMA_VERSION } from "@/lib/fama-release";
 import { MIN_PASSWORD_LENGTH, MAX_PASSWORD_LENGTH, PASSWORD_HELP } from "@/lib/password-security";
 /* eslint-disable @next/next/no-img-element */
 import { useState } from "react";
@@ -170,6 +171,6 @@ export function AccessGate({ initialMode = "login", addingAccount = false, recon
       <article><CalendarDays /><h2>Organize a equipe</h2><p>Centralize agenda, serviços e atendimentos de garantia.</p></article>
       <article><ShieldCheck /><h2>Proteja a operação</h2><p>Controle acessos, registre atividades e recupere exclusões.</p></article>
     </section>
-    <footer className="public-legal"><span>© 2026 Fama System · v15.0</span><a href="/manual">Manual completo</a><a href="/termos">Termos de Uso</a><a href="/privacidade">Privacidade</a></footer>
+    <footer className="public-legal"><span>© 2026 Fama System · v{FAMA_VERSION}</span><a href="/manual">Manual completo</a><a href="/termos">Termos de Uso</a><a href="/privacidade">Privacidade</a></footer>
   </main>;
 }

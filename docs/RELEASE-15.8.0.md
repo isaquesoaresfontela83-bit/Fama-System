@@ -34,6 +34,8 @@ Essas verificações não comprovam acesso aos segredos, conectividade ao banco 
 
 ## Ativação e pendência
 
-O estado de produção e o bloqueio da transferência privada estão descritos em [HYBRID-STATUS.md](HYBRID-STATUS.md). Não houve publicação 15.8.0 nos domínios nesta preparação.
+O estado de produção e as verificações da transferência privada estão descritos em [HYBRID-STATUS.md](HYBRID-STATUS.md). A publicação conjunta 15.8.0 foi confirmada nos dois domínios em 22/10/2026.
 
 A migração operacional é aditiva: `deployment/hybrid/customer-agenda.sql`. Depois da migração e validação das duas APIs, configurar `FAMA_AGENDA_CRON_SECRET` no System e os valores correspondentes no Vault; `deployment/hybrid/agenda-cron.sql` só chama a API durante a janela diária e com destinatários ainda sem entrega registrada. O instalador do cron não ativa o envio de nenhuma empresa.
+
+O encaminhamento dos domínios preserva o frontend original e foi validado com cinco testes de rotas, corpo das mutações, cookies, callbacks, privacidade e falhas de upstream. O QR Baileys foi gerado pelo serviço real; a leitura pelo telefone continua sendo uma ação do proprietário. O rodapé do login usa agora a versão compartilhada em vez do texto antigo fixo.
