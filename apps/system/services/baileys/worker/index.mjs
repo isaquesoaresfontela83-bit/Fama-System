@@ -2,7 +2,7 @@ import { DurableObject } from 'cloudflare:workers';
 import * as baileys from '@whiskeysockets/baileys';
 import QRCode from 'qrcode';
 import { EncryptedStore } from '../encrypted-store.mjs';
-import { Sessions, authorized, companyValid } from '../session-core.mjs';
+import { Sessions, serviceAuthorized, companyValid } from '../session-core.mjs';
 import { DurableSqlite } from './sqlite.mjs';
 import { companyRequestBody } from './body.mjs';
 
@@ -65,7 +65,7 @@ export class WhatsAppCompany extends DurableObject {
 export default {
     async fetch(request,env){
         try{
-            if(!authorized(request.headers.get('Authorization'),env.BAILEYS_API_TOKEN))return json({error:'Acesso não autorizado.'},401);
+            if(!serviceAuthorized(request.headers.get('Authorization'),env))return json({error:'Acesso não autorizado.'},401);
             const url=new URL(request.url);
             if(url.pathname==='/health' && request.method==='GET')return json({provider:'baileys',ok:true,version:'1.1.0',runtime:'cloudflare-durable-objects'});
             const match=url.pathname.match(/^\/v1\/companies\/([^/]+)\/(session|conversations|messages)$/);

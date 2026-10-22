@@ -3,8 +3,17 @@ import test from 'node:test';
 import { EventEmitter } from 'node:events';
 import { Store } from './store.mjs';
 import { Sessions, service } from './server.mjs';
+import { serviceAuthorized } from './session-core.mjs';
 const a='11111111-1111-4111-8111-111111111111',b='22222222-2222-4222-8222-222222222222',requestId='33333333-3333-4333-8333-333333333333';
 const secret='a'.repeat(64),key='b'.repeat(64);
+test('Render service access preserves the existing token and requires a strong separate credential',()=>{
+    const configuration={BAILEYS_API_TOKEN:secret,BAILEYS_RENDER_API_TOKEN:'c'.repeat(64)};
+    assert.equal(serviceAuthorized('Bearer '+secret,configuration),true);
+    assert.equal(serviceAuthorized('Bearer '+'c'.repeat(64),configuration),true);
+    assert.equal(serviceAuthorized('Bearer wrong',configuration),false);
+    assert.equal(serviceAuthorized('Bearer short',{BAILEYS_RENDER_API_TOKEN:'short'}),false);
+    assert.equal(serviceAuthorized('Bearer '+secret,{}),false);
+});
 const tick=()=>new Promise(resolve=>setImmediate(resolve));
 function fixture(){
     const store=new Store(':memory:',key);let calls=0;const sockets=[];

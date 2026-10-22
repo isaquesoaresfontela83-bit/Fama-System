@@ -6,6 +6,9 @@ export function authorized(value, secret) {
     const digest = text => createHash('sha256').update(text).digest();
     return timingSafeEqual(digest(value.slice(7)),digest(secret));
 }
+export function serviceAuthorized(value, configuration) {
+    return [configuration.BAILEYS_API_TOKEN, configuration.BAILEYS_RENDER_API_TOKEN].some(secret => typeof secret === 'string' && secret.length >= 32 && authorized(value, secret));
+}
 const logger = { level:'silent', child(){ return this; }, trace(){},debug(){},info(){},warn(){},error(){},fatal(){} };
 const fail = (message,status=400) => Object.assign(new Error(message),{status});
 
