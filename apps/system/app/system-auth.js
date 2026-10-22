@@ -177,7 +177,7 @@ async function userFromAccessToken(accessToken) {
         mfaRequired: Boolean(raw.factors?.some(factor => factor.status === "verified")),
     };
 }
-async function getSupabaseUser() {
+async function getSupabaseUser({ throwOnUnavailable = false } = {}) {
     let selectedAccount, cookieStore;
     try {
         cookieStore = await cookies();
@@ -229,12 +229,13 @@ async function getSupabaseUser() {
         }
         if (error instanceof AuthRequestError && error.code === "AUTH_NOT_CONFIGURED")
             return null;
+        if (throwOnUnavailable) throw error;
         console.error("supabase_auth_user_failed", error);
         return null;
     }
 }
-export async function getFamaUser() {
-    const user = await getSupabaseUser();
+export async function getFamaUser(options) {
+    const user = await getSupabaseUser(options);
     const expected = (await headers()).get('x-fama-account');
     if (expected && user?.id !== expected) return null;
     return user?.mfaRequired && user.aal !== 'aal2' ? null : user;
@@ -256,7 +257,14 @@ export async function prepareAccountSignIn(email) {
         throw new AuthRequestError('Duas contas já estão conectadas. Remova uma para adicionar outra.', 409, 'ACCOUNT_LIMIT');
 }
 export async function listFamaAccounts() {
-    const user = await getFamaUser();
+    const store = await cookies();
+    const secret = accountSecret();
+    const remembered = await readAccountSessions(store, secret);
+    const selected = store.get(ACTIVE_ACCOUNT_COOKIE)?.value;
+    if (accountSessionsEnabled(secret) && remembered.length && (selected || !store.get(ACCESS_COOKIE)?.value)) {
+        return { enabled: true, limit: ACCOUNT_LIMIT, activeId: remembered.some(account => account.id === selected) ? selected : null, accounts: remembered.map(publicAccount) };
+    }
+    const user = await getFamaUser({ throwOnUnavailable: true });
     await rememberCurrentAccount(user);
     const accounts = await readAccountSessions(await cookies(), accountSecret());
     return { enabled: accountSessionsEnabled(accountSecret()), limit: ACCOUNT_LIMIT, activeId: user && (!user.mfaRequired || user.aal === 'aal2') ? user.id : null, accounts: accounts.map(publicAccount) };

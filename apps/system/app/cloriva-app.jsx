@@ -3,6 +3,7 @@ import { CustomerPicker,CustomerProfile } from "./customer-picker";
 import { AgendaAutomation } from "./agenda-automation";
 import { InternalChatIndicator } from './internal-chat-indicator';
 import { GeneralManagement } from './general-management';
+import { ModuleAnalytics } from './module-analytics';
 import { ViewCustomizer } from './view-customizer';
 import { PlanningWorkspace } from './planning-workspace';
 import { WazeLink } from './waze-navigation';
@@ -23,7 +24,7 @@ import { lazy, useDeferredValue, useEffect, useMemo, useRef, useState } from "re
 import { recordEditFields } from "@/lib/record-edit-fields";
 import { FAMA_VERSION } from "@/lib/fama-release";
 import { IntegrationTelemetry } from './integration-telemetry';
-import { AlertTriangle, ArrowLeft, ArrowDownLeft, ArrowRight, ArrowUpRight, BadgeDollarSign, Boxes, BriefcaseBusiness, BookOpenCheck, CalendarClock, CalendarDays, Check, CheckCircle2, ChevronRight, CircleDollarSign, ClipboardCheck, Clock3, Droplets, FileDown, FileSignature, FileText, Gauge, HandCoins, LayoutDashboard, LogOut, MapPin, Menu, Smartphone, WifiOff, RefreshCw, PackagePlus, Pencil, Play, Plus, QrCode, ScanLine, Search, Settings2, ShieldCheck, LockKeyhole, MessageCircle, Sparkles, TrendingUp, UsersRound, Wrench, X, } from "lucide-react";
+import { AlertTriangle, BarChart3, ArrowLeft, ArrowDownLeft, ArrowRight, ArrowUpRight, BadgeDollarSign, Boxes, BriefcaseBusiness, BookOpenCheck, CalendarClock, CalendarDays, Check, CheckCircle2, ChevronRight, CircleDollarSign, ClipboardCheck, Clock3, Droplets, FileDown, FileSignature, FileText, Gauge, HandCoins, LayoutDashboard, LogOut, MapPin, Menu, Smartphone, WifiOff, RefreshCw, PackagePlus, Pencil, Play, Plus, QrCode, ScanLine, Search, Settings2, ShieldCheck, LockKeyhole, MessageCircle, Sparkles, TrendingUp, UsersRound, Wrench, X, } from "lucide-react";
 import { toast } from "sonner";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -102,6 +103,7 @@ const navGroups = [
             { id: "quotes", label: "Orçamentos", icon: FileText },
             { id: "orders", label: "Serviços", icon: ClipboardCheck },
             { id: "finance", label: "Financeiro", icon: CircleDollarSign },
+            { id: "charts", label: "Gráficos", icon: BarChart3 },
         ],
     },
     {
@@ -135,10 +137,11 @@ const navGroups = [
 ];
 const sectionMeta = {
     planning: { eyebrow: "Clima, CEP e deslocamento", title: "Planejamento" },
+    charts: { eyebrow: "Todos os indicadores", title: "Gráficos" },
     management: { eyebrow: "Indicadores e pipeline", title: "Gestão geral" },
     assistant: { eyebrow: "Assistente de gestão", title: "Fama IA" },
     chat: { eyebrow: "Comunicação da equipe", title: "Chat" },
-    dashboard: { eyebrow: "Operação ao vivo", title: "Central operacional", entity: "quotes", action: "Novo orçamento" },
+    dashboard: { eyebrow: "Operação ao vivo", title: "Visão geral", entity: "quotes", action: "Novo orçamento" },
     crm: { eyebrow: "Relacionamento comercial", title: "CRM de vendas", entity: "leads", action: "Novo lead" },
     quotes: { eyebrow: "Propostas e aprovações", title: "Orçamentos", entity: "quotes", action: "Novo orçamento" },
     agenda: { eyebrow: "Rotas e compromissos", title: "Agenda", entity: "appointments", action: "Agendar visita" },
@@ -168,12 +171,12 @@ function defaultSectionFor(organization) {
     return firstAllowed?.id ?? "manual";
 }
 function canOpenSectionFor(organization, section, isPlatformAdmin) {
-    const feature = section === "planning" ? "agenda" : section === "management" ? "dashboard" : section === "consultation" ? "customers" : section;
+    const feature = section === "planning" ? "agenda" : ["management", "charts"].includes(section) ? "dashboard" : section === "consultation" ? "customers" : section;
     if (!["manual", "privacy", "support", "members", "billing", "settings", "platform"].includes(section) && !planIncludesFeature(organization.plan, feature, organization.planFeatures))
         return false;
     if (section === "planning")
         return hasFeaturePermission(organization.role, organization.permissions, "agenda", organization.moduleAccess);
-    if (section === "management")
+    if (section === "management" || section === "charts")
         return hasFeaturePermission(organization.role, organization.permissions, "dashboard", organization.moduleAccess);
     if (section === "consultation")
         return hasFeaturePermission(organization.role, organization.permissions, "customers", organization.moduleAccess);
@@ -775,7 +778,7 @@ export function FamaSystemApp({ organizations, currentUser, signOutPath }) {
     const title = sectionMeta[section];
     const ActiveModuleIcon = navGroups.flatMap(group => group.items).find(item => item.id === section)?.icon ?? LayoutDashboard;
     return <FamaLocalAiProvider key={dataScope} prepareOnOpen={Boolean(ai.value?.settings.enabled) && !billingBlocked && canOpenSection("assistant")}><SidebarProvider style={{ "--sidebar-width": "260px", "--sidebar-width-icon": "72px" }}>
-    {!billingBlocked && <IntegrationTelemetry key={dataScope} organizationId={activeOrganization.id} />}
+    {!billingBlocked && <IntegrationTelemetry key={dataScope + ":telemetry"} organizationId={activeOrganization.id} />}
     <Sidebar collapsible="icon" className="main-sidebar">
       <SidebarHeader className="sidebar-brand"><BrandMark /><div><strong>Fama System</strong><small>Gestão para piscinas</small></div></SidebarHeader>
       <SidebarContent className="workspace-navigation-content">
@@ -792,10 +795,10 @@ export function FamaSystemApp({ organizations, currentUser, signOutPath }) {
 
       <main className="workspace">
         <PlanAnnouncement key={dataScope} organizationId={activeOrganization.id} scope={currentUser.id + ":" + activeOrganization.id}/>
-        <section className="workspace-intro" aria-label="Cabeçalho do módulo"><span className="workspace-module-symbol" aria-hidden="true"><ActiveModuleIcon /></span><div className="workspace-intro-copy"><span className="workspace-kicker">{activeOrganization.name}</span><h1>{title.title}</h1><p>{{ management: 'Indicadores coloridos e gráficos personalizados para acompanhar sua empresa.', dashboard: canOpenSection('finance') ? 'Mapa da operação, financeiro, agenda e prioridades no mesmo painel.' : 'Mapa da operação, agenda e prioridades no mesmo painel.', customers: 'Relacionamentos, contatos e piscinas em um cadastro completo.', crm: 'Acompanhe cada oportunidade até o fechamento.', quotes: 'Prepare propostas e acompanhe suas aprovações.', planning: 'Mapa, clima, CEP, deslocamento e semana com IA em um só lugar.', agenda: 'Organize visitas, equipes e atendimentos.', orders: 'Controle a execução e o histórico de cada serviço.', finance: 'Acompanhe saldos, movimentações e cobranças.', invoices: 'Emissão e acompanhamento das notas fiscais.', inventory: 'Controle produtos, quantidades e reposições.', contracts: 'Organize contratos e planos de atendimento.', warranties: 'Acompanhe prazos e atendimentos em garantia.', settings: 'Personalize a operação da sua empresa.', members: 'Gerencie sua equipe e suas permissões.', team: 'Sua equipe e a distribuição dos atendimentos.', consultation: 'Consulte CNPJ e CEP sem criar cadastros.', chat: 'Comunicação interna entre administração, técnicos e equipe.', assistant: 'Assistência integrada à sua operação.', billing: 'Seu plano, pagamentos e acesso à plataforma.', support: 'Acompanhe suas solicitações de suporte.', privacy: 'Controle seus dados e as opções de segurança.', manual: 'Orientações para usar cada recurso.', mobile: 'Atendimentos e serviços na palma da mão.' }[section] || 'Gerencie sua operação com clareza.'}</p></div><div className="workspace-intro-actions">{title.entity && !billingBlocked && <Button onClick={() => setCreateEntity(title.entity)}><Plus />{title.action}</Button>}</div></section>
+        <section className="workspace-intro" aria-label="Cabeçalho do módulo"><span className="workspace-module-symbol" aria-hidden="true"><ActiveModuleIcon /></span><div className="workspace-intro-copy"><span className="workspace-kicker">{activeOrganization.name}</span><h1>{title.title}</h1><p>{{ charts: 'Todos os gráficos da empresa, com filtros por área e período.', management: 'Indicadores coloridos e gráficos personalizados para acompanhar sua empresa.', dashboard: canOpenSection('finance') ? 'Atendimentos, serviços, financeiro e prioridades no mesmo painel.' : 'Atendimentos, serviços, agenda e prioridades no mesmo painel.', customers: 'Relacionamentos, contatos e piscinas em um cadastro completo.', crm: 'Acompanhe cada oportunidade até o fechamento.', quotes: 'Prepare propostas e acompanhe suas aprovações.', planning: 'Mapa, clima, CEP, deslocamento e semana com IA em um só lugar.', agenda: 'Organize visitas, equipes e atendimentos.', orders: 'Controle a execução e o histórico de cada serviço.', finance: 'Acompanhe saldos, movimentações e cobranças.', invoices: 'Emissão e acompanhamento das notas fiscais.', inventory: 'Controle produtos, quantidades e reposições.', contracts: 'Organize contratos e planos de atendimento.', warranties: 'Acompanhe prazos e atendimentos em garantia.', settings: 'Personalize a operação da sua empresa.', members: 'Gerencie sua equipe e suas permissões.', team: 'Sua equipe e a distribuição dos atendimentos.', consultation: 'Consulte CNPJ e CEP sem criar cadastros.', chat: 'Comunicação interna entre administração, técnicos e equipe.', assistant: 'Assistência integrada à sua operação.', billing: 'Seu plano, pagamentos e acesso à plataforma.', support: 'Acompanhe suas solicitações de suporte.', privacy: 'Controle seus dados e as opções de segurança.', manual: 'Orientações para usar cada recurso.', mobile: 'Atendimentos e serviços na palma da mão.' }[section] || 'Gerencie sua operação com clareza.'}</p></div><div className="workspace-intro-actions">{title.entity && !billingBlocked && <Button onClick={() => setCreateEntity(title.entity)}><Plus />{title.action}</Button>}</div></section>
         {dataLoadError && <div className="empty-state" role="status"><p>{dataLoadError}</p><Button variant="outline" disabled={loading || syncingOffline} onClick={() => void refreshOfflineData()}>Tentar carregar novamente</Button></div>}
         {!billingBlocked && section === "assistant" && canOpenSection("assistant") && <FamaAiStartup data={assistantData} settings={ai.value?.settings ?? null} allowedSources={assistantSources} scopeLabel={activeOrganization.name} loading={loading || loadedDataScope !== dataScope} error={(!ai.value ? ai.error : loadedDataScope !== dataScope ? dataLoadError : undefined) || undefined} onNavigate={source => navigate(source === "overview" ? "dashboard" : source)}/>}
-        {!billingBlocked && (loading || loadedDataScope !== dataScope) && ["dashboard", "planning", "crm", "quotes", "agenda", "orders", "warranties", "customers", "contracts", "inventory", "finance", "invoices", "team", "mobile"].includes(section) ? loading ? <div className="loading"><i /><p>Preparando sua operação…</p></div> : <div className="empty-state"><p>Os registros desta empresa ainda não estão disponíveis. Tente carregar novamente.</p></div> : <WorkspaceView key={`${dataScope}:${section}`} viewKey={navigation.current} label={title.title} restoreScroll={navigation.restoreScroll}>
+        {!billingBlocked && (loading || loadedDataScope !== dataScope) && ["dashboard", "charts", "management", "planning", "crm", "quotes", "agenda", "orders", "warranties", "customers", "contracts", "inventory", "finance", "invoices", "team", "mobile"].includes(section) ? loading ? <div className="loading"><i /><p>Preparando sua operação…</p></div> : <div className="empty-state"><p>Os registros desta empresa ainda não estão disponíveis. Tente carregar novamente.</p></div> : <WorkspaceView key={`${dataScope}:${section}`} viewKey={navigation.current} label={title.title} restoreScroll={navigation.restoreScroll}>
           {billingBlocked && section !== "billing" && section !== "support" && section !== "privacy" && section !== "manual" && <BillingBlocked canManageAccess={canManageAccess} onBilling={() => navigate("billing")}/>}
           {!billingBlocked && section === "assistant" && canOpenSection("assistant") && <>
             {loadedDataScope !== dataScope ? <div className="empty-state"><p>{loading ? "Carregando os registros da empresa selecionada…" : "A assistente precisa dos registros da empresa selecionada."}</p><Button variant="outline" disabled={loading} onClick={() => setRefreshNonce(value => value + 1)}>Carregar registros</Button></div> : ai.value ?
@@ -832,7 +835,7 @@ export function FamaSystemApp({ organizations, currentUser, signOutPath }) {
           </>}
           {!billingBlocked && section === "dashboard" && canOpenSection("dashboard") && <Dashboard key={`${currentUser.id}:${dataScope}`} scope={`${currentUser.id}:${activeOrganization.id}`} organizationId={activeOrganization.id} plan={activeOrganization.plan} planFeatures={activeOrganization.planFeatures} onUpgrade={canManageAccess ? () => navigate("billing") : undefined} allowed={Object.keys(sectionMeta).filter(target => canOpenSection(target))} data={data} settings={companySettings} revenue={revenue} receivable={receivable} payable={payable} salesPipeline={salesPipeline} onSelect={setSelected} onNavigate={navigate} onFinanceTab={tab => { if (canOpenSection("finance"))
             navigation.navigate(`finance/${tab}`); }} onConfigureFreight={canOpenSection("settings") ? () => navigate("settings") : undefined}/>}
-          {!billingBlocked && section === "management" && canOpenSection("management") && <GeneralManagement key={dataScope} scope={`${currentUser.id}:${activeOrganization.id}`} data={data} lowStockAlert={companySettings.lowStockAlert} allowed={['crm', 'quotes', 'agenda', 'orders', 'finance', 'customers', 'inventory'].filter(target => canOpenSection(target))} onNavigate={target => navigate(target)}/>}
+          {!billingBlocked && ["management", "charts"].includes(section) && canOpenSection(section) && <GeneralManagement key={`${dataScope}:${section}`} section={section} organizationId={activeOrganization.id} scope={`${currentUser.id}:${activeOrganization.id}`} data={data} lowStockAlert={companySettings.lowStockAlert} allowed={Object.keys(sectionMeta).filter(target => canOpenSection(target))} onNavigate={target => navigate(target)}/>}
           {!billingBlocked && section === "chat" && canOpenSection("chat") && <ChatWorkspace key={`${currentUser.id}:${dataScope}`} organizationId={activeOrganization.id} canManage={canManageAccess}/>}
           {!billingBlocked && section === "crm" && canOpenSection("crm") && <Crm onEdit={record => openEdit("leads", record)} leads={filter(data.leads)} onSelect={(record) => setSelected({ entity: "leads", record })} onMove={(record, status) => patchRecord("leads", record, { status })} onDelete={canDelete ? deleteRecord : undefined}/>}
           {!billingBlocked && section === "quotes" && canOpenSection("quotes") && <Quotes onEdit={record => openEdit("quotes", record)} key={activeOrganization.id} organizationId={activeOrganization.id} quotes={filter(data.quotes)} organizationName={activeOrganization.name} canManageCatalog={canManageAccess} onCreateProject={(selection) => { setInitialQuoteSelection(selection); setCreateEntity("quotes"); }} onCreate={() => { setInitialQuoteSelection(null); setCreateEntity("quotes"); }} onSelect={(record) => setSelected({ entity: "quotes", record })} onStatus={(record, status) => patchRecord("quotes", record, { status })} onConvert={convertQuote} onDelete={canDelete ? deleteRecord : undefined}/>}
@@ -855,6 +858,7 @@ export function FamaSystemApp({ organizations, currentUser, signOutPath }) {
           {section === "settings" && canManageAccess && <CompanySettingsPanel organization={activeOrganization}/>}
           {!billingBlocked && section === "members" && canManageAccess && <MembersPanel organization={activeOrganization}/>}
           {!billingBlocked && section === "platform" && currentUser.isPlatformAdmin && <PlatformCompanies />}
+          {!billingBlocked && loadedDataScope === dataScope && !["dashboard", "management", "charts"].includes(section) && canOpenSection(section) && <ModuleAnalytics key={`${dataScope}:${section}`} section={section} financeTab={financeTab} organizationId={activeOrganization.id} scope={`${currentUser.id}:${activeOrganization.id}`} data={data} lowStockAlert={companySettings.lowStockAlert} allowed={Object.keys(sectionMeta).filter(target => canOpenSection(target))} onNavigate={navigate}/>}
         </WorkspaceView>}
         {!online && <div className="offline-banner"><WifiOff /><span>Sem conexão. O sistema está mostrando a última atualização salva.</span><Button size="sm" variant="outline" onClick={() => void refreshOfflineData()} disabled={syncingOffline}><RefreshCw />Tentar sincronizar</Button></div>}
       </main>
@@ -875,7 +879,7 @@ export function FamaSystemApp({ organizations, currentUser, signOutPath }) {
     <>{closingOrder && <TechnicianCompletion key={closingOrder.id} order={closingOrder} organizationId={activeOrganization.id} canManageCosts={canOpenSection("finance")} onClose={() => setClosingOrder(null)} onSubmit={completeWorkOrder}/>}</>
     <DetailSheet onEdit={openEdit} onExecute={(record, status) => status === "concluida" ? (setSelected(null), setClosingOrder(record)) : void patchRecord("workOrders", record, { status })} data={data} allowed={Object.keys(sectionMeta).filter(target => canOpenSection(target))} onSelect={item => setSelected({ entity: item.entity, record: item.record })} selected={selected} organizationId={activeOrganization.id} organizationName={activeOrganization.name} onClose={() => setSelected(null)} onDelete={canDelete ? deleteRecord : undefined}/>
     </WorkspaceView>
-    <InternalHelp key={dataScope} section={section} canNavigate={target => Object.hasOwn(sectionMeta, target) && canOpenSection(target)} onNavigate={target => navigate(target)}/>
+    <InternalHelp key={dataScope + ":help"} section={section} canNavigate={target => Object.hasOwn(sectionMeta, target) && canOpenSection(target)} onNavigate={target => navigate(target)}/>
     <Toaster richColors position="top-right"/>
   </SidebarProvider></FamaLocalAiProvider>;
 }
@@ -892,7 +896,8 @@ function BillingBlocked({ canManageAccess, onBilling }) {
 }
 function Dashboard(props) {
     const [expanded, setExpanded] = useState(false);
-    return <><OperationsCenter organizationId={props.organizationId} data={props.data} allowed={props.allowed} lowStock={props.settings.lowStockAlert} onNavigate={props.onNavigate} onSelect={props.onSelect}/><details className="ops-details" open={expanded} onToggle={event => setExpanded(event.currentTarget.open)}><summary>Indicadores detalhados<ChevronRight /></summary>{expanded && <DashboardDetails {...props}/>}</details></>;
+    const ledgerBalance = props.data.transactions.filter(item => item.status === 'pago').reduce((sum, item) => sum + (item.type === 'receita' ? item.amountCents : -item.amountCents), 0);
+    return <>{props.allowed.includes('finance') && <DashboardBalance organizationId={props.organizationId} ledgerBalanceCents={ledgerBalance} receivable={props.receivable} payable={props.payable} onFinanceTab={props.onFinanceTab}/>}<OperationsCenter organizationId={props.organizationId} data={props.data} allowed={props.allowed} lowStock={props.settings.lowStockAlert} onNavigate={props.onNavigate} onSelect={props.onSelect}/><ModuleAnalytics section="dashboard" organizationId={props.organizationId} scope={props.scope} data={props.data} allowed={props.allowed} lowStockAlert={props.settings.lowStockAlert} onNavigate={props.onNavigate}/><details className="ops-details" open={expanded} onToggle={event => setExpanded(event.currentTarget.open)}><summary>Indicadores detalhados<ChevronRight /></summary>{expanded && <DashboardDetails {...props}/>}</details></>;
 }
 function DashboardDetails({ scope, organizationId, plan, planFeatures, allowed, data, settings, revenue, receivable, payable, salesPipeline, onSelect, onNavigate, onFinanceTab, onConfigureFreight, onUpgrade }) {
     const today = data.appointments.filter((item) => new Date(item.startAt).toDateString() === new Date().toDateString());
@@ -939,11 +944,9 @@ function DashboardDetails({ scope, organizationId, plan, planFeatures, allowed, 
     const chartMax = Math.max(income, expense, 100);
     const chartPoints = (key) => cumulative.map((item, index) => `${30 + index / (periods - 1) * 640},${190 - item[key] / chartMax * 160}`).join(' ');
     const recentQuotes = [...data.quotes].sort((a, b) => b.createdAt.localeCompare(a.createdAt)).slice(0, 4);
-    const ledgerBalance = data.transactions.filter(item => item.status === 'pago').reduce((sum, item) => sum + (item.type === 'receita' ? item.amountCents : -item.amountCents), 0);
     const expiringContracts = data.contracts.filter(item => item.status === 'ativo' && daysFromToday(item.endDate) >= 0 && daysFromToday(item.endDate) <= 30).sort((a, b) => a.endDate.localeCompare(b.endDate));
     const pendingFor = (type) => data.transactions.filter(item => item.type === type && item.status !== 'pago').sort((a, b) => a.dueDate.localeCompare(b.dueDate));
     return <>
-    {allowed.includes('finance') && <DashboardBalance organizationId={organizationId} ledgerBalanceCents={ledgerBalance} receivable={receivable} payable={payable} onFinanceTab={onFinanceTab}/>}
     <ViewCustomizer scope={scope + ":dashboard"} defaultOrder={["4", "8", "3", "10", "2", "11", "12", "13", "9", "14", "15", "16", "0", "7", "5", "1", "6"]} labels={["Resumo diário", "Planejamento em campo", "Fluxo financeiro", "Orçamentos recentes", "Agenda de hoje", "Saúde da água", "Indicadores financeiros", "Atenção necessária", "Funil comercial", "Consulta", "Ordens de serviço", "Contas a receber", "Contas a pagar", "Estoque crítico", "Contratos vencendo", "Equipe ativa", "Clientes"]} enabled={[false, allowed.includes("agenda") || allowed.includes("orders"), allowed.includes("finance"), allowed.includes("quotes"), allowed.includes("agenda"), allowed.includes("orders"), allowed.includes("finance"), true, allowed.includes("crm"), allowed.includes("consultation"), allowed.includes("orders"), allowed.includes("finance"), allowed.includes("finance"), allowed.includes("inventory"), allowed.includes("contracts"), allowed.includes("team"), allowed.includes("customers")]} className="dashboard-grid dashboard-dense">
     <section className={`surface ai-daily-brief ${priorityScore >= 5 ? "danger" : priorityScore > 0 ? "warning" : "ok"}`}>
       <div className="panel-heading"><div><small>IA OPERACIONAL</small><h2>Resumo diário</h2></div><Sparkles /></div>

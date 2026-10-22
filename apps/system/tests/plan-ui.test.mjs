@@ -13,6 +13,13 @@ globalThis.IS_REACT_ACT_ENVIRONMENT = true;
 let renderer, requests, upgraded;
 const text = node => node.children.map(child => typeof child === 'string' ? child : text(child)).join('');
 const button = label => renderer.root.findAllByType('button').find(node => text(node) === label);
+test('the chart library follows overview permissions and plan overrides without a new paid entitlement', () => {
+  const organization = { id: 'org-a', role: 'owner', permissions: [], plan: 'inicial' };
+  const visible = org => workspaceNavigationGroupsFor(org).flatMap(group => group.items).map(item => item.id);
+  assert.ok(visible(organization).includes('charts'));
+  assert.ok(!visible({ ...organization, role: 'member', permissions: ['customers'] }).includes('charts'));
+  assert.ok(!visible({ ...organization, planFeatures: ['customers'] }).includes('charts'));
+});
 beforeEach(() => {
   requests = []; upgraded = 0;
   globalThis.fetch = async (url, init = {}) => {

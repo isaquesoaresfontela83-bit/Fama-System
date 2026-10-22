@@ -21,13 +21,14 @@ const vite = await createServer({ appType: 'custom', configFile: false, root, re
 const { AccountSwitcher } = await vite.ssrLoadModule('/app/account-switcher.jsx');
 const one = { id: 'one', email: 'one@example.test', displayName: 'Pessoa um' };
 const two = { id: 'two', email: 'two@example.test', displayName: 'Pessoa dois' };
-let listing, calls, navigations, signals, switching;
+let listing, calls, navigations, signals, switching, loginResult;
 
 beforeEach(() => {
   globalThis.IS_REACT_ACT_ENVIRONMENT = true;
   listing = { enabled: true, limit: 2, activeId: 'one', accounts: [one, two] };
   calls = []; navigations = []; signals = [];
   switching = () => Response.json({ activeId: 'two' });
+  loginResult = () => Response.json({ authenticated: true });
   globalThis.window = { location: { replace: path => navigations.push(path) }, localStorage: { setItem: (key, value) => signals.push({ key, value }) } };
   globalThis.BroadcastChannel = class { postMessage() {} close() {} };
   globalThis.FormData = class { constructor(form) { this.values = form.values; } get(name) { return this.values[name]; } };
@@ -35,6 +36,7 @@ beforeEach(() => {
     const body = init.body ? JSON.parse(init.body) : undefined;
     calls.push({ path, method: init.method || 'GET', body });
     if (path === '/api/auth/accounts') return body ? switching(body) : Response.json(listing);
+    if (path === '/api/auth/login') return loginResult(body);
     if (path === '/api/auth/mfa-login') return Response.json(body.action === 'challenge' ? { challengeId: 'challenge-fixture' } : { authenticated: true });
     throw new Error(`Unexpected path: ${path}`);
   };
@@ -74,7 +76,12 @@ test('a single session offers adding another account without inventing a connect
   try {
     assert.equal(rows(view).length, 1);
     const add = view.root.findByProps({ className: 'sidebar-account-add' });
-    assert.equal(add.props.href, '/entrar?add_account=1');
+    assert.equal(add.type, 'button');
+    await act(async () => add.props.onClick());
+    assert.ok(view.root.findByType('form'));
+    assert.ok(view.root.findByProps({name:'email'}));
+    assert.deepEqual(navigations, []);
+    assert.equal(calls.some(call => call.method === 'POST'), false);
     assert.match(text(view), /Adicionar outra conta/);
     assert.doesNotMatch(text(view), /two@example.test/);
   } finally { await act(async () => view.unmount()); }
@@ -119,10 +126,44 @@ test('an expired second session offers reauthentication and keeps the current ac
     assert.match(text(view), /A sessão desta conta expirou/);
     assert.equal(rows(view)[0].props['aria-current'], 'true');
     assert.deepEqual(navigations, []);
-    const reauthenticate = view.root.findAllByType('a').find(link => link.props.children === 'Entrar novamente');
-    assert.equal(reauthenticate.props.href, '/entrar?add_account=1&reconnect=1&email=two%40example.test');
+    const reauthenticate = view.root.findAllByType('button').find(link => link.props.children === 'Entrar novamente');
+    assert.ok(reauthenticate);
     const disconnected = view.root.findByProps({ 'aria-label': 'Reconectar two@example.test' });
-    assert.equal(disconnected.type, 'a'); assert.equal(disconnected.props['data-expired'], true);
+    assert.equal(disconnected.type, 'button'); assert.equal(disconnected.props['data-expired'], true);
     assert.match(text(view), /1 de 2/);
   } finally { await act(async () => view.unmount()); }
+});
+
+const submitAdd = (view, values = { email: two.email, password: 'fixture-password', company: '' }) => act(async () => view.root.findByType('form').props.onSubmit({ preventDefault() {}, currentTarget: { values } }));
+test('inline second-account login navigates once, while an incorrect password keeps the first account selected', async () => {
+ listing.accounts=[one]; const view=await mount();
+ try {
+  await act(async()=>view.root.findByProps({className:'sidebar-account-add'}).props.onClick());
+  loginResult=()=>Response.json({error:'Senha incorreta'},{status:401});
+  await submitAdd(view); assert.deepEqual(navigations,[]); assert.match(text(view),/Senha incorreta/);
+  assert.equal(rows(view)[0].props['aria-current'],'true');
+  loginResult=()=>Response.json({authenticated:true}); await submitAdd(view);
+  assert.deepEqual(navigations,['/']);
+  assert.equal(calls.some(call=>call.body?.action==='remove'||call.body?.action==='logout_all'),false);
+ }finally{await act(async()=>view.unmount());}
+});
+test('inline login blocks duplicate credentials, supports MFA and keeps navigation until verification', async () => {
+ listing.accounts=[one]; const view=await mount();
+ try {
+  await act(async()=>view.root.findByProps({className:'sidebar-account-add'}).props.onClick());
+  await submitAdd(view,{email:one.email,password:'fixture-password'});
+  assert.match(text(view),/já está conectada/);assert.equal(calls.some(call=>call.path==='/api/auth/login'),false);
+  loginResult=()=>Response.json({requiresMfa:true,factorId:'factor-fixture'});
+  await submitAdd(view);assert.deepEqual(navigations,[]);assert.ok(view.root.findByProps({name:'code'}));
+  await submitAdd(view,{code:'123456'});assert.deepEqual(navigations,['/']);
+ }finally{await act(async()=>view.unmount());}
+});
+test('canceling inline login leaves both navigation and the active session untouched', async () => {
+ listing.accounts=[one];const view=await mount();
+ try {
+  await act(async()=>view.root.findByProps({className:'sidebar-account-add'}).props.onClick());
+  await act(async()=>view.root.findAllByType('button').find(x=>x.props.children==='Voltar às contas').props.onClick());
+  assert.equal(view.root.findAllByType('form').length,0);assert.deepEqual(navigations,[]);
+  assert.equal(calls.some(call=>call.method==='POST'),false);
+ }finally{await act(async()=>view.unmount());}
 });

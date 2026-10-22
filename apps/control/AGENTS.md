@@ -13,6 +13,6 @@ Fama System e Fama Control devem ser atualizados juntos. Esta regra foi solicita
 
 O proprietário pediu a retirada do Render por causa da suspensão por inatividade. A publicação vigente executa a aplicação completa nos Workers Cloudflare existentes; Supabase, D1, Baileys persistente e frontend original foram preservados. As instruções históricas de VPS/Render foram substituídas por esta decisão.
 
-Versão 15.8.0 / `2026-10-22-customers-agenda-01` nos dois sistemas. Não restaurar a versão 15.4, encaminhamento para onrender.com, nem publicar o main antigo. Nunca usar AppDeploy. As duas confirmações de publicação e a autorização específica de transferência temporária privada dos bancos/segredos já foram recebidas; não pedir novamente.
+Versão 15.10.0 / `2026-10-22-module-charts-01` nos dois sistemas. Não restaurar a versão 15.4, encaminhamento para onrender.com, nem publicar o main antigo. Nunca usar AppDeploy. As duas confirmações de publicação e a autorização específica de transferência temporária privada dos bancos/segredos já foram recebidas; não pedir novamente.
 
 Consultar `../../docs/CLOUDFLARE-STATUS.md` e `../../deployment/cloudflare/README.md`. Publicar todos os módulos da interface, incluindo dependências compartilhadas e imports dinâmicos. Conferir os dois domínios visualmente antes de declarar conclusão. Os serviços Render antigos ainda não foram suspensos ou excluídos; o painel exige autenticação para essa ação.

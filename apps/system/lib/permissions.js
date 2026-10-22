@@ -1,5 +1,5 @@
 export const featurePermissions = [
-    { id: "dashboard", label: "Visão geral", group: "Operação", description: "Central operacional, saldo, painel personalizável, mapa e gestão geral com indicadores." },
+    { id: "dashboard", label: "Visão geral", group: "Operação", description: "Central operacional, saldo, prioridades, painel personalizável, gráficos e gestão geral com indicadores." },
     { id: "crm", label: "CRM", group: "Operação", description: "Criar e editar leads, etapas comerciais e follow-up de vendas." },
     { id: "chat", label: "Chat", group: "Operação", description: "Conversas privadas e canais internos da equipe." },
     { id: "quotes", label: "Orçamentos", group: "Operação", description: "Criar e editar propostas, projetos, PDFs e aprovação do cliente." },

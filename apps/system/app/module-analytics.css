@@ -1,0 +1,19 @@
+.module-analytics { margin:28px 0; min-width:0; }
+.module-analytics-heading { display:flex; align-items:center; justify-content:space-between; gap:18px; margin-bottom:18px; }
+.module-analytics-heading h2 { margin:6px 0; font-size:1.2rem; font-weight:700; }
+.module-analytics-heading p { margin:0; color:var(--muted-foreground); font-size:.875rem; }
+.module-analytics-heading .management-chart-kicker { display:flex; align-items:center; gap:7px; }
+.module-analytics-heading .management-chart-kicker svg { width:17px; height:17px; }
+.module-analytics-actions { display:flex; align-items:center; flex-wrap:wrap; gap:10px; }
+.module-analytics-actions select { max-width:210px; }
+.module-analytics:not(.home-analytics) .management-chart-grid { grid-template-columns:minmax(0,1fr); }
+.module-analytics:not(.home-analytics) .management-plot { height:260px; }
+.management-search { min-width:210px; flex:1; }
+.management-advanced { margin-top:16px; border-top:1px solid var(--border); padding-top:12px; }
+.management-advanced summary { cursor:pointer; color:var(--muted-foreground); font-size:.875rem; }
+.management-advanced[open] summary { margin-bottom:16px; }
+.management-context { align-items:center; }
+.management-chart-card { min-width:0; }
+.management-chart-card .management-chart-state { min-height:250px; display:grid; place-items:center; padding:24px; text-align:center; color:var(--muted-foreground); }
+@media (max-width:760px) { .module-analytics-heading { align-items:flex-start; flex-direction:column; } .module-analytics-actions { width:100%; } .module-analytics-actions select { max-width:100%; } }
+@media (max-width:640px) { .management-primary-filters label { flex-basis:100%; } .management-toolbar-title { align-items:flex-start; } .management-toolbar-title > svg { flex-shrink:0; } }

@@ -113,8 +113,10 @@ test('browser requests pin the rendered account without leaking it to other orig
   assert.equal(browser.requests.at(-1).init.headers, undefined);
   browser.events.get('storage')({ key: 'fama:account-change:v1', newValue: JSON.stringify({ userId: 'one' }) });
   assert.equal(reloads, 0);
+  browser.activeId = 'two';
   browser.channels[0].onmessage({ data: { userId: 'two' } });
   browser.events.get('storage')({ key: 'fama:account-change:v1', newValue: JSON.stringify({ userId: 'two' }) });
+  await flush();
   assert.equal(reloads, 1);
   dispose();
   assert.equal(browser.fetch, original);

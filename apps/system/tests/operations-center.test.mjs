@@ -93,15 +93,27 @@ test('searching another CEP does not reuse an unrelated manually saved company p
  }finally{if(view)await act(async()=>view.unmount());globalThis.fetch=originalFetch;if(originalStorage)Object.defineProperty(globalThis,'localStorage',originalStorage);else delete globalThis.localStorage;}
 });
 
- test('the operations dashboard shows the official Waze map directly and respects map access',async()=>{
- const props={organizationId:'org-map',data:fixture(),allowed:['dashboard','agenda'],lowStock:0,onNavigate(){},onSelect(){}};
+test('overview replaces the map with actionable visits and services and respects permissions',async()=>{
+ const {DailyWorkPanel}=await vite.ssrLoadModule('/app/daily-work-panel.jsx');
+ const data=fixture(); data.workOrders=[{id:'order-active',clientName:'Cliente em serviço',service:'Limpeza técnica',status:'em_execucao',scheduledAt:new Date().toISOString(),technician:'Lucas'}];
+ const props={organizationId:'org-map',data,allowed:['dashboard','agenda','orders'],lowStock:0,onNavigate(){},onSelect(){}};
  let view;
- try {
+ try{
   await act(async()=>{view=Renderer.create(React.createElement(OperationsCenter,props));});
-  assert.equal(view.root.findAllByType(OperationMap).length,1);
-  assert.equal(new URL(view.root.findByType('iframe').props.src).origin,'https://embed.waze.com');
-  assert.match(view.root.findByType('iframe').props.title,/Waze/);
+  assert.equal(view.root.findAllByType(OperationMap).length,0);assert.equal(view.root.findAllByType('iframe').length,0);
+  assert.equal(view.root.findAllByType(DailyWorkPanel).length,1);assert.match(JSON.stringify(view.toJSON()),/Seu dia de trabalho|Cliente em serviço/);
   await act(async()=>view.update(React.createElement(OperationsCenter,{...props,allowed:['dashboard']})));
-  assert.equal(view.root.findAllByType(OperationMap).length,0);
- } finally {if(view)await act(async()=>view.unmount());}
+  assert.equal(view.root.findAllByType(DailyWorkPanel).length,0);
+  assert.doesNotMatch(JSON.stringify(view.toJSON()),/Cliente em serviço|Seu dia de trabalho/);
+ }finally{if(view)await act(async()=>view.unmount());}
+});
+test('daily work sorts active and overdue records and excludes completed, canceled and forbidden modules',async()=>{
+ const {dailyWork}=await vite.ssrLoadModule('/lib/daily-work.js');
+ const data=fixture(); data.workOrders=[{id:'active',status:'em_execucao',scheduledAt:'2026-10-14T11:00:00Z'},{id:'cancelled',status:'cancelada',scheduledAt:'2026-10-14T10:00:00Z'},{id:'done',status:'concluida',scheduledAt:'2026-10-14T10:00:00Z'}];
+ data.appointments.push({...data.appointments[1],id:'late',startAt:'2026-10-13T11:00:00Z'});
+ const now=new Date('2026-10-14T17:00:00Z'); const view=dailyWork(data,['agenda','orders'],now);
+ assert.deepEqual(view.priority.map(item=>item.record.id),['active','late','upcoming']);
+ assert.equal(view.completedToday,1);assert.equal(view.totalToday,2);
+ assert.deepEqual(dailyWork(data,['dashboard'],now).priority,[]);
+ assert.equal(dailyWork(data,['agenda'],now).active.length,0);
 });

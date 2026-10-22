@@ -8,6 +8,9 @@ import "./readability.css";
 import "./account-switcher.css";
 import "./workspace-navigation.css";
 import "./selected-integrations.css";
+import "./professional-layout.css";
+import "./daily-work-panel.css";
+import "./module-analytics.css";
 export const metadata = {
     metadataBase: new URL("https://famasystem.online"),
     title: "Fama System — Gestão para empresas de piscinas",

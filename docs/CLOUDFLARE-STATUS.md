@@ -1,27 +1,35 @@
-# Cloudflare sem Render — 22/10/2026
+# Cloudflare — gráficos por módulo 15.10.0 — 22/10/2026
 
-Fama System e Fama Control **15.8.0**, lançamento `2026-10-22-customers-agenda-01`, ativados nos dois domínios. As aplicações completas executam na Cloudflare. Os pacotes publicados não contêm referências a `onrender.com`.
+Fama System e Fama Control **15.10.0**, lançamento `2026-10-22-module-charts-01`, ativados e conferidos nos dois domínios existentes.
 
 | Aplicação | Endereço | Versão Worker ativa | Implantação |
 | --- | --- | --- | --- |
-| System | https://famasystem.online/entrar | `69e17112-ef9a-4189-807b-6c9900c56d85` | `4083d6b9-1c2b-4e8c-9748-6551c8c5bb98` |
-| Control | https://control.famasystem.online/ | `cc8783fb-212d-430d-a6a9-bdab63b17a46` | `a547b1f2-8199-429d-9c4e-737980b910df` |
+| System | https://famasystem.online/entrar | `23bf135c-62ac-4df4-a370-280b582df8e5` | `c472d7c3-25c8-4b6c-b004-3eb61ae5a16c` |
+| Control | https://control.famasystem.online/ | `15496083-fb79-4f35-b084-340d49ea6b7e` | `c57452a6-0591-441d-8dc3-e2508b71a79d` |
 
-## Dados, agenda e interface
+## Comportamento publicado
 
-Nenhuma base operacional foi apagada ou recriada. Supabase, autenticação, D1 originais, chaves e namespace persistente Baileys foram preservados. Os D1 operacionais de System/Control continuam separados da base de arquivos públicos.
+- A página inicial acrescenta até seis gráficos visíveis conforme os módulos autorizados: receitas e despesas, evolução das receitas, orçamentos, serviços, agenda e pipeline. A disponibilidade de áreas é apresentada quando este acesso não possui registros operacionais autorizados.
+- Todas as abas do System possuem ao menos um indicador correspondente, incluindo as sete divisões do financeiro. Os gráficos locais e a biblioteca usam as mesmas definições. Cadastros sem registros exibem uma mensagem explícita, sem dados demonstrativos em produção.
+- A nova aba **Gráficos**, no menu principal, reúne 33 definições no acesso completo. Oferece busca, área, período, datas personalizadas, sete formatos, filtros favoritos, personalização da disposição, tabela de valores e abertura do módulo correspondente.
+- A biblioteca respeita plano e permissão da visão geral. Os dados de cada gráfico dependem da permissão de seu módulo. System e Control descrevem essa cobertura na permissão existente, sem criar um novo direito pago ou ampliar acesso.
+- Usuários, chamados, privacidade, conversas, notas fiscais, compras e conciliação usam os endpoints existentes. Carregamento, falha e resultado vazio têm estados distintos; as consultas são canceladas ao mudar empresa ou permissões. As abas de ajuda, plano e configuração mostram a disponibilidade real de módulos por área, sem simular utilização.
+- O mapa continua removido da visão geral, substituído pelo painel **Seu dia de trabalho** da 15.9.3. Saldo, prioridades e formulário inline para adicionar outra conta foram preservados.
 
-O agendador Supabase `fama-daily-agenda` está ativo. O endpoint no Vault foi verificado por igualdade, sem expor token: `https://famasystem.online/api/internal/daily-agenda`. Não aponta ao Render. As três execuções verificadas de 13h35, 13h40 e 13h45 (Brasília) concluíram com sucesso; isso confirma o cron, não envio real ao WhatsApp. Nenhum envio a pessoa foi feito nesta verificação.
+## Validação
 
-Foram corrigidos 43 arquivos JS/CSS ausentes da publicação anterior, incluindo módulos de tema e dependências compartilhadas que impediam o carregamento das telas. Os bytes foram recuperados do mesmo build, sem redesenhar o frontend. As telas de entrada de System/Control foram inspecionadas no navegador com a identidade original.
+- 43 casos do System passaram (42 no conjunto principal e o novo caso de permissão confirmado com os quatro testes de planos); 17 do Control passaram. Incluem cobertura de todas as abas e divisões financeiras, datas de Brasília, cálculos em centavos, permissões, troca de empresa, respostas tardias, erro, tentativa novamente e navegação.
+- Ambos os builds Cloudflare e o verificador conjunto concluíram. Os quatro pacotes tiveram checksum SHA-256 conferido antes da ativação. Foram conferidos por tamanho e SHA-256, após leitura de volta, 156 arquivos JS/CSS System e 57 Control, incluindo dependências compartilhadas, imports dinâmicos e arquivos preservados de builds anteriores.
+- Interface conferida com componentes reais e dados fictícios em desktop e 390 px: aba Gráficos, filtros por área, mudança de formato, tabela de valores e gráfico de estoque no celular. Não foi feito login com credenciais reais do proprietário.
+- Após a ativação, as duas páginas de acesso foram inspecionadas visualmente e não apresentaram erros de aplicação no console. Ambos os `/api/health` retornaram `ok`, versão `15.10.0` e o mesmo release ID, às 23h00 UTC de 22/10/2026.
+- Os 41 bindings System e 28 Control foram herdados e a coleção ASSETS mantida. Foram atualizados somente código e arquivos públicos; nenhum dado operacional, segredo, plano ou credencial foi alterado.
+- O usuário autorizou expressamente o envio do código atualizado ao GitHub após a inclusão dos gráficos. Ramo de entrega: `release/15.10.0-charts`. O ramo main antigo permanece fora da publicação.
 
-## Verificações
+## Pacotes conferidos
 
-- Ambos os `/api/health` retornaram 15.8.0 e o mesmo release ID após a ativação.
-- 39 testes System e 9 Control passaram, incluindo autenticação, edição, início de serviço, clientes, agenda concorrente e ponte interna WhatsApp. Os testes usam dados fictícios.
-- Verificação conjunta de versão, permissões, integrações e recursos passou.
-- Fluxos internos com a conta real/MFA do proprietário não foram executados. O conector Fama devolveu exigência de autenticação, sem alterar a conta.
+- system-server: `d58213f96f72a82fb6e3f51c3618c28f1e43b4a4d27b2314a27275aa85d466ff`
+- system-client: `397d663089a8431d47bf1c36bf268e7d0696b054be30e0d6ef1f92d44c41e106`
+- control-server: `3aacb61d55e8ec3da7858a78148ebb193039ffa999e5e2cde26fef74c323a1fa`
+- control-client: `51188aefb23e0ac8ead846b321d934936355a0dc09e73f80234870c528527751`
 
-## Serviços Render remanescentes
-
-Os sete serviços Render antigos continuam cadastrados, com auto-deploy desligado, e não recebem tráfego da Fama. Não foram suspensos ou excluídos: o conector não oferece essa ação e o painel aberto exige login. Retirar o Render do tráfego não deve ser descrito como exclusão desses serviços. A configuração histórica foi arquivada; o destino vigente é Cloudflare.
+Histórico anterior: [15.9.3](CLOUDFLARE-15.9.3.md). Cloudflare continua como destino das aplicações completas, com Supabase, D1 e Baileys originais. Os serviços Render antigos não foram suspensos ou excluídos neste trabalho.

@@ -82,3 +82,17 @@
 [data-slot="sidebar"][data-collapsible="icon"] .sidebar-account-signout { flex-basis:32px; }
 @media(max-width:767px) { .top-actions .account-switch-trigger > span,.onboarding-head-actions .account-switch-trigger > span { display:none; } }
 @media(max-width:480px) { .onboarding-head { flex-wrap:wrap; } }
+
+.account-add-form { display:grid;gap:15px;padding:0 24px 24px;color:var(--ops-fg); }
+.account-add-form>p { color:var(--ops-muted);font-size:12px;line-height:1.7;margin:0 0 4px; }
+.account-add-form>p strong { color:var(--ops-fg); }
+.account-add-form .form-field { display:grid;gap:8px; }
+.account-add-form input { background:var(--ops-panel-alt);color:var(--ops-fg);border-color:var(--ops-line);min-height:44px; }
+.account-add-form .password-field { position:relative; }
+.account-add-form .password-field input { padding-right:44px;width:100%; }
+.account-add-form .password-field>button { position:absolute;right:0;top:0;bottom:0;width:44px;border:0;background:none;color:var(--ops-muted);display:grid;place-items:center;cursor:pointer; }
+.account-add-form .password-field svg { width:17px;height:17px; }
+.account-add-mfa { display:flex;gap:10px;align-items:center;font-size:12px;line-height:1.6;color:var(--ops-muted); }
+.account-add-mfa svg { color:var(--ops-cyan);width:30px;flex:none; }
+.sidebar-account-add,.account-switch-reauth { cursor:pointer;text-align:left; }
+.account-switch-reauth { background:none;border:0; }
