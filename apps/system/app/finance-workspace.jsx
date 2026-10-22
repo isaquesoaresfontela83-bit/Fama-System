@@ -188,6 +188,15 @@ export function FinanceWorkspace({ onEdit, organizationId, transactions, tab, on
     const overdue = transactions.filter((item) => item.status === "atrasado");
     const totalIn = receivable.reduce((sum, item) => sum + item.amountCents, 0);
     const totalOut = payable.reduce((sum, item) => sum + item.amountCents, 0);
+    const monthKey = (value) => {
+        const date = new Date(value);
+        if (!Number.isFinite(date.getTime())) return "";
+        const parts = new Intl.DateTimeFormat("en-US", { timeZone: "America/Sao_Paulo", year: "numeric", month: "2-digit" }).formatToParts(date);
+        return `${parts.find((item) => item.type === "year")?.value}-${parts.find((item) => item.type === "month")?.value}`;
+    };
+    const currentMonth = monthKey(new Date().toISOString());
+    const monthlyRevenue = transactions.filter((item) => item.type === "receita" && monthKey(item.createdAt ?? item.dueDate) === currentMonth)
+        .reduce((sum, item) => sum + item.amountCents, 0);
     const balanceForAccount = (account) => {
         const movements = data.bankMovements.filter((item) => item.accountId === account.id);
         return account.provider === "asaas"
@@ -746,6 +755,11 @@ export function FinanceWorkspace({ onEdit, organizationId, transactions, tab, on
             </div>
           </section>
           <div className="finance-kpis">
+            <article>
+              <small>RECEITA DO MÊS</small>
+              <strong>{money(monthlyRevenue)}</strong>
+              <span>Vendas geradas, mesmo pendentes</span>
+            </article>
             <article>
               <small>A RECEBER</small>
               <strong>{money(totalIn)}</strong>

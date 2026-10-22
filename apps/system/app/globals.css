@@ -595,7 +595,7 @@ button, input, textarea, select { font: inherit; }
 .finance-insight-grid strong.positive { color: #087a5a; }
 .finance-insight-grid strong.negative { color: #b43b28; }
 .finance-insight-grid span { color: var(--muted); font-size: .78rem; line-height: 1.45; }
-.finance-kpis { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 12px; }
+.finance-kpis { display: grid; grid-template-columns: repeat(5,minmax(0,1fr)); gap: 12px; }
 .finance-kpis article { display: grid; gap: 7px; padding: 17px; border: 1px solid var(--border); border-radius: 15px; background: var(--card); box-shadow: 0 10px 28px rgba(14,41,64,.04); }
 .finance-kpis small { color: var(--muted); font-size: .65rem; font-weight: 750; letter-spacing: .08em; }
 .finance-kpis strong { font-size: 1.25rem; letter-spacing: -.04em; }

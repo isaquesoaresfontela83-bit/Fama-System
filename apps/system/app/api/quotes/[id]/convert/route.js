@@ -6,6 +6,7 @@ import { assertRateLimit, logAudit, sha256 } from "@/lib/security";
 import { entityPermissions, hasFeaturePermission } from "@/lib/permissions";
 import { requireTenant, tenantError } from "@/lib/tenant";
 import { isTrustedMutation } from "@/lib/request-security";
+import { syncWorkOrderRevenue } from "@/lib/automatic-finance-entry";
 // A stable primary key lets the database enforce one conversion per quote,
 // including different Worker instances and retries after a partial failure.
 async function conversionId(organizationId, quoteId) {
@@ -63,16 +64,21 @@ export async function POST(request, context) {
         const existingId = typeof details.convertedWorkOrderId === "string" ? details.convertedWorkOrderId : "";
         if (existingId) {
             const existing = await findWorkOrder(existingId);
-            if (existing)
-                return Response.json({ workOrder: await clearWorkOrder(existing), alreadyConverted: true });
+            if (existing) {
+                const cleared = await clearWorkOrder(existing);
+                await syncWorkOrderRevenue(organization.id, cleared);
+                return Response.json({ workOrder: cleared, alreadyConverted: true });
+            }
         }
         if (quote.status !== "aprovado")
             return Response.json({ error: "Apenas orçamentos aprovados podem virar ordem de serviço." }, { status: 409 });
         const workOrderId = await conversionId(organization.id, id);
         const recovered = await findWorkOrder(workOrderId);
         if (recovered) {
+            const cleared = await clearWorkOrder(recovered);
+            await syncWorkOrderRevenue(organization.id, cleared);
             await markConverted(workOrderId);
-            return Response.json({ workOrder: await clearWorkOrder(recovered), alreadyConverted: true });
+            return Response.json({ workOrder: cleared, alreadyConverted: true });
         }
         const createdAt = new Date().toISOString();
         const workOrder = {
@@ -93,8 +99,10 @@ export async function POST(request, context) {
                 const concurrent = await findWorkOrder(workOrderId);
                 if (!concurrent)
                     throw error;
+                const cleared = await clearWorkOrder(concurrent);
+                await syncWorkOrderRevenue(organization.id, cleared);
                 await markConverted(workOrderId);
-                return Response.json({ workOrder: await clearWorkOrder(concurrent), alreadyConverted: true });
+                return Response.json({ workOrder: cleared, alreadyConverted: true });
             }
         }
         else {
@@ -108,6 +116,7 @@ export async function POST(request, context) {
                 return Response.json({ workOrder: await clearWorkOrder(concurrent), alreadyConverted: true });
             }
         }
+        await syncWorkOrderRevenue(organization.id, workOrder);
         await markConverted(workOrderId);
         await logAudit({ organizationId: organization.id, actorUserId: user.id, eventType: "security", entityType: "quote_conversion", recordId: id, metadata: { workOrderId: workOrder.id } });
         return Response.json({ workOrder }, { status: 201 });

@@ -40,7 +40,7 @@ const queries = [
      cost_cents AS costCents
    FROM inventory_items WHERE organization_id = ? ORDER BY name ASC`,
     `SELECT id, description, type, category, amount_cents AS amountCents,
-     due_date AS dueDate, status
+     due_date AS dueDate, status, created_at AS createdAt
    FROM transactions WHERE organization_id = ? ORDER BY due_date DESC`,
     `SELECT id, name, role, phone, color, active, created_at AS createdAt
    FROM employees WHERE organization_id = ? ORDER BY name ASC`,

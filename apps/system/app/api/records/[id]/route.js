@@ -10,6 +10,7 @@ import { adjustInventoryStock } from "@/lib/inventory";
 import { costCents, costFields } from "@/lib/service-profit";
 import { editedRecord } from "@/lib/record-edit";
 import { recordNotes } from "@/lib/record-edit-fields";
+import { syncWorkOrderRevenue } from "@/lib/automatic-finance-entry";
 const configs = {
     leads: {
         table: "leads",
@@ -37,7 +38,7 @@ const configs = {
         updateColumn: "status",
         inputKey: "status",
         allowed: new Set(["aberta", "em_execucao", "concluida"]),
-        select: `SELECT id, os_number AS osNumber, customer_id AS customerId, client_name AS clientName, service, scheduled_at AS scheduledAt, technician, status, ph, chlorine, alkalinity, products_used AS productsUsed, notes, amount_cents AS amountCents FROM work_orders WHERE id = ? AND organization_id = ?`,
+        select: `SELECT id, os_number AS osNumber, customer_id AS customerId, client_name AS clientName, service, scheduled_at AS scheduledAt, technician, status, ph, chlorine, alkalinity, products_used AS productsUsed, notes, amount_cents AS amountCents, created_at AS createdAt FROM work_orders WHERE id = ? AND organization_id = ?`,
     },
     transactions: {
         table: "transactions",
@@ -125,7 +126,9 @@ export async function PATCH(request, context) {
                 const protectedValues = await encryptRecordFields(values, (encryptedFieldsByEntity[entity] ?? []).map(key => key.replace(/[A-Z]/g, letter => `_${letter.toLowerCase()}`)));
                 const rows = await updateRows(table, protectedValues, filters);
                 if (!rows.length) return Response.json({ error: "O registro mudou. Atualize antes de salvar novamente." }, { status: 409 });
-                return Response.json({ record: await decryptRecordFields(camelizeRow(rows[0]), encryptedFieldsByEntity[entity] ?? []) });
+                const record = await decryptRecordFields(camelizeRow(rows[0]), encryptedFieldsByEntity[entity] ?? []);
+                if (entity === "workOrders") await syncWorkOrderRevenue(organization.id, record);
+                return Response.json({ record });
             }
             const columns = Object.keys(values);
             const result = await db.prepare(`UPDATE ${table} SET ${columns.map(column => `${column} = ?`).join(", ")} WHERE id = ? AND organization_id = ?${stored.updated_at ? " AND updated_at = ?" : ""}`)
@@ -133,6 +136,7 @@ export async function PATCH(request, context) {
             if (!result.meta.changes) return Response.json({ error: "O registro mudou. Atualize antes de salvar novamente." }, { status: 409 });
             const record = camelizeRow(await db.prepare(`SELECT * FROM ${table} WHERE id = ? AND organization_id = ?`).bind(id, organization.id).first());
             if (entity === "employees") record.active = Boolean(record.active);
+            if (entity === "workOrders") await syncWorkOrderRevenue(organization.id, record);
             return Response.json({ record });
         }
         const config = configs[entity];

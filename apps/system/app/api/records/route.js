@@ -2,7 +2,7 @@ import { ensureCustomerColumns,resolveCustomerSelection } from '@/lib/customer-s
 import { cents, database, dateTime, numberValue, optionalText, reference, requiredText } from "@/lib/database";
 import { readJsonObject } from "@/lib/request-body";
 import { calendarDate } from "@/lib/calendar";
-import { insertRow, selectRows, snakeRow, usesSupabase } from "@/lib/supabase";
+import { deleteRows, insertRow, selectRows, snakeRow, usesSupabase } from "@/lib/supabase";
 import { RequestError, requireTenant, tenantError } from "@/lib/tenant";
 import { entityPermissions, hasFeaturePermission } from "@/lib/permissions";
 import { encryptRecordFields, encryptedFieldsByEntity } from "@/lib/crypto";
@@ -12,6 +12,7 @@ import { poolQuoteQuantity } from "@/lib/pool-quote-catalog";
 import { readQuoteConfig } from "@/lib/quote-config";
 import { getPlanSnapshot, isPlanCode } from "@/lib/plans";
 import { taxDocumentCode } from "@/lib/registration-lookup";
+import { saleRevenueForWorkOrder, saleRevenueStatement, syncWorkOrderRevenue } from "@/lib/automatic-finance-entry";
 const leadStatuses = new Set(["novo", "contato", "visita", "proposta", "negociacao", "ganho", "perdido"]);
 const transactionStatuses = new Set(["pendente", "pago", "atrasado"]);
 function structuredNotes(body, fields) {
@@ -171,13 +172,22 @@ async function createRecord(request, context) {
                 productsUsed: optionalText(body.productsUsed),
                 notes: structuredNotes(body, ["calciumHardness", "stabilizer", "waterAppearance", "productCost", "laborCost", "travelCost", "checklist"]),
                 amountCents: cents(body.amount),
+                createdAt,
             };
+            const revenue = saleRevenueForWorkOrder(record);
             if (usesSupabase()) {
-                await saveSupabaseRecord("work_orders", organization.id, record, createdAt);
+                try {
+                    await saveSupabaseRecord("work_orders", organization.id, record, createdAt);
+                    await syncWorkOrderRevenue(organization.id, record);
+                } catch (error) {
+                    await deleteRows("work_orders", { id: record.id, organization_id: organization.id }).catch(() => undefined);
+                    throw error;
+                }
                 return Response.json({ record }, { status: 201 });
             }
-            await db.prepare(`INSERT INTO work_orders (id, organization_id, customer_id, os_number, client_name, service, scheduled_at, technician, status, ph, chlorine, alkalinity, products_used, notes, amount_cents, created_at, updated_at)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, NULL, NULL, NULL, '', ?, ?, ?, ?)`).bind(record.id, organization.id, record.customerId, record.osNumber, record.clientName, record.service, record.scheduledAt, record.technician, record.status, record.notes, record.amountCents, createdAt, createdAt).run();
+            const orderInsert = db.prepare(`INSERT INTO work_orders (id, organization_id, customer_id, os_number, client_name, service, scheduled_at, technician, status, ph, chlorine, alkalinity, products_used, notes, amount_cents, created_at, updated_at)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, NULL, NULL, NULL, '', ?, ?, ?, ?)`).bind(record.id, organization.id, record.customerId, record.osNumber, record.clientName, record.service, record.scheduledAt, record.technician, record.status, record.notes, record.amountCents, createdAt, createdAt);
+            await db.batch([orderInsert, ...(revenue ? [saleRevenueStatement(db, organization.id, revenue)] : [])]);
             return Response.json({ record }, { status: 201 });
         }
         if (entity === "customers") {
