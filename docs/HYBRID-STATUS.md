@@ -1,3 +1,5 @@
+> Histórico: o Render foi retirado do tráfego em 22/10/2026. Estado vigente: [CLOUDFLARE-STATUS.md](CLOUDFLARE-STATUS.md).
+
 # Implantação híbrida publicada — 22/10/2026
 
 **Fama System e Fama Control 15.8.0 / 2026-10-22-customers-agenda-01.** Ambos os domínios confirmaram HTTP 200 com a mesma versão e identificador após a troca do encaminhamento. O frontend original foi preservado. AppDeploy não foi usado.

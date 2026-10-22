@@ -1,9 +1,9 @@
-# Fama System e Fama Control — hospedagem híbrida
+# Fama System e Fama Control
 
-Versão conjunta 15.7.0 (`2026-10-21-hybrid-01`). Fontes atuais completas em `apps/system` e `apps/control`, recuperadas dos repositórios Sites em 21/10/2026.
+Versão conjunta **15.8.0**, lançamento `2026-10-22-customers-agenda-01`.
 
-Interfaces estáticas, APIs Docker/Node.js na Render gratuita e persistência no projeto Supabase existente. Consulte `deployment/hybrid/README.md` de cada aplicação para compilação, migração e limitações.
+As aplicações completas executam na Cloudflare, nos domínios https://famasystem.online e https://control.famasystem.online. O Render deixou de receber tráfego de produção em 22/10/2026. O frontend original e os dados existentes foram preservados.
 
-A transferência dos bancos privados e das chaves originais aguarda autorização explícita. Os domínios principais continuam na instalação existente. Esta branch e a criação de serviços não comprovam conclusão da migração.
+As fontes ficam em `apps/system` e `apps/control`. Use `npm run build:cloudflare` em cada aplicação, valide as duas antes da publicação e preserve os bindings e segredos existentes. Não publicar o `main` antigo nem usar AppDeploy.
 
-Não adicionar segredos ao código. Não iniciar com base vazia nem substituir os dados existentes. Validar os dois destinos antes de trocar DNS.
+Consulte `docs/CLOUDFLARE-STATUS.md` para o estado verificado e `deployment/cloudflare/README.md` para preparar o pacote. A configuração antiga do Render foi arquivada em `deployment/hybrid/render.retired.yaml` e não representa o destino atual.
