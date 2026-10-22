@@ -1,0 +1,29 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "jsx": "preserve",
+    "baseUrl": ".",
+    "paths": {
+      "@/*": [
+        "./*"
+      ]
+    },
+    "checkJs": false
+  },
+  "include": [
+    "app/**/*",
+    "lib/**/*",
+    "hooks/**/*",
+    "components/**/*",
+    "db/**/*",
+    "worker/**/*",
+    "workers/**/*"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist",
+    ".sites-runtime"
+  ]
+}

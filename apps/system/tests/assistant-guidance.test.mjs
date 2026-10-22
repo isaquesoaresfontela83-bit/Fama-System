@@ -1,0 +1,14 @@
+import assert from 'node:assert/strict';
+import test,{after} from 'node:test';
+import {createServer} from 'vite';
+const root=new URL('../',import.meta.url).pathname,vite=await createServer({configFile:false,root,resolve:{alias:{'@':root}},server:{middlewareMode:true,hmr:false,ws:false}});
+const {answerNative}=await vite.ssrLoadModule('/lib/fama-ai-provider.js');
+const {contextualQuestion}=await vite.ssrLoadModule('/lib/assistant-guidance.js');
+const {safePrompts}=await vite.ssrLoadModule('/lib/assistant-prompts.js');
+const {defaultAssistantSettings:defaults,restrictAssistantSettings}=await vite.ssrLoadModule('/lib/fama-ai-settings.js');
+after(()=>vite.close());
+const input=(question,history=[])=>({question,history,source:'overview',timeZone:'America/Sao_Paulo'});
+test('customer instructions describe registration and chat instructions use internal users',()=>{const customer=answerNative(input('Como cadastrar clientes?'),{},defaults,new Date());assert.match(customer.text,/Novo cliente/);assert.equal(customer.source,'customers');const chat=answerNative(input('Como usar o chat interno?'),{},defaults,new Date());assert.match(chat.text,/usuário ativo|participantes/);assert.doesNotMatch(chat.text,/Meta|vincular.*WhatsApp/);assert.equal(chat.actions[0].section,'chat');});
+test('refinements inherit a prior read-only period, while new dates and topics do not',()=>{assert.match(contextualQuestion('somente pagos',['Financeiro deste mês']),/mês/);assert.equal(contextualQuestion('E amanhã?',['Agenda hoje']),'E amanhã?');assert.equal(contextualQuestion('E financeiro?',['Agenda hoje']),'E financeiro?');assert.equal(contextualQuestion('Somente os pendentes',['Criar despesa amanhã']),'Somente os pendentes');});
+test('history cannot restore disabled sources or malformed prompt content',()=>{const prompt={question:'Financeiro deste mês',source:'finance',at:new Date().toISOString()};assert.deepEqual(safePrompts([prompt],['overview']),[]);assert.equal(safePrompts([prompt],['finance']).length,1);assert.deepEqual(safePrompts([{...prompt,question:{injection:true}},{...prompt,source:'unavailable'},{...prompt,at:'bad'}],['finance']),[]);});
+test('disabled customer access cannot produce customer data through a help question',()=>{const settings=restrictAssistantSettings(defaults,['overview','agenda']);const answer=answerNative(input('Como cadastrar clientes?'),{customers:[{name:'Sigilo absoluto'}]},settings,new Date());assert.doesNotMatch(JSON.stringify(answer),/Sigilo absoluto/);assert.equal(answer.actions.some(a=>a.section==='customers'),false);});

@@ -1,0 +1,14 @@
+node_modules
+.git
+.next
+.sites-runtime
+.wrangler
+.env*
+dist
+data
+*.sqlite*
+*.log
+
+**/*.env
+**/*.env.*
+**/*.key

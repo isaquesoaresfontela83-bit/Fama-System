@@ -1,0 +1,10 @@
+import assert from 'node:assert/strict';
+import test,{after} from 'node:test';
+import { operationalFixture } from './operational-fixture.mjs';
+const fixture=await operationalFixture(new URL('../',import.meta.url).pathname);
+const {findHelp,helpTopics}=await fixture.load('/lib/internal-help.js');
+after(fixture.close);
+test('help finds Portuguese customer questions and keeps CPF manual',()=>{const answer=findHelp('Como cadastrar clientes?','finance');assert.equal(answer.id,'customers');assert.match(answer.note,/CPF.*manualmente/);assert.ok(answer.steps.some(step=>step.includes('Salvar')));});
+test('specific questions take priority over current module or previous answer',()=>{assert.equal(findHelp('Como emitir uma nota fiscal?','customers','quotes').id,'invoices');assert.equal(findHelp('Como conciliar o extrato?','crm').id,'banks');assert.equal(findHelp('Como criar um orçamento?','agenda').id,'quotes');});
+test('unsupported questions do not invent guidance and followups retain the topic',()=>{assert.equal(findHelp('Qual será o tempo amanhã?','customers'),null);assert.equal(findHelp('Como continuar?','finance','customers').id,'customers');assert.equal(findHelp('','crm'),null);});
+test('help topics are navigation-only instructions and do not change business records',()=>{assert.equal(new Set(helpTopics.map(topic=>topic.id)).size,helpTopics.length);assert.ok(helpTopics.every(topic=>topic.steps.length>=3&&topic.section));assert.equal(fixture.businessWrites().length,0);});

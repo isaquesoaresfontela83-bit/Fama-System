@@ -1,0 +1,23 @@
+import assert from 'node:assert/strict';
+import test,{after} from 'node:test';
+import React from 'react';
+import {renderToStaticMarkup} from 'react-dom/server';
+import {createServer} from 'vite';
+const root=new URL('../',import.meta.url).pathname;
+const vite=await createServer({configFile:false,root,resolve:{alias:{'@':root}},server:{middlewareMode:true,hmr:false,ws:false}});
+after(()=>vite.close());
+const {WorkspaceTools}=await vite.ssrLoadModule('/app/workspace-tools.jsx');
+const {emptyData}=await vite.ssrLoadModule('/app/data-model.js');
+test('alerts are delivered as a native disclosure with content available before modal hydration',()=>{
+ const html=renderToStaticMarkup(React.createElement(WorkspaceTools,{data:emptyData,allowed:['dashboard'],scope:'user:org',organizationId:'org',lowStock:0,onSelect(){}}));
+ assert.match(html,/^<div class="workspace-utilities">/);
+ assert.equal((html.match(/<summary class="workspace-alert-trigger"/g)||[]).length,1);
+ const disclosure=html.match(/<details[^>]*class="workspace-alert-menu"[^>]*>([\s\S]*?)<\/section>\s*<\/div>\s*<\/details>/)?.[1];
+ assert.ok(disclosure,'native details contains the complete alert panel');
+ assert.match(disclosure,/<summary[^>]*aria-label="Central de alertas/);
+ assert.match(disclosure,/aria-label="Central de alertas"/);
+ assert.match(disclosure,/Notificações neste aparelho/);
+ assert.match(disclosure,/<details class="push-preferences" open="">/);
+ assert.doesNotMatch(disclosure,/data-slot="sheet-content"/);
+ assert.doesNotMatch(disclosure.match(/<summary[^>]*>/)[0],/disabled/);
+});

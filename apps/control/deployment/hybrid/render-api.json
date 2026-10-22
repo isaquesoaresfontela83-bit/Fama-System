@@ -1,0 +1,70 @@
+{
+  "services": [
+    {
+      "type": "web",
+      "runtime": "docker",
+      "name": "fama-control-api",
+      "plan": "free",
+      "dockerfilePath": "deployment/hybrid/Dockerfile",
+      "healthCheckPath": "/api/health",
+      "envVars": [
+        {
+          "key": "FAMA_RUNTIME",
+          "value": "hybrid"
+        },
+        {
+          "key": "DATA_BACKEND",
+          "value": "supabase"
+        },
+        {
+          "key": "FAMA_POSTGRES_SCHEMA",
+          "value": "fama_control_runtime"
+        },
+        {
+          "key": "FAMA_PUBLIC_URL",
+          "sync": false
+        },
+        {
+          "key": "FAMA_POSTGRES_URL",
+          "sync": false
+        },
+        {
+          "key": "SUPABASE_URL",
+          "sync": false
+        },
+        {
+          "key": "SUPABASE_PUBLISHABLE_KEY",
+          "sync": false
+        },
+        {
+          "key": "FAMA_DATA_ENCRYPTION_KEY",
+          "sync": false
+        },
+        {
+          "key": "FAMA_DATA_BRIDGE_SECRET",
+          "sync": false
+        },
+        {
+          "key": "FAMA_INTERNAL_SYSTEM_URL",
+          "sync": false
+        },
+        {
+          "key": "FAMA_SYSTEM_PUBLIC_URL",
+          "sync": false
+        },
+        {
+          "key": "FAMA_AI_PROVIDER",
+          "value": "local-python"
+        },
+        {
+          "key": "FAMA_AI_GENERATIVE_ENABLED",
+          "value": "false"
+        },
+        {
+          "key": "SUPABASE_SECRET_KEY",
+          "sync": false
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+{
+    email {$ACME_EMAIL}
+}
+
+{$SYSTEM_HOST} {
+    encode zstd gzip
+    reverse_proxy system:3000
+}
+
+{$CONTROL_HOST} {
+    encode zstd gzip
+    reverse_proxy control:3000
+}
+
+{$SYSTEM_WWW_HOST} {
+    redir https://{$SYSTEM_HOST}{uri} permanent
+}

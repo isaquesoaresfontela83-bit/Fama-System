@@ -1,0 +1,7 @@
+import assert from 'node:assert/strict';
+import test from 'node:test';
+import {companyRequestBody} from './body.mjs';
+const request=body=>new Request('https://baileys.test/v1/companies/company/session',{method:'POST',headers:{'Content-Type':'application/json'},...(body===undefined?{}:{body:JSON.stringify(body)})});
+test('Worker forwards the explicit QR renewal flag and preserves empty legacy connect requests',async()=>{assert.deepEqual(await companyRequestBody(request({reconnect:true}),'session'),{reconnect:true});assert.deepEqual(await companyRequestBody(request(),'session'),{});});
+test('Worker rejects session credential injection, malformed renewal and oversized bodies',async()=>{for(const value of [{reconnect:'true'},{token:'private'},{reconnect:true,company:'foreign'}])await assert.rejects(companyRequestBody(request(value),'session'),error=>error.status===400);await assert.rejects(companyRequestBody(request({reconnect:'a'.repeat(25000)}),'session'),error=>error.status===413);});
+test('Worker accepts only message fields and never accepts session options on a send',async()=>{const body={phone:'5561999999999',text:'Agenda',clientId:'fixture'};assert.deepEqual(await companyRequestBody(request(body),'messages'),body);await assert.rejects(companyRequestBody(request({...body,reconnect:true}),'messages'),error=>error.status===400);await assert.rejects(companyRequestBody(request(),'messages'),error=>error.status===400);});

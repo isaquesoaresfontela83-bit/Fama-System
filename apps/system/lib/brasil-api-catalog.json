@@ -1,0 +1,2012 @@
+[
+  {
+    "id": "1",
+    "path": "/banks/v1",
+    "label": "Retorna informações de todos os bancos do Brasil",
+    "group": "BANKS",
+    "parameters": []
+  },
+  {
+    "id": "2",
+    "path": "/banks/v1/{code}",
+    "label": "Busca as informações de um banco a partir de um código",
+    "group": "BANKS",
+    "parameters": [
+      {
+        "name": "code",
+        "where": "path",
+        "required": true,
+        "type": "integer",
+        "format": "",
+        "description": "O código do banco**Pode ser obtido nesse endpoint**",
+        "options": [],
+        "example": "1"
+      }
+    ]
+  },
+  {
+    "id": "3",
+    "path": "/cambio/v1/moedas",
+    "label": "Lista todas as moedas disponíveis para consulta de câmbio.",
+    "group": "CAMBIO",
+    "parameters": []
+  },
+  {
+    "id": "4",
+    "path": "/cambio/v1/cotacao/{moeda}/{data}",
+    "label": "Busca pelo câmbio do Real com outra moeda, em uma data específica",
+    "group": "CAMBIO",
+    "parameters": [
+      {
+        "name": "moeda",
+        "where": "path",
+        "required": true,
+        "type": "string",
+        "format": "",
+        "description": "A moeda alvo desejada (AUD, CAD, CHF, DKK, EUR, GBP, JPY, SEK, USD). Para maiores informações, consulte: /cambio/v1/moedas",
+        "options": [],
+        "example": ""
+      },
+      {
+        "name": "data",
+        "where": "path",
+        "required": true,
+        "type": "string",
+        "format": "",
+        "description": "A data desejada, o formato deve ser: YYYY-MM-DD. Os dados só estão disponíveis a partir de 28/11/1984.",
+        "options": [],
+        "example": ""
+      }
+    ]
+  },
+  {
+    "id": "5",
+    "path": "/cep/v1/{cep}",
+    "label": "Busca por CEP com múltiplos providers de fallback.",
+    "group": "CEP",
+    "parameters": [
+      {
+        "name": "cep",
+        "where": "path",
+        "required": true,
+        "type": "integer",
+        "format": "int64",
+        "description": "O CEP (Código de Endereçamento Postal) é um sistema de códigos que visa racionalizar o processo de encaminhamento e entrega de correspondências através da divisão do país em regiões postais. ... Atualmente, o CEP é composto por oito dígitos",
+        "options": [],
+        "example": ""
+      }
+    ]
+  },
+  {
+    "id": "6",
+    "path": "/cep/v2/{cep}",
+    "label": "Busca por CEP com múltiplos providers e geolocalização.",
+    "group": "CEP V2",
+    "parameters": [
+      {
+        "name": "cep",
+        "where": "path",
+        "required": true,
+        "type": "string",
+        "format": "",
+        "description": "CEP a ser consultado. Deve conter exatamente 8 dígitos, com ou sem formatação (hífen). Exemplo: 01310-930 ou 01310930.",
+        "options": [],
+        "example": "01310930"
+      }
+    ]
+  },
+  {
+    "id": "7",
+    "path": "/cep/v3/{cep}",
+    "label": "Versão 3 do serviço de busca por CEP com múltiplos providers de fallback, com autocomplete de faixas de CEP.",
+    "group": "CEP V3",
+    "parameters": [
+      {
+        "name": "cep",
+        "where": "path",
+        "required": true,
+        "type": "integer",
+        "format": "int64",
+        "description": "O CEP (Código de Endereçamento Postal) é um sistema de códigos que visa racionalizar o processo de encaminhamento e entrega de correspondências através da divisão do país em regiões postais. ... Atualmente, o CEP é composto por oito dígitos",
+        "options": [],
+        "example": ""
+      }
+    ]
+  },
+  {
+    "id": "8",
+    "path": "/oms/cid10/v1",
+    "label": "Lista todos os códigos CID-10",
+    "group": "OMS",
+    "parameters": []
+  },
+  {
+    "id": "9",
+    "path": "/oms/cid10/v1/{code}",
+    "label": "Busca um código CID-10",
+    "group": "OMS",
+    "parameters": [
+      {
+        "name": "code",
+        "where": "path",
+        "required": true,
+        "type": "string",
+        "format": "",
+        "description": "Código CID-10 (ex: A00, B34.2).",
+        "options": [],
+        "example": ""
+      }
+    ]
+  },
+  {
+    "id": "10",
+    "path": "/cnpj/v1/{cnpj}",
+    "label": "Busca por CNPJ na API Minha Receita.",
+    "group": "CNPJ",
+    "parameters": [
+      {
+        "name": "cnpj",
+        "where": "path",
+        "required": true,
+        "type": "string",
+        "format": "",
+        "description": "O Cadastro Nacional da Pessoa Jurídica é um número único que identifica uma pessoa jurídica junto à Receita Federal. Deve conter 14 caracteres alfanuméricos (dígitos e letras de A a Z), com ou sem formatação (pontos, barras e hífen).",
+        "options": [],
+        "example": "19131243000197"
+      }
+    ]
+  },
+  {
+    "id": "11",
+    "path": "/cvm/corretoras/v1",
+    "label": "Retorna as corretoras nos arquivos da CVM.",
+    "group": "Corretoras",
+    "parameters": [
+      {
+        "name": "uf",
+        "where": "query",
+        "required": false,
+        "type": "string",
+        "format": "",
+        "description": "Sigla da UF para filtrar corretoras (ex: SP). Opcional.",
+        "options": [],
+        "example": "SP"
+      }
+    ]
+  },
+  {
+    "id": "12",
+    "path": "/cvm/corretoras/v1/{cnpj}",
+    "label": "Busca por corretoras nos arquivos da CVM.",
+    "group": "Corretoras",
+    "parameters": [
+      {
+        "name": "cnpj",
+        "where": "path",
+        "required": true,
+        "type": "string",
+        "format": "",
+        "description": "O Cadastro Nacional da Pessoa Jurídica é um número único que identifica uma pessoa jurídica e outros tipos de arranjo jurídico sem personalidade jurídica junto à Receita Federal.",
+        "options": [],
+        "example": ""
+      }
+    ]
+  },
+  {
+    "id": "13",
+    "path": "/cpf/v1/{cpf}",
+    "label": "Verifica o CPF e caso válido retorna sua região",
+    "group": "CPF",
+    "parameters": [
+      {
+        "name": "cpf",
+        "where": "path",
+        "required": true,
+        "type": "string",
+        "format": "string",
+        "description": "O CPF (Cadastro de Pessoas Físicas) é um sistema de códigos de registro de contribuintes mantido pela Receita Federal que representa unicamente uma pessoa física no Brasil.",
+        "options": [],
+        "example": ""
+      }
+    ]
+  },
+  {
+    "id": "14",
+    "path": "/cptec/v1/cidade",
+    "label": "Listar localidades",
+    "group": "CPTEC",
+    "parameters": []
+  },
+  {
+    "id": "15",
+    "path": "/cptec/v1/cidade/{name}",
+    "label": "Buscar localidades",
+    "group": "CPTEC",
+    "parameters": [
+      {
+        "name": "name",
+        "where": "path",
+        "required": true,
+        "type": "string",
+        "format": "",
+        "description": "Nome ou parte do nome da cidade a ser buscada",
+        "options": [],
+        "example": "Chiforímpola"
+      }
+    ]
+  },
+  {
+    "id": "16",
+    "path": "/cptec/v1/clima/capital",
+    "label": "Condições atuais nas capitais",
+    "group": "CPTEC",
+    "parameters": []
+  },
+  {
+    "id": "17",
+    "path": "/cptec/v1/clima/aeroporto/{airport}",
+    "label": "Condições atuais no aeroporto (/cptec/v1/clima/aeroporto/:icaoCode)",
+    "group": "CPTEC",
+    "parameters": [
+      {
+        "name": "airport",
+        "where": "path",
+        "required": true,
+        "type": "string",
+        "format": "",
+        "description": "Código ICAO (4 dígitos) do aeroporto desejado",
+        "options": [],
+        "example": "SBGR"
+      }
+    ]
+  },
+  {
+    "id": "18",
+    "path": "/cptec/v1/clima/previsao/{cityCode}",
+    "label": "Previsão meteorológica para uma cidade",
+    "group": "CPTEC",
+    "parameters": [
+      {
+        "name": "cityCode",
+        "where": "path",
+        "required": true,
+        "type": "integer",
+        "format": "int32",
+        "description": "Código da cidade fornecido pelo endpoint /cidade",
+        "options": [],
+        "example": "999"
+      }
+    ]
+  },
+  {
+    "id": "19",
+    "path": "/cptec/v1/clima/previsao/{cityCode}/{days}",
+    "label": "Previsão meteorológica para, até, 6 dias",
+    "group": "CPTEC",
+    "parameters": [
+      {
+        "name": "cityCode",
+        "where": "path",
+        "required": true,
+        "type": "integer",
+        "format": "int32",
+        "description": "Código da cidade fornecido pelo endpoint /cidade",
+        "options": [],
+        "example": "999"
+      },
+      {
+        "name": "days",
+        "where": "path",
+        "required": true,
+        "type": "integer",
+        "format": "int32",
+        "description": "Quantidade de dias desejado para a previsão",
+        "options": [],
+        "example": "5"
+      }
+    ]
+  },
+  {
+    "id": "20",
+    "path": "/cptec/v1/clima/previsao/semana/{lat}/{long}",
+    "label": "Previsão meteorológica com base na latitude e longitude",
+    "group": "CPTEC",
+    "parameters": [
+      {
+        "name": "lat",
+        "where": "path",
+        "required": true,
+        "type": "float",
+        "format": "float32",
+        "description": "Latitude de uma cidade",
+        "options": [],
+        "example": "-21.166666"
+      },
+      {
+        "name": "long",
+        "where": "path",
+        "required": true,
+        "type": "float",
+        "format": "float32",
+        "description": "Longitude de uma cidade",
+        "options": [],
+        "example": "-50.184665928"
+      }
+    ]
+  },
+  {
+    "id": "21",
+    "path": "/cptec/v1/ondas/{cityCode}",
+    "label": "Previsão oceânica",
+    "group": "CPTEC",
+    "parameters": [
+      {
+        "name": "cityCode",
+        "where": "path",
+        "required": true,
+        "type": "integer",
+        "format": "int32",
+        "description": "Código da cidade fornecido pelo endpoint /cidade",
+        "options": [],
+        "example": "241"
+      }
+    ]
+  },
+  {
+    "id": "22",
+    "path": "/cptec/v1/ondas/{cityCode}/{days}",
+    "label": "Previsão oceânica para, até, 6 dias",
+    "group": "CPTEC",
+    "parameters": [
+      {
+        "name": "cityCode",
+        "where": "path",
+        "required": true,
+        "type": "integer",
+        "format": "int32",
+        "description": "Código da cidade fornecido pelo endpoint /cidade",
+        "options": [],
+        "example": "241"
+      },
+      {
+        "name": "days",
+        "where": "path",
+        "required": true,
+        "type": "integer",
+        "format": "int32",
+        "description": "Quantidade de dias desejada para a previsão",
+        "options": [],
+        "example": "2"
+      }
+    ]
+  },
+  {
+    "id": "23",
+    "path": "/ddd/v1",
+    "label": "Retorna estado e lista de DDD",
+    "group": "DDD",
+    "parameters": []
+  },
+  {
+    "id": "24",
+    "path": "/ddd/v1/{ddd}",
+    "label": "Retorna estado e lista de cidades por DDD",
+    "group": "DDD",
+    "parameters": [
+      {
+        "name": "ddd",
+        "where": "path",
+        "required": true,
+        "type": "integer",
+        "format": "int64",
+        "description": "DDD significa Discagem Direta à Distância. É um sistema de ligação telefônica automática entre diferentes áreas urbanas nacionais. O DDD é um código constituído por 2 dígitos que identificam as principais cidades do país e devem ser adicion",
+        "options": [],
+        "example": ""
+      }
+    ]
+  },
+  {
+    "id": "25",
+    "path": "/ddd/uf/v1/{uf}",
+    "label": "Retorna lista de DDD contendo as cidades",
+    "group": "DDD",
+    "parameters": [
+      {
+        "name": "uf",
+        "where": "path",
+        "required": true,
+        "type": "string",
+        "format": "",
+        "description": "UF representa a sigla dos estados brasileiros.",
+        "options": [],
+        "example": ""
+      }
+    ]
+  },
+  {
+    "id": "26",
+    "path": "/ddd/v2/{ddd}",
+    "label": "Retorna lista de estados e lista de cidades por DDD",
+    "group": "DDD",
+    "parameters": [
+      {
+        "name": "ddd",
+        "where": "path",
+        "required": true,
+        "type": "integer",
+        "format": "int64",
+        "description": "DDD significa Discagem Direta à Distância. É um sistema de ligação telefônica automática entre diferentes áreas urbanas nacionais. O DDD é um código constituído por 2 dígitos que identificam as principais cidades do país e devem ser adicion",
+        "options": [],
+        "example": ""
+      }
+    ]
+  },
+  {
+    "id": "27",
+    "path": "/diasuteis/v1",
+    "label": "Busca todos os dias úteis entre duas datas",
+    "group": "Dias Úteis",
+    "parameters": [
+      {
+        "name": "dataInicial",
+        "where": "query",
+        "required": true,
+        "type": "string",
+        "format": "date",
+        "description": "Data inicial no formato YYYY-MM-DD",
+        "options": [],
+        "example": ""
+      },
+      {
+        "name": "dataFinal",
+        "where": "query",
+        "required": true,
+        "type": "string",
+        "format": "date",
+        "description": "Data final no formato YYYY-MM-DD",
+        "options": [],
+        "example": ""
+      },
+      {
+        "name": "incluirFeriadosNacionais",
+        "where": "query",
+        "required": false,
+        "type": "boolean",
+        "format": "",
+        "description": "Define se os feriados nacionais devem ser considerados. Aceita 'true' ou 'false'.",
+        "options": [],
+        "example": ""
+      }
+    ]
+  },
+  {
+    "id": "28",
+    "path": "/eleicoes/candidaturas",
+    "label": "Lista candidaturas por município, cargo e eleição",
+    "group": "Candidaturas",
+    "parameters": [
+      {
+        "name": "election",
+        "where": "query",
+        "required": true,
+        "type": "string",
+        "format": "",
+        "description": "",
+        "options": [],
+        "example": ""
+      },
+      {
+        "name": "year",
+        "where": "query",
+        "required": true,
+        "type": "string",
+        "format": "",
+        "description": "",
+        "options": [],
+        "example": ""
+      },
+      {
+        "name": "municipality",
+        "where": "query",
+        "required": true,
+        "type": "string",
+        "format": "",
+        "description": "",
+        "options": [],
+        "example": ""
+      },
+      {
+        "name": "position",
+        "where": "query",
+        "required": true,
+        "type": "string",
+        "format": "",
+        "description": "",
+        "options": [],
+        "example": ""
+      }
+    ]
+  },
+  {
+    "id": "29",
+    "path": "/eleicoes/candidaturas/{candidato}",
+    "label": "Busca as informações completas de um candidato específico",
+    "group": "Candidaturas",
+    "parameters": [
+      {
+        "name": "candidato",
+        "where": "path",
+        "required": true,
+        "type": "string",
+        "format": "",
+        "description": "",
+        "options": [],
+        "example": ""
+      },
+      {
+        "name": "election",
+        "where": "query",
+        "required": true,
+        "type": "string",
+        "format": "",
+        "description": "",
+        "options": [],
+        "example": ""
+      },
+      {
+        "name": "year",
+        "where": "query",
+        "required": true,
+        "type": "string",
+        "format": "",
+        "description": "",
+        "options": [],
+        "example": ""
+      },
+      {
+        "name": "municipality",
+        "where": "query",
+        "required": true,
+        "type": "string",
+        "format": "",
+        "description": "",
+        "options": [],
+        "example": ""
+      }
+    ]
+  },
+  {
+    "id": "30",
+    "path": "/eleicoes/anos-eleitorais",
+    "label": "Lista todos os anos eleitorais disponíveis",
+    "group": "Eleições",
+    "parameters": []
+  },
+  {
+    "id": "31",
+    "path": "/eleicoes/cargos-por-municipio",
+    "label": "Lista cargos disponíveis em determinado município",
+    "group": "Eleições",
+    "parameters": [
+      {
+        "name": "election",
+        "where": "query",
+        "required": true,
+        "type": "string",
+        "format": "",
+        "description": "",
+        "options": [],
+        "example": ""
+      },
+      {
+        "name": "municipality",
+        "where": "query",
+        "required": true,
+        "type": "string",
+        "format": "",
+        "description": "",
+        "options": [],
+        "example": ""
+      }
+    ]
+  },
+  {
+    "id": "32",
+    "path": "/eleicoes/ordinarias",
+    "label": "Lista todas as eleições ordinárias da base do TSE",
+    "group": "Eleições",
+    "parameters": []
+  },
+  {
+    "id": "33",
+    "path": "/fipe/marcas/v1/{vehicleType}",
+    "label": "Lista as marcas de veículos referente ao tipo de veículo",
+    "group": "FIPE",
+    "parameters": [
+      {
+        "name": "vehicleType",
+        "where": "path",
+        "required": true,
+        "type": "string",
+        "format": "string",
+        "description": "Os tipos suportados são `caminhoes`, `carros` e `motos`. Quando o tipo não é específicado são buscada as marcas de todos os tipos de veículos",
+        "options": [],
+        "example": ""
+      },
+      {
+        "name": "tabela_referencia",
+        "where": "query",
+        "required": false,
+        "type": "integer",
+        "format": "int64",
+        "description": "Código da tabela fipe de referência. Por padrão é utilizado o código da tabela fipe atual.",
+        "options": [],
+        "example": ""
+      }
+    ]
+  },
+  {
+    "id": "34",
+    "path": "/fipe/preco/v1/{fipeCode}",
+    "label": "Consulta o preço do veículo segundo a tabela FIPE.",
+    "group": "FIPE",
+    "parameters": [
+      {
+        "name": "fipeCode",
+        "where": "path",
+        "required": true,
+        "type": "string",
+        "format": "",
+        "description": "Código FIPE do veículo que identifica unicamente um modelo específico na tabela FIPE. Exemplo: 001004-9 para Fiat Palio EX 1.0.",
+        "options": [],
+        "example": "001004-9"
+      },
+      {
+        "name": "tabela_referencia",
+        "where": "query",
+        "required": false,
+        "type": "integer",
+        "format": "int64",
+        "description": "Código da tabela FIPE de referência para consulta. Se não especificado, utiliza a tabela mais atual disponível.",
+        "options": [],
+        "example": "295"
+      }
+    ]
+  },
+  {
+    "id": "35",
+    "path": "/fipe/tabelas/v1",
+    "label": "Lista as tabelas de referência existentes.",
+    "group": "FIPE",
+    "parameters": []
+  },
+  {
+    "id": "36",
+    "path": "/fipe/veiculos/v1/{vehicleType}/{makerCode}",
+    "label": "Lista os veículos de acordo com a marca e o tipo de veículo",
+    "group": "FIPE",
+    "parameters": [
+      {
+        "name": "vehicleType",
+        "where": "path",
+        "required": true,
+        "type": "string",
+        "format": "string",
+        "description": "Os tipos suportados são `caminhoes`, `carros` e `motos`.",
+        "options": [],
+        "example": ""
+      },
+      {
+        "name": "makerCode",
+        "where": "path",
+        "required": true,
+        "type": "integer",
+        "format": "int64",
+        "description": "Código da marca do veiculo. Para consultar as marcas acesse a rota `/fipe/marcas/v1/`",
+        "options": [],
+        "example": ""
+      },
+      {
+        "name": "tabela_referencia",
+        "where": "query",
+        "required": false,
+        "type": "integer",
+        "format": "int64",
+        "description": "Código da tabela fipe de referência. Por padrão é utilizado o código da tabela fipe atual.",
+        "options": [],
+        "example": ""
+      }
+    ]
+  },
+  {
+    "id": "37",
+    "path": "/fipe/anos/v1/{vehicleType}/{makerCode}/{modelCode}",
+    "label": "Lista os anos e combustíveis disponíveis para um modelo de veículo específico",
+    "group": "FIPE",
+    "parameters": [
+      {
+        "name": "vehicleType",
+        "where": "path",
+        "required": true,
+        "type": "string",
+        "format": "",
+        "description": "Os tipos suportados são `caminhoes`, `carros` e `motos`.",
+        "options": [],
+        "example": ""
+      },
+      {
+        "name": "makerCode",
+        "where": "path",
+        "required": true,
+        "type": "integer",
+        "format": "",
+        "description": "Código da marca.",
+        "options": [],
+        "example": ""
+      },
+      {
+        "name": "modelCode",
+        "where": "path",
+        "required": true,
+        "type": "integer",
+        "format": "",
+        "description": "Código do modelo.",
+        "options": [],
+        "example": ""
+      },
+      {
+        "name": "tabela_referencia",
+        "where": "query",
+        "required": false,
+        "type": "integer",
+        "format": "",
+        "description": "Código da tabela FIPE de referência.",
+        "options": [],
+        "example": ""
+      }
+    ]
+  },
+  {
+    "id": "38",
+    "path": "/fipe/detalhes/v1/{vehicleType}/{makerCode}/{modelCode}/{yearCode}",
+    "label": "Consulta os dados completos de um veículo (preço e código FIPE) usando a hierarquia de navegação",
+    "group": "FIPE",
+    "parameters": [
+      {
+        "name": "vehicleType",
+        "where": "path",
+        "required": true,
+        "type": "string",
+        "format": "",
+        "description": "",
+        "options": [],
+        "example": ""
+      },
+      {
+        "name": "makerCode",
+        "where": "path",
+        "required": true,
+        "type": "integer",
+        "format": "",
+        "description": "",
+        "options": [],
+        "example": ""
+      },
+      {
+        "name": "modelCode",
+        "where": "path",
+        "required": true,
+        "type": "integer",
+        "format": "",
+        "description": "",
+        "options": [],
+        "example": ""
+      },
+      {
+        "name": "yearCode",
+        "where": "path",
+        "required": true,
+        "type": "string",
+        "format": "",
+        "description": "Código do ano. Exemplo: `1998-1`",
+        "options": [],
+        "example": ""
+      },
+      {
+        "name": "tabela_referencia",
+        "where": "query",
+        "required": false,
+        "type": "integer",
+        "format": "",
+        "description": "",
+        "options": [],
+        "example": ""
+      }
+    ]
+  },
+  {
+    "id": "39",
+    "path": "/fipe/marcas/v1",
+    "label": "Lista as marcas de todos os tipos de veículo",
+    "group": "FIPE",
+    "parameters": [
+      {
+        "name": "tabela_referencia",
+        "where": "query",
+        "required": false,
+        "type": "string",
+        "format": "",
+        "description": "Código da tabela de referência (opcional).",
+        "options": [],
+        "example": ""
+      }
+    ]
+  },
+  {
+    "id": "40",
+    "path": "/cvm/fundos/v1",
+    "label": "Retorna lista de fundos de investimentos registrados na CVM.",
+    "group": "Fundos",
+    "parameters": [
+      {
+        "name": "page",
+        "where": "query",
+        "required": false,
+        "type": "number",
+        "format": "",
+        "description": "Indica paginação necessária para pesquisa.",
+        "options": [],
+        "example": ""
+      },
+      {
+        "name": "size",
+        "where": "query",
+        "required": false,
+        "type": "number",
+        "format": "",
+        "description": "Tamanho de elementos em cada página (1 a 200).",
+        "options": [],
+        "example": ""
+      }
+    ]
+  },
+  {
+    "id": "41",
+    "path": "/cvm/fundos/v1/{cnpj}",
+    "label": "Busca por detalhes de um registro de fundo na CVM.",
+    "group": "Fundos",
+    "parameters": [
+      {
+        "name": "cnpj",
+        "where": "path",
+        "required": true,
+        "type": "string",
+        "format": "",
+        "description": "O Cadastro Nacional da Pessoa Jurídica é um número único que identifica uma pessoa jurídica e outros tipos de arranjo jurídico sem personalidade jurídica junto à Receita Federal.",
+        "options": [],
+        "example": ""
+      }
+    ]
+  },
+  {
+    "id": "42",
+    "path": "/geolocation/v1",
+    "label": "Retorna cidade e país pela latitude e longitude",
+    "group": "Geolocalização",
+    "parameters": [
+      {
+        "name": "latitude",
+        "where": "query",
+        "required": true,
+        "type": "string",
+        "format": "",
+        "description": "Latitude geográfica. Um número decimal que representa a coordenada norte-sul.",
+        "options": [],
+        "example": ""
+      },
+      {
+        "name": "longitude",
+        "where": "query",
+        "required": true,
+        "type": "string",
+        "format": "",
+        "description": "Longitude geográfica. Um número decimal que representa a coordenada leste-oeste.",
+        "options": [],
+        "example": ""
+      }
+    ]
+  },
+  {
+    "id": "43",
+    "path": "/feriados/v1/{ano}",
+    "label": "Lista os feriados nacionais de determinado ano.",
+    "group": "Feriados Nacionais",
+    "parameters": [
+      {
+        "name": "ano",
+        "where": "path",
+        "required": true,
+        "type": "integer",
+        "format": "int64",
+        "description": "Ano para calcular os feriados. Deve ser um número inteiro entre 1900 e 2199.",
+        "options": [],
+        "example": ""
+      },
+      {
+        "name": "uf",
+        "where": "query",
+        "required": false,
+        "type": "string",
+        "format": "",
+        "description": "Sigla da UF (opcional) para incluir os feriados estaduais. Ex: SP, RJ, MG.",
+        "options": [],
+        "example": ""
+      }
+    ]
+  },
+  {
+    "id": "44",
+    "path": "/feriados/v1",
+    "label": "Feriados nacionais (requer ano)",
+    "group": "Feriados",
+    "parameters": []
+  },
+  {
+    "id": "45",
+    "path": "/hospitais/v1",
+    "label": "Pesquisa hospitais habilitados para animais peçonhentos, oncologia ou doenças raras",
+    "group": "HOSPITAIS",
+    "parameters": [
+      {
+        "name": "vertical",
+        "where": "query",
+        "required": false,
+        "type": "string",
+        "format": "",
+        "description": "Restringe a uma categoria inteira. Opcional e raramente necessário, já que atendimento identifica a vertical sozinho. Use para listar tudo de uma categoria, como todos os hospitais de oncologia de um estado.",
+        "options": [
+          "peconhentos",
+          "oncologia",
+          "raras"
+        ],
+        "example": "peconhentos"
+      },
+      {
+        "name": "uf",
+        "where": "query",
+        "required": false,
+        "type": "string",
+        "format": "",
+        "description": "Sigla da unidade federativa.",
+        "options": [],
+        "example": "SP"
+      },
+      {
+        "name": "municipio",
+        "where": "query",
+        "required": false,
+        "type": "string",
+        "format": "",
+        "description": "Busca parcial pelo nome do município (ignora acentos e caixa).",
+        "options": [],
+        "example": "campinas"
+      },
+      {
+        "name": "atendimento",
+        "where": "query",
+        "required": false,
+        "type": "string",
+        "format": "",
+        "description": "Filtro principal: um só termo e ele descobre a vertical. Aceita nome popular do animal (escorpiao, cascavel, jararaca), nome do soro (crotalico, Crotalic), habilitação (radioterapia, cacon, terapia-genica) ou código de portaria (17.07, 35.1",
+        "options": [],
+        "example": "escorpiao"
+      },
+      {
+        "name": "q",
+        "where": "query",
+        "required": false,
+        "type": "string",
+        "format": "",
+        "description": "Busca livre por nome ou endereço do estabelecimento.",
+        "options": [],
+        "example": "santa casa"
+      },
+      {
+        "name": "limit",
+        "where": "query",
+        "required": false,
+        "type": "integer",
+        "format": "",
+        "description": "Quantidade máxima de itens a retornar. Valores acima de 500 são limitados a 500.",
+        "options": [],
+        "example": "50"
+      },
+      {
+        "name": "offset",
+        "where": "query",
+        "required": false,
+        "type": "integer",
+        "format": "",
+        "description": "Deslocamento inicial para paginação.",
+        "options": [],
+        "example": "0"
+      }
+    ]
+  },
+  {
+    "id": "46",
+    "path": "/hospitais/v1/proximos",
+    "label": "Encontra o hospital habilitado mais próximo para peçonhentos, oncologia ou doenças raras",
+    "group": "HOSPITAIS",
+    "parameters": [
+      {
+        "name": "cep",
+        "where": "query",
+        "required": false,
+        "type": "string",
+        "format": "",
+        "description": "CEP de origem. Alternativo a `latitude`/`longitude` e a `municipio`/`uf`.",
+        "options": [],
+        "example": "13280000"
+      },
+      {
+        "name": "latitude",
+        "where": "query",
+        "required": false,
+        "type": "number",
+        "format": "",
+        "description": "Latitude de origem. Deve ser usada junto de `longitude`.",
+        "options": [],
+        "example": "-22.9"
+      },
+      {
+        "name": "longitude",
+        "where": "query",
+        "required": false,
+        "type": "number",
+        "format": "",
+        "description": "Longitude de origem. Deve ser usada junto de `latitude`.",
+        "options": [],
+        "example": "-47.05"
+      },
+      {
+        "name": "municipio",
+        "where": "query",
+        "required": false,
+        "type": "string",
+        "format": "",
+        "description": "Município de origem. Deve ser usado junto de `uf`.",
+        "options": [],
+        "example": "Campinas"
+      },
+      {
+        "name": "uf",
+        "where": "query",
+        "required": false,
+        "type": "string",
+        "format": "",
+        "description": "UF de origem. Deve ser usada junto de `municipio`.",
+        "options": [],
+        "example": "SP"
+      },
+      {
+        "name": "raio_km",
+        "where": "query",
+        "required": false,
+        "type": "number",
+        "format": "",
+        "description": "Raio da busca em quilômetros.",
+        "options": [],
+        "example": "50"
+      },
+      {
+        "name": "vertical",
+        "where": "query",
+        "required": false,
+        "type": "string",
+        "format": "",
+        "description": "Restringe a uma categoria inteira. Opcional e raramente necessário, já que atendimento identifica a vertical sozinho. Use para listar tudo de uma categoria, como todos os hospitais de oncologia de um estado.",
+        "options": [
+          "peconhentos",
+          "oncologia",
+          "raras"
+        ],
+        "example": "peconhentos"
+      },
+      {
+        "name": "atendimento",
+        "where": "query",
+        "required": false,
+        "type": "string",
+        "format": "",
+        "description": "Restringe a busca a um atendimento. Mesmos valores aceitos em /hospitais/v1; a lista completa está em /hospitais/v1/opcoes.",
+        "options": [],
+        "example": "escorpiao"
+      },
+      {
+        "name": "limit",
+        "where": "query",
+        "required": false,
+        "type": "integer",
+        "format": "",
+        "description": "Quantidade máxima de itens a retornar.",
+        "options": [],
+        "example": "20"
+      },
+      {
+        "name": "offset",
+        "where": "query",
+        "required": false,
+        "type": "integer",
+        "format": "",
+        "description": "Deslocamento inicial para paginação.",
+        "options": [],
+        "example": "0"
+      }
+    ]
+  },
+  {
+    "id": "47",
+    "path": "/hospitais/v1/opcoes",
+    "label": "Lista os soros antiveneno e as habilitações de oncologia e doenças raras pesquisáveis",
+    "group": "HOSPITAIS",
+    "parameters": []
+  },
+  {
+    "id": "48",
+    "path": "/hospitais/v1/ciatox",
+    "label": "Lista os centros CIATOX de informação e assistência toxicológica",
+    "group": "HOSPITAIS",
+    "parameters": [
+      {
+        "name": "uf",
+        "where": "query",
+        "required": false,
+        "type": "string",
+        "format": "",
+        "description": "Sigla da unidade federativa.",
+        "options": [],
+        "example": "SP"
+      }
+    ]
+  },
+  {
+    "id": "49",
+    "path": "/hospitais/v1/cnes/{cnes}",
+    "label": "Busca hospitais pelo código CNES do estabelecimento",
+    "group": "HOSPITAIS",
+    "parameters": [
+      {
+        "name": "cnes",
+        "where": "path",
+        "required": true,
+        "type": "string",
+        "format": "",
+        "description": "Código CNES do estabelecimento (apenas dígitos).",
+        "options": [],
+        "example": "2077485"
+      }
+    ]
+  },
+  {
+    "id": "50",
+    "path": "/hospitais/v1/estados",
+    "label": "Totais e frescor dos dados por unidade federativa",
+    "group": "HOSPITAIS",
+    "parameters": []
+  },
+  {
+    "id": "51",
+    "path": "/ibge/municipios/v1/{uf}",
+    "label": "Retorna os municípios da unidade federativa",
+    "group": "IBGE",
+    "parameters": [
+      {
+        "name": "uf",
+        "where": "path",
+        "required": true,
+        "type": "string",
+        "format": "string",
+        "description": "Sigla da unidade federativa, por exemplo SP, RJ, SC, etc.",
+        "options": [],
+        "example": ""
+      },
+      {
+        "name": "providers",
+        "where": "query",
+        "required": false,
+        "type": "string",
+        "format": "string",
+        "description": "Lista de provedores separados por vírgula.Provedores disponíveis: dados-abertos-brgovwikipedia",
+        "options": [],
+        "example": ""
+      }
+    ]
+  },
+  {
+    "id": "52",
+    "path": "/ibge/uf/v1",
+    "label": "Retorna informações de todos estados do Brasil",
+    "group": "IBGE",
+    "parameters": []
+  },
+  {
+    "id": "53",
+    "path": "/ibge/uf/v1/{code}",
+    "label": "Busca as informações de um estado a partir da sigla ou código",
+    "group": "IBGE",
+    "parameters": [
+      {
+        "name": "code",
+        "where": "path",
+        "required": true,
+        "type": "string",
+        "description": "",
+        "options": [],
+        "example": ""
+      }
+    ]
+  },
+  {
+    "id": "54",
+    "path": "/ibge/cnae/v1/classes",
+    "label": "Retorna as classes CNAE registradas no IBGE",
+    "group": "IBGE",
+    "parameters": []
+  },
+  {
+    "id": "55",
+    "path": "/ibge/cnae/v1/classes/{classe}",
+    "label": "Busca as classes CNAE a partir do código da classe",
+    "group": "IBGE",
+    "parameters": [
+      {
+        "name": "classe",
+        "where": "path",
+        "required": true,
+        "type": "string",
+        "format": "string",
+        "description": "Código da Classe CNAE como 01113",
+        "options": [],
+        "example": ""
+      }
+    ]
+  },
+  {
+    "id": "56",
+    "path": "/ibge/cnae/v1/divisoes/{divisao}",
+    "label": "Busca as classes CNAE a partir do código da divisão",
+    "group": "IBGE",
+    "parameters": [
+      {
+        "name": "divisao",
+        "where": "path",
+        "required": true,
+        "type": "string",
+        "format": "string",
+        "description": "Código da divisão CNAE como 99, 01, 05...",
+        "options": [],
+        "example": ""
+      }
+    ]
+  },
+  {
+    "id": "57",
+    "path": "/ibge/cnae/v1/grupos/{grupo}",
+    "label": "Busca as classes CNAE a partir do código do grupo",
+    "group": "IBGE",
+    "parameters": [
+      {
+        "name": "codigoGrupo",
+        "where": "path",
+        "required": true,
+        "type": "string",
+        "format": "string",
+        "description": "Código do grupo CNAE como 990, 239, etc.",
+        "options": [],
+        "example": ""
+      },
+      {
+        "name": "grupo",
+        "where": "path",
+        "required": true,
+        "type": "string",
+        "description": "",
+        "options": [],
+        "example": ""
+      }
+    ]
+  },
+  {
+    "id": "58",
+    "path": "/ibge/regioes/v1/{regionCode}",
+    "label": "Busca as informações de uma região à partir da sigla ou código",
+    "group": "IBGE",
+    "parameters": [
+      {
+        "name": "regionCode",
+        "where": "path",
+        "required": true,
+        "type": "string",
+        "description": "",
+        "options": [],
+        "example": ""
+      }
+    ]
+  },
+  {
+    "id": "59",
+    "path": "/ibge/regioes/v1",
+    "label": "Retorna as informações das regiões do Brasil",
+    "group": "IBGE",
+    "parameters": []
+  },
+  {
+    "id": "60",
+    "path": "/ibge/uf/v1/regiao/{regionCode}",
+    "label": "Lista as UFs de uma região do Brasil",
+    "group": "IBGE",
+    "parameters": [
+      {
+        "name": "regionCode",
+        "where": "path",
+        "required": true,
+        "type": "integer",
+        "format": "",
+        "description": "Código numérico da região (1 a 5).",
+        "options": [],
+        "example": ""
+      }
+    ]
+  },
+  {
+    "id": "61",
+    "path": "/ibpt/versao/v1",
+    "label": "Retorna a versão atual da Tabela do IBPT",
+    "group": "IBPT",
+    "parameters": []
+  },
+  {
+    "id": "62",
+    "path": "/ibpt/ncm/v1/{uf}",
+    "label": "Retorna as alíquotas de todos os NCMs do estado",
+    "group": "IBPT",
+    "parameters": [
+      {
+        "name": "uf",
+        "where": "path",
+        "required": true,
+        "type": "string",
+        "format": "string",
+        "description": "Sigla da unidade federativa, por exemplo SP, RJ, SC, etc.",
+        "options": [],
+        "example": ""
+      }
+    ]
+  },
+  {
+    "id": "63",
+    "path": "/ibpt/ncm/v1/{uf}/{codigo}",
+    "label": "Retorna as alíquotas do NCM específico",
+    "group": "IBPT",
+    "parameters": [
+      {
+        "name": "uf",
+        "where": "path",
+        "required": true,
+        "type": "string",
+        "format": "string",
+        "description": "Sigla da unidade federativa, por exemplo SP, RJ, SC, etc.",
+        "options": [],
+        "example": ""
+      },
+      {
+        "name": "codigo",
+        "where": "path",
+        "required": true,
+        "type": "string",
+        "format": "string",
+        "description": "Código do NCM, por exemplo 00000000, 01012100, etc.",
+        "options": [],
+        "example": ""
+      },
+      {
+        "name": "ex",
+        "where": "query",
+        "required": false,
+        "type": "string",
+        "format": "string",
+        "description": "Exceção aplicada ao código do NCM, por exemplo 01, 02, etc.",
+        "options": [],
+        "example": ""
+      }
+    ]
+  },
+  {
+    "id": "64",
+    "path": "/ibpt/nbs/v1/{uf}",
+    "label": "Retorna as alíquotas de todos os NBSs do estado",
+    "group": "IBPT",
+    "parameters": [
+      {
+        "name": "uf",
+        "where": "path",
+        "required": true,
+        "type": "string",
+        "format": "string",
+        "description": "Sigla da unidade federativa, por exemplo SP, RJ, SC, etc.",
+        "options": [],
+        "example": ""
+      }
+    ]
+  },
+  {
+    "id": "65",
+    "path": "/ibpt/nbs/v1/{uf}/{codigo}",
+    "label": "Retorna as alíquotas do NBS específico",
+    "group": "IBPT",
+    "parameters": [
+      {
+        "name": "uf",
+        "where": "path",
+        "required": true,
+        "type": "string",
+        "format": "string",
+        "description": "Sigla da unidade federativa, por exemplo SP, RJ, SC, etc.",
+        "options": [],
+        "example": ""
+      },
+      {
+        "name": "codigo",
+        "where": "path",
+        "required": true,
+        "type": "string",
+        "format": "string",
+        "description": "Código do NBS, por exemplo 101011000, 101012000, etc.",
+        "options": [],
+        "example": ""
+      },
+      {
+        "name": "ex",
+        "where": "query",
+        "required": false,
+        "type": "string",
+        "format": "string",
+        "description": "Exceção aplicada ao código do NBS, por exemplo 01, 02, etc.",
+        "options": [],
+        "example": ""
+      }
+    ]
+  },
+  {
+    "id": "66",
+    "path": "/ibpt/lc116/v1/{uf}",
+    "label": "Retorna as alíquotas de todos os LCs 116 do estado",
+    "group": "IBPT",
+    "parameters": [
+      {
+        "name": "uf",
+        "where": "path",
+        "required": true,
+        "type": "string",
+        "format": "string",
+        "description": "Sigla da unidade federativa, por exemplo SP, RJ, SC, etc.",
+        "options": [],
+        "example": ""
+      }
+    ]
+  },
+  {
+    "id": "67",
+    "path": "/ibpt/lc116/v1/{uf}/{codigo}",
+    "label": "Retorna as alíquotas do LC 116 específico",
+    "group": "IBPT",
+    "parameters": [
+      {
+        "name": "uf",
+        "where": "path",
+        "required": true,
+        "type": "string",
+        "format": "string",
+        "description": "Sigla da unidade federativa, por exemplo SP, RJ, SC, etc.",
+        "options": [],
+        "example": ""
+      },
+      {
+        "name": "codigo",
+        "where": "path",
+        "required": true,
+        "type": "string",
+        "format": "string",
+        "description": "Código do LC 116, por exemplo 0101, 0102, etc.",
+        "options": [],
+        "example": ""
+      },
+      {
+        "name": "ex",
+        "where": "query",
+        "required": false,
+        "type": "string",
+        "format": "string",
+        "description": "Exceção aplicada ao código do LC 116, por exemplo 01, 02, etc.",
+        "options": [],
+        "example": ""
+      }
+    ]
+  },
+  {
+    "id": "68",
+    "path": "/indices/igpm/v1",
+    "label": "IGPM - Lista de indices",
+    "group": "INDICES",
+    "parameters": []
+  },
+  {
+    "id": "69",
+    "path": "/indices/igpm/v1/ultimos",
+    "label": "IGPM - Últimos indices",
+    "group": "INDICES",
+    "parameters": [
+      {
+        "name": "limit",
+        "where": "query",
+        "required": true,
+        "type": "integer",
+        "format": "int32",
+        "description": "Quantidade de meses a serem obtidos dados",
+        "options": [],
+        "example": "12"
+      }
+    ]
+  },
+  {
+    "id": "70",
+    "path": "/indices/igpm/v1/intervalo",
+    "label": "IGPM - Lista de indices por Intervalo",
+    "group": "INDICES",
+    "parameters": [
+      {
+        "name": "initial_date",
+        "where": "query",
+        "required": true,
+        "type": "date",
+        "format": "",
+        "description": "Data inicial do intervalo",
+        "options": [],
+        "example": "2005-02-10"
+      },
+      {
+        "name": "final_date",
+        "where": "query",
+        "required": true,
+        "type": "date",
+        "format": "",
+        "description": "Data final do intervalo",
+        "options": [],
+        "example": "2005-03-10"
+      }
+    ]
+  },
+  {
+    "id": "71",
+    "path": "/isbn/v1/{isbn}",
+    "label": "Informações sobre o livro a partir do ISBN",
+    "group": "ISBN",
+    "parameters": [
+      {
+        "name": "isbn",
+        "where": "path",
+        "required": true,
+        "type": "string",
+        "format": "",
+        "description": "O código ISBN do livro. Aceita tanto o formato de 10 dígitos (obsoleto) quanto o de 13 dígitos (atual). Pode conter ou não traços de formatação.",
+        "options": [],
+        "example": "9788545702870"
+      },
+      {
+        "name": "providers",
+        "where": "query",
+        "required": false,
+        "type": "array",
+        "format": "",
+        "description": "Lista de provedores separados por vírgula para busca do ISBN. Se não especificado, será realizada busca em todos os provedores disponíveis, retornando o resultado mais rápido.",
+        "options": [],
+        "example": "['cbl', 'google-books']"
+      }
+    ]
+  },
+  {
+    "id": "72",
+    "path": "/ncm/v1",
+    "label": "Retorna informações de todos os NCMs",
+    "group": "NCM",
+    "parameters": []
+  },
+  {
+    "id": "73",
+    "path": "/ncm/v1?search={code}",
+    "label": "Pesquisa por NCMs a partir de um código ou descrição.",
+    "group": "NCM",
+    "parameters": [
+      {
+        "name": "code",
+        "where": "query",
+        "required": true,
+        "type": "string",
+        "description": "",
+        "options": [],
+        "example": ""
+      }
+    ]
+  },
+  {
+    "id": "74",
+    "path": "/ncm/v1/{code}",
+    "label": "Busca as informações de um NCM a partir de um código",
+    "group": "NCM",
+    "parameters": [
+      {
+        "name": "code",
+        "where": "path",
+        "required": true,
+        "type": "string",
+        "format": "",
+        "description": "Código NCM a ser consultado. Pode conter ou não pontos de formatação (ex: 3305.10.00 ou 33051000).",
+        "options": [],
+        "example": "33051000"
+      }
+    ]
+  },
+  {
+    "id": "75",
+    "path": "/pix/v1/participants",
+    "label": "Retorna informações de todos os participantes do PIX no dia atual ou último dia útil.",
+    "group": "PIX",
+    "parameters": []
+  },
+  {
+    "id": "76",
+    "path": "/registrobr/v1/{domain}",
+    "label": "Avalia o status de um dominio .br",
+    "group": "REGISTRO BR",
+    "parameters": [
+      {
+        "name": "domain",
+        "where": "path",
+        "required": true,
+        "type": "string",
+        "format": "",
+        "description": "O domínio ou nome a ser avaliado",
+        "options": [],
+        "example": ""
+      }
+    ]
+  },
+  {
+    "id": "77",
+    "path": "/solar/v1",
+    "label": "Busca por incidência solar para um local específico.",
+    "group": "Solar Incidence",
+    "parameters": [
+      {
+        "name": "location",
+        "where": "query",
+        "required": true,
+        "type": "string",
+        "format": "",
+        "description": "A localização para a qual a incidência solar será consultada. Pode ser um estado, cidade, município ou CEP.",
+        "options": [],
+        "example": ""
+      }
+    ]
+  },
+  {
+    "id": "78",
+    "path": "/status/v1",
+    "label": "Status da API",
+    "group": "Status",
+    "parameters": []
+  },
+  {
+    "id": "79",
+    "path": "/taxas/v1",
+    "label": "Retorna as taxas de juros e alguns índices oficiais do Brasil",
+    "group": "TAXAS",
+    "parameters": []
+  },
+  {
+    "id": "80",
+    "path": "/taxas/v1/{sigla}",
+    "label": "Busca as informações de uma taxa a partir do seu nome/sigla",
+    "group": "TAXAS",
+    "parameters": [
+      {
+        "name": "sigla",
+        "where": "path",
+        "required": true,
+        "type": "string",
+        "description": "",
+        "options": [],
+        "example": ""
+      }
+    ]
+  },
+  {
+    "id": "81",
+    "path": "/tickers/b3/acoes/v1",
+    "label": "Retorna a lista de tickers das empresas listadas na B3",
+    "group": "TICKERS",
+    "parameters": []
+  },
+  {
+    "id": "82",
+    "path": "/tickers/b3/fundos/v1/{typeFund}",
+    "label": "Retorna a lista de tickers de fundos de investimento listados na B3",
+    "group": "TICKERS",
+    "parameters": [
+      {
+        "name": "typeFund",
+        "where": "path",
+        "required": true,
+        "type": "string",
+        "format": "",
+        "description": "Tipo de fundo de investimento",
+        "options": [
+          "FII",
+          "SETORIAL",
+          "FIAGRO-FII",
+          "FIAGRO-FIDC",
+          "FIAGRO-FIP",
+          "FIP",
+          "FIA"
+        ],
+        "example": ""
+      }
+    ]
+  },
+  {
+    "id": "83",
+    "path": "/tuss/v1",
+    "label": "Lista termos TUSS (Terminologia Unificada da Saúde Suplementar) com suporte a busca por nome e código",
+    "group": "TUSS",
+    "parameters": [
+      {
+        "name": "name",
+        "where": "query",
+        "required": false,
+        "type": "string",
+        "format": "",
+        "description": "Busca parcial por nome do termo TUSS (ignora acentos e caixa).",
+        "options": [],
+        "example": "Consulta"
+      },
+      {
+        "name": "tuss",
+        "where": "query",
+        "required": false,
+        "type": "string",
+        "format": "",
+        "description": "Busca por código TUSS (somente dígitos), compara pelo início do código.",
+        "options": [],
+        "example": "1010"
+      },
+      {
+        "name": "limit",
+        "where": "query",
+        "required": false,
+        "type": "integer",
+        "format": "",
+        "description": "Quantidade máxima de itens a retornar (paginação).",
+        "options": [],
+        "example": "50"
+      },
+      {
+        "name": "offset",
+        "where": "query",
+        "required": false,
+        "type": "integer",
+        "format": "",
+        "description": "Deslocamento inicial para paginação (número de itens a pular).",
+        "options": [],
+        "example": "0"
+      }
+    ]
+  },
+  {
+    "id": "84",
+    "path": "/tuss/v1/{tuss}",
+    "label": "Detalhe de um termo TUSS pelo código",
+    "group": "TUSS",
+    "parameters": [
+      {
+        "name": "tuss",
+        "where": "path",
+        "required": true,
+        "type": "string",
+        "format": "",
+        "description": "Código TUSS (somente dígitos)",
+        "options": [],
+        "example": "10101012"
+      }
+    ]
+  },
+  {
+    "id": "85",
+    "path": "/tuss/v1/search",
+    "label": "Busca avançada de termos TUSS",
+    "group": "TUSS",
+    "parameters": [
+      {
+        "name": "q",
+        "where": "query",
+        "required": false,
+        "type": "string",
+        "format": "",
+        "description": "Busca livre; tokens com dígitos aplicam-se ao código TUSS, textos ao nome.",
+        "options": [],
+        "example": "consulta 1010"
+      },
+      {
+        "name": "name",
+        "where": "query",
+        "required": false,
+        "type": "string",
+        "format": "",
+        "description": "Filtro por nome (acento-insensitive).",
+        "options": [],
+        "example": "Consulta"
+      },
+      {
+        "name": "tuss",
+        "where": "query",
+        "required": false,
+        "type": "string",
+        "format": "",
+        "description": "Filtro por código TUSS (somente dígitos).",
+        "options": [],
+        "example": "10101012"
+      },
+      {
+        "name": "match",
+        "where": "query",
+        "required": false,
+        "type": "string",
+        "format": "",
+        "description": "Modo de correspondência para `q`, `name` e `tuss`.",
+        "options": [
+          "prefix",
+          "exact"
+        ],
+        "example": "prefix"
+      },
+      {
+        "name": "sort",
+        "where": "query",
+        "required": false,
+        "type": "string",
+        "format": "",
+        "description": "Campo de ordenação.",
+        "options": [
+          "tuss",
+          "name"
+        ],
+        "example": "tuss"
+      },
+      {
+        "name": "order",
+        "where": "query",
+        "required": false,
+        "type": "string",
+        "format": "",
+        "description": "Direção da ordenação.",
+        "options": [
+          "asc",
+          "desc"
+        ],
+        "example": "asc"
+      },
+      {
+        "name": "fields",
+        "where": "query",
+        "required": false,
+        "type": "string",
+        "format": "",
+        "description": "Projeção de campos (lista separada por vírgula).",
+        "options": [],
+        "example": "tuss,name"
+      },
+      {
+        "name": "limit",
+        "where": "query",
+        "required": false,
+        "type": "integer",
+        "format": "",
+        "description": "Quantidade máxima de itens a retornar (paginação).",
+        "options": [],
+        "example": "50"
+      },
+      {
+        "name": "offset",
+        "where": "query",
+        "required": false,
+        "type": "integer",
+        "format": "",
+        "description": "Deslocamento inicial para paginação.",
+        "options": [],
+        "example": "0"
+      }
+    ]
+  },
+  {
+    "id": "86",
+    "path": "/tuss/v1/autocomplete",
+    "label": "Autocomplete de termos TUSS",
+    "group": "TUSS",
+    "parameters": [
+      {
+        "name": "q",
+        "where": "query",
+        "required": false,
+        "type": "string",
+        "format": "",
+        "description": "Texto livre para sugestão.",
+        "options": [],
+        "example": "consu"
+      },
+      {
+        "name": "name",
+        "where": "query",
+        "required": false,
+        "type": "string",
+        "format": "",
+        "description": "Prefixo do nome.",
+        "options": [],
+        "example": "Consu"
+      },
+      {
+        "name": "tuss",
+        "where": "query",
+        "required": false,
+        "type": "string",
+        "format": "",
+        "description": "Prefixo do código TUSS (somente dígitos).",
+        "options": [],
+        "example": "1010"
+      },
+      {
+        "name": "limit",
+        "where": "query",
+        "required": false,
+        "type": "integer",
+        "format": "",
+        "description": "Quantidade máxima de sugestões (padrão 10).",
+        "options": [],
+        "example": "10"
+      }
+    ]
+  },
+  {
+    "id": "87",
+    "path": "/universities/v1",
+    "label": "Busca as informações de universidades do brasil",
+    "group": "UNIVERSITY",
+    "parameters": []
+  },
+  {
+    "id": "88",
+    "path": "/universities/v1/{id}",
+    "label": "Filtra uma universidade pelo id",
+    "group": "UNIVERSITY",
+    "parameters": [
+      {
+        "name": "id",
+        "where": "path",
+        "required": true,
+        "type": "string",
+        "description": "",
+        "options": [],
+        "example": ""
+      }
+    ]
+  }
+]

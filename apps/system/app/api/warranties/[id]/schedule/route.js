@@ -1,0 +1,80 @@
+import { ensureCustomerColumns } from '@/lib/customer-selection';
+import { database, dateTime, optionalText, requiredText } from "@/lib/database";
+import { readJsonObject } from "@/lib/request-body";
+import { callRpc, camelizeRow, usesSupabase } from "@/lib/supabase";
+import { requireTenant, tenantError } from "@/lib/tenant";
+import { hasFeaturePermission } from "@/lib/permissions";
+import { decryptRecordFields, encryptedFieldsByEntity } from "@/lib/crypto";
+import { assertRateLimit } from "@/lib/security";
+const warrantySelect = `SELECT id, warranty_number AS warrantyNumber, customer_id AS customerId, client_name AS clientName, item,
+  origin_reference AS originReference, purchase_date AS purchaseDate, expires_at AS expiresAt,
+  scheduled_at AS scheduledAt, appointment_id AS appointmentId, technician, status, notes,
+  created_at AS createdAt FROM warranties WHERE id = ? AND organization_id = ?`;
+export async function POST(request, context) {
+    try {
+        const { user, organization } = await requireTenant(request);
+        await assertRateLimit(request, "warranty_schedule", user.id, 30, 60);
+        if (!hasFeaturePermission(organization.role, organization.permissions, "warranties", organization.moduleAccess)
+            || !hasFeaturePermission(organization.role, organization.permissions, "agenda", organization.moduleAccess)) {
+            return Response.json({ error: "Seu perfil não possui acesso a este módulo." }, { status: 403 });
+        }
+        const { id } = await context.params;
+        const body = await readJsonObject(request);
+        const scheduledAt = dateTime(requiredText(body.scheduledAt, "Data e hora"));
+        const technician = optionalText(body.technician);
+        if (usesSupabase()) {
+            const payload = await callRpc("schedule_warranty", {
+                p_organization_id: organization.id,
+                p_warranty_id: id,
+                p_scheduled_at: scheduledAt,
+                p_technician: technician,
+                p_appointment_id: crypto.randomUUID(),
+                p_now: new Date().toISOString(),
+            });
+            return Response.json({
+                warranty: await decryptRecordFields(camelizeRow(payload.warranty), encryptedFieldsByEntity.warranties ?? []),
+                appointment: await decryptRecordFields(camelizeRow(payload.appointment), encryptedFieldsByEntity.appointments ?? []),
+            });
+        }
+        await ensureCustomerColumns();
+        const db = database();
+        const warranty = await db.prepare(warrantySelect).bind(id, organization.id).first();
+        if (!warranty)
+            return Response.json({ error: "Garantia não encontrada." }, { status: 404 });
+        const now = new Date().toISOString();
+        const appointmentId = warranty.appointmentId || crypto.randomUUID();
+        const appointment = {
+            id: appointmentId,
+            title: `Atendimento de garantia ${warranty.warrantyNumber}`,
+            clientName: warranty.clientName,
+            customerId: warranty.customerId ?? warranty.customer_id ?? null,
+            startAt: scheduledAt,
+            address: "",
+            technician,
+            kind: "Garantia",
+            status: "agendado",
+            notes: `Cobertura: ${warranty.item}`,
+        };
+        const appointmentStatement = warranty.appointmentId
+            ? db.prepare(`UPDATE appointments SET title = ?, client_name = ?, customer_id = ?, start_at = ?, technician = ?, kind = ?, status = ?, notes = ?, updated_at = ? WHERE id = ? AND organization_id = ?`)
+                .bind(appointment.title, appointment.clientName, appointment.customerId ?? null, appointment.startAt, appointment.technician, appointment.kind, appointment.status, appointment.notes, now, appointmentId, organization.id)
+            : db.prepare(`INSERT INTO appointments (id, organization_id, customer_id, title, client_name, start_at, address, technician, kind, status, notes, created_at, updated_at)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`)
+                .bind(appointment.id, organization.id, appointment.customerId ?? null, appointment.title, appointment.clientName, appointment.startAt, appointment.address, appointment.technician, appointment.kind, appointment.status, appointment.notes, now, now);
+        const result = await db.batch([
+            appointmentStatement,
+            db.prepare(`UPDATE warranties SET scheduled_at = ?, appointment_id = ?, technician = ?, status = 'agendada', updated_at = ? WHERE id = ? AND organization_id = ?`)
+                .bind(scheduledAt, appointmentId, technician, now, id, organization.id),
+            db.prepare(warrantySelect).bind(id, organization.id),
+        ]);
+        const updatedWarranty = result[2].results[0];
+        return Response.json({ warranty: updatedWarranty, appointment });
+    }
+    catch (error) {
+        const message = error instanceof Error ? error.message : "Não foi possível agendar a garantia.";
+        console.error("warranty_schedule_failed", error);
+        if (message.includes("obrigatório"))
+            return Response.json({ error: message }, { status: 400 });
+        return tenantError(error, "Não foi possível agendar a garantia.");
+    }
+}

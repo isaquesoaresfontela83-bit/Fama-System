@@ -1,0 +1,315 @@
+{
+  "services": [
+    {
+      "type": "web",
+      "runtime": "docker",
+      "name": "fama-system-api",
+      "plan": "free",
+      "dockerfilePath": "apps/system/deployment/hybrid/Dockerfile",
+      "healthCheckPath": "/api/health",
+      "envVars": [
+        {
+          "key": "FAMA_RUNTIME",
+          "value": "hybrid"
+        },
+        {
+          "key": "DATA_BACKEND",
+          "value": "supabase"
+        },
+        {
+          "key": "FAMA_POSTGRES_SCHEMA",
+          "value": "fama_system_runtime"
+        },
+        {
+          "key": "FAMA_PUBLIC_URL",
+          "sync": false
+        },
+        {
+          "key": "FAMA_POSTGRES_URL",
+          "sync": false
+        },
+        {
+          "key": "SUPABASE_URL",
+          "sync": false
+        },
+        {
+          "key": "SUPABASE_PUBLISHABLE_KEY",
+          "sync": false
+        },
+        {
+          "key": "FAMA_DATA_ENCRYPTION_KEY",
+          "sync": false
+        },
+        {
+          "key": "FAMA_DATA_BRIDGE_SECRET",
+          "sync": false
+        },
+        {
+          "key": "FAMA_INTERNAL_CONTROL_URL",
+          "value": "https://fama-control-api.onrender.com"
+        },
+        {
+          "key": "FAMA_CONTROL_PUBLIC_URL",
+          "sync": false
+        },
+        {
+          "key": "FAMA_AI_PROVIDER",
+          "value": "local-python"
+        },
+        {
+          "key": "FAMA_AI_GENERATIVE_ENABLED",
+          "value": "false"
+        },
+        {
+          "key": "FAMA_SESSION_SECRET",
+          "sync": false
+        }
+      ],
+      "repo": "https://github.com/isaquesoaresfontela83-bit/Fama-System",
+      "branch": "deploy/hybrid-15.7.0",
+      "region": "virginia",
+      "dockerContext": "apps/system",
+      "autoDeployTrigger": "off"
+    },
+    {
+      "type": "web",
+      "runtime": "static",
+      "name": "fama-system-web",
+      "buildCommand": "cd apps/system && npm ci --ignore-scripts --no-audit --no-fund && npm run build:hybrid-static",
+      "staticPublishPath": "apps/system/hybrid-dist",
+      "routes": [
+        {
+          "type": "rewrite",
+          "source": "/api/*",
+          "destination": "https://fama-system-api.onrender.com/api/*"
+        },
+        {
+          "type": "rewrite",
+          "source": "/_next/*",
+          "destination": "https://fama-system-api.onrender.com/_next/*"
+        },
+        {
+          "type": "rewrite",
+          "source": "/configurar-asaas",
+          "destination": "https://fama-system-api.onrender.com/configurar-asaas"
+        },
+        {
+          "type": "rewrite",
+          "source": "/configurar-asaas/submit",
+          "destination": "https://fama-system-api.onrender.com/configurar-asaas/submit"
+        },
+        {
+          "type": "rewrite",
+          "source": "/atualizar-leitor",
+          "destination": "https://fama-system-api.onrender.com/atualizar-leitor"
+        },
+        {
+          "type": "rewrite",
+          "source": "/*",
+          "destination": "/index.html"
+        }
+      ],
+      "headers": [
+        {
+          "path": "/*",
+          "name": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "path": "/*",
+          "name": "X-Frame-Options",
+          "value": "DENY"
+        },
+        {
+          "path": "/*",
+          "name": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        },
+        {
+          "path": "/*",
+          "name": "Strict-Transport-Security",
+          "value": "max-age=31536000; includeSubDomains"
+        },
+        {
+          "path": "/*",
+          "name": "Permissions-Policy",
+          "value": "camera=(self), microphone=(self), geolocation=(self), payment=()"
+        },
+        {
+          "path": "/*",
+          "name": "Cross-Origin-Opener-Policy",
+          "value": "same-origin-allow-popups"
+        },
+        {
+          "path": "/*",
+          "name": "Cross-Origin-Resource-Policy",
+          "value": "same-origin"
+        },
+        {
+          "path": "/*",
+          "name": "Content-Security-Policy",
+          "value": "default-src 'self'; base-uri 'self'; frame-ancestors 'none'; frame-src 'self' https://www.openstreetmap.org https://accounts.google.com https://embed.waze.com; object-src 'none'; img-src 'self' data: blob: https:; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval' https://accounts.google.com/gsi/client; script-src-attr 'none'; worker-src 'self'; connect-src 'self' http://127.0.0.1:17843/status http://127.0.0.1:17843/scan https://accounts.google.com https://www.googleapis.com https://cep.awesomeapi.com.br https://brasilapi.com.br https://firebaseinstallations.googleapis.com https://fcmregistrations.googleapis.com https://fcm.googleapis.com https://*.supabase.co https://huggingface.co https://*.hf.co https://*.huggingface.co; form-action 'self'"
+        }
+      ],
+      "envVars": [
+        {
+          "key": "NODE_VERSION",
+          "value": "24"
+        }
+      ],
+      "repo": "https://github.com/isaquesoaresfontela83-bit/Fama-System",
+      "branch": "deploy/hybrid-15.7.0",
+      "autoDeployTrigger": "off"
+    },
+    {
+      "type": "web",
+      "runtime": "docker",
+      "name": "fama-control-api",
+      "plan": "free",
+      "dockerfilePath": "apps/control/deployment/hybrid/Dockerfile",
+      "healthCheckPath": "/api/health",
+      "envVars": [
+        {
+          "key": "FAMA_RUNTIME",
+          "value": "hybrid"
+        },
+        {
+          "key": "DATA_BACKEND",
+          "value": "supabase"
+        },
+        {
+          "key": "FAMA_POSTGRES_SCHEMA",
+          "value": "fama_control_runtime"
+        },
+        {
+          "key": "FAMA_PUBLIC_URL",
+          "sync": false
+        },
+        {
+          "key": "FAMA_POSTGRES_URL",
+          "sync": false
+        },
+        {
+          "key": "SUPABASE_URL",
+          "sync": false
+        },
+        {
+          "key": "SUPABASE_PUBLISHABLE_KEY",
+          "sync": false
+        },
+        {
+          "key": "FAMA_DATA_ENCRYPTION_KEY",
+          "sync": false
+        },
+        {
+          "key": "FAMA_DATA_BRIDGE_SECRET",
+          "fromService": {
+            "type": "web",
+            "name": "fama-system-api",
+            "envVarKey": "FAMA_DATA_BRIDGE_SECRET"
+          }
+        },
+        {
+          "key": "FAMA_INTERNAL_SYSTEM_URL",
+          "value": "https://fama-system-api.onrender.com"
+        },
+        {
+          "key": "FAMA_SYSTEM_PUBLIC_URL",
+          "sync": false
+        },
+        {
+          "key": "FAMA_AI_PROVIDER",
+          "value": "local-python"
+        },
+        {
+          "key": "FAMA_AI_GENERATIVE_ENABLED",
+          "value": "false"
+        },
+        {
+          "key": "SUPABASE_SECRET_KEY",
+          "sync": false
+        }
+      ],
+      "repo": "https://github.com/isaquesoaresfontela83-bit/Fama-System",
+      "branch": "deploy/hybrid-15.7.0",
+      "region": "virginia",
+      "dockerContext": "apps/control",
+      "autoDeployTrigger": "off"
+    },
+    {
+      "type": "web",
+      "runtime": "static",
+      "name": "fama-control-web",
+      "buildCommand": "cd apps/control && npm ci --ignore-scripts --no-audit --no-fund && npm run build:hybrid-static",
+      "staticPublishPath": "apps/control/hybrid-dist",
+      "routes": [
+        {
+          "type": "rewrite",
+          "source": "/api/*",
+          "destination": "https://fama-control-api.onrender.com/api/*"
+        },
+        {
+          "type": "rewrite",
+          "source": "/_next/*",
+          "destination": "https://fama-control-api.onrender.com/_next/*"
+        },
+        {
+          "type": "rewrite",
+          "source": "/*",
+          "destination": "/index.html"
+        }
+      ],
+      "headers": [
+        {
+          "path": "/*",
+          "name": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "path": "/*",
+          "name": "X-Frame-Options",
+          "value": "DENY"
+        },
+        {
+          "path": "/*",
+          "name": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        },
+        {
+          "path": "/*",
+          "name": "Strict-Transport-Security",
+          "value": "max-age=31536000; includeSubDomains"
+        },
+        {
+          "path": "/*",
+          "name": "Permissions-Policy",
+          "value": "camera=(), microphone=(self), geolocation=(), payment=()"
+        },
+        {
+          "path": "/*",
+          "name": "Cross-Origin-Opener-Policy",
+          "value": "same-origin-allow-popups"
+        },
+        {
+          "path": "/*",
+          "name": "Cross-Origin-Resource-Policy",
+          "value": "same-origin"
+        },
+        {
+          "path": "/*",
+          "name": "Content-Security-Policy",
+          "value": "default-src 'self'; base-uri 'self'; frame-ancestors 'none'; frame-src 'self' https://www.openstreetmap.org https://accounts.google.com https://embed.waze.com; object-src 'none'; img-src 'self' data: blob: https:; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval' https://accounts.google.com/gsi/client; script-src-attr 'none'; worker-src 'self'; connect-src 'self' https://accounts.google.com https://www.googleapis.com https://cep.awesomeapi.com.br https://brasilapi.com.br https://firebaseinstallations.googleapis.com https://fcmregistrations.googleapis.com https://fcm.googleapis.com https://*.supabase.co https://huggingface.co https://*.hf.co https://*.huggingface.co; form-action 'self'"
+        }
+      ],
+      "envVars": [
+        {
+          "key": "NODE_VERSION",
+          "value": "24"
+        }
+      ],
+      "repo": "https://github.com/isaquesoaresfontela83-bit/Fama-System",
+      "branch": "deploy/hybrid-15.7.0",
+      "autoDeployTrigger": "off"
+    }
+  ]
+}
