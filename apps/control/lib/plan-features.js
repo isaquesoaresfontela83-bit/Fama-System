@@ -10,7 +10,9 @@ export function normalizePlanTier(value) {
     return value === "intermediario" || value === "profissional" ? value : "inicial";
 }
 export function planIncludesFeature(plan, feature, configuredFeatures) {
-    return PLAN_FEATURES[normalizePlanTier(plan)].includes(feature) && (configuredFeatures === undefined || configuredFeatures.includes(feature));
+    return configuredFeatures === undefined
+        ? PLAN_FEATURES[normalizePlanTier(plan)].includes(feature)
+        : PLAN_FEATURES.profissional.includes(feature) && Array.isArray(configuredFeatures) && configuredFeatures.includes(feature);
 }
 export function minimumPlanForFeature(feature) {
     return planIncludesFeature("inicial", feature) ? "inicial" : planIncludesFeature("intermediario", feature) ? "intermediario" : "profissional";
