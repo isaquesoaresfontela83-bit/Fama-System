@@ -1,5 +1,5 @@
 import { defaultPlanCatalog } from "./plan-catalog";
-import { PLAN_FEATURES, normalizePlanTier, planIncludesFeature } from "./plan-features";
+import { PLAN_FEATURES, normalizePlanTier } from "./plan-features";
 export const planPolicyKey = "fama_plan_policy";
 export function catalogFeatures(plan) { return plan.featureIds ?? [...PLAN_FEATURES[normalizePlanTier(plan.id)]]; }
 export function defaultPlanPolicy(plans = defaultPlanCatalog) { return { revision: 0, current: plans.map(plan => ({ ...plan, featureIds: catalogFeatures(plan) })), pending: null, history: [] }; }
@@ -29,8 +29,8 @@ export function normalizePolicyPlans(value) {
             throw new Error("Informe limites válidos de usuários e clientes."); return Number(value); };
         const userLimit = limit(raw.userLimit, raw.users, 1000), customerLimit = limit(raw.customerLimit, raw.clients, 1000000);
         const featureIds = raw.featureIds ?? [...PLAN_FEATURES[normalizePlanTier(raw.id)]];
-        if (!Array.isArray(featureIds) || featureIds.some(feature => typeof feature !== "string" || !planIncludesFeature(raw.id, feature)) || new Set(featureIds).size !== featureIds.length || !featureIds.includes("dashboard"))
-            throw new Error("Escolha recursos compatíveis com o plano. A visão geral é obrigatória.");
+        if (!Array.isArray(featureIds) || featureIds.some(feature => typeof feature !== "string" || !PLAN_FEATURES.profissional.includes(feature)) || new Set(featureIds).size !== featureIds.length || !featureIds.includes("dashboard"))
+            throw new Error("Escolha recursos disponíveis no sistema. A visão geral é obrigatória.");
         const name = String(raw.name ?? "").trim().slice(0, 80);
         if (!name)
             throw new Error("Informe o nome de cada plano.");

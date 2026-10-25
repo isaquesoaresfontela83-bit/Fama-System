@@ -23,7 +23,7 @@ export function parseBlockRules(value) {
 /** Only platform administrators write overrides. The more specific rule wins. */
 export function resolveBlockAccess(role, permissions, rules, plan, features) {
     return famaBlocks.filter(block => {
-        if (plan !== undefined && !planIncludesFeature(plan, block.id))
+        if (plan !== undefined && !planIncludesFeature(plan, block.id, features))
             return false;
         if (features !== undefined && !features.includes(block.id))
             return false;
