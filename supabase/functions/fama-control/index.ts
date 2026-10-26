@@ -2,7 +2,8 @@ import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 
 const URL = Deno.env.get("SUPABASE_URL") ?? "";
 const SERVICE = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "";
-const MODULES = ["dashboard","crm","quotes","agenda","orders","warranties","customers","contracts","inventory","finance","team"];
+const ECONODATA_CONFIGURED = Boolean((Deno.env.get("ECONODATA_API_KEY") ?? "").trim());
+const MODULES = ["dashboard","crm","quotes","agenda","orders","warranties","customers","contracts","inventory","finance","team","integrations"];
 
 const cors = {
   "Access-Control-Allow-Origin": "*",
@@ -104,6 +105,14 @@ async function directBootstrap(req: Request) {
       health,
       auth_users,
       modules: MODULES,
+      integrations: {
+        econodata: {
+          configured: ECONODATA_CONFIGURED,
+          provider: "econodata-v4",
+          fallback: "brasilapi",
+          secret_exposed: false,
+        },
+      },
       authorized: true,
       success: true,
       user: { id: user.id, email: user.email },
