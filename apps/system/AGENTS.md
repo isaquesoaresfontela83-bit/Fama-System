@@ -1,5 +1,9 @@
 # Preferência permanente do proprietário
 
+Em 30/10/2026 o proprietário autorizou o envio das alterações solicitadas ao GitHub existente e a publicação conjunta do Fama System e Fama Control sem nova confirmação conversacional: “Apartar de agora você vai subir pro git hub sem precisar pedir, pode publicar”. Registrar e respeitar essa preferência nos próximos trabalhos; preservar dados, segredos, planos e público e validar antes da publicação.
+
+Atualização de 30/10/2026: Pedidos 15.21.0 é um módulo aditivo em `../../features/pedidos/`, sobre a produção 15.20.0 recuperada diretamente da Cloudflare. Leia seu README e manifesto antes de publicar. Não implante esta árvore antiga como substituição da produção. Versão conjunta nova: `2026-10-30-pedidos-vendas-entregas-01`.
+
 Fama System e Fama Control devem ser atualizados juntos. Esta regra foi solicitada explicitamente em 20/10/2026 e vale para os próximos trabalhos nos dois projetos.
 
 - Ao alterar qualquer um, recuperar a fonte atual dos dois e verificar o impacto no outro: funcionalidades, administração, permissões, planos, integrações e contratos de API.

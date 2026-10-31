@@ -1,0 +1,58 @@
+{
+  "version": "15.21.0",
+  "releaseId": "2026-10-30-pedidos-vendas-entregas-01",
+  "packages": [
+    {
+      "worker": "fama-system-app",
+      "preservedModules": 120,
+      "addedModules": 3,
+      "bindings": 41,
+      "uploadBytes": 5514438,
+      "extensionSha256": "450c162ccbaa5314d81da181ca90082dcb2d1753c381c9653f83f6fc90ec9e22"
+    },
+    {
+      "worker": "fama-control-app",
+      "preservedModules": 53,
+      "addedModules": 3,
+      "bindings": 29,
+      "uploadBytes": 2556512,
+      "extensionSha256": "450c162ccbaa5314d81da181ca90082dcb2d1753c381c9653f83f6fc90ec9e22"
+    }
+  ],
+  "deployments": [
+    {
+      "worker": "fama-system-app",
+      "deploymentId": "df65855e-6d8c-4173-a955-d1a3026af64d",
+      "createdAt": "2026-10-31T00:17:19.369448Z",
+      "versions": [
+        {
+          "version_id": "2a6ac690-9cff-4858-afc1-44d873dd61e7",
+          "percentage": 100
+        }
+      ]
+    },
+    {
+      "worker": "fama-control-app",
+      "deploymentId": "b6381bc5-5995-4e62-b581-a2713855ebf8",
+      "createdAt": "2026-10-31T00:17:22.844027Z",
+      "versions": [
+        {
+          "version_id": "7b53022f-2142-4009-80d9-a4588d05350d",
+          "percentage": 100
+        }
+      ]
+    }
+  ],
+  "checks": {
+    "integrationTests": 16,
+    "builtPackagesVerified": true,
+    "desktopAnd390pxInterface": true,
+    "systemHealth": 200,
+    "controlHealth": 200,
+    "unauthenticatedOrderEndpoints": 401
+  },
+  "urls": {
+    "system": "https://famasystem.online/",
+    "control": "https://control.famasystem.online/"
+  }
+}

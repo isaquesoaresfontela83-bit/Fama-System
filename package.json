@@ -1,1 +1,10 @@
-{"private": true, "type": "module", "scripts": {"dev": "node apps/system/node_modules/vite/bin/vite.js --config .sites-runtime/design-qa/vite.config.mjs"}}
+{
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "node features/pedidos/preview.mjs",
+    "dev:previous": "node apps/system/node_modules/vite/bin/vite.js --config .sites-runtime/design-qa/vite.config.mjs",
+    "build:pedidos": "node features/pedidos/build.mjs",
+    "test:pedidos": "node --test features/pedidos/pedidos.test.mjs"
+  }
+}
