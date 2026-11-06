@@ -25,3 +25,11 @@ O cliente em `dock-client.mjs` acrescenta Editar e configura os botões existent
 A entrada HTML inclui o módulo cliente e serve dois recursos JavaScript externos, imutáveis e da mesma origem. `glass-client-resources.mjs` é o quarto módulo Worker da extensão; o publicador exige os dois recursos do cliente. A base anterior à publicação está em `baseline-15.23.0.json`.
 
 Validação: 25 testes, sintaxe e verificador conjunto; QA de DOM com LinkeDOM para edição, persistência, restauração e preservação dos listeners. As páginas públicas foram conferidas; não houve inspeção visual do personalizador com uma conta real.
+
+## Qualquer área do sistema — 15.23.1
+
+O editor agora lista todas as áreas do catálogo liberadas para a empresa e o perfil. Inclui busca por nome e atalhos adicionais para Pedidos, Financeiro, Estoque, Orçamentos, Serviços, CRM, ferramentas e ajuda/configuração. A lista usa `/api/access`; Pedidos verifica também `/api/pedidos/context`. As áreas extras não são marcadas automaticamente na migração da preferência anterior.
+
+Atalhos adicionais acionam o menu original, abrindo o menu móvel ou grupo recolhido quando necessário. A seleção não concede permissão nem usa rotas ou handlers internos alternativos. Se não há mais acesso, o atalho é removido da barra; a preferência local pode ser reutilizada quando voltar a ser permitida. A barra permite deslizar horizontalmente quando há muitos atalhos. Base: `baseline-15.23.1.json`.
+
+27 testes passaram. QA de DOM confirmou catálogo, seleção e busca, navegação original do Financeiro, abertura de Estoque em grupo recolhido, persistência e remoção de atalhos sem permissão. A área autenticada ainda não foi inspecionada visualmente em uma conta real.

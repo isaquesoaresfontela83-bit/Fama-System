@@ -2,7 +2,7 @@
 
 Gestão para empresas de piscinas e administração central da plataforma.
 
-**Versão publicada: 15.23.0** · `2026-11-06-customizable-dock-01`
+**Versão publicada: 15.23.1** · `2026-11-06-all-module-shortcuts-01`
 
 [Fama System](https://famasystem.online/entrar) · [Fama Control](https://control.famasystem.online/) · [Documentação](docs/README.md)
 

@@ -268,3 +268,12 @@ html.dark .fama-dock-settings { background:rgba(12,32,57,.96); }
 @media (forced-colors:active) { .fama-dock-settings { background:Canvas !important; color:CanvasText; border-color:CanvasText; } }
 @media (max-width:380px) { .fama-dock-settings { padding:16px; } .fama-dock-settings-row { gap:5px; padding:8px; } .fama-dock-settings-row button { padding-inline:10px; } }
 @media print { [data-fama-dock-settings],.fama-dock-settings { display:none !important; } }
+
+/* Any permitted module can be pinned; long lists remain usable by touch. */
+html:has([data-fama-glass-style]) .application.ops-application > .workspace-mobile-dock { overflow-x:auto; overflow-y:hidden; overscroll-behavior-x:contain; scrollbar-width:thin; }
+html:has([data-fama-glass-style]) .application.ops-application .workspace-mobile-dock > button { flex:1 0 44px; }
+html:has([data-fama-glass-style]) .workspace-mobile-dock > button > span:not(.fama-dock-gear),
+html:has([data-fama-glass-style]) .workspace-mobile-dock > button > small { max-width:68px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.fama-dock-settings .fama-dock-search { display:block; width:100%; height:44px; margin-block:14px; border:1px solid var(--border,#cbddeb); border-radius:12px; background:var(--card,#fff); color:inherit; padding:10px 12px; font:inherit; }
+.fama-dock-settings-row[hidden] { display:none !important; }
+.fama-dock-choice-count { color:var(--muted-foreground,#5b7190); }
