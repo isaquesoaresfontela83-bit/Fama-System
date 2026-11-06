@@ -13,3 +13,7 @@ Estado em 06/11/2026: publicação conjunta concluída após autorização expl�
 ## Animação dos botões — 15.22.2
 
 Hover em mouse preciso: elevação de 2 px, brilho de 6% e sombra suave em 180 ms. Ao pressionar: escala de 98% em 140 ms. Botões desabilitados ficam excluídos; preferência por movimento reduzido e impressão desativam a animação. A atualização preserva os ajustes publicados em 15.22.1 para blur móvel e acessibilidade. A base anterior à atualização está em `baseline-15.22.2.json`. O publicador agora substitui apenas os três módulos conhecidos da extensão após verificar a base inteira.
+
+## Barra inferior — 15.22.3
+
+A barra `workspace-mobile-dock` usa o mesmo vidro do tema. Entrada de 650 ms, salto do ícone selecionado de 620 ms, hover elástico com elevação de 6 px e escala de 108%, giro de 90° no botão Novo, resposta de pressão ao toque e indicação de menu aberto. O destaque Novo pulsa três vezes, sem animação contínua permanente. Preferência de movimento reduzido desativa todos esses movimentos. Base anterior: `baseline-15.22.3.json`. A navegação e as permissões originais não são alteradas. A barra exige sessão; sua interação visual não foi conferida com uma conta real.

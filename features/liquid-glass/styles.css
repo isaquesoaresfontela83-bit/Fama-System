@@ -131,3 +131,102 @@ html.dark:has([data-fama-glass-style]) :is([data-slot="dialog-content"],[data-sl
     filter: none !important;
   }
 }
+
+/* Floating Liquid Glass dock: entrance, selection bounce and elastic feedback. */
+html:has([data-fama-glass-style]) .application.ops-application > .workspace-mobile-dock {
+  background: var(--glass-shine),var(--glass-fill) !important;
+  border: 1px solid var(--glass-edge) !important;
+  border-radius: 26px;
+  box-shadow: 0 16px 42px rgba(10,71,133,.19),inset 0 1px 0 rgba(255,255,255,.75);
+  -webkit-backdrop-filter: blur(var(--glass-chrome-blur)) saturate(170%);
+  backdrop-filter: blur(var(--glass-chrome-blur)) saturate(170%);
+  isolation: isolate;
+}
+html:has([data-fama-glass-style]) .application.ops-application .workspace-mobile-dock > button {
+  position: relative;
+  border-radius: 18px;
+  -webkit-tap-highlight-color: transparent;
+  transform-origin: center bottom;
+}
+html:has([data-fama-glass-style]) .application.ops-application .workspace-mobile-dock > button[aria-current="page"] {
+  background: linear-gradient(145deg,rgba(74,174,255,.23),rgba(33,131,235,.09));
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.55),0 4px 14px rgba(14,110,213,.1);
+}
+html:has([data-fama-glass-style]) .workspace-mobile-dock > button[aria-current="page"]::after {
+  content: '';
+  position: absolute;
+  bottom: 2px;
+  left: calc(50% - 8px);
+  width: 16px;
+  height: 3px;
+  border-radius: 5px;
+  background: var(--ops-cyan,#0b72e7);
+  box-shadow: 0 0 9px rgba(23,199,238,.45);
+  pointer-events: none;
+}
+html:has([data-fama-glass-style]) .application.ops-application .workspace-mobile-dock .mobile-dock-new > span {
+  border-radius: 13px;
+  background: linear-gradient(145deg,#33b9ff,#0b72e7);
+  box-shadow: 0 5px 15px rgba(11,114,231,.32),inset 0 1px 0 rgba(255,255,255,.65);
+}
+@media (prefers-reduced-motion:no-preference) {
+  html:has([data-fama-glass-style]) .workspace-mobile-dock {
+    animation: fama-dock-enter 650ms cubic-bezier(.16,1,.3,1) both;
+  }
+  html:has([data-fama-glass-style]) .workspace-mobile-dock > button {
+    transition: translate 280ms cubic-bezier(.2,1.5,.4,1),scale 280ms cubic-bezier(.2,1.5,.4,1),background-color 220ms ease,box-shadow 220ms ease;
+  }
+  html:has([data-fama-glass-style]) .workspace-mobile-dock > button > svg,
+  html:has([data-fama-glass-style]) .workspace-mobile-dock .mobile-dock-new > span > svg {
+    transition: translate 320ms cubic-bezier(.2,1.6,.4,1),scale 320ms cubic-bezier(.2,1.6,.4,1),rotate 320ms cubic-bezier(.2,1.6,.4,1);
+  }
+  html:has([data-fama-glass-style]) .workspace-mobile-dock > button[aria-current="page"] > svg {
+    animation: fama-dock-select 620ms cubic-bezier(.2,.8,.2,1);
+  }
+  html:has([data-fama-glass-style]) .workspace-mobile-dock .mobile-dock-new > span {
+    animation: fama-dock-breathe 2800ms ease-in-out 3;
+  }
+  html:has([data-fama-glass-style]) .workspace-mobile-dock > button:not(:disabled):not([aria-disabled="true"]):active {
+    scale: .9;
+    translate: 0 2px;
+    transition-duration: 90ms;
+  }
+  html:has([data-fama-glass-style]) .workspace-mobile-dock > button[aria-expanded="true"] > svg {
+    rotate: 90deg;
+    scale: 1.12;
+  }
+}
+@media (hover:hover) and (pointer:fine) and (prefers-reduced-motion:no-preference) {
+  html:has([data-fama-glass-style]) .workspace-mobile-dock > button:not(:disabled):not([aria-disabled="true"]):hover {
+    translate: 0 -6px;
+    scale: 1.08;
+    box-shadow: 0 9px 21px rgba(11,114,231,.17),inset 0 1px 0 rgba(255,255,255,.5);
+  }
+  html:has([data-fama-glass-style]) .workspace-mobile-dock > button:not(:disabled):not([aria-disabled="true"]):hover > svg {
+    translate: 0 -3px;
+    rotate: -8deg;
+    scale: 1.14;
+  }
+  html:has([data-fama-glass-style]) .workspace-mobile-dock .mobile-dock-new:hover > span > svg {
+    rotate: 90deg;
+    scale: 1.12;
+  }
+  html:has([data-fama-glass-style]) .workspace-mobile-dock > button:not(:disabled):not([aria-disabled="true"]):active {
+    translate: 0 1px;
+    scale: .94;
+  }
+}
+@keyframes fama-dock-enter { from { opacity:0; translate:0 26px; } to { opacity:1; translate:0 0; } }
+@keyframes fama-dock-select { 0%,100% { translate:0 0; scale:1; } 35% { translate:0 -8px; scale:1.2; } 62% { translate:0 2px; scale:.96; } 80% { translate:0 -2px; scale:1.05; } }
+@keyframes fama-dock-breathe { 0%,100% { scale:1; } 50% { scale:1.09; } }
+@media (prefers-reduced-motion:reduce), print {
+  html:has([data-fama-glass-style]) .workspace-mobile-dock,
+  html:has([data-fama-glass-style]) .workspace-mobile-dock *,
+  html:has([data-fama-glass-style]) .workspace-mobile-dock *::after {
+    animation: none !important;
+    transition: none !important;
+    translate: none !important;
+    rotate: none !important;
+    scale: none !important;
+  }
+}

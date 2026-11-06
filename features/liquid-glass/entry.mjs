@@ -1,6 +1,6 @@
-export const VERSION = '15.22.2';
-export const RELEASE = '2026-11-06-button-hover-01';
-export const CSS_PATH = '/assets/fama-liquid-glass-15.22.2.css';
+export const VERSION = '15.22.3';
+export const RELEASE = '2026-11-06-animated-dock-01';
+export const CSS_PATH = '/assets/fama-liquid-glass-15.22.3.css';
 
 /** Wrap the current live application without rebuilding its recovered modules. */
 export function withLiquidGlass(app, css) {
