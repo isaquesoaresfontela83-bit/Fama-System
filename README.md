@@ -1,3 +1,10 @@
+> **Versão publicada: 15.22.0 — Liquid Glass (06/11/2026).**
+>
+> O código organizado do System e do Control está na [branch release/15.22.0-liquid-glass](https://github.com/isaquesoaresfontela83-bit/Fama-System/tree/release/15.22.0-liquid-glass).
+> Consulte o [mapa das pastas e comandos](https://github.com/isaquesoaresfontela83-bit/Fama-System/blob/release/15.22.0-liquid-glass/README.md), a [documentação](https://github.com/isaquesoaresfontela83-bit/Fama-System/blob/release/15.22.0-liquid-glass/docs/README.md) e o [estado publicado](https://github.com/isaquesoaresfontela83-bit/Fama-System/blob/release/15.22.0-liquid-glass/docs/CLOUDFLARE-STATUS.md).
+>
+> Esta `main` contém a base histórica. Não implantá-la sobre a produção atual. O guia abaixo descreve essa base histórica.
+
 # Fama System
 
 ERP multiempresa para negócios de piscinas, com CRM, clientes, orçamentos e contratos em PDF, agenda, ordens de serviço, garantias, estoque, financeiro e equipe.
