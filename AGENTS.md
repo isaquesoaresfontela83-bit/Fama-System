@@ -1,5 +1,9 @@
 # Instruções permanentes
 
+## Atualização de 06/11/2026 — Liquid Glass 15.22.0
+
+A versão conjunta é `15.22.0` / `2026-11-06-liquid-glass-01`. A extensão visual fica em `features/liquid-glass/` e envolve a entrada Pedidos sem recompilar as fontes antigas. Leia `docs/OPERACAO.md` e `docs/CLOUDFLARE-STATUS.md` para o fluxo vigente. As versões mencionadas abaixo são históricas.
+
 ## Autorização de publicação e GitHub — 30/10/2026
 
 O proprietário autorizou expressamente nesta conversa: “Apartar de agora você vai subir pro git hub sem precisar pedir, pode publicar”. Para as alterações solicitadas no Fama System e no Fama Control, enviar o código ao repositório GitHub existente e publicar os dois sistemas sem pedir nova confirmação conversacional. Esta preferência permanece válida para os próximos trabalhos nesses projetos. Preservar o escopo solicitado, os dados, os segredos, os planos e o público atual; validar o conjunto antes de publicar.

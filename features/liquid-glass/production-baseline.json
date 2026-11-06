@@ -1,0 +1,12 @@
+{
+  "system": {
+    "count": 123,
+    "sha256": "004369040c802ef01a5bd1141122d35fc94268ec92aab2e6f1dd909560685409",
+    "version": "2a6ac690-9cff-4858-afc1-44d873dd61e7"
+  },
+  "control": {
+    "count": 56,
+    "sha256": "22f92b6c7ded9dbc5637232105cfa6505ac5432fc3c24e09e3023551b4d0d079",
+    "version": "7b53022f-2142-4009-80d9-a4588d05350d"
+  }
+}

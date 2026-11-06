@@ -1,0 +1,11 @@
+# Fama Liquid Glass — 15.22.0
+
+Material translúcido inspirado no Liquid Glass: superfícies azuis e brancas, desfoque, saturação, brilho nas bordas e profundidade. Suporta tema escuro, menor transparência, maior contraste e impressão. Desfoque reduzido no celular, sem animação contínua ou dependência JavaScript no cliente.
+
+Extensão aditiva sobre a produção 15.21.0: `glass-main.mjs` envolve `pedidos-main.mjs`, preservando os 123 módulos System e 56 Control. Não recompilar as fontes antigas de apps/. `entry.mjs` injeta apenas uma folha CSS externa nas respostas HTML e preserva os handlers, cookies e políticas de segurança. A folha usa `:has([data-fama-glass-style])` para não modificar atributos controlados pela hidratação React.
+
+Validação: `node --test features/liquid-glass/glass.test.mjs`, `node --test features/pedidos/pedidos.test.mjs` e `node apps/system/scripts/verify-companion.mjs apps/control`. Os 20 testes e o verificador conjunto passaram. Os dois pacotes passaram pela conferência dos hashes dos módulos e dos bindings em produção antes da tentativa de ativação. As páginas de acesso dos dois domínios foram conferidas no navegador; a área autenticada e o viewport móvel não foram inspecionados.
+
+`deploy.mjs` roda pela conexão Cloudflare autenticada. Recebe `{baseline,entry,css}` e `activate=false` para conferência. Herda todos os bindings, ASSETS e a compatibilidade existente. A ativação verifica a base outra vez e tenta restaurar a versão anterior caso a segunda publicação falhe. Depois de publicar, conferir CSS, páginas de acesso, módulos frontend e ambos os domínios.
+
+Estado em 06/11/2026: publicação conjunta concluída após autorização explícita do proprietário. Os módulos anteriores foram lidos de volta e conferidos por hash; ambos os endpoints de saúde retornam 15.22.0. Detalhes em `../../docs/CLOUDFLARE-STATUS.md`.

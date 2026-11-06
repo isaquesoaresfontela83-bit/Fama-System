@@ -3,8 +3,16 @@
   "type": "module",
   "scripts": {
     "dev": "node features/pedidos/preview.mjs",
-    "dev:previous": "node apps/system/node_modules/vite/bin/vite.js --config .sites-runtime/design-qa/vite.config.mjs",
     "build:pedidos": "node features/pedidos/build.mjs",
-    "test:pedidos": "node --test features/pedidos/pedidos.test.mjs"
+    "test:pedidos": "node --test features/pedidos/pedidos.test.mjs",
+    "dev:pedidos": "node features/pedidos/preview.mjs",
+    "test:glass": "node --test features/liquid-glass/glass.test.mjs",
+    "test": "node --test features/pedidos/pedidos.test.mjs features/liquid-glass/glass.test.mjs",
+    "check:companion": "node apps/system/scripts/verify-companion.mjs apps/control",
+    "check:syntax": "node --check features/liquid-glass/entry.mjs && node --check features/liquid-glass/deploy.mjs"
+  },
+  "name": "fama-platform",
+  "engines": {
+    "node": ">=24"
   }
 }

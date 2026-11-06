@@ -1,5 +1,7 @@
 # Preferência permanente do proprietário
 
+Versão conjunta vigente em 06/11/2026: **15.22.0**, `2026-11-06-liquid-glass-01`. Extensão aditiva em `../../features/liquid-glass/`; não reconstruir esta árvore histórica sobre a produção. Consulte `../../docs/OPERACAO.md` e `../../docs/CLOUDFLARE-STATUS.md`.
+
 Em 30/10/2026 o proprietário autorizou o envio das alterações solicitadas ao GitHub existente e a publicação conjunta do Fama System e Fama Control sem nova confirmação conversacional: “Apartar de agora você vai subir pro git hub sem precisar pedir, pode publicar”. Registrar e respeitar essa preferência nos próximos trabalhos; preservar dados, segredos, planos e público e validar antes da publicação.
 
 Atualização de 30/10/2026: Pedidos 15.21.0 é um módulo aditivo em `../../features/pedidos/`, sobre a produção 15.20.0 recuperada diretamente da Cloudflare. Leia seu README e manifesto antes de publicar. Não implante esta árvore antiga como substituição da produção. Versão conjunta nova: `2026-10-30-pedidos-vendas-entregas-01`.
