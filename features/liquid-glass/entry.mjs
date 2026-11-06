@@ -1,9 +1,9 @@
-export const VERSION = '15.22.3';
-export const RELEASE = '2026-11-06-animated-dock-01';
-export const CSS_PATH = '/assets/fama-liquid-glass-15.22.3.css';
+export const VERSION = '15.23.0';
+export const RELEASE = '2026-11-06-customizable-dock-01';
+export const CSS_PATH = '/assets/fama-liquid-glass-15.23.0.css';
 
 /** Wrap the current live application without rebuilding its recovered modules. */
-export function withLiquidGlass(app, css) {
+export function withLiquidGlass(app, css, resources = {}) {
   return {
     ...app,
     async fetch(request, env, ctx) {
@@ -14,6 +14,9 @@ export function withLiquidGlass(app, css) {
           'Cache-Control':'public, max-age=31536000, immutable',
           'X-Content-Type-Options':'nosniff',
         }});
+      }
+      if (['GET','HEAD'].includes(request.method) && Object.hasOwn(resources,url.pathname)) {
+        return new Response(request.method==='HEAD'?null:resources[url.pathname],{headers:{'Content-Type':'application/javascript; charset=utf-8','Cache-Control':'public, max-age=31536000, immutable','X-Content-Type-Options':'nosniff'}});
       }
       const response = await app.fetch(request, env, ctx);
       if (request.method === 'GET' && url.pathname === '/api/health' && response.ok) {
@@ -26,6 +29,7 @@ export function withLiquidGlass(app, css) {
       if (request.method !== 'GET' || !response.headers.get('content-type')?.includes('text/html')) return response;
       const rewritten = new HTMLRewriter()
         .on('head', {element(element) {element.append(`<link rel="stylesheet" href="${CSS_PATH}" data-fama-glass-style>`,{html:true});}})
+        .on('body', {element(element) {element.append('<script type="module" src="/assets/fama-dock-client-15.23.0.mjs"></script>',{html:true});}})
         .transform(response);
       const headers = new Headers(rewritten.headers);
       headers.delete('content-length'); headers.delete('etag');

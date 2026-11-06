@@ -230,3 +230,41 @@ html:has([data-fama-glass-style]) .application.ops-application .workspace-mobile
     scale: none !important;
   }
 }
+
+/* The application keeps its existing buttons and permission checks. */
+html:has([data-fama-glass-style]) .workspace-mobile-dock > [data-fama-dock-hidden] { display:none !important; }
+html:has([data-fama-glass-style]) .application.ops-application > .workspace-mobile-dock { gap:4px; padding-inline:6px; }
+html:has([data-fama-glass-style]) .application.ops-application .workspace-mobile-dock > button { min-width:44px; padding-inline:3px; }
+.fama-dock-gear { font-size:23px; line-height:1; }
+.fama-dock-settings {
+  color:var(--foreground,#102a56);
+  background:linear-gradient(135deg,rgba(255,255,255,.35),transparent),var(--glass-fill,#f8fcff);
+  border:1px solid var(--glass-edge,#d6e6f3);
+  border-radius:24px;
+  padding:24px;
+  width:min(520px,calc(100vw - 24px));
+  max-height:calc(100dvh - 32px);
+  overflow:auto;
+  box-shadow:0 26px 80px rgba(0,28,69,.25);
+  -webkit-backdrop-filter:blur(24px);
+  backdrop-filter:blur(24px);
+}
+.fama-dock-settings::backdrop { background:rgba(4,21,44,.46); }
+.fama-dock-settings header { display:flex; justify-content:space-between; align-items:center; gap:14px; }
+.fama-dock-settings h2 { margin:0; font-size:1.25rem; }
+.fama-dock-settings p { line-height:1.6; font-size:.875rem; }
+.fama-dock-settings-list { display:grid; gap:10px; margin-block:20px; }
+.fama-dock-settings-row { display:flex; align-items:center; gap:8px; padding:10px; border:1px solid var(--border,#cbddeb); border-radius:14px; }
+.fama-dock-settings-row label { display:flex; align-items:center; gap:10px; flex:1; min-width:0; font-size:.875rem; }
+.fama-dock-settings input { accent-color:var(--primary,#0b72e7); width:18px; height:18px; flex-shrink:0; }
+.fama-dock-settings button { min-height:44px; border:1px solid var(--border,#cbddeb); border-radius:11px; background:var(--secondary,#eaf4ff); color:inherit; font:inherit; font-size:.85rem; padding:8px 12px; cursor:pointer; }
+.fama-dock-settings button:disabled { opacity:.4; cursor:default; }
+.fama-dock-settings button:focus-visible,.fama-dock-settings input:focus-visible { outline:3px solid var(--ring,#1677e8); outline-offset:3px; }
+.fama-dock-settings footer { display:flex; justify-content:flex-end; gap:8px; flex-wrap:wrap; }
+.fama-dock-settings .fama-dock-save { background:var(--primary,#0b72e7); color:white; }
+.fama-dock-settings-status { color:var(--muted-foreground,#5b7190); }
+html.dark .fama-dock-settings { background:rgba(12,32,57,.96); }
+@media (prefers-reduced-transparency:reduce), (prefers-contrast:more) { .fama-dock-settings { background:var(--background,#f6fbff) !important; backdrop-filter:none; -webkit-backdrop-filter:none; } }
+@media (forced-colors:active) { .fama-dock-settings { background:Canvas !important; color:CanvasText; border-color:CanvasText; } }
+@media (max-width:380px) { .fama-dock-settings { padding:16px; } .fama-dock-settings-row { gap:5px; padding:8px; } .fama-dock-settings-row button { padding-inline:10px; } }
+@media print { [data-fama-dock-settings],.fama-dock-settings { display:none !important; } }

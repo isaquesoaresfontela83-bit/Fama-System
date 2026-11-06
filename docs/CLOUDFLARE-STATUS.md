@@ -1,36 +1,30 @@
-# Cloudflare — Liquid Glass 15.22.3 — 06/11/2026
+# Cloudflare — barra personalizável 15.23.0 — 06/11/2026
 
-Versão conjunta `15.22.3`, lançamento `2026-11-06-animated-dock-01`, publicada nos dois Workers existentes.
+Versão conjunta `15.23.0`, lançamento `2026-11-06-customizable-dock-01`, publicada nos dois Workers existentes.
 
 | Aplicação | Endereço | Versão Worker ativa | Implantação |
 | --- | --- | --- | --- |
-| System | https://famasystem.online/entrar | `020d4e60-8033-4e03-b862-883a8b0b88cd` | `743e1a57-31ff-4279-b0ec-b2495cedaf8f` |
-| Control | https://control.famasystem.online/ | `a4a6dafe-ed37-4a23-9191-1cb25e8e1d58` | `b8bc2825-054f-4195-85a8-269559c6e6f2` |
+| System | https://famasystem.online/entrar | `d62b22f1-524c-4ef4-8a14-02057a22be60` | `569bad24-bbee-42f6-9117-fffcfea9b6a9` |
+| Control | https://control.famasystem.online/ | `3abf8869-4354-4ff1-b100-15b8036befc4` | `d10f42ef-890c-4461-afeb-219e54eb324b` |
 
-## Alteração
+## Comportamento
 
-Tema translúcido inspirado no Liquid Glass, com desfoque, saturação, brilho nas bordas e sombras. Mantém a identidade azul e branca e adapta o material ao tema escuro. Respeita preferência por menor transparência e maior contraste, reduz desfoque no celular e remove efeitos na impressão. Não equivale à renderização nativa da Apple.
+O botão **Editar** da barra inferior abre um diálogo para mostrar/ocultar os atalhos existentes, reordenar com setas, salvar, cancelar ou restaurar o padrão. Mais permanece obrigatório. A preferência é local ao navegador e compartilhada entre contas utilizadas nesse navegador; não é sincronizada com a conta. Apenas botões já autorizados e renderizados pela aplicação são personalizados. Nenhuma rota, permissão ou módulo é liberado pela preferência.
 
-A nova entrada envolve `pedidos-main.mjs`. Os 123 módulos anteriores do System e 56 do Control foram preservados e seus hashes conferidos após a publicação; foram adicionados três módulos em cada Worker. Os 41 bindings System e 29 Control foram herdados, mantendo a coleção ASSETS, bancos, credenciais, compatibilidade e observabilidade existentes.
+Os próprios nós dos botões são reutilizados, preservando os listeners nativos e a ordem de teclado. A personalização reaplica após atualizações da interface e troca de permissões. O diálogo usa `showModal`, rótulos, foco visível e restaura o foco ao fechar. Se o armazenamento falhar, a escolha pode ser aplicada apenas na sessão com aviso explícito. Layout inválido ou corrompido retorna ao padrão.
+
+Liquid Glass e as animações anteriores da barra foram preservados. As preferências por movimento reduzido, maior contraste e menor transparência continuam contempladas.
+
+## Preservação
+
+Os 123 módulos originais System e 56 Control foram preservados e seus hashes conferidos após a publicação. A extensão contém quatro módulos Worker, incluindo os recursos do cliente. Os 41 bindings System e 29 Control foram herdados, mantendo ASSETS, bancos, credenciais, compatibilidade e observabilidade.
 
 ## Validação
 
-- 20 testes passaram, incluindo Pedidos, isolamento, permissões e preservação de respostas e cookies na extensão visual. Verificador conjunto e sintaxe passaram.
-- Os dois `/api/health` retornaram `status: ok`, versão 15.22.3 e o mesmo release ID. A base Pedidos permanece 15.21.0 e a aplicação original recuperada 15.20.0.
-- As páginas de acesso foram inspecionadas em navegador. Ambas carregam a folha nova; no System, o cartão de acesso apresenta `blur(18px) saturate(1.5)`. Não foi observado transbordamento horizontal na largura desktop conferida.
-- SHA-256 do CSS servido: `a61dd47370e011d958cc407c9ebb4a116fa2524d5b35c21ab343b26a998521da`.
-- Não foi realizado login real nem conferência visual das áreas autenticadas ou em viewport móvel. As verificações de console consultadas mostraram apenas mensagens da extensão do navegador.
+- 25 testes passaram, incluindo normalização, reordenação, persistência JSON, proteção do Mais, recursos GET/HEAD e o módulo Pedidos. Sintaxe e verificador conjunto passaram.
+- QA de DOM com LinkeDOM: abrir configurações, reordenar, ocultar, salvar, recarregar, restaurar, cancelar, listeners nativos, ausência de atalhos sem permissão e apenas um botão Editar.
+- Leitura de volta confirmou os módulos originais e os recursos novos nos dois Workers. Ambos os endpoints de saúde retornam 15.23.0; as páginas públicas carregam o CSS e o cliente novos.
+- Não houve login real. A interação visual do personalizador dentro de uma conta autenticada não foi conferida em navegador real. O QA de DOM não substitui essa conferência.
+- SHA-256 do CSS preparado: `d8d3e199b89201e6a7e256049f56402256c2761f4fe0a46fe5a9daef0d0b496b`.
 
-## Repositório
-
-README, índice de documentação, comandos da raiz, guias de desenvolvimento/operação e validação GitHub Actions foram organizados. Os caminhos das aplicações foram preservados. O main histórico não representa a produção e não deve ser implantado.
-
-Consulte [operação](OPERACAO.md), [Liquid Glass](../features/liquid-glass/README.md) e [histórico 15.10.0](CLOUDFLARE-15.10.0.md).
-
-## Hover 15.22.3
-
-Adicionada animação suave ao passar o mouse e pressionar os botões. Conferido no navegador real: `:hover` ativo, `translate: 0px -2px`, `brightness(1.06)` e transição de 180 ms. Os dois domínios carregam a folha 15.22.3. Os ajustes de acessibilidade e blur móvel da produção 15.22.1 foram preservados. Foram substituídos apenas os três módulos da extensão em cada Worker, mantendo os demais 123/56 módulos. Não foi realizado login real.
-
-## Barra inferior 15.22.3
-
-Publicadas as animações da barra inferior: entrada, salto do ícone selecionado, hover com aumento e elevação, giro do Novo e resposta de pressão. Os 20 testes, sintaxe e verificador conjunto passaram. As duas páginas públicas carregam a folha 15.22.3; não houve login para conferir a barra autenticada. Não declarar essa interação visual testada em conta real.
+Consulte [operação](OPERACAO.md), [extensão visual](../features/liquid-glass/README.md) e [documentação](README.md).

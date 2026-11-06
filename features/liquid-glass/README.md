@@ -17,3 +17,11 @@ Hover em mouse preciso: elevação de 2 px, brilho de 6% e sombra suave em 180 m
 ## Barra inferior — 15.22.3
 
 A barra `workspace-mobile-dock` usa o mesmo vidro do tema. Entrada de 650 ms, salto do ícone selecionado de 620 ms, hover elástico com elevação de 6 px e escala de 108%, giro de 90° no botão Novo, resposta de pressão ao toque e indicação de menu aberto. O destaque Novo pulsa três vezes, sem animação contínua permanente. Preferência de movimento reduzido desativa todos esses movimentos. Base anterior: `baseline-15.22.3.json`. A navegação e as permissões originais não são alteradas. A barra exige sessão; sua interação visual não foi conferida com uma conta real.
+
+## Barra personalizável — 15.23.0
+
+O cliente em `dock-client.mjs` acrescenta Editar e configura os botões existentes em `workspace-mobile-dock`. `dock-preferences.mjs` normaliza os dados e reordena somente os atalhos disponíveis. A chave `fama:dock-layout:v1` armazena a escolha neste navegador, sem sincronização por conta. Mais não pode ser ocultado. Nenhum botão ausente por permissão é criado.
+
+A entrada HTML inclui o módulo cliente e serve dois recursos JavaScript externos, imutáveis e da mesma origem. `glass-client-resources.mjs` é o quarto módulo Worker da extensão; o publicador exige os dois recursos do cliente. A base anterior à publicação está em `baseline-15.23.0.json`.
+
+Validação: 25 testes, sintaxe e verificador conjunto; QA de DOM com LinkeDOM para edição, persistência, restauração e preservação dos listeners. As páginas públicas foram conferidas; não houve inspeção visual do personalizador com uma conta real.

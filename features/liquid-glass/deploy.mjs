@@ -1,6 +1,7 @@
 /** Run through the authenticated Cloudflare connection; no credentials on disk. */
 export async function deployGlass(cloudflare, accountId, input, activate = false) {
   const digest = async value => [...new Uint8Array(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(value)))].map(b=>b.toString(16).padStart(2,'0')).join('');
+  if(!input.entry||!input.css||!input.resources||Object.keys(input.resources).length!==2||Object.values(input.resources).some(v=>typeof v!=='string'))throw Error('Missing visual extension resources');
   const prepared=[];
   for (const kind of ['system','control']) {
     const worker=`fama-${kind}-app`,path=`/accounts/${accountId}/workers/scripts/${worker}`;
@@ -16,12 +17,13 @@ export async function deployGlass(cloudflare, accountId, input, activate = false
     const parts=script.split(boundary).flatMap(part=>{const split=part.indexOf('\r\n\r\n'),name=part.slice(0,split).match(/name="([^"]+)"/)?.[1];return name?[{name,body:part.slice(split+4).replace(/\r\n$/,'')}]:[];}).sort((a,b)=>a.name.localeCompare(b.name));
     if(parts.length!==expected.count||await digest(JSON.stringify(parts))!==expected.sha256)throw Error('Module integrity mismatch: '+worker);
     if(!parts.some(p=>p.name==='pedidos-main.mjs'))throw Error('Unexpected entry: '+worker);
-    const glassNames=['glass-main.mjs','glass-core.mjs','glass-styles.mjs'];
+    const glassNames=['glass-main.mjs','glass-core.mjs','glass-styles.mjs','glass-client-resources.mjs'];
     if(parts.some(p=>p.name.startsWith('glass-')&&!glassNames.includes(p.name)))throw Error('Unknown glass module: '+worker);
     const preserved=parts.filter(p=>!glassNames.includes(p.name));
     const additions=[
-      {name:'glass-main.mjs',body:"import app from './pedidos-main.mjs';\nimport {withLiquidGlass} from './glass-core.mjs';\nimport css from './glass-styles.mjs';\nexport default withLiquidGlass(app,css);\n"},
+      {name:'glass-main.mjs',body:"import app from './pedidos-main.mjs';\nimport {withLiquidGlass} from './glass-core.mjs';\nimport css from './glass-styles.mjs';\nimport resources from './glass-client-resources.mjs';\nexport default withLiquidGlass(app,css,resources);\n"},
       {name:'glass-core.mjs',body:input.entry},
+      {name:'glass-client-resources.mjs',body:'export default '+JSON.stringify(input.resources)+';\n'},
       {name:'glass-styles.mjs',body:'export default '+JSON.stringify(input.css)+';\n'},
     ];
     const s=settings.result;
@@ -29,7 +31,7 @@ export async function deployGlass(cloudflare, accountId, input, activate = false
     if(s.limits)metadata.limits=s.limits;
     const form=new FormData();form.append('metadata',new Blob([JSON.stringify(metadata)],{type:'application/json'}));
     for(const p of [...preserved,...additions])form.append(p.name,new Blob([p.body],{type:'application/javascript+module'}),p.name);
-    prepared.push({worker,path,form,expected,summary:{worker,preservedModules:preserved.length,extensionModules:3,bindings:s.bindings.length,cssSha256:await digest(input.css)}});
+    prepared.push({worker,path,form,expected,summary:{worker,preservedModules:preserved.length,extensionModules:4,bindings:s.bindings.length,cssSha256:await digest(input.css)}});
   }
   if(!activate)return {verified:true,packages:prepared.map(p=>p.summary)};
   const published=[];

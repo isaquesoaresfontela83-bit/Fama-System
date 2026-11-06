@@ -8,7 +8,7 @@ O repositório reúne System e Control. As árvores `apps/system` e `apps/contro
 
 | Comando | Finalidade |
 | --- | --- |
-| `npm test` | Executar os 20 testes de Pedidos e Liquid Glass. |
+| `npm test` | Executar os 25 testes de Pedidos e Liquid Glass. |
 | `npm run test:pedidos` | Testar vendas, entregas, isolamento e permissões. |
 | `npm run test:glass` | Testar a extensão visual e a preservação das respostas. |
 | `npm run check:companion` | Conferir versão, lançamento e contratos entre os aplicativos. |

@@ -19,7 +19,13 @@ test('auth, redirects, API errors, cookies and other handlers remain unchanged',
 });
 test('HTML streams through rewriter and retains security headers',async()=>{
  const operations=[];
- globalThis.HTMLRewriter=class {on(selector,handler){operations.push(selector);handler.element({append(html){assert.match(html,/data-fama-glass-style/);assert.ok(html.includes(CSS_PATH));}});return this;}transform(r){return r;}};
+ globalThis.HTMLRewriter=class {on(selector,handler){operations.push(selector);handler.element({append(html){if(selector==='head'){assert.match(html,/data-fama-glass-style/);assert.ok(html.includes(CSS_PATH));}else assert.match(html,/type="module"/);}});return this;}transform(r){return r;}};
  const wrapped=withLiquidGlass({fetch:()=>new Response('<html><head></head><body>unchanged</body></html>',{headers:{'content-type':'text/html','content-security-policy':"default-src 'self'",'set-cookie':'session=existing; HttpOnly','etag':'old'}})},'');
- const r=await wrapped.fetch(new Request('https://f.test/'));assert.deepEqual(operations,['head']);assert.equal(r.headers.get('etag'),null);assert.equal(r.headers.get('content-security-policy'),"default-src 'self'");assert.match(r.headers.get('set-cookie'),/existing/);assert.match(await r.text(),/unchanged/);
+ const r=await wrapped.fetch(new Request('https://f.test/'));assert.deepEqual(operations,['head','body']);assert.equal(r.headers.get('etag'),null);assert.equal(r.headers.get('content-security-policy'),"default-src 'self'");assert.match(r.headers.get('set-cookie'),/existing/);assert.match(await r.text(),/unchanged/);
+});
+test('dock modules are immutable assets with empty HEAD and no POST interception',async()=>{
+ let calls=0;const wrapped=withLiquidGlass({fetch(){calls++;return new Response('original',{status:401});}},'',{'/assets/dock.mjs':'export default true;'});
+ const r=await wrapped.fetch(new Request('https://f.test/assets/dock.mjs'));assert.match(r.headers.get('content-type'),/javascript/);assert.match(r.headers.get('cache-control'),/immutable/);assert.equal(await r.text(),'export default true;');
+ const head=await wrapped.fetch(new Request('https://f.test/assets/dock.mjs',{method:'HEAD'}));assert.equal(await head.text(),'');
+ assert.equal((await wrapped.fetch(new Request('https://f.test/assets/dock.mjs',{method:'POST'}))).status,401);assert.equal(calls,1);
 });
