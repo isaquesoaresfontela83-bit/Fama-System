@@ -4,6 +4,9 @@ html:has([data-fama-glass-style]) {
   --glass-edge: rgba(255,255,255,.86);
   --glass-shadow: 0 14px 44px rgba(26,78,130,.09), inset 0 1px 0 rgba(255,255,255,.95), inset 0 -1px 0 rgba(135,186,225,.18);
   --glass-blur: 18px;
+  --glass-chrome-blur: 26px;
+  --glass-sidebar-blur: 22px;
+  --glass-overlay-blur: 30px;
   --glass-shine: linear-gradient(135deg,rgba(255,255,255,.58),rgba(255,255,255,.08) 42%,rgba(113,199,255,.10));
 }
 html.dark:has([data-fama-glass-style]) {
@@ -30,15 +33,15 @@ html:has([data-fama-glass-style]) :is(.topbar,.control-topbar,.premium-utility-b
   background: var(--glass-shine),var(--glass-fill) !important;
   border-color: var(--glass-edge) !important;
   box-shadow: 0 6px 28px rgba(18,68,123,.06),inset 0 1px 0 rgba(255,255,255,.45);
-  -webkit-backdrop-filter: blur(26px) saturate(165%);
-  backdrop-filter: blur(26px) saturate(165%);
+  -webkit-backdrop-filter: blur(var(--glass-chrome-blur)) saturate(165%);
+  backdrop-filter: blur(var(--glass-chrome-blur)) saturate(165%);
 }
 html:has([data-fama-glass-style]) :is(.main-sidebar [data-sidebar="sidebar"],.control-sidebar) {
   background: linear-gradient(145deg,rgba(55,132,205,.32),rgba(7,31,66,.14)),rgba(9,33,67,.92) !important;
   border-color: rgba(175,222,255,.24) !important;
   box-shadow: inset -1px 0 0 rgba(220,241,255,.12),8px 0 35px rgba(20,67,113,.08);
-  -webkit-backdrop-filter: blur(22px) saturate(150%);
-  backdrop-filter: blur(22px) saturate(150%);
+  -webkit-backdrop-filter: blur(var(--glass-sidebar-blur)) saturate(150%);
+  backdrop-filter: blur(var(--glass-sidebar-blur)) saturate(150%);
 }
 html:has([data-fama-glass-style]) :is([data-sidebar="menu-button"][data-active="true"],.control-sidebar button.active,.control-sidebar a.active) {
   background: linear-gradient(135deg,rgba(105,221,255,.46),rgba(36,127,241,.56)) !important;
@@ -63,8 +66,8 @@ html:has([data-fama-glass-style]) :is([data-slot="dialog-content"],[data-slot="s
   background: var(--glass-shine),var(--glass-fill) !important;
   border-color: var(--glass-edge) !important;
   box-shadow: var(--glass-shadow) !important;
-  -webkit-backdrop-filter: blur(30px) saturate(145%);
-  backdrop-filter: blur(30px) saturate(145%);
+  -webkit-backdrop-filter: blur(var(--glass-overlay-blur)) saturate(145%);
+  backdrop-filter: blur(var(--glass-overlay-blur)) saturate(145%);
 }
 /* Keep dense records and dropdown choices opaque enough to read. */
 html:has([data-fama-glass-style]) :is([data-slot="dialog-content"],[data-slot="sheet-content"],[data-slot="popover-content"],[data-slot="dropdown-menu-content"],.fama-account-panel) { --glass-fill: rgba(249,253,255,.94); }
@@ -74,19 +77,57 @@ html.dark:has([data-fama-glass-style]) :is([data-slot="dialog-content"],[data-sl
   html:has([data-fama-glass-style]) :is(.metric-card,.control-metric):hover { translate: 0 -2px; box-shadow: 0 18px 42px rgba(27,89,154,.14),inset 0 1px 0 rgba(255,255,255,.7) !important; }
   html:has([data-fama-glass-style]) [data-slot="button"]:not(:disabled):active { translate: 0 1px; }
 }
-@media (max-width:800px) { html:has([data-fama-glass-style]) { --glass-blur: 8px; } }
+@media (max-width:800px) { html:has([data-fama-glass-style]) { --glass-blur: 8px; --glass-chrome-blur: 10px; --glass-sidebar-blur: 10px; --glass-overlay-blur: 12px; } }
 @supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))) {
-  html:has([data-fama-glass-style]) { --glass-fill: #f6fbff; }
-  html.dark:has([data-fama-glass-style]) { --glass-fill: #10263e; }
+  html:has([data-fama-glass-style]) { --glass-fill: #f6fbff !important; }
+  html.dark:has([data-fama-glass-style]) { --glass-fill: #10263e !important; }
 }
 @media (prefers-reduced-transparency:reduce), (prefers-contrast:more) {
-  html:has([data-fama-glass-style]) { --glass-fill: #f6fbff; --glass-shine: none; --glass-edge: #a5bfd8; }
-  html.dark:has([data-fama-glass-style]) { --glass-fill: #10263e; --glass-edge: #52718e; }
+  html:has([data-fama-glass-style]) { --glass-fill: #f6fbff !important; --glass-shine: none; --glass-edge: #a5bfd8; }
+  html.dark:has([data-fama-glass-style]) { --glass-fill: #10263e !important; --glass-edge: #52718e; }
   html:has([data-fama-glass-style]) * { -webkit-backdrop-filter:none !important; backdrop-filter:none !important; }
 }
-@media (forced-colors:active) { html:has([data-fama-glass-style]) * { box-shadow:none !important; } }
+@media (forced-colors:active) {
+  html:has([data-fama-glass-style]) { --glass-fill: Canvas !important; --glass-edge: CanvasText; --glass-shine: none; }
+  html:has([data-fama-glass-style]) * { box-shadow:none !important; -webkit-backdrop-filter:none !important; backdrop-filter:none !important; }
+}
 @media print {
   html:has([data-fama-glass-style]) * { -webkit-backdrop-filter:none !important; backdrop-filter:none !important; box-shadow:none !important; }
-  html:has([data-fama-glass-style]) { --glass-fill:white; --glass-shine:none; --glass-edge:#bbb; }
+  html:has([data-fama-glass-style]) { --glass-fill:white !important; --glass-shine:none; --glass-edge:#bbb; }
   html:has([data-fama-glass-style]) :is(.application,.control-shell) { background:white !important; }
+}
+
+/* Local overlay fills must also obey opacity preferences and browser fallback. */
+@supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))) {
+  html:has([data-fama-glass-style]) :is([data-slot="dialog-content"],[data-slot="sheet-content"],[data-slot="popover-content"],[data-slot="dropdown-menu-content"],.fama-account-panel) { --glass-fill: inherit !important; }
+}
+@media (prefers-reduced-transparency:reduce), (prefers-contrast:more), (forced-colors:active), print {
+  html:has([data-fama-glass-style]) :is([data-slot="dialog-content"],[data-slot="sheet-content"],[data-slot="popover-content"],[data-slot="dropdown-menu-content"],.fama-account-panel) { --glass-fill: inherit !important; }
+}
+
+
+/* Responsive button feedback without overlays that could cover icons. */
+@media (hover:hover) and (pointer:fine) and (prefers-reduced-motion:no-preference) {
+  html:has([data-fama-glass-style]) :is([data-slot="button"],.fo-button,.public-login,.public-manual-link,[data-sidebar="menu-button"]):not(:disabled):not([aria-disabled="true"]):not([data-disabled]) {
+    transition: translate 180ms cubic-bezier(.2,.8,.2,1), scale 140ms ease, filter 180ms ease, box-shadow 180ms ease, background-color 180ms ease;
+  }
+  html:has([data-fama-glass-style]) :is([data-slot="button"],.fo-button,.public-login,.public-manual-link,[data-sidebar="menu-button"]):not(:disabled):not([aria-disabled="true"]):not([data-disabled]):hover {
+    translate: 0 -2px;
+    filter: brightness(1.06);
+    box-shadow: 0 8px 22px rgba(11,114,231,.24),inset 0 1px 0 rgba(255,255,255,.58) !important;
+  }
+  html:has([data-fama-glass-style]) :is([data-slot="button"],.fo-button,.public-login,.public-manual-link,[data-sidebar="menu-button"]):not(:disabled):not([aria-disabled="true"]):not([data-disabled]):active {
+    translate: 0 0;
+    scale: .98;
+    filter: brightness(1.02);
+    box-shadow: 0 2px 7px rgba(11,114,231,.16),inset 0 1px 2px rgba(0,28,69,.12) !important;
+  }
+}
+@media (prefers-reduced-motion:reduce), print {
+  html:has([data-fama-glass-style]) :is([data-slot="button"],.fo-button,.public-login,.public-manual-link,[data-sidebar="menu-button"]) {
+    transition: none !important;
+    translate: none !important;
+    scale: none !important;
+    filter: none !important;
+  }
 }

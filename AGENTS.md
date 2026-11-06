@@ -1,8 +1,8 @@
 # Instruções permanentes
 
-## Atualização de 06/11/2026 — Liquid Glass 15.22.0
+## Atualização de 06/11/2026 — Liquid Glass 15.22.2
 
-A versão conjunta é `15.22.0` / `2026-11-06-liquid-glass-01`. A extensão visual fica em `features/liquid-glass/` e envolve a entrada Pedidos sem recompilar as fontes antigas. Leia `docs/OPERACAO.md` e `docs/CLOUDFLARE-STATUS.md` para o fluxo vigente. As versões mencionadas abaixo são históricas.
+A versão conjunta é `15.22.2` / `2026-11-06-button-hover-01`. A extensão visual fica em `features/liquid-glass/` e envolve a entrada Pedidos sem recompilar as fontes antigas. Leia `docs/OPERACAO.md` e `docs/CLOUDFLARE-STATUS.md` para o fluxo vigente. As versões mencionadas abaixo são históricas.
 
 ## Autorização de publicação e GitHub — 30/10/2026
 

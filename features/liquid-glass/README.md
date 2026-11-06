@@ -1,4 +1,4 @@
-# Fama Liquid Glass — 15.22.0
+# Fama Liquid Glass — 15.22.2
 
 Material translúcido inspirado no Liquid Glass: superfícies azuis e brancas, desfoque, saturação, brilho nas bordas e profundidade. Suporta tema escuro, menor transparência, maior contraste e impressão. Desfoque reduzido no celular, sem animação contínua ou dependência JavaScript no cliente.
 
@@ -8,4 +8,8 @@ Validação: `node --test features/liquid-glass/glass.test.mjs`, `node --test fe
 
 `deploy.mjs` roda pela conexão Cloudflare autenticada. Recebe `{baseline,entry,css}` e `activate=false` para conferência. Herda todos os bindings, ASSETS e a compatibilidade existente. A ativação verifica a base outra vez e tenta restaurar a versão anterior caso a segunda publicação falhe. Depois de publicar, conferir CSS, páginas de acesso, módulos frontend e ambos os domínios.
 
-Estado em 06/11/2026: publicação conjunta concluída após autorização explícita do proprietário. Os módulos anteriores foram lidos de volta e conferidos por hash; ambos os endpoints de saúde retornam 15.22.0. Detalhes em `../../docs/CLOUDFLARE-STATUS.md`.
+Estado em 06/11/2026: publicação conjunta concluída após autorização explícita do proprietário. Os módulos anteriores foram lidos de volta e conferidos por hash; ambos os endpoints de saúde retornam 15.22.2. Detalhes em `../../docs/CLOUDFLARE-STATUS.md`.
+
+## Animação dos botões — 15.22.2
+
+Hover em mouse preciso: elevação de 2 px, brilho de 6% e sombra suave em 180 ms. Ao pressionar: escala de 98% em 140 ms. Botões desabilitados ficam excluídos; preferência por movimento reduzido e impressão desativam a animação. A atualização preserva os ajustes publicados em 15.22.1 para blur móvel e acessibilidade. A base anterior à atualização está em `baseline-15.22.2.json`. O publicador agora substitui apenas os três módulos conhecidos da extensão após verificar a base inteira.

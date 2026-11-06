@@ -24,6 +24,6 @@ O estado verificado está em [CLOUDFLARE-STATUS.md](CLOUDFLARE-STATUS.md). A inf
 
 `features/liquid-glass/deploy.mjs` recebe a API autenticada Cloudflare, o ID da conta e `{baseline, entry, css}`. Sem ativação, prepara e confere os dois pacotes. A ativação é explícita pelo argumento `activate` e verifica novamente a versão e o hash da base.
 
-A base registrada corresponde à produção **antes** da publicação 15.22.0. Para uma atualização posterior, recuperar e registrar a nova base e preparar a substituição dos módulos da extensão; não executar o manifesto anterior como se fosse a produção atual. O publicador rejeita uma base diferente ou uma extensão já presente.
+Cada manifesto registra a produção **antes** da publicação correspondente. Para uma atualização posterior, recuperar e registrar a nova base. O publicador rejeita uma base diferente ou módulos desconhecidos da extensão; quando a base confere, substitui somente `glass-main.mjs`, `glass-core.mjs` e `glass-styles.mjs`. Nunca reutilizar um manifesto antigo como se fosse a produção atual.
 
 A autorização permanente do proprietário está registrada em `AGENTS.md`. Controles de aprovação da conexão continuam aplicáveis.
