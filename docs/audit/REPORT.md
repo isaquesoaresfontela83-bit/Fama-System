@@ -1,128 +1,134 @@
-# Auditoria Fama System e Fama Control — 07/11/2026
+# Auditoria Fama System e Fama Control — 08/11/2026
 
-**Candidato corrigido e testado parcialmente; publicação bloqueada.** A produção permanece em 15.23.2. O candidato 15.24.0 não representa uma auditoria integral concluída nem aprovação do sistema completo para produção.
+**A branch passou na validação automatizada; a auditoria integral e a publicação da aplicação continuam pendentes.** Foram corrigidas as falhas reproduzidas nas extensões, os alertas dos três lockfiles e a execução histórica de testes. O endurecimento PostgreSQL foi aplicado e verificado. A aplicação publicada permanece em 15.23.2; o candidato 15.24.0 ainda não foi implantado.
 
-Branch `audit/security-quality-2026-11-07`, baseada em `bf185fd30ff47b174d483ae99662cb110554338d` (`release/15.23.2-mobile-tap`). A `main` é histórica. Não houve gravação em registros reais, envio de mensagens, cobrança, sobrecarga ou exploração de terceiros. Uma migração restrita fixou o `search_path` de seis funções JSON; tabelas, políticas e registros foram preservados.
-
-## Arquitetura e inventário
-
-| Camada | Estado verificado |
-| --- | --- |
-| System | Worker `fama-system-app`, 127 módulos; versão ativa `b9d6df1c-94e2-4a8a-892f-ccd5b75aa2bd` |
-| Control | Worker `fama-control-app`, 60 módulos; versão ativa `5cff2387-f835-46c6-9a7b-26d1fa36b5d5` |
-| Entradas | Liquid Glass → Pedidos → `index.js` original; código original e assets não foram recompilados |
-| Dados | D1 existentes; Supabase Auth e REST; criptografia de campos e autorização por empresa |
-| Administração | Control → System por service binding e HMAC com timestamp para políticas de Pedidos |
-| Credenciais | Bindings secretos existentes; valores não exportados para relatórios |
-| Fonte histórica System | 707 arquivos, 553 JavaScript, 88 rotas, 95 arquivos de testes |
-| Fonte histórica Control | 426 arquivos, 335 JavaScript, 53 rotas, 53 arquivos de testes |
-
-[inventory.json](inventory.json) contém 148 entradas de rotas, incluindo sete da extensão. Referências estáticas a testes não provam execução. [baseline-15.24.0.json](../../features/liquid-glass/baseline-15.24.0.json) registra os 187 módulos publicados e seus hashes. O build do candidato confere 120 módulos originais System e 53 Control preservados, com sete módulos de extensão por aplicação.
-
-Não houve leitura manual de 100% dos arquivos. A análise de sintaxe percorreu 694 arquivos de implementação; a revisão manual concentrou-se nas entradas, autenticação, autorização, persistência e extensões. A produção recuperada não tem correspondência integral com as árvores em `apps/`.
+A fonte vigente dos módulos originais publicados não está integralmente sincronizada em `apps/`. O build histórico aprovado não deve substituir esses módulos, pois isso poderia perder alterações legítimas. A autorização de publicação já foi recebida; o bloqueio restante é técnico, de sincronização e homologação. As verificações atuais não permitem declarar todo o sistema corrigido ou pronto para uso real.
 
 ## Segurança
 
-As correções abaixo estão na branch, **ainda fora de produção**.
+### Correções do candidato
 
-| ID | Severidade | Causa e efeito | Correção e regressão |
+| ID | Severidade no contexto | Causa raiz | Correção e evidência |
 | --- | --- | --- | --- |
-| F01 | Média | Cookies renovados descartados e verificações de sessão/acesso em paralelo podiam interromper a sessão de Pedidos | Renovação sequencial, propagação interna e devolução de cookies; teste de sessão inicialmente falhou |
-| F02 | Média | Leitura de corpo limitada em bytes, sem prazo | Prazo de 10 s, cancelamento/desbloqueio do reader e erros 408/400; testes de stream parado, falha e aborto |
-| F03 | Média | Escritas novas sem quota própria | Contador persistente por empresa, usuário e ação: 60 mutações, 10 uploads e 15 políticas/minuto; 429 e Retry-After; testes de concorrência e janela |
-| F04 | Baixa | Produto nulo retornava 503 e campos de texto aceitavam objetos | Validação de estrutura/tipos, erro 400 antes da gravação; duas regressões inicialmente falharam |
-| F05 | Baixa | `application/json-seq` aceito como JSON | Media type exato, objeto JSON e UTF-8 estrito; regressão inicialmente falhou |
-| F06 | Baixa | Dois bytes JPEG ou quatro bytes PNG aceitos como imagem | Assinatura JPEG ampliada, assinatura completa/IHDR de PNG e versão PDF; regressão inicialmente falhou. Não é antivírus |
-| F07 | Alta, disponibilidade | Menu sem `<li>` podia clonar a raiz observada continuamente e congelar a aba | Inserção dentro do menu, sem clonar sua raiz; reproduzido no navegador e coberto em menus planos e listas |
-| F08 | Baixa | Respostas novas não herdavam todos os headers da aplicação | CSP restritiva para JSON, bloqueio de enquadramento, política de referência e cache privado; anexos mantêm download autenticado/sandbox |
-| F09 | Baixa, ferramenta | esbuild 0.28.0 no intervalo de um aviso de leitura local no servidor de desenvolvimento Windows | Ferramenta atualizada para 0.28.2; scanner da raiz terminou com zero alertas |
+| F01 | Média | Cookies renovados descartados; sessão e acesso consultados em paralelo | Renovação sequencial e propagação interna/ao navegador; regressão de sessão passou |
+| F02 | Média | Corpo limitado em bytes, sem prazo | Prazo de 10 s, cancelamento e liberação do reader; testes de timeout, aborto, falha, UTF-8 e tamanho |
+| F03 | Média | Mutações novas sem quota própria persistente | SQLite/D1 por empresa, usuário e ação, chave SHA-256, atualização atômica e 429/Retry-After |
+| F04 | Baixa | Produto nulo gerava 503 e campos textuais aceitavam objetos | Validação antes da gravação, erro 400 e regressões para estruturas inválidas |
+| F05 | Baixa | `application/json-seq` era aceito como JSON | Media type exato, objeto JSON e UTF-8 estrito; regressão passou |
+| F06 | Baixa | Assinaturas incompletas de imagem eram aceitas | JPEG ampliado, assinatura PNG completa/IHDR/tamanho mínimo e versão PDF; regressões passaram. Não é antivírus |
+| F07 | Alta, disponibilidade | Menu sem `<li>` podia clonar continuamente a raiz observada e congelar a aba | Inserção sem clonar a raiz; falha reproduzida e regressão para menus planos e listas |
+| F08 | Baixa | Respostas novas não herdavam todos os headers | CSP para JSON, bloqueio de enquadramento, referência restrita e cache privado; regressões passaram |
+| F09 | Baixa no uso observado | esbuild no intervalo de aviso do servidor de desenvolvimento Windows | Atualização para 0.28.2; scanner da raiz sem alertas |
 
-Isolamento entre empresas, HMAC, permissões comerciais/financeiras, revisão otimista, idempotência, criptografia e origens foram exercitados em fixtures. Não foi confirmada exploração SQL/NoSQL Injection, XSS, CSRF ou escalonamento em produção. Isso não comprova ausência de outras vulnerabilidades.
+F01–F08 ainda não estão ativos em produção. As quotas do candidato são 60 mutações, 10 uploads e 15 alterações administrativas por minuto. Antes de ativá-lo, criar aditivamente `sales_order_rate_limits` nos D1 correspondentes, conforme `features/pedidos/rate-limit.mjs` e `storage.mjs`.
 
-### Dependências pendentes
+Os testes exercitaram isolamento entre empresas, IDs, origens, HMAC/timestamp, permissões comerciais/financeiras, revisão otimista, concorrência, idempotência, criptografia e anexos. Não foi demonstrada exploração SQL/NoSQL Injection, XSS, CSRF ou escalonamento em produção. A aprovação não prova ausência dessas classes no sistema inteiro.
 
-Cada lockfile histórico apresentou **34 pacotes sinalizados: 3 críticos, 14 altos, 16 moderados e 1 baixo**. Não são 68 vulnerabilidades independentes: os dois aplicativos compartilham muitos avisos, inclusive transitivos.
+### Dependências: antes e depois
 
-Os críticos são `next` 16.4.0, `dompurify` 3.4.16 e o efeito transitivo em `jspdf`. Há alertas altos em RSC, Vite, Wrangler, Zod e outros. O scanner comprova o intervalo de versões, sem demonstrar a exploração de cada aviso. O Next do lockfile não prova que o servidor Next afetado esteja sendo usado pelo Worker Vinext.
+| Escopo | Antes | Depois |
+| --- | --- | --- |
+| Ferramentas da raiz | Alerta de esbuild corrigido na primeira rodada | 0 alertas |
+| Lockfile System | 34 pacotes sinalizados: 3 críticos, 14 altos, 16 moderados, 1 baixo | 0 alertas |
+| Lockfile Control | Mesma distribuição, com grande sobreposição | 0 alertas |
 
-A string **DOMPurify 3.4.16 foi encontrada em um módulo SSR publicado**. A referência do navegador e os modos de sanitização afetados ainda exigem rastreamento. Atualizar bundles isoladamente ou reconstruir a produção com a fonte histórica não foi considerado uma correção validada. É necessário sincronizar a fonte vigente, atualizar os pacotes compatíveis e testar o conjunto.
+Os números representam pacotes afetados, inclusive por dependências transitivas. Não são 68 vulnerabilidades independentes. Os JSON completos do npm audit estão nos artefatos do [CI aprovado](https://github.com/isaquesoaresfontela83-bit/Fama-System/actions/runs/42479099956).
 
-Referências primárias: [DOMPurify GHSA-cg2g-xh64-v4q7](https://github.com/advisories/GHSA-cg2g-xh64-v4q7), [Next GHSA-2464-fhr4-w9xw](https://github.com/advisories/GHSA-2464-fhr4-w9xw), [RSC GHSA-wx67-qw84-cm4g](https://github.com/advisories/GHSA-wx67-qw84-cm4g). Os JSON reais do scanner são artefatos do CI.
+Atualizações principais: Next 16.4.5, React/React DOM/RSC 19.2.9, DOMPurify 3.4.17, Vite 8.3.6, Cloudflare Vite Plugin 1.67.0, Wrangler 4.156.1 e Zod 4.6.7. Overrides explícitos corrigem dependências transitivas de imagem, SVG, ZIP, glob e esbuild. Vinext permanece 0.0.50; seus componentes transitivos afetados foram atualizados. Os dois builds e todas as suítes passaram com os lockfiles atualizados e instalação limpa no GitHub.
 
-### Banco e infraestrutura
+**Risco residual de produção:** atualizar esses lockfiles e compilar `apps/` não altera os módulos originais publicados. DOMPurify 3.4.16 foi identificado em um módulo SSR publicado do System; os índices contêm React 19.2.6. O rastreamento completo das dependências/rotas alcançáveis e a atualização compatível da produção permanecem pendentes. Não foi feita substituição isolada de bundles sem validação nem declarada correção desse componente publicado.
 
-A leitura inicial do Supabase retornou 67 observações informativas de RLS habilitado sem política, seis avisos de `search_path` mutável e um aviso de proteção nativa contra senhas vazadas desativada. As seis funções JSON invocadoras, compostas apenas de funções nativas PostgreSQL, tiveram o `search_path` fixado na migração `audit_pin_pure_json_helpers_search_path`. Os seis testes SELECT passaram antes e depois; a nova leitura dos consultores confirmou a remoção dos seis avisos. Corpos, assinaturas, donos e privilégios das funções foram preservados. Os avisos restantes não foram tratados como corrigidos. RLS sem política não significa acesso público. O aplicativo possui consulta própria de senhas vazadas; caminhos alternativos diretos do Auth não foram validados.
+Referências primárias dos avisos iniciais: [DOMPurify](https://github.com/advisories/GHSA-cg2g-xh64-v4q7), [Next](https://github.com/advisories/GHSA-2464-fhr4-w9xw), [RSC](https://github.com/advisories/GHSA-wx67-qw84-cm4g). O intervalo de versões sinalizado não demonstra sozinho exploração no Worker.
 
-Duas tabelas privadas do Control não têm RLS: `fama_platform_integrations` e `fama_provider_activity`. Não há SELECT concedido a `anon`/`authenticated`; ambas pertencem ao backend. Não foram encontradas funções SECURITY DEFINER desses schemas/public executáveis por `anon`. Seis verificações SELECT das funções JSON passaram, sem dados de usuários.
+### Banco: alterações aplicadas
 
-A revisão automática **rejeitou a proposta combinada** de alterações nas funções e ativação de RLS por risco de interromper acessos. Depois da inspeção das funções e das permissões, uma alternativa materialmente mais restrita, sem RLS ou mudanças de acesso, foi aprovada e aplicada somente às seis funções JSON. O SQL aplicado está em [applied-json-search-path.sql](../../deployment/security/applied-json-search-path.sql). **A ativação de RLS não foi aplicada**; [runtime-hardening-review.sql](../../deployment/security/runtime-hardening-review.sql) contém essa proposta separada e sua reversão. Ela permanece dependente de autorização explícita, nova conferência e backup verificado.
+As seis funções JSON invocadoras e imutáveis dos schemas System/Control tiveram `search_path = ''` fixado na migração `audit_pin_pure_json_helpers_search_path`. Os seis testes SELECT passaram antes e depois; os seis avisos desapareceram. Corpos, assinaturas, donos e privilégios foram preservados. SQL/reversão: [applied-json-search-path.sql](../../deployment/security/applied-json-search-path.sql).
 
-Logs dos Workers estão habilitados, com redação de query strings; traces estão desabilitados. Não houve alteração de observabilidade, compatibilidade, DNS, serviços externos ou credenciais.
+Após autorização explícita em 08/11, o RLS foi habilitado em `fama_control_runtime.fama_platform_integrations` e `fama_control_runtime.fama_provider_activity`, sem FORCE. Ambas tinham zero registros. O [snapshot](../../deployment/security/control-private-tables-backup-2026-11-08.json) registra estrutura, defaults, constraints, índices, donos, ACLs e contagens. A [restauração](../../deployment/security/control-private-tables-restore-empty.sql) foi executada em PGlite isolado: comparação de estrutura, CRUD do proprietário, negação a quatro outros papéis e rollback do RLS. O teste considera a diferença de representação de NOT NULL entre PostgreSQL 17 e 18.
+
+A migração real recusa executar se dono, ACL, RLS ou condição de tabela vazia mudarem e limita lock/execução. No mesmo fluxo confirmou que o backend proprietário continua fora do filtro RLS e que as duas leituras funcionam. A consulta posterior confirmou RLS ativo, FORCE desativado, donos/ACLs intactos, zero registros e nenhum SELECT a anon/authenticated. SQL/reversão: [applied-private-control-rls.sql](../../deployment/security/applied-private-control-rls.sql). O backup cobre somente as duas tabelas vazias; não é backup verificado de todo o projeto.
+
+O proprietário `fama_control_backend` continua aplicando a autorização do aplicativo. A ausência de política nas tabelas privadas nega acesso aos demais papéis sem concessões DML. RLS é defesa adicional e não substitui os filtros de empresa.
+
+O consultor do Supabase agora apresenta 69 observações informativas de RLS habilitado sem política e um aviso de proteção nativa contra senhas vazadas desativada; os seis avisos de search_path foram eliminados. O aplicativo possui verificação própria, mas caminhos alternativos diretos do Auth não foram homologados. Esse aviso nativo não foi declarado resolvido. [database-evidence.json](database-evidence.json) registra os resultados.
+
+Não foram alterados registros de negócio, chaves, planos, DNS, bindings ou serviços externos. As migrações registram metadados próprios no histórico do Supabase. Não houve sobrecarga, ataque destrutivo ou teste invasivo em terceiros.
 
 ## Qualidade
 
-Últimas rodadas locais completas, sem somar repetições:
+### Resultado final, sem somar repetições
 
-| Suíte | Itens contabilizados | Aprovados | Reprovados |
+| Suíte | Aprovados | Reprovados | Ignorados |
 | --- | ---: | ---: | ---: |
-| Extensões: Pedidos, controles, navegação e Liquid Glass | 58 | 58 | 0 |
-| Fonte histórica System | 917 | 892 | 25 |
-| Fonte histórica Control | 531 | 518 | 13 |
-| **Total local** | **1.506** | **1.468** | **38** |
+| System: fonte histórica e build gerado | 1.032 | 0 | 0 |
+| Control: fonte histórica, banco isolado e build gerado | 614 | 0 | 0 |
+| Pedidos e Liquid Glass | 58 | 0 | 0 |
+| Playwright: desktop, tablet e celular | 9 | 0 | 0 |
+| **Total** | **1.713** | **0** | **0** |
 
-Contagens históricas incluem arquivos que falharam antes de carregar todos os testes internos, contabilizados pelo Node como um item. Não houve testes marcados como ignorados nas rodadas finais. [legacy-failures.json](legacy-failures.json) registra as 38 falhas: bundles `dist`/WASM ausentes, fixtures de runtime, PDFs, câmera/scanner, estilo gerado e expectativas divergentes de IA, planos e agenda. Testes e funções não foram apagados para obter aprovação. No CI com instalação pelos lockfiles, System contabilizou 927 itens (911 aprovados, 16 reprovados) e Control 541 (530 aprovados, 11 reprovados); os detalhes de cada ambiente estão em GITHUB-STATUS.md. A instalação local de apoio reutilizou parte das dependências disponíveis; esse resultado não substitui um build reprodutível da fonte publicada.
+System/Control incluem os dois testes WASM executados depois das demais fixtures e da verificação dos assets. A cobertura repete 44 testes de Pedidos e não é somada novamente. Os mesmos 1.032 e 614 casos passaram localmente e no GitHub com instalação limpa. Os nove Playwright passaram em 7,9 s no CI. [ci-evidence.json](ci-evidence.json) e [validation-2026-11-08.json](validation-2026-11-08.json) registram contagens; os logs completos estão na execução do GitHub.
+
+As 27 falhas do CI anterior e as 38 da instalação local parcial foram resolvidas na validação da fonte histórica. O CI agora compila antes de testar. Os testes antigos acompanham o catálogo personalizável, a identificação atual da IA e o fluxo atual da agenda, conservando a segurança. O teste semanal usa relógio fixo; o teste de versão compara a release real; a CSP é comparada com o Worker; o teste de provedor usa a API atual do Miniflare e intercepta toda saída de rede. Nenhum teste foi removido ou ignorado para obter aprovação. [legacy-failures.json](legacy-failures.json) conserva a lista anterior como evidência histórica.
 
 ### Cobertura real
 
-Node V8, sete arquivos do **backend de Pedidos**, com 44 testes nessa rodada:
-
-| Escopo | Linhas | Ramificações | Funções |
+| Escopo medido | Linhas | Ramificações | Funções |
 | --- | ---: | ---: | ---: |
-| Backend de Pedidos e controles | **99,45%** | **93,31%** | **96,58%** |
+| Backend de Pedidos, sete arquivos, 44 testes | **99,45%** | **93,31%** | **96,58%** |
 | API de Pedidos isoladamente | 98,98% | 91,83% | 93,10% |
-| Modelo, quotas, corpo, sessão e storage | 100% em cada arquivo | 92,31% a 100% | 100% |
 
-O CI exige 90% das três métricas nesse escopo. Frontend completo, árvores históricas, banco real e provedores externos não estão incluídos. [coverage.txt](coverage.txt) e [tests-final.tap](tests-final.tap) contêm evidências; [regressions-before.tap](regressions-before.tap) registra cinco falhas antes das correções. Tipos foram verificados nos controles novos de corpo, sessão e quota e suas dependências, sem alegação de validação integral da interface histórica.
+O CI exige 90% das três métricas nesse escopo. A cobertura global de frontend, autenticação histórica, banco real e provedores não foi medida. Os 1.713 testes não significam 90% de cobertura global. [coverage.txt](coverage.txt) registra o resultado. Sintaxe: 694 arquivos de implementação aprovados. Tipos: controles novos de corpo/sessão/quota e suas dependências. A varredura de padrões de segredos terminou sem achados; não cobre todo o histórico Git.
 
-### Interface e integração
+### Matriz funcional e limites
 
-O navegador, com dados fictícios, confirmou busca/estado vazio, formulário, criação, permanência ao recarregar, configuração/persistência do atalho Financeiro e administração correspondente. Frames de celular/tablet não mostraram transbordamento do documento: 375/375 px úteis no frame nominal de 390 px e 820/820 px no tablet. A tabela mantém rolagem interna. [Captura](mobile-qa.jpg).
+| Área | Evidência obtida | Limite ou pendência |
+| --- | --- | --- |
+| Pedidos, parcelas, cancelamento, agenda e anexos | CRUD, persistência, validação, permissões, criptografia, idempotência e concorrência em fixtures | Fluxo autenticado publicado ainda não homologado |
+| Rotas privadas e autenticação | Rejeição anônima/origem cruzada nos builds; sessões, MFA, recuperação e permissões nas suítes | Sem login/MFA real de produção |
+| CRM, contratos, garantias, estoque e financeiro | Suítes históricas, PDFs reais gerados e isolamento por empresa em fixtures | Não comprova cada botão/integração da interface publicada |
+| Câmera e código de barras | Casos de leitor nativo e WASM passaram | Sem teste físico de câmera, scanner ou aparelho |
+| Barra inferior e Liquid Glass | Preferências, recursos permitidos, toque, gesto cancelado, movimento reduzido e congelamento | Sem medição física de FPS ou todos os gestos/navegadores |
+| Interface Pedidos/dock | Nove Playwright: busca, vazio, formulário, criação, persistência, troca de empresa, atalhos e Escape | Fixture isolada em Chromium; acessibilidade parcial |
+| Supabase | Funções, catálogo, permissões, contagens e RLS no projeto real | Sem restauração do banco inteiro ou Auth/Storage completos |
+| Cloudflare | Versões ativas e inventário de módulos conferidos; configuração preservada | Candidato não implantado; homologação autenticada conjunta pendente |
+| Pagamentos, WhatsApp, e-mail, Google e fiscal | Fluxos/falhas/destinos/redirects simulados; teste de provedor no runtime Workers | Sem mensagem, cobrança, e-mail ou documento fiscal real |
 
-Os **nove cenários Playwright passaram no GitHub Actions**, distribuídos por desktop (1280×900), tablet (820×1180) e celular (390×844 com toque), em 8,1 segundos de execução dos testes. Usam a fixture isolada. A primeira tentativa falhou antes dos testes por Ubuntu 26.04 incompatível com Playwright 1.58.2; o runner foi fixado em Ubuntu 24.04 e a nova execução aprovou os nove cenários. Evidência e commit estão em [GITHUB-STATUS.md](GITHUB-STATUS.md).
-
-Doze GETs seguros de produção verificaram páginas, saúde e acesso anônimo. System retornou 401 em acesso/Pedidos/administração e 403 na política interna sem assinatura; rotas ausentes do Control retornaram 404 e sua administração retornou 401. Saúde e páginas retornaram 200; ambos continuam na 15.23.2. Isso não comprova o funcionamento autenticado.
-
-Não houve login real, celular físico, auditoria completa de acessibilidade ou testes reais de pagamentos, e-mail, WhatsApp, MFA, upload no Supabase e reconexão com terceiros. Funções que dependem desses ambientes permanecem não verificadas.
+Playwright usa 1280×900, 820×1180 e 390×844 com toque. A conferência visual anterior da fixture verificou persistência e ausência de transbordamento do documento em celular/tablet; [mobile-qa.jpg](mobile-qa.jpg). Não houve leitura manual de 100% dos arquivos nem conferência de todos os botões. [inventory.json](inventory.json) registra 148 entradas de rotas e referências estáticas a testes, que não equivalem a aprovação individual de funcionalidades.
 
 ## Desempenho
 
-| Cenário isolado | Antes | Depois |
+| Cenário reproduzido em teste isolado | Antes | Depois |
 | --- | ---: | ---: |
-| Consultas de parcelas ao abrir pedido com entrada e 36 parcelas | 37 | 1 |
+| Consultas de parcelas para pedido com entrada e 36 parcelas | 37 | 1 |
 | Redução de consultas | — | 97,3% |
+| Menu sem `<li>` | Clonagem contínua e congelamento | Inserção única, regressão aprovada |
 
-A leitura em lote mantém a empresa e os IDs autorizados, com regressão executada. Esse número não foi extrapolado para tempo de produção. Não há comparativo válido antes/depois de Core Web Vitals, memória, FPS ou latência de provedores. O congelamento do menu foi corrigido sem modificar a identidade visual.
+A consulta em lote mantém o predicado de empresa e os IDs autorizados. O número não foi extrapolado para latência de produção. Não há comparativo válido de Core Web Vitals, memória, FPS, consultas reais ou desempenho entre navegadores. A identidade visual foi preservada.
 
-## GitHub e publicação
+## GitHub, arquitetura e publicação
 
-Commits de implementação: `6bf2a22` (correções/regressões) e `b7d41a3` (ferramentas, CI e interface). O histórico da branch contém também o relatório e eventuais ajustes finais. A relação exata de arquivos está no diff da branch. Estado observado do pipeline: [GITHUB-STATUS.md](GITHUB-STATUS.md).
+Branch: `audit/security-quality-2026-11-07`. PR: https://github.com/isaquesoaresfontela83-bit/Fama-System/pull/13. A `main` é histórica. [GITHUB-STATUS.md](GITHUB-STATUS.md) registra os commits e os seis jobs aprovados em `473a62403be7d589b33fdd660e1914a0d1abfd5d`. [FILES.md](FILES.md) relaciona os arquivos modificados.
 
-O candidato conjunto foi compilado; sete módulos por aplicação tiveram sintaxe e hashes conferidos. O build original integral publicado não foi reproduzido, pois sua fonte não está integralmente sincronizada.
+| Aplicação | Worker | Versão ativa preservada | Módulos |
+| --- | --- | --- | ---: |
+| System | `fama-system-app` | `b9d6df1c-94e2-4a8a-892f-ccd5b75aa2bd` | 127 |
+| Control | `fama-control-app` | `5cff2387-f835-46c6-9a7b-26d1fa36b5d5` | 60 |
 
-O workflow executa qualidade, dependências, interface e suítes históricas. O `release-gate` exige todos; falhas não viram sucesso. Relatórios são artefatos por 14 dias. A raiz terminou sem padrões de credenciais reais detectados; a varredura é limitada a padrões conhecidos e não cobre todo o histórico Git.
+A produção continua em 15.23.2 / `2026-11-07-mobile-tap-01`. A cadeia é Liquid Glass → Pedidos → `index.js` original. [baseline-15.24.0.json](../../features/liquid-glass/baseline-15.24.0.json) registra os 187 módulos e hashes. O candidato troca sete módulos conhecidos por aplicação e preserva os 120 originais do System e 53 do Control. Os sete módulos foram compilados/verificados; os dois builds históricos também passaram, mas não foram publicados sobre a base vigente.
 
-**O gate local de dependências reprovou. Não há implantação automática nesse workflow.** Proteção obrigatória de branch e bloqueio de publicações manuais fora do CI não foram configurados. Nenhum Worker foi atualizado por esta auditoria.
+O workflow verifica sintaxe, lint, tipos do escopo, segredos, paridade, dependências, testes, cobertura, E2E e builds. `release-gate` exige todos os jobs aprovados, em Ubuntu 24.04/Node 24. Não há job de implantação nem proteção contra publicações manuais externas. Artefatos duram 14 dias.
 
-### Condições de liberação
+Nenhum Worker foi publicado nesta auditoria. A API autenticada da Cloudflare confirmou as versões acima. A tentativa de repetir os GETs públicos de saúde nesta rodada recebeu bloqueio 403 do acesso de saída deste ambiente; isso não foi registrado como falha da aplicação. Os HTTP 200 anteriores e as fixtures não substituem uma nova conferência autenticada dos dois domínios.
 
-1. Recuperar fonte vigente completa, corrigir alertas críticos/altos aplicáveis e tratar as falhas históricas documentadas (27 no CI e 38 na rodada local), distinguindo expectativas antigas de defeitos reais.
-2. Aprovar os jobs e validar os dois aplicativos em homologação com sessões/perfis reais. A fixture fictícia não substitui essa etapa.
-3. Criar aditivamente `sales_order_rate_limits` nos D1 correspondentes, conforme `features/pedidos/rate-limit.mjs`. Sem a tabela, as mutações do candidato falham de forma fechada.
-4. Reconfirmar 187 hashes e versões ativas; atualizar sete módulos conhecidos juntos, preservando bindings, ASSETS, dados, domínios e público. `deployGlass` sozinho não aplica o candidato completo.
-5. Aplicar qualquer ajuste PostgreSQL somente após autorização pendente e conferências documentadas.
+### Pendências para publicação verificável
 
-### Rollback preparado, não executado
+1. Sincronizar a fonte original vigente e rastrear/corrigir as dependências efetivamente publicadas. Os lockfiles corrigidos estão disponíveis; recompilar a árvore histórica sobre produção segue proibido.
+2. Validar os dois aplicativos em homologação isolada com sessões/papéis, recursos estáticos e integrações controladas. Os testes atuais não cobrem todas as funções da versão publicada.
+3. Criar a tabela aditiva de quotas nos D1, reconferir hashes/versões e atualizar os sete módulos da extensão em conjunto, preservando bindings, assets, dados, público e domínios. `deployGlass` sozinho atualiza quatro módulos e não publica todo o candidato.
+4. Rever a proteção nativa contra senhas vazadas e os caminhos alternativos do Auth. Verificar backup integral/recuperação para os demais dados antes de mudanças que os coloquem em risco.
 
-Conservar versões e manifesto capturados. Para uma futura ativação malsucedida, direcionar 100% do tráfego System à versão `b9d6df1c-94e2-4a8a-892f-ccd5b75aa2bd` e Control à `5cff2387-f835-46c6-9a7b-26d1fa36b5d5`, depois verificar saúde, páginas e assets dos dois domínios. Reconfirmar a ausência de publicação posterior antes de escolher essas versões. A tabela aditiva de quotas pode permanecer sem interferir no código anterior. Não excluir registros para reverter código.
+### Rollback
 
-A reversão PostgreSQL específica está comentada no SQL. Não houve ensaio de rollback em produção nem backup de dados verificado nesta rodada. A única migração aplicada não altera dados, tabelas ou permissões; a reversão exata das configurações das seis funções está comentada no SQL aplicado. A auditoria permanece aberta nos itens pendentes acima.
+Antes de ativar uma futura versão, reconfirmar a versão atual e conservar os manifestos. Em falha conjunta, devolver 100% do tráfego aos IDs System/Control acima e conferir páginas, assets e saúde dos dois domínios. Se houver publicação posterior legítima, atualizar a referência de rollback. A tabela aditiva de quotas pode permanecer; não remover dados para reverter código.
+
+A reversão RLS é somente DISABLE ROW LEVEL SECURITY nas duas tabelas; a das seis funções usa RESET search_path, conforme os SQL. O rollback RLS foi ensaiado no banco isolado. Não houve rollback nem restauração integral em produção. Os dados existentes foram preservados; a auditoria integral permanece aberta nas pendências explícitas deste relatório.

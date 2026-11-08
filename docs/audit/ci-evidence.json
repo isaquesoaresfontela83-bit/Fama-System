@@ -1,75 +1,63 @@
 {
-  "runId": 42438259815,
-  "url": "https://github.com/isaquesoaresfontela83-bit/Fama-System/actions/runs/42438259815",
-  "headSha": "df3df9be42d92b1eca8e497ddf75eff50223786a",
-  "conclusion": "failure",
+  "verifiedAt": "2026-11-08T12:14:39Z",
+  "runId": 42479099956,
+  "url": "https://github.com/isaquesoaresfontela83-bit/Fama-System/actions/runs/42479099956",
+  "headSha": "473a62403be7d589b33fdd660e1914a0d1abfd5d",
+  "status": "completed",
+  "conclusion": "success",
   "jobs": [
     {
-      "id": 128602851150,
-      "name": "dependencies",
-      "status": "completed",
-      "conclusion": "failure"
-    },
-    {
-      "id": 128602851337,
-      "name": "interface",
-      "status": "completed",
-      "conclusion": "success"
-    },
-    {
-      "id": 128602851354,
+      "id": 128726937493,
       "name": "quality",
       "status": "completed",
       "conclusion": "success"
     },
     {
-      "id": 128602851412,
-      "name": "historical-tests (system)",
-      "status": "completed",
-      "conclusion": "failure",
-      "tests": 927,
-      "pass": 911,
-      "fail": 16,
-      "cancelled": 0,
-      "skipped": 0
-    },
-    {
-      "id": 128602851472,
+      "id": 128726937694,
       "name": "historical-tests (control)",
       "status": "completed",
-      "conclusion": "failure",
-      "tests": 541,
-      "pass": 530,
-      "fail": 11,
-      "cancelled": 0,
-      "skipped": 0
+      "conclusion": "success"
     },
     {
-      "id": 128603304626,
+      "id": 128726937731,
+      "name": "interface",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128726937796,
+      "name": "historical-tests (system)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128726937842,
+      "name": "dependencies",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128727542142,
       "name": "release-gate",
       "status": "completed",
-      "conclusion": "failure"
+      "conclusion": "success"
     }
   ],
-  "interface": {
-    "passed": 9,
-    "failed": 0,
-    "projects": [
-      "desktop",
-      "tablet",
-      "mobile"
-    ],
-    "elapsedSeconds": 8.1
+  "testCounts": {
+    "system": 1032,
+    "control": 614,
+    "extensions": 58,
+    "playwright": 9,
+    "totalWithoutRepeatingCoverage": 1713,
+    "failures": 0,
+    "skipped": 0
   },
-  "localExtensionTests": {
-    "tests": 58,
-    "passed": 58,
-    "failed": 0
+  "previousFailingRun": {
+    "id": 42438259815,
+    "headSha": "df3df9be42d92b1eca8e497ddf75eff50223786a",
+    "conclusion": "failure",
+    "systemFailures": 16,
+    "controlFailures": 11
   },
-  "codeCoverage": {
-    "scope": "features/pedidos backend: seven files",
-    "lines": 99.45,
-    "branches": 93.31,
-    "functions": 96.58
-  }
+  "deploymentPerformed": false
 }
