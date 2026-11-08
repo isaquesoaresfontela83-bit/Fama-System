@@ -5,7 +5,7 @@ import { fixture } from './test-support.mjs';
 import { handleOrders } from './api.mjs';
 const f=await fixture();let order=await f.create();
 f.env.FAMA_SYSTEM={fetch:request=>handleOrders(f.app,request,f.env,{},'system')};
-order=(await f.action(order,{action:'confirm'})).data.order;
+await f.action(order,{action:'confirm'});
 const assets={
  '/assets/fama-pedidos-15.21.0.mjs':['client.mjs','application/javascript'],
  '/assets/fama-pedidos-model-15.21.0.mjs':['model.mjs','application/javascript'],

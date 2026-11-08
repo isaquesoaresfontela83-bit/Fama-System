@@ -9,7 +9,7 @@ export function withOrders(app, resources, kind) {
     ...app,
     async fetch(request,env,ctx) {
       const url=new URL(request.url);
-      if(['GET','HEAD'].includes(request.method) && resources[url.pathname]) {
+      if(['GET','HEAD'].includes(request.method) && Object.hasOwn(resources,url.pathname)) {
         const asset=resources[url.pathname];return new Response(request.method==='HEAD'?null:asset.body,{headers:{'Content-Type':asset.type,'Cache-Control':'public, max-age=31536000, immutable','X-Content-Type-Options':'nosniff'}});
       }
       const response=await handleOrders(app,request,env,ctx,kind);
