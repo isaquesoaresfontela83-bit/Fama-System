@@ -1,0 +1,75 @@
+{
+  "runId": 42438259815,
+  "url": "https://github.com/isaquesoaresfontela83-bit/Fama-System/actions/runs/42438259815",
+  "headSha": "df3df9be42d92b1eca8e497ddf75eff50223786a",
+  "conclusion": "failure",
+  "jobs": [
+    {
+      "id": 128602851150,
+      "name": "dependencies",
+      "status": "completed",
+      "conclusion": "failure"
+    },
+    {
+      "id": 128602851337,
+      "name": "interface",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128602851354,
+      "name": "quality",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128602851412,
+      "name": "historical-tests (system)",
+      "status": "completed",
+      "conclusion": "failure",
+      "tests": 927,
+      "pass": 911,
+      "fail": 16,
+      "cancelled": 0,
+      "skipped": 0
+    },
+    {
+      "id": 128602851472,
+      "name": "historical-tests (control)",
+      "status": "completed",
+      "conclusion": "failure",
+      "tests": 541,
+      "pass": 530,
+      "fail": 11,
+      "cancelled": 0,
+      "skipped": 0
+    },
+    {
+      "id": 128603304626,
+      "name": "release-gate",
+      "status": "completed",
+      "conclusion": "failure"
+    }
+  ],
+  "interface": {
+    "passed": 9,
+    "failed": 0,
+    "projects": [
+      "desktop",
+      "tablet",
+      "mobile"
+    ],
+    "elapsedSeconds": 8.1
+  },
+  "localExtensionTests": {
+    "tests": 58,
+    "passed": 58,
+    "failed": 0
+  },
+  "codeCoverage": {
+    "scope": "features/pedidos backend: seven files",
+    "lines": 99.45,
+    "branches": 93.31,
+    "functions": 96.58
+  }
+}

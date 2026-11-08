@@ -1,0 +1,28 @@
+{
+  "migration": "audit_pin_pure_json_helpers_search_path",
+  "functionCount": 6,
+  "configuration": "search_path = ''",
+  "baseline": {
+    "jsonValid": true,
+    "jsonObject": true,
+    "jsonSet": true,
+    "applications": [
+      "system",
+      "control"
+    ]
+  },
+  "postChange": {
+    "jsonValid": true,
+    "jsonObject": true,
+    "jsonSet": true,
+    "applications": [
+      "system",
+      "control"
+    ]
+  },
+  "advisorWarningsBefore": 6,
+  "advisorWarningsAfter": 0,
+  "rlsChanged": false,
+  "businessRecordsChanged": false,
+  "migrationMetadataRecorded": true
+}

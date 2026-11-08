@@ -2,7 +2,7 @@
 
 **Candidato corrigido e testado parcialmente; publicação bloqueada.** A produção permanece em 15.23.2. O candidato 15.24.0 não representa uma auditoria integral concluída nem aprovação do sistema completo para produção.
 
-Branch `audit/security-quality-2026-11-07`, baseada em `bf185fd30ff47b174d483ae99662cb110554338d` (`release/15.23.2-mobile-tap`). A `main` é histórica. Não houve gravação em registros reais, envio de mensagens, cobrança, sobrecarga ou exploração de terceiros. Nenhuma migração foi aplicada.
+Branch `audit/security-quality-2026-11-07`, baseada em `bf185fd30ff47b174d483ae99662cb110554338d` (`release/15.23.2-mobile-tap`). A `main` é histórica. Não houve gravação em registros reais, envio de mensagens, cobrança, sobrecarga ou exploração de terceiros. Uma migração restrita fixou o `search_path` de seis funções JSON; tabelas, políticas e registros foram preservados.
 
 ## Arquitetura e inventário
 
@@ -51,11 +51,11 @@ Referências primárias: [DOMPurify GHSA-cg2g-xh64-v4q7](https://github.com/advi
 
 ### Banco e infraestrutura
 
-O Supabase retornou 67 observações informativas de RLS habilitado sem política, seis avisos de `search_path` mutável e um aviso de proteção nativa contra senhas vazadas desativada. RLS sem política não significa acesso público. O aplicativo possui consulta própria de senhas vazadas; caminhos alternativos diretos do Auth não foram validados.
+A leitura inicial do Supabase retornou 67 observações informativas de RLS habilitado sem política, seis avisos de `search_path` mutável e um aviso de proteção nativa contra senhas vazadas desativada. As seis funções JSON invocadoras, compostas apenas de funções nativas PostgreSQL, tiveram o `search_path` fixado na migração `audit_pin_pure_json_helpers_search_path`. Os seis testes SELECT passaram antes e depois; a nova leitura dos consultores confirmou a remoção dos seis avisos. Corpos, assinaturas, donos e privilégios das funções foram preservados. Os avisos restantes não foram tratados como corrigidos. RLS sem política não significa acesso público. O aplicativo possui consulta própria de senhas vazadas; caminhos alternativos diretos do Auth não foram validados.
 
 Duas tabelas privadas do Control não têm RLS: `fama_platform_integrations` e `fama_provider_activity`. Não há SELECT concedido a `anon`/`authenticated`; ambas pertencem ao backend. Não foram encontradas funções SECURITY DEFINER desses schemas/public executáveis por `anon`. Seis verificações SELECT das funções JSON passaram, sem dados de usuários.
 
-A revisão automática **rejeitou** aplicar ajustes de `search_path` e RLS em produção por risco de interromper acessos sem comprovação suficiente de impacto e rollback. Nada foi aplicado. [runtime-hardening-review.sql](../../deployment/security/runtime-hardening-review.sql) contém o SQL, premissas e reversão. A aplicação posterior exige autorização explícita, nova conferência e backup verificado.
+A revisão automática **rejeitou a proposta combinada** de alterações nas funções e ativação de RLS por risco de interromper acessos. Depois da inspeção das funções e das permissões, uma alternativa materialmente mais restrita, sem RLS ou mudanças de acesso, foi aprovada e aplicada somente às seis funções JSON. O SQL aplicado está em [applied-json-search-path.sql](../../deployment/security/applied-json-search-path.sql). **A ativação de RLS não foi aplicada**; [runtime-hardening-review.sql](../../deployment/security/runtime-hardening-review.sql) contém essa proposta separada e sua reversão. Ela permanece dependente de autorização explícita, nova conferência e backup verificado.
 
 Logs dos Workers estão habilitados, com redação de query strings; traces estão desabilitados. Não houve alteração de observabilidade, compatibilidade, DNS, serviços externos ou credenciais.
 
@@ -70,7 +70,7 @@ Logs dos Workers estão habilitados, com redação de query strings; traces est�
 | Fonte histórica Control | 531 | 518 | 13 |
 | **Total local** | **1.506** | **1.468** | **38** |
 
-Contagens históricas incluem arquivos que falharam antes de carregar todos os testes internos, contabilizados pelo Node como um item. Não houve testes marcados como ignorados nas rodadas finais. [legacy-failures.json](legacy-failures.json) registra as 38 falhas: bundles `dist`/WASM ausentes, fixtures de runtime, PDFs, câmera/scanner, estilo gerado e expectativas divergentes de IA, planos e agenda. Testes e funções não foram apagados para obter aprovação. A instalação local de apoio reutilizou parte das dependências disponíveis; esse resultado não substitui um build reprodutível da fonte publicada.
+Contagens históricas incluem arquivos que falharam antes de carregar todos os testes internos, contabilizados pelo Node como um item. Não houve testes marcados como ignorados nas rodadas finais. [legacy-failures.json](legacy-failures.json) registra as 38 falhas: bundles `dist`/WASM ausentes, fixtures de runtime, PDFs, câmera/scanner, estilo gerado e expectativas divergentes de IA, planos e agenda. Testes e funções não foram apagados para obter aprovação. No CI com instalação pelos lockfiles, System contabilizou 927 itens (911 aprovados, 16 reprovados) e Control 541 (530 aprovados, 11 reprovados); os detalhes de cada ambiente estão em GITHUB-STATUS.md. A instalação local de apoio reutilizou parte das dependências disponíveis; esse resultado não substitui um build reprodutível da fonte publicada.
 
 ### Cobertura real
 
@@ -88,7 +88,7 @@ O CI exige 90% das três métricas nesse escopo. Frontend completo, árvores his
 
 O navegador, com dados fictícios, confirmou busca/estado vazio, formulário, criação, permanência ao recarregar, configuração/persistência do atalho Financeiro e administração correspondente. Frames de celular/tablet não mostraram transbordamento do documento: 375/375 px úteis no frame nominal de 390 px e 820/820 px no tablet. A tabela mantém rolagem interna. [Captura](mobile-qa.jpg).
 
-Playwright contém nove cenários distribuídos por desktop (1280×900), tablet (820×1180) e celular (390×844 com toque), sobre a fixture isolada. O resultado efetivo remoto está no CI; configurar os cenários não prova sua aprovação.
+Os **nove cenários Playwright passaram no GitHub Actions**, distribuídos por desktop (1280×900), tablet (820×1180) e celular (390×844 com toque), em 8,1 segundos de execução dos testes. Usam a fixture isolada. A primeira tentativa falhou antes dos testes por Ubuntu 26.04 incompatível com Playwright 1.58.2; o runner foi fixado em Ubuntu 24.04 e a nova execução aprovou os nove cenários. Evidência e commit estão em [GITHUB-STATUS.md](GITHUB-STATUS.md).
 
 Doze GETs seguros de produção verificaram páginas, saúde e acesso anônimo. System retornou 401 em acesso/Pedidos/administração e 403 na política interna sem assinatura; rotas ausentes do Control retornaram 404 e sua administração retornou 401. Saúde e páginas retornaram 200; ambos continuam na 15.23.2. Isso não comprova o funcionamento autenticado.
 
@@ -115,7 +115,7 @@ O workflow executa qualidade, dependências, interface e suítes históricas. O 
 
 ### Condições de liberação
 
-1. Recuperar fonte vigente completa, corrigir alertas críticos/altos aplicáveis e tratar as 38 falhas históricas, distinguindo expectativas antigas de defeitos reais.
+1. Recuperar fonte vigente completa, corrigir alertas críticos/altos aplicáveis e tratar as falhas históricas documentadas (27 no CI e 38 na rodada local), distinguindo expectativas antigas de defeitos reais.
 2. Aprovar os jobs e validar os dois aplicativos em homologação com sessões/perfis reais. A fixture fictícia não substitui essa etapa.
 3. Criar aditivamente `sales_order_rate_limits` nos D1 correspondentes, conforme `features/pedidos/rate-limit.mjs`. Sem a tabela, as mutações do candidato falham de forma fechada.
 4. Reconfirmar 187 hashes e versões ativas; atualizar sete módulos conhecidos juntos, preservando bindings, ASSETS, dados, domínios e público. `deployGlass` sozinho não aplica o candidato completo.
@@ -125,4 +125,4 @@ O workflow executa qualidade, dependências, interface e suítes históricas. O 
 
 Conservar versões e manifesto capturados. Para uma futura ativação malsucedida, direcionar 100% do tráfego System à versão `b9d6df1c-94e2-4a8a-892f-ccd5b75aa2bd` e Control à `5cff2387-f835-46c6-9a7b-26d1fa36b5d5`, depois verificar saúde, páginas e assets dos dois domínios. Reconfirmar a ausência de publicação posterior antes de escolher essas versões. A tabela aditiva de quotas pode permanecer sem interferir no código anterior. Não excluir registros para reverter código.
 
-A reversão PostgreSQL específica está comentada no SQL. Não houve ensaio de rollback em produção nem backup de dados verificado nesta rodada. A auditoria permanece aberta nos itens pendentes acima.
+A reversão PostgreSQL específica está comentada no SQL. Não houve ensaio de rollback em produção nem backup de dados verificado nesta rodada. A única migração aplicada não altera dados, tabelas ou permissões; a reversão exata das configurações das seis funções está comentada no SQL aplicado. A auditoria permanece aberta nos itens pendentes acima.
