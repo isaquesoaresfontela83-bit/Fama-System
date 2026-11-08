@@ -1,0 +1,121 @@
+TAP version 13
+# {"event":"pedidos_request_failed","path":"/api/pedidos","error":"TypeError"}
+# Subtest: malformed product entries are validation errors, without writes
+not ok 1 - malformed product entries are validation errors, without writes
+  ---
+  duration_ms: 9.869216
+  type: 'test'
+  location: '/workspace/scratch/fe20ce5bde9f/Fama-System/features/pedidos/security.test.mjs:6:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    503 !== 400
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 400
+  actual: 503
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///workspace/scratch/fe20ce5bde9f/Fama-System/features/pedidos/security.test.mjs:10:12)
+    async Test.run (node:internal/test_runner/test:1409:7)
+    async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3)
+  ...
+# Subtest: object and array values cannot become customer or seller names
+not ok 2 - object and array values cannot become customer or seller names
+  ---
+  duration_ms: 9.602216
+  type: 'test'
+  location: '/workspace/scratch/fe20ce5bde9f/Fama-System/features/pedidos/security.test.mjs:15:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    201 !== 400
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 400
+  actual: 201
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///workspace/scratch/fe20ce5bde9f/Fama-System/features/pedidos/security.test.mjs:20:14)
+    async Test.run (node:internal/test_runner/test:1409:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:974:7)
+  ...
+# Subtest: JSON lookalike media types are rejected before a write
+not ok 3 - JSON lookalike media types are rejected before a write
+  ---
+  duration_ms: 3.333708
+  type: 'test'
+  location: '/workspace/scratch/fe20ce5bde9f/Fama-System/features/pedidos/security.test.mjs:25:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    201 !== 415
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 415
+  actual: 201
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///workspace/scratch/fe20ce5bde9f/Fama-System/features/pedidos/security.test.mjs:31:10)
+    async Test.run (node:internal/test_runner/test:1409:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:974:7)
+  ...
+# Subtest: truncated image signatures are rejected
+not ok 4 - truncated image signatures are rejected
+  ---
+  duration_ms: 6.712173
+  type: 'test'
+  location: '/workspace/scratch/fe20ce5bde9f/Fama-System/features/pedidos/security.test.mjs:34:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    201 !== 400
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 400
+  actual: 201
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///workspace/scratch/fe20ce5bde9f/Fama-System/features/pedidos/security.test.mjs:40:12)
+    async Test.run (node:internal/test_runner/test:1409:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:974:7)
+  ...
+# Subtest: session refresh reaches later authorization checks and the browser
+not ok 5 - session refresh reaches later authorization checks and the browser
+  ---
+  duration_ms: 1.687706
+  type: 'test'
+  location: '/workspace/scratch/fe20ce5bde9f/Fama-System/features/pedidos/security.test.mjs:45:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    401 !== 200
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 200
+  actual: 401
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///workspace/scratch/fe20ce5bde9f/Fama-System/features/pedidos/security.test.mjs:58:10)
+    async Test.run (node:internal/test_runner/test:1409:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:974:7)
+  ...
+1..5
+# tests 5
+# suites 0
+# pass 0
+# fail 5
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 105.930765

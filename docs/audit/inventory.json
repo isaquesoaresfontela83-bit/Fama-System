@@ -1,0 +1,1825 @@
+{
+  "summary": {
+    "system": {
+      "files": 707,
+      "javascript": 553,
+      "routeFiles": 88,
+      "testFiles": 95
+    },
+    "control": {
+      "files": 426,
+      "javascript": 335,
+      "routeFiles": 53,
+      "testFiles": 53
+    }
+  },
+  "routes": [
+    {
+      "application": "system",
+      "path": "/api/access",
+      "methods": [
+        "GET"
+      ],
+      "file": "apps/system/app/api/access/route.js",
+      "sourceTestReferences": [
+        "apps/system/tests/launch-readiness.test.mjs",
+        "apps/system/tests/plan-access.test.mjs",
+        "apps/system/tests/service-improvements.test.mjs"
+      ],
+      "executionStatus": "See audit report; source references do not prove runtime coverage"
+    },
+    {
+      "application": "system",
+      "path": "/api/account/export",
+      "methods": [
+        "GET"
+      ],
+      "file": "apps/system/app/api/account/export/route.js",
+      "sourceTestReferences": [],
+      "executionStatus": "See audit report; source references do not prove runtime coverage"
+    },
+    {
+      "application": "system",
+      "path": "/api/admin/billing",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "file": "apps/system/app/api/admin/billing/route.js",
+      "sourceTestReferences": [],
+      "executionStatus": "See audit report; source references do not prove runtime coverage"
+    },
+    {
+      "application": "system",
+      "path": "/api/admin/checkouts",
+      "methods": [
+        "GET",
+        "PATCH"
+      ],
+      "file": "apps/system/app/api/admin/checkouts/route.js",
+      "sourceTestReferences": [],
+      "executionStatus": "See audit report; source references do not prove runtime coverage"
+    },
+    {
+      "application": "system",
+      "path": "/api/admin/launch",
+      "methods": [
+        "POST"
+      ],
+      "file": "apps/system/app/api/admin/launch/route.js",
+      "sourceTestReferences": [
+        "apps/system/tests/launch-readiness.test.mjs"
+      ],
+      "executionStatus": "See audit report; source references do not prove runtime coverage"
+    },
+    {
+      "application": "system",
+      "path": "/api/admin/members/[id]",
+      "methods": [
+        "PATCH"
+      ],
+      "file": "apps/system/app/api/admin/members/[id]/route.js",
+      "sourceTestReferences": [],
+      "executionStatus": "See audit report; source references do not prove runtime coverage"
+    },
+    {
+      "application": "system",
+      "path": "/api/admin/members",
+      "methods": [
+        "GET"
+      ],
+      "file": "apps/system/app/api/admin/members/route.js",
+      "sourceTestReferences": [],
+      "executionStatus": "See audit report; source references do not prove runtime coverage"
+    },
+    {
+      "application": "system",
+      "path": "/api/admin/organization-settings/[id]",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "file": "apps/system/app/api/admin/organization-settings/[id]/route.js",
+      "sourceTestReferences": [],
+      "executionStatus": "See audit report; source references do not prove runtime coverage"
+    },
+    {
+      "application": "system",
+      "path": "/api/admin/organizations/[id]",
+      "methods": [
+        "PATCH",
+        "DELETE"
+      ],
+      "file": "apps/system/app/api/admin/organizations/[id]/route.js",
+      "sourceTestReferences": [
+        "apps/system/tests/launch-readiness.test.mjs"
+      ],
+      "executionStatus": "See audit report; source references do not prove runtime coverage"
+    },
+    {
+      "application": "system",
+      "path": "/api/admin/organizations",
+      "methods": [
+        "GET"
+      ],
+      "file": "apps/system/app/api/admin/organizations/route.js",
+      "sourceTestReferences": [
+        "apps/system/tests/launch-readiness.test.mjs"
+      ],
+      "executionStatus": "See audit report; source references do not prove runtime coverage"
+    },
+    {
+      "application": "system",
+      "path": "/api/admin/security/re-encrypt",
+      "methods": [
+        "POST"
+      ],
+      "file": "apps/system/app/api/admin/security/re-encrypt/route.js",
+      "sourceTestReferences": [],
+      "executionStatus": "See audit report; source references do not prove runtime coverage"
+    },
+    {
+      "application": "system",
+      "path": "/api/admin/support",
+      "methods": [
+        "GET",
+        "PATCH"
+      ],
+      "file": "apps/system/app/api/admin/support/route.js",
+      "sourceTestReferences": [],
+      "executionStatus": "See audit report; source references do not prove runtime coverage"
+    },
+    {
+      "application": "system",
+      "path": "/api/agenda/automation",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "file": "apps/system/app/api/agenda/automation/route.js",
+      "sourceTestReferences": [
+        "apps/system/tests/agenda-automation.test.mjs"
+      ],
+      "executionStatus": "See audit report; source references do not prove runtime coverage"
+    },
+    {
+      "application": "system",
+      "path": "/api/agenda/google-calendar",
+      "methods": [
+        "GET"
+      ],
+      "file": "apps/system/app/api/agenda/google-calendar/route.js",
+      "sourceTestReferences": [
+        "apps/system/tests/calendar-nearby.test.mjs",
+        "apps/system/tests/planning-workspace.test.mjs"
+      ],
+      "executionStatus": "See audit report; source references do not prove runtime coverage"
+    },
+    {
+      "application": "system",
+      "path": "/api/agenda/weekly-plan",
+      "methods": [
+        "POST"
+      ],
+      "file": "apps/system/app/api/agenda/weekly-plan/route.js",
+      "sourceTestReferences": [
+        "apps/system/tests/planning-workspace.test.mjs",
+        "apps/system/tests/weekly-planner.test.mjs"
+      ],
+      "executionStatus": "See audit report; source references do not prove runtime coverage"
+    },
+    {
+      "application": "system",
+      "path": "/api/ai-settings",
+      "methods": [
+        "GET"
+      ],
+      "file": "apps/system/app/api/ai-settings/route.js",
+      "sourceTestReferences": [
+        "apps/system/tests/fama-ai-settings.test.mjs",
+        "apps/system/tests/production-security.test.mjs"
+      ],
+      "executionStatus": "See audit report; source references do not prove runtime coverage"
+    },
+    {
+      "application": "system",
+      "path": "/api/asaas",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "file": "apps/system/app/api/asaas/route.js",
+      "sourceTestReferences": [
+        "apps/system/tests/plan-access.test.mjs",
+        "apps/system/tests/pool-provider.test.mjs"
+      ],
+      "executionStatus": "See audit report; source references do not prove runtime coverage"
+    },
+    {
+      "application": "system",
+      "path": "/api/assistant/connection-test",
+      "methods": [
+        "POST"
+      ],
+      "file": "apps/system/app/api/assistant/connection-test/route.js",
+      "sourceTestReferences": [
+        "apps/system/tests/fama-ai-connection-test.test.mjs",
+        "apps/system/tests/production-security.test.mjs"
+      ],
+      "executionStatus": "See audit report; source references do not prove runtime coverage"
+    },
+    {
+      "application": "system",
+      "path": "/api/assistant",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "file": "apps/system/app/api/assistant/route.js",
+      "sourceTestReferences": [
+        "apps/system/tests/fama-ai-api.test.mjs",
+        "apps/system/tests/fama-ai-connection-test.test.mjs",
+        "apps/system/tests/plan-access.test.mjs",
+        "apps/system/tests/production-security.test.mjs"
+      ],
+      "executionStatus": "See audit report; source references do not prove runtime coverage"
+    },
+    {
+      "application": "system",
+      "path": "/api/attachments/[id]",
+      "methods": [
+        "DELETE"
+      ],
+      "file": "apps/system/app/api/attachments/[id]/route.js",
+      "sourceTestReferences": [
+        "apps/system/tests/launch-readiness.test.mjs"
+      ],
+      "executionStatus": "See audit report; source references do not prove runtime coverage"
+    },
+    {
+      "application": "system",
+      "path": "/api/attachments",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "file": "apps/system/app/api/attachments/route.js",
+      "sourceTestReferences": [
+        "apps/system/tests/launch-readiness.test.mjs",
+        "apps/system/tests/plan-access.test.mjs"
+      ],
+      "executionStatus": "See audit report; source references do not prove runtime coverage"
+    },
+    {
+      "application": "system",
+      "path": "/api/auth/accounts",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "file": "apps/system/app/api/auth/accounts/route.js",
+      "sourceTestReferences": [
+        "apps/system/tests/account-switching.test.mjs",
+        "apps/system/tests/sidebar-accounts.test.mjs"
+      ],
+      "executionStatus": "See audit report; source references do not prove runtime coverage"
+    },
+    {
+      "application": "system",
+      "path": "/api/auth/login",
+      "methods": [
+        "POST"
+      ],
+      "file": "apps/system/app/api/auth/login/route.js",
+      "sourceTestReferences": [
+        "apps/system/tests/account-switching.test.mjs",
+        "apps/system/tests/auth-resilience.test.mjs",
+        "apps/system/tests/sidebar-accounts.test.mjs"
+      ],
+      "executionStatus": "See audit report; source references do not prove runtime coverage"
+    },
+    {
+      "application": "system",
+      "path": "/api/auth/logout",
+      "methods": [
+        "GET"
+      ],
+      "file": "apps/system/app/api/auth/logout/route.js",
+      "sourceTestReferences": [
+        "apps/system/tests/account-switching.test.mjs",
+        "apps/system/tests/auth-resilience.test.mjs",
+        "apps/system/tests/sidebar-accounts.test.mjs"
+      ],
+      "executionStatus": "See audit report; source references do not prove runtime coverage"
+    },
+    {
+      "application": "system",
+      "path": "/api/auth/mfa",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "file": "apps/system/app/api/auth/mfa/route.js",
+      "sourceTestReferences": [
+        "apps/system/tests/account-switching.test.mjs",
+        "apps/system/tests/sidebar-accounts.test.mjs"
+      ],
+      "executionStatus": "See audit report; source references do not prove runtime coverage"
+    },
+    {
+      "application": "system",
+      "path": "/api/auth/mfa-login",
+      "methods": [
+        "POST"
+      ],
+      "file": "apps/system/app/api/auth/mfa-login/route.js",
+      "sourceTestReferences": [
+        "apps/system/tests/account-switching.test.mjs",
+        "apps/system/tests/sidebar-accounts.test.mjs"
+      ],
+      "executionStatus": "See audit report; source references do not prove runtime coverage"
+    },
+    {
+      "application": "system",
+      "path": "/api/auth/password",
+      "methods": [
+        "POST"
+      ],
+      "file": "apps/system/app/api/auth/password/route.js",
+      "sourceTestReferences": [],
+      "executionStatus": "See audit report; source references do not prove runtime coverage"
+    },
+    {
+      "application": "system",
+      "path": "/api/auth/recover",
+      "methods": [
+        "POST"
+      ],
+      "file": "apps/system/app/api/auth/recover/route.js",
+      "sourceTestReferences": [
+        "apps/system/tests/password-recovery.test.mjs",
+        "apps/system/tests/recovery-email-route.test.mjs"
+      ],
+      "executionStatus": "See audit report; source references do not prove runtime coverage"
+    },
+    {
+      "application": "system",
+      "path": "/api/auth/session",
+      "methods": [
+        "POST",
+        "GET"
+      ],
+      "file": "apps/system/app/api/auth/session/route.js",
+      "sourceTestReferences": [
+        "apps/system/tests/password-recovery.test.mjs"
+      ],
+      "executionStatus": "See audit report; source references do not prove runtime coverage"
+    },
+    {
+      "application": "system",
+      "path": "/api/auth/signup",
+      "methods": [
+        "POST"
+      ],
+      "file": "apps/system/app/api/auth/signup/route.js",
+      "sourceTestReferences": [],
+      "executionStatus": "See audit report; source references do not prove runtime coverage"
+    },
+    {
+      "application": "system",
+      "path": "/api/billing/asaas-webhook",
+      "methods": [
+        "POST"
+      ],
+      "file": "apps/system/app/api/billing/asaas-webhook/route.js",
+      "sourceTestReferences": [
+        "apps/system/tests/launch-readiness.test.mjs"
+      ],
+      "executionStatus": "See audit report; source references do not prove runtime coverage"
+    },
+    {
+      "application": "system",
+      "path": "/api/billing/notice",
+      "methods": [
+        "GET"
+      ],
+      "file": "apps/system/app/api/billing/notice/route.js",
+      "sourceTestReferences": [],
+      "executionStatus": "See audit report; source references do not prove runtime coverage"
+    },
+    {
+      "application": "system",
+      "path": "/api/billing",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "file": "apps/system/app/api/billing/route.js",
+      "sourceTestReferences": [
+        "apps/system/tests/launch-readiness.test.mjs"
+      ],
+      "executionStatus": "See audit report; source references do not prove runtime coverage"
+    },
+    {
+      "application": "system",
+      "path": "/api/bootstrap",
+      "methods": [
+        "GET"
+      ],
+      "file": "apps/system/app/api/bootstrap/route.js",
+      "sourceTestReferences": [
+        "apps/system/tests/client-stability.test.mjs",
+        "apps/system/tests/fama-ai-local.test.mjs",
+        "apps/system/tests/operation-matrix.test.mjs",
+        "apps/system/tests/plan-access.test.mjs",
+        "apps/system/tests/real-use-regressions.test.mjs",
+        "apps/system/tests/worker-assets.test.mjs"
+      ],
+      "executionStatus": "See audit report; source references do not prove runtime coverage"
+    },
+    {
+      "application": "system",
+      "path": "/api/brasil-data",
+      "methods": [
+        "POST"
+      ],
+      "file": "apps/system/app/api/brasil-data/route.js",
+      "sourceTestReferences": [
+        "apps/system/tests/free-integrations.test.mjs",
+        "apps/system/tests/planning-workspace.test.mjs"
+      ],
+      "executionStatus": "See audit report; source references do not prove runtime coverage"
+    },
+    {
+      "application": "system",
+      "path": "/api/company-settings",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "file": "apps/system/app/api/company-settings/route.js",
+      "sourceTestReferences": [
+        "apps/system/tests/freight.test.mjs",
+        "apps/system/tests/launch-readiness.test.mjs",
+        "apps/system/tests/plan-access.test.mjs"
+      ],
+      "executionStatus": "See audit report; source references do not prove runtime coverage"
+    },
+    {
+      "application": "system",
+      "path": "/api/customers/options",
+      "methods": [
+        "GET"
+      ],
+      "file": "apps/system/app/api/customers/options/route.js",
+      "sourceTestReferences": [],
+      "executionStatus": "See audit report; source references do not prove runtime coverage"
+    },
+    {
+      "application": "system",
+      "path": "/api/documents/[id]",
+      "methods": [
+        "GET"
+      ],
+      "file": "apps/system/app/api/documents/[id]/route.js",
+      "sourceTestReferences": [
+        "apps/system/tests/real-use-regressions.test.mjs"
+      ],
+      "executionStatus": "See audit report; source references do not prove runtime coverage"
+    },
+    {
+      "application": "system",
+      "path": "/api/fama-ai",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "file": "apps/system/app/api/fama-ai/route.js",
+      "sourceTestReferences": [],
+      "executionStatus": "See audit report; source references do not prove runtime coverage"
+    },
+    {
+      "application": "system",
+      "path": "/api/finance/asaas-webhook",
+      "methods": [
+        "POST"
+      ],
+      "file": "apps/system/app/api/finance/asaas-webhook/route.js",
+      "sourceTestReferences": [
+        "apps/system/tests/launch-readiness.test.mjs"
+      ],
+      "executionStatus": "See audit report; source references do not prove runtime coverage"
+    },
+    {
+      "application": "system",
+      "path": "/api/finance",
+      "methods": [
+        "GET",
+        "POST",
+        "PATCH"
+      ],
+      "file": "apps/system/app/api/finance/route.js",
+      "sourceTestReferences": [
+        "apps/system/tests/invoices-workspace.test.mjs",
+        "apps/system/tests/launch-readiness.test.mjs",
+        "apps/system/tests/plan-access.test.mjs"
+      ],
+      "executionStatus": "See audit report; source references do not prove runtime coverage"
+    },
+    {
+      "application": "system",
+      "path": "/api/finance-connections",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "file": "apps/system/app/api/finance-connections/route.js",
+      "sourceTestReferences": [
+        "apps/system/tests/launch-readiness.test.mjs",
+        "apps/system/tests/plan-access.test.mjs"
+      ],
+      "executionStatus": "See audit report; source references do not prove runtime coverage"
+    },
+    {
+      "application": "system",
+      "path": "/api/freight",
+      "methods": [],
+      "file": "apps/system/app/api/freight/route.js",
+      "sourceTestReferences": [
+        "apps/system/tests/consultation-workspace.test.mjs",
+        "apps/system/tests/freight.test.mjs",
+        "apps/system/tests/plan-access.test.mjs",
+        "apps/system/tests/plan-ui.test.mjs",
+        "apps/system/tests/planning-workspace.test.mjs",
+        "apps/system/tests/production-security.test.mjs"
+      ],
+      "executionStatus": "See audit report; source references do not prove runtime coverage"
+    },
+    {
+      "application": "system",
+      "path": "/api/health",
+      "methods": [
+        "GET"
+      ],
+      "file": "apps/system/app/api/health/route.js",
+      "sourceTestReferences": [
+        "apps/system/tests/production-security.test.mjs"
+      ],
+      "executionStatus": "See audit report; source references do not prove runtime coverage"
+    },
+    {
+      "application": "system",
+      "path": "/api/integrations/documents",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "file": "apps/system/app/api/integrations/documents/route.js",
+      "sourceTestReferences": [
+        "apps/system/tests/selected-integrations-ui.test.mjs",
+        "apps/system/tests/selected-integrations.test.mjs"
+      ],
+      "executionStatus": "See audit report; source references do not prove runtime coverage"
+    },
+    {
+      "application": "system",
+      "path": "/api/integrations/github",
+      "methods": [
+        "GET"
+      ],
+      "file": "apps/system/app/api/integrations/github/route.js",
+      "sourceTestReferences": [
+        "apps/system/tests/selected-integrations.test.mjs"
+      ],
+      "executionStatus": "See audit report; source references do not prove runtime coverage"
+    },
+    {
+      "application": "system",
+      "path": "/api/integrations/ipinfo",
+      "methods": [
+        "GET"
+      ],
+      "file": "apps/system/app/api/integrations/ipinfo/route.js",
+      "sourceTestReferences": [
+        "apps/system/tests/selected-integrations.test.mjs"
+      ],
+      "executionStatus": "See audit report; source references do not prove runtime coverage"
+    },
+    {
+      "application": "system",
+      "path": "/api/integrations",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "file": "apps/system/app/api/integrations/route.js",
+      "sourceTestReferences": [
+        "apps/system/tests/selected-integrations-ui.test.mjs",
+        "apps/system/tests/selected-integrations.test.mjs"
+      ],
+      "executionStatus": "See audit report; source references do not prove runtime coverage"
+    },
+    {
+      "application": "system",
+      "path": "/api/integrations/sentry",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "file": "apps/system/app/api/integrations/sentry/route.js",
+      "sourceTestReferences": [
+        "apps/system/tests/selected-integrations.test.mjs"
+      ],
+      "executionStatus": "See audit report; source references do not prove runtime coverage"
+    },
+    {
+      "application": "system",
+      "path": "/api/internal/api-status",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "file": "apps/system/app/api/internal/api-status/route.js",
+      "sourceTestReferences": [
+        "apps/system/tests/api-inventory.test.mjs"
+      ],
+      "executionStatus": "See audit report; source references do not prove runtime coverage"
+    },
+    {
+      "application": "system",
+      "path": "/api/internal/backup-d1",
+      "methods": [
+        "GET"
+      ],
+      "file": "apps/system/app/api/internal/backup-d1/route.js",
+      "sourceTestReferences": [],
+      "executionStatus": "See audit report; source references do not prove runtime coverage"
+    },
+    {
+      "application": "system",
+      "path": "/api/internal/daily-agenda",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "file": "apps/system/app/api/internal/daily-agenda/route.js",
+      "sourceTestReferences": [
+        "apps/system/tests/agenda-automation.test.mjs"
+      ],
+      "executionStatus": "See audit report; source references do not prove runtime coverage"
+    },
+    {
+      "application": "system",
+      "path": "/api/internal/operation-health",
+      "methods": [
+        "GET"
+      ],
+      "file": "apps/system/app/api/internal/operation-health/route.js",
+      "sourceTestReferences": [],
+      "executionStatus": "See audit report; source references do not prove runtime coverage"
+    },
+    {
+      "application": "system",
+      "path": "/api/internal/owner-migration",
+      "methods": [
+        "POST"
+      ],
+      "file": "apps/system/app/api/internal/owner-migration/route.js",
+      "sourceTestReferences": [],
+      "executionStatus": "See audit report; source references do not prove runtime coverage"
+    },
+    {
+      "application": "system",
+      "path": "/api/internal/push-reminders",
+      "methods": [
+        "POST"
+      ],
+      "file": "apps/system/app/api/internal/push-reminders/route.js",
+      "sourceTestReferences": [
+        "apps/system/tests/free-integrations.test.mjs"
+      ],
+      "executionStatus": "See audit report; source references do not prove runtime coverage"
+    },
+    {
+      "application": "system",
+      "path": "/api/internal-chat",
+      "methods": [],
+      "file": "apps/system/app/api/internal-chat/route.js",
+      "sourceTestReferences": [
+        "apps/system/tests/internal-chat-api.test.mjs",
+        "apps/system/tests/plan-access.test.mjs"
+      ],
+      "executionStatus": "See audit report; source references do not prove runtime coverage"
+    },
+    {
+      "application": "system",
+      "path": "/api/legal/consent",
+      "methods": [
+        "POST"
+      ],
+      "file": "apps/system/app/api/legal/consent/route.js",
+      "sourceTestReferences": [],
+      "executionStatus": "See audit report; source references do not prove runtime coverage"
+    },
+    {
+      "application": "system",
+      "path": "/api/map-config",
+      "methods": [
+        "GET"
+      ],
+      "file": "apps/system/app/api/map-config/route.js",
+      "sourceTestReferences": [
+        "apps/system/tests/map-tiles.test.mjs"
+      ],
+      "executionStatus": "See audit report; source references do not prove runtime coverage"
+    },
+    {
+      "application": "system",
+      "path": "/api/members/[id]",
+      "methods": [
+        "PATCH",
+        "DELETE"
+      ],
+      "file": "apps/system/app/api/members/[id]/route.js",
+      "sourceTestReferences": [],
+      "executionStatus": "See audit report; source references do not prove runtime coverage"
+    },
+    {
+      "application": "system",
+      "path": "/api/members",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "file": "apps/system/app/api/members/route.js",
+      "sourceTestReferences": [
+        "apps/system/tests/launch-readiness.test.mjs"
+      ],
+      "executionStatus": "See audit report; source references do not prove runtime coverage"
+    },
+    {
+      "application": "system",
+      "path": "/api/nearby-places",
+      "methods": [
+        "POST"
+      ],
+      "file": "apps/system/app/api/nearby-places/route.js",
+      "sourceTestReferences": [
+        "apps/system/tests/calendar-nearby.test.mjs"
+      ],
+      "executionStatus": "See audit report; source references do not prove runtime coverage"
+    },
+    {
+      "application": "system",
+      "path": "/api/operation-weather",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "file": "apps/system/app/api/operation-weather/route.js",
+      "sourceTestReferences": [
+        "apps/system/tests/launch-readiness.test.mjs",
+        "apps/system/tests/operations-center.test.mjs",
+        "apps/system/tests/planning-workspace.test.mjs",
+        "apps/system/tests/waze.test.mjs"
+      ],
+      "executionStatus": "See audit report; source references do not prove runtime coverage"
+    },
+    {
+      "application": "system",
+      "path": "/api/organizations",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "file": "apps/system/app/api/organizations/route.js",
+      "sourceTestReferences": [
+        "apps/system/tests/launch-readiness.test.mjs"
+      ],
+      "executionStatus": "See audit report; source references do not prove runtime coverage"
+    },
+    {
+      "application": "system",
+      "path": "/api/pool-provider",
+      "methods": [
+        "POST"
+      ],
+      "file": "apps/system/app/api/pool-provider/route.js",
+      "sourceTestReferences": [
+        "apps/system/tests/pool-provider.test.mjs"
+      ],
+      "executionStatus": "See audit report; source references do not prove runtime coverage"
+    },
+    {
+      "application": "system",
+      "path": "/api/pool-provider/webhook",
+      "methods": [
+        "POST"
+      ],
+      "file": "apps/system/app/api/pool-provider/webhook/route.js",
+      "sourceTestReferences": [
+        "apps/system/tests/pool-provider.test.mjs"
+      ],
+      "executionStatus": "See audit report; source references do not prove runtime coverage"
+    },
+    {
+      "application": "system",
+      "path": "/api/privacy/public",
+      "methods": [
+        "POST"
+      ],
+      "file": "apps/system/app/api/privacy/public/route.js",
+      "sourceTestReferences": [
+        "apps/system/tests/production-security.test.mjs"
+      ],
+      "executionStatus": "See audit report; source references do not prove runtime coverage"
+    },
+    {
+      "application": "system",
+      "path": "/api/privacy",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "file": "apps/system/app/api/privacy/route.js",
+      "sourceTestReferences": [
+        "apps/system/tests/production-security.test.mjs"
+      ],
+      "executionStatus": "See audit report; source references do not prove runtime coverage"
+    },
+    {
+      "application": "system",
+      "path": "/api/public/checkout",
+      "methods": [
+        "POST",
+        "GET",
+        "PATCH"
+      ],
+      "file": "apps/system/app/api/public/checkout/route.js",
+      "sourceTestReferences": [
+        "apps/system/tests/sales-activation.test.mjs"
+      ],
+      "executionStatus": "See audit report; source references do not prove runtime coverage"
+    },
+    {
+      "application": "system",
+      "path": "/api/public/plans",
+      "methods": [
+        "GET"
+      ],
+      "file": "apps/system/app/api/public/plans/route.js",
+      "sourceTestReferences": [
+        "apps/system/tests/launch-readiness.test.mjs",
+        "apps/system/tests/plan-catalog.test.mjs",
+        "apps/system/tests/rendered-html.test.mjs",
+        "apps/system/tests/sales-activation.test.mjs"
+      ],
+      "executionStatus": "See audit report; source references do not prove runtime coverage"
+    },
+    {
+      "application": "system",
+      "path": "/api/public/quotes/[id]",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "file": "apps/system/app/api/public/quotes/[id]/approval/route.js",
+      "sourceTestReferences": [],
+      "executionStatus": "See audit report; source references do not prove runtime coverage"
+    },
+    {
+      "application": "system",
+      "path": "/api/push",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "file": "apps/system/app/api/push/route.js",
+      "sourceTestReferences": [
+        "apps/system/tests/free-integrations.test.mjs"
+      ],
+      "executionStatus": "See audit report; source references do not prove runtime coverage"
+    },
+    {
+      "application": "system",
+      "path": "/api/quote-config",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "file": "apps/system/app/api/quote-config/route.js",
+      "sourceTestReferences": [
+        "apps/system/tests/launch-readiness.test.mjs"
+      ],
+      "executionStatus": "See audit report; source references do not prove runtime coverage"
+    },
+    {
+      "application": "system",
+      "path": "/api/quotes/[id]",
+      "methods": [
+        "POST"
+      ],
+      "file": "apps/system/app/api/quotes/[id]/approval-link/route.js",
+      "sourceTestReferences": [],
+      "executionStatus": "See audit report; source references do not prove runtime coverage"
+    },
+    {
+      "application": "system",
+      "path": "/api/quotes/[id]/convert",
+      "methods": [
+        "POST"
+      ],
+      "file": "apps/system/app/api/quotes/[id]/convert/route.js",
+      "sourceTestReferences": [
+        "apps/system/tests/operation-matrix.test.mjs",
+        "apps/system/tests/real-use-regressions.test.mjs"
+      ],
+      "executionStatus": "See audit report; source references do not prove runtime coverage"
+    },
+    {
+      "application": "system",
+      "path": "/api/records/[id]",
+      "methods": [
+        "PATCH",
+        "DELETE"
+      ],
+      "file": "apps/system/app/api/records/[id]/route.js",
+      "sourceTestReferences": [
+        "apps/system/tests/customer-selection.test.mjs",
+        "apps/system/tests/operation-matrix.test.mjs",
+        "apps/system/tests/production-security.test.mjs",
+        "apps/system/tests/real-use-regressions.test.mjs",
+        "apps/system/tests/record-edit.test.mjs",
+        "apps/system/tests/service-improvements.test.mjs"
+      ],
+      "executionStatus": "See audit report; source references do not prove runtime coverage"
+    },
+    {
+      "application": "system",
+      "path": "/api/records",
+      "methods": [
+        "POST"
+      ],
+      "file": "apps/system/app/api/records/route.js",
+      "sourceTestReferences": [
+        "apps/system/tests/client-stability.test.mjs",
+        "apps/system/tests/customer-selection.test.mjs",
+        "apps/system/tests/input-validation.test.mjs",
+        "apps/system/tests/launch-readiness.test.mjs",
+        "apps/system/tests/operation-matrix.test.mjs",
+        "apps/system/tests/plan-access.test.mjs",
+        "apps/system/tests/production-security.test.mjs",
+        "apps/system/tests/real-use-regressions.test.mjs",
+        "apps/system/tests/record-edit.test.mjs",
+        "apps/system/tests/service-improvements.test.mjs",
+        "apps/system/tests/ui-components.test.mjs"
+      ],
+      "executionStatus": "See audit report; source references do not prove runtime coverage"
+    },
+    {
+      "application": "system",
+      "path": "/api/recovery/[id]",
+      "methods": [
+        "POST"
+      ],
+      "file": "apps/system/app/api/recovery/[id]/route.js",
+      "sourceTestReferences": [
+        "apps/system/tests/operation-matrix.test.mjs"
+      ],
+      "executionStatus": "See audit report; source references do not prove runtime coverage"
+    },
+    {
+      "application": "system",
+      "path": "/api/recovery",
+      "methods": [
+        "GET"
+      ],
+      "file": "apps/system/app/api/recovery/route.js",
+      "sourceTestReferences": [
+        "apps/system/tests/operation-matrix.test.mjs"
+      ],
+      "executionStatus": "See audit report; source references do not prove runtime coverage"
+    },
+    {
+      "application": "system",
+      "path": "/api/registration-lookup",
+      "methods": [],
+      "file": "apps/system/app/api/registration-lookup/route.js",
+      "sourceTestReferences": [
+        "apps/system/tests/customer-contact-fields.test.mjs",
+        "apps/system/tests/registration-lookup.test.mjs"
+      ],
+      "executionStatus": "See audit report; source references do not prove runtime coverage"
+    },
+    {
+      "application": "system",
+      "path": "/api/service-profit",
+      "methods": [
+        "PATCH"
+      ],
+      "file": "apps/system/app/api/service-profit/route.js",
+      "sourceTestReferences": [
+        "apps/system/tests/service-improvements.test.mjs"
+      ],
+      "executionStatus": "See audit report; source references do not prove runtime coverage"
+    },
+    {
+      "application": "system",
+      "path": "/api/support/reply",
+      "methods": [
+        "POST"
+      ],
+      "file": "apps/system/app/api/support/reply/route.js",
+      "sourceTestReferences": [
+        "apps/system/tests/service-improvements.test.mjs"
+      ],
+      "executionStatus": "See audit report; source references do not prove runtime coverage"
+    },
+    {
+      "application": "system",
+      "path": "/api/support",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "file": "apps/system/app/api/support/route.js",
+      "sourceTestReferences": [
+        "apps/system/tests/launch-readiness.test.mjs",
+        "apps/system/tests/service-improvements.test.mjs"
+      ],
+      "executionStatus": "See audit report; source references do not prove runtime coverage"
+    },
+    {
+      "application": "system",
+      "path": "/api/warranties/[id]/schedule",
+      "methods": [
+        "POST"
+      ],
+      "file": "apps/system/app/api/warranties/[id]/schedule/route.js",
+      "sourceTestReferences": [
+        "apps/system/tests/operation-matrix.test.mjs",
+        "apps/system/tests/production-security.test.mjs"
+      ],
+      "executionStatus": "See audit report; source references do not prove runtime coverage"
+    },
+    {
+      "application": "system",
+      "path": "/api/whatsapp/assistant",
+      "methods": [],
+      "file": "apps/system/app/api/whatsapp/assistant/route.js",
+      "sourceTestReferences": [
+        "apps/system/tests/fama-whatsapp-bundle.test.mjs",
+        "apps/system/tests/fama-whatsapp.test.mjs"
+      ],
+      "executionStatus": "See audit report; source references do not prove runtime coverage"
+    },
+    {
+      "application": "system",
+      "path": "/api/whatsapp/baileys",
+      "methods": [],
+      "file": "apps/system/app/api/whatsapp/baileys/route.js",
+      "sourceTestReferences": [
+        "apps/system/tests/baileys.test.mjs"
+      ],
+      "executionStatus": "See audit report; source references do not prove runtime coverage"
+    },
+    {
+      "application": "system",
+      "path": "/api/whatsapp/chat",
+      "methods": [],
+      "file": "apps/system/app/api/whatsapp/chat/route.js",
+      "sourceTestReferences": [
+        "apps/system/tests/fama-whatsapp.test.mjs"
+      ],
+      "executionStatus": "See audit report; source references do not prove runtime coverage"
+    },
+    {
+      "application": "system",
+      "path": "/api/whatsapp",
+      "methods": [
+        "POST"
+      ],
+      "file": "apps/system/app/api/whatsapp/route.js",
+      "sourceTestReferences": [
+        "apps/system/tests/agenda-automation.test.mjs",
+        "apps/system/tests/baileys.test.mjs",
+        "apps/system/tests/fama-whatsapp-bundle.test.mjs",
+        "apps/system/tests/fama-whatsapp-panel.test.mjs",
+        "apps/system/tests/fama-whatsapp.test.mjs"
+      ],
+      "executionStatus": "See audit report; source references do not prove runtime coverage"
+    },
+    {
+      "application": "system",
+      "path": "/api/whatsapp/webhook",
+      "methods": [],
+      "file": "apps/system/app/api/whatsapp/webhook/route.js",
+      "sourceTestReferences": [
+        "apps/system/tests/fama-whatsapp-bundle.test.mjs",
+        "apps/system/tests/fama-whatsapp-panel.test.mjs",
+        "apps/system/tests/fama-whatsapp.test.mjs"
+      ],
+      "executionStatus": "See audit report; source references do not prove runtime coverage"
+    },
+    {
+      "application": "control",
+      "path": "/api/admin/agenda-automation",
+      "methods": [
+        "GET"
+      ],
+      "file": "apps/control/app/api/admin/agenda-automation/route.js",
+      "sourceTestReferences": [
+        "apps/control/tests/agenda-automation.test.mjs",
+        "apps/control/tests/integrations-ui.test.mjs"
+      ],
+      "executionStatus": "See audit report; source references do not prove runtime coverage"
+    },
+    {
+      "application": "control",
+      "path": "/api/admin/apis",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "file": "apps/control/app/api/admin/apis/route.js",
+      "sourceTestReferences": [
+        "apps/control/tests/api-inventory-ui.test.mjs",
+        "apps/control/tests/api-inventory.test.mjs"
+      ],
+      "executionStatus": "See audit report; source references do not prove runtime coverage"
+    },
+    {
+      "application": "control",
+      "path": "/api/admin/audit",
+      "methods": [
+        "GET"
+      ],
+      "file": "apps/control/app/api/admin/audit/route.js",
+      "sourceTestReferences": [],
+      "executionStatus": "See audit report; source references do not prove runtime coverage"
+    },
+    {
+      "application": "control",
+      "path": "/api/admin/backup",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "file": "apps/control/app/api/admin/backup/route.js",
+      "sourceTestReferences": [],
+      "executionStatus": "See audit report; source references do not prove runtime coverage"
+    },
+    {
+      "application": "control",
+      "path": "/api/admin/baileys",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "file": "apps/control/app/api/admin/baileys/route.js",
+      "sourceTestReferences": [
+        "apps/control/tests/integrations-ui.test.mjs"
+      ],
+      "executionStatus": "See audit report; source references do not prove runtime coverage"
+    },
+    {
+      "application": "control",
+      "path": "/api/admin/blocks",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "file": "apps/control/app/api/admin/blocks/route.js",
+      "sourceTestReferences": [
+        "apps/control/tests/fama-blocks-api.test.mjs"
+      ],
+      "executionStatus": "See audit report; source references do not prove runtime coverage"
+    },
+    {
+      "application": "control",
+      "path": "/api/admin/commercial",
+      "methods": [
+        "GET"
+      ],
+      "file": "apps/control/app/api/admin/commercial/route.js",
+      "sourceTestReferences": [
+        "apps/control/tests/control-improvements.test.mjs"
+      ],
+      "executionStatus": "See audit report; source references do not prove runtime coverage"
+    },
+    {
+      "application": "control",
+      "path": "/api/admin/health",
+      "methods": [
+        "GET"
+      ],
+      "file": "apps/control/app/api/admin/health/route.js",
+      "sourceTestReferences": [
+        "apps/control/tests/control-improvements.test.mjs",
+        "apps/control/tests/worker-assets.test.mjs"
+      ],
+      "executionStatus": "See audit report; source references do not prove runtime coverage"
+    },
+    {
+      "application": "control",
+      "path": "/api/admin/integrations/actions",
+      "methods": [
+        "POST"
+      ],
+      "file": "apps/control/app/api/admin/integrations/actions/route.js",
+      "sourceTestReferences": [
+        "apps/control/tests/integration-manager-ui.test.mjs",
+        "apps/control/tests/platform-integrations.test.mjs"
+      ],
+      "executionStatus": "See audit report; source references do not prove runtime coverage"
+    },
+    {
+      "application": "control",
+      "path": "/api/admin/integrations/config",
+      "methods": [
+        "GET",
+        "PATCH"
+      ],
+      "file": "apps/control/app/api/admin/integrations/config/route.js",
+      "sourceTestReferences": [
+        "apps/control/tests/integration-manager-ui.test.mjs",
+        "apps/control/tests/integrations-ui.test.mjs",
+        "apps/control/tests/platform-integrations.test.mjs"
+      ],
+      "executionStatus": "See audit report; source references do not prove runtime coverage"
+    },
+    {
+      "application": "control",
+      "path": "/api/admin/integrations/documents",
+      "methods": [
+        "GET"
+      ],
+      "file": "apps/control/app/api/admin/integrations/documents/route.js",
+      "sourceTestReferences": [],
+      "executionStatus": "See audit report; source references do not prove runtime coverage"
+    },
+    {
+      "application": "control",
+      "path": "/api/admin/integrations/google/callback",
+      "methods": [
+        "GET"
+      ],
+      "file": "apps/control/app/api/admin/integrations/google/callback/route.js",
+      "sourceTestReferences": [
+        "apps/control/tests/production-security.test.mjs"
+      ],
+      "executionStatus": "See audit report; source references do not prove runtime coverage"
+    },
+    {
+      "application": "control",
+      "path": "/api/admin/integrations/google",
+      "methods": [
+        "POST"
+      ],
+      "file": "apps/control/app/api/admin/integrations/google/route.js",
+      "sourceTestReferences": [
+        "apps/control/tests/production-security.test.mjs"
+      ],
+      "executionStatus": "See audit report; source references do not prove runtime coverage"
+    },
+    {
+      "application": "control",
+      "path": "/api/admin/integrations",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "file": "apps/control/app/api/admin/integrations/route.js",
+      "sourceTestReferences": [
+        "apps/control/tests/integration-manager-ui.test.mjs",
+        "apps/control/tests/integrations-ui.test.mjs",
+        "apps/control/tests/integrations.test.mjs",
+        "apps/control/tests/platform-integrations.test.mjs",
+        "apps/control/tests/production-security.test.mjs"
+      ],
+      "executionStatus": "See audit report; source references do not prove runtime coverage"
+    },
+    {
+      "application": "control",
+      "path": "/api/admin/members/[id]",
+      "methods": [
+        "PATCH"
+      ],
+      "file": "apps/control/app/api/admin/members/[id]/route.js",
+      "sourceTestReferences": [
+        "apps/control/tests/company-accounts.test.mjs"
+      ],
+      "executionStatus": "See audit report; source references do not prove runtime coverage"
+    },
+    {
+      "application": "control",
+      "path": "/api/admin/members",
+      "methods": [
+        "GET"
+      ],
+      "file": "apps/control/app/api/admin/members/route.js",
+      "sourceTestReferences": [
+        "apps/control/tests/company-accounts.test.mjs"
+      ],
+      "executionStatus": "See audit report; source references do not prove runtime coverage"
+    },
+    {
+      "application": "control",
+      "path": "/api/admin/organizations/[id]/members",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "file": "apps/control/app/api/admin/organizations/[id]/members/route.js",
+      "sourceTestReferences": [
+        "apps/control/tests/company-accounts.test.mjs"
+      ],
+      "executionStatus": "See audit report; source references do not prove runtime coverage"
+    },
+    {
+      "application": "control",
+      "path": "/api/admin/organizations/[id]",
+      "methods": [
+        "PATCH",
+        "DELETE"
+      ],
+      "file": "apps/control/app/api/admin/organizations/[id]/route.js",
+      "sourceTestReferences": [
+        "apps/control/tests/company-accounts.test.mjs",
+        "apps/control/tests/launch-readiness.test.mjs"
+      ],
+      "executionStatus": "See audit report; source references do not prove runtime coverage"
+    },
+    {
+      "application": "control",
+      "path": "/api/admin/organizations",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "file": "apps/control/app/api/admin/organizations/route.js",
+      "sourceTestReferences": [
+        "apps/control/tests/company-accounts.test.mjs",
+        "apps/control/tests/launch-readiness.test.mjs"
+      ],
+      "executionStatus": "See audit report; source references do not prove runtime coverage"
+    },
+    {
+      "application": "control",
+      "path": "/api/admin/plans",
+      "methods": [
+        "GET",
+        "PATCH"
+      ],
+      "file": "apps/control/app/api/admin/plans/route.js",
+      "sourceTestReferences": [
+        "apps/control/tests/control-improvements.test.mjs",
+        "apps/control/tests/launch-readiness.test.mjs"
+      ],
+      "executionStatus": "See audit report; source references do not prove runtime coverage"
+    },
+    {
+      "application": "control",
+      "path": "/api/admin/privacy",
+      "methods": [
+        "GET",
+        "PATCH"
+      ],
+      "file": "apps/control/app/api/admin/privacy/route.js",
+      "sourceTestReferences": [],
+      "executionStatus": "See audit report; source references do not prove runtime coverage"
+    },
+    {
+      "application": "control",
+      "path": "/api/admin/quote-config",
+      "methods": [
+        "GET",
+        "PATCH"
+      ],
+      "file": "apps/control/app/api/admin/quote-config/route.js",
+      "sourceTestReferences": [],
+      "executionStatus": "See audit report; source references do not prove runtime coverage"
+    },
+    {
+      "application": "control",
+      "path": "/api/admin/security/re-encrypt",
+      "methods": [
+        "POST"
+      ],
+      "file": "apps/control/app/api/admin/security/re-encrypt/route.js",
+      "sourceTestReferences": [],
+      "executionStatus": "See audit report; source references do not prove runtime coverage"
+    },
+    {
+      "application": "control",
+      "path": "/api/admin/security",
+      "methods": [
+        "GET"
+      ],
+      "file": "apps/control/app/api/admin/security/route.js",
+      "sourceTestReferences": [
+        "apps/control/tests/control-improvements.test.mjs",
+        "apps/control/tests/launch-readiness.test.mjs"
+      ],
+      "executionStatus": "See audit report; source references do not prove runtime coverage"
+    },
+    {
+      "application": "control",
+      "path": "/api/admin/support",
+      "methods": [
+        "GET",
+        "PATCH"
+      ],
+      "file": "apps/control/app/api/admin/support/route.js",
+      "sourceTestReferences": [
+        "apps/control/tests/control-improvements.test.mjs",
+        "apps/control/tests/launch-readiness.test.mjs"
+      ],
+      "executionStatus": "See audit report; source references do not prove runtime coverage"
+    },
+    {
+      "application": "control",
+      "path": "/api/admin/validation",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "file": "apps/control/app/api/admin/validation/route.js",
+      "sourceTestReferences": [
+        "apps/control/tests/company-accounts.test.mjs"
+      ],
+      "executionStatus": "See audit report; source references do not prove runtime coverage"
+    },
+    {
+      "application": "control",
+      "path": "/api/ai-settings",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "file": "apps/control/app/api/ai-settings/route.js",
+      "sourceTestReferences": [
+        "apps/control/tests/fama-ai-settings.test.mjs",
+        "apps/control/tests/production-security.test.mjs"
+      ],
+      "executionStatus": "See audit report; source references do not prove runtime coverage"
+    },
+    {
+      "application": "control",
+      "path": "/api/assistant/connection-test",
+      "methods": [
+        "POST"
+      ],
+      "file": "apps/control/app/api/assistant/connection-test/route.js",
+      "sourceTestReferences": [
+        "apps/control/tests/fama-ai-connection-test.test.mjs",
+        "apps/control/tests/production-security.test.mjs"
+      ],
+      "executionStatus": "See audit report; source references do not prove runtime coverage"
+    },
+    {
+      "application": "control",
+      "path": "/api/assistant",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "file": "apps/control/app/api/assistant/route.js",
+      "sourceTestReferences": [
+        "apps/control/tests/fama-ai-api.test.mjs",
+        "apps/control/tests/fama-ai-connection-test.test.mjs",
+        "apps/control/tests/production-security.test.mjs"
+      ],
+      "executionStatus": "See audit report; source references do not prove runtime coverage"
+    },
+    {
+      "application": "control",
+      "path": "/api/attachments/[id]",
+      "methods": [
+        "DELETE"
+      ],
+      "file": "apps/control/app/api/attachments/[id]/route.js",
+      "sourceTestReferences": [
+        "apps/control/tests/tenant-security-matrix.test.mjs"
+      ],
+      "executionStatus": "See audit report; source references do not prove runtime coverage"
+    },
+    {
+      "application": "control",
+      "path": "/api/attachments",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "file": "apps/control/app/api/attachments/route.js",
+      "sourceTestReferences": [
+        "apps/control/tests/tenant-security-matrix.test.mjs"
+      ],
+      "executionStatus": "See audit report; source references do not prove runtime coverage"
+    },
+    {
+      "application": "control",
+      "path": "/api/auth/login",
+      "methods": [
+        "POST"
+      ],
+      "file": "apps/control/app/api/auth/login/route.js",
+      "sourceTestReferences": [
+        "apps/control/tests/auth-resilience.test.mjs"
+      ],
+      "executionStatus": "See audit report; source references do not prove runtime coverage"
+    },
+    {
+      "application": "control",
+      "path": "/api/auth/logout",
+      "methods": [
+        "GET"
+      ],
+      "file": "apps/control/app/api/auth/logout/route.js",
+      "sourceTestReferences": [
+        "apps/control/tests/auth-resilience.test.mjs"
+      ],
+      "executionStatus": "See audit report; source references do not prove runtime coverage"
+    },
+    {
+      "application": "control",
+      "path": "/api/auth/mfa",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "file": "apps/control/app/api/auth/mfa/route.js",
+      "sourceTestReferences": [],
+      "executionStatus": "See audit report; source references do not prove runtime coverage"
+    },
+    {
+      "application": "control",
+      "path": "/api/auth/mfa-login",
+      "methods": [
+        "POST"
+      ],
+      "file": "apps/control/app/api/auth/mfa-login/route.js",
+      "sourceTestReferences": [],
+      "executionStatus": "See audit report; source references do not prove runtime coverage"
+    },
+    {
+      "application": "control",
+      "path": "/api/auth/session",
+      "methods": [
+        "GET"
+      ],
+      "file": "apps/control/app/api/auth/session/route.js",
+      "sourceTestReferences": [],
+      "executionStatus": "See audit report; source references do not prove runtime coverage"
+    },
+    {
+      "application": "control",
+      "path": "/api/auth/setup",
+      "methods": [
+        "POST"
+      ],
+      "file": "apps/control/app/api/auth/setup/route.js",
+      "sourceTestReferences": [],
+      "executionStatus": "See audit report; source references do not prove runtime coverage"
+    },
+    {
+      "application": "control",
+      "path": "/api/bootstrap",
+      "methods": [
+        "GET"
+      ],
+      "file": "apps/control/app/api/bootstrap/route.js",
+      "sourceTestReferences": [
+        "apps/control/tests/client-stability.test.mjs",
+        "apps/control/tests/fama-ai-local.test.mjs",
+        "apps/control/tests/tenant-security-matrix.test.mjs"
+      ],
+      "executionStatus": "See audit report; source references do not prove runtime coverage"
+    },
+    {
+      "application": "control",
+      "path": "/api/health",
+      "methods": [
+        "GET"
+      ],
+      "file": "apps/control/app/api/health/route.js",
+      "sourceTestReferences": [
+        "apps/control/tests/api-inventory.test.mjs",
+        "apps/control/tests/integrations.test.mjs",
+        "apps/control/tests/production-security.test.mjs"
+      ],
+      "executionStatus": "See audit report; source references do not prove runtime coverage"
+    },
+    {
+      "application": "control",
+      "path": "/api/internal/backup",
+      "methods": [
+        "POST"
+      ],
+      "file": "apps/control/app/api/internal/backup/route.js",
+      "sourceTestReferences": [],
+      "executionStatus": "See audit report; source references do not prove runtime coverage"
+    },
+    {
+      "application": "control",
+      "path": "/api/internal/backup-d1",
+      "methods": [
+        "GET"
+      ],
+      "file": "apps/control/app/api/internal/backup-d1/route.js",
+      "sourceTestReferences": [],
+      "executionStatus": "See audit report; source references do not prove runtime coverage"
+    },
+    {
+      "application": "control",
+      "path": "/api/internal/baileys",
+      "methods": [
+        "POST"
+      ],
+      "file": "apps/control/app/api/internal/baileys/route.js",
+      "sourceTestReferences": [
+        "apps/control/tests/baileys-config.test.mjs"
+      ],
+      "executionStatus": "See audit report; source references do not prove runtime coverage"
+    },
+    {
+      "application": "control",
+      "path": "/api/internal/data",
+      "methods": [
+        "POST"
+      ],
+      "file": "apps/control/app/api/internal/data/route.js",
+      "sourceTestReferences": [
+        "apps/control/tests/data-bridge-matrix.test.mjs",
+        "apps/control/tests/fama-blocks-api.test.mjs",
+        "apps/control/tests/launch-readiness.test.mjs",
+        "apps/control/tests/whatsapp-bridge.test.mjs"
+      ],
+      "executionStatus": "See audit report; source references do not prove runtime coverage"
+    },
+    {
+      "application": "control",
+      "path": "/api/internal/integrations",
+      "methods": [
+        "POST"
+      ],
+      "file": "apps/control/app/api/internal/integrations/route.js",
+      "sourceTestReferences": [
+        "apps/control/tests/platform-integrations.test.mjs"
+      ],
+      "executionStatus": "See audit report; source references do not prove runtime coverage"
+    },
+    {
+      "application": "control",
+      "path": "/api/internal/owner-migration",
+      "methods": [
+        "POST"
+      ],
+      "file": "apps/control/app/api/internal/owner-migration/route.js",
+      "sourceTestReferences": [],
+      "executionStatus": "See audit report; source references do not prove runtime coverage"
+    },
+    {
+      "application": "control",
+      "path": "/api/members/[id]",
+      "methods": [
+        "PATCH",
+        "DELETE"
+      ],
+      "file": "apps/control/app/api/members/[id]/route.js",
+      "sourceTestReferences": [],
+      "executionStatus": "See audit report; source references do not prove runtime coverage"
+    },
+    {
+      "application": "control",
+      "path": "/api/members",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "file": "apps/control/app/api/members/route.js",
+      "sourceTestReferences": [],
+      "executionStatus": "See audit report; source references do not prove runtime coverage"
+    },
+    {
+      "application": "control",
+      "path": "/api/organizations",
+      "methods": [
+        "GET"
+      ],
+      "file": "apps/control/app/api/organizations/route.js",
+      "sourceTestReferences": [],
+      "executionStatus": "See audit report; source references do not prove runtime coverage"
+    },
+    {
+      "application": "control",
+      "path": "/api/public/plans",
+      "methods": [
+        "GET"
+      ],
+      "file": "apps/control/app/api/public/plans/route.js",
+      "sourceTestReferences": [
+        "apps/control/tests/control-improvements.test.mjs",
+        "apps/control/tests/launch-readiness.test.mjs"
+      ],
+      "executionStatus": "See audit report; source references do not prove runtime coverage"
+    },
+    {
+      "application": "control",
+      "path": "/api/public/support",
+      "methods": [
+        "POST"
+      ],
+      "file": "apps/control/app/api/public/support/route.js",
+      "sourceTestReferences": [
+        "apps/control/tests/launch-readiness.test.mjs"
+      ],
+      "executionStatus": "See audit report; source references do not prove runtime coverage"
+    },
+    {
+      "application": "control",
+      "path": "/api/records/[id]",
+      "methods": [
+        "PATCH",
+        "DELETE"
+      ],
+      "file": "apps/control/app/api/records/[id]/route.js",
+      "sourceTestReferences": [
+        "apps/control/tests/production-security.test.mjs",
+        "apps/control/tests/tenant-security-matrix.test.mjs"
+      ],
+      "executionStatus": "See audit report; source references do not prove runtime coverage"
+    },
+    {
+      "application": "control",
+      "path": "/api/records",
+      "methods": [
+        "POST"
+      ],
+      "file": "apps/control/app/api/records/route.js",
+      "sourceTestReferences": [
+        "apps/control/tests/client-stability.test.mjs",
+        "apps/control/tests/input-validation.test.mjs",
+        "apps/control/tests/production-security.test.mjs",
+        "apps/control/tests/tenant-security-matrix.test.mjs",
+        "apps/control/tests/ui-components.test.mjs"
+      ],
+      "executionStatus": "See audit report; source references do not prove runtime coverage"
+    },
+    {
+      "application": "control",
+      "path": "/api/warranties/[id]/schedule",
+      "methods": [
+        "POST"
+      ],
+      "file": "apps/control/app/api/warranties/[id]/schedule/route.js",
+      "sourceTestReferences": [
+        "apps/control/tests/production-security.test.mjs",
+        "apps/control/tests/tenant-security-matrix.test.mjs"
+      ],
+      "executionStatus": "See audit report; source references do not prove runtime coverage"
+    },
+    {
+      "application": "system",
+      "path": "/api/pedidos",
+      "file": "features/pedidos/api.mjs",
+      "executionStatus": "Automated isolated integration tests; no authenticated production session"
+    },
+    {
+      "application": "system",
+      "path": "/api/pedidos/context",
+      "file": "features/pedidos/api.mjs",
+      "executionStatus": "Automated isolated integration tests; no authenticated production session"
+    },
+    {
+      "application": "system",
+      "path": "/api/pedidos/[id]",
+      "file": "features/pedidos/api.mjs",
+      "executionStatus": "Automated isolated integration tests; no authenticated production session"
+    },
+    {
+      "application": "system",
+      "path": "/api/pedidos/[id]/attachments",
+      "file": "features/pedidos/api.mjs",
+      "executionStatus": "Automated isolated integration tests; no authenticated production session"
+    },
+    {
+      "application": "system",
+      "path": "/api/pedidos/[id]/attachments/[attachmentId]",
+      "file": "features/pedidos/api.mjs",
+      "executionStatus": "Automated isolated integration tests; no authenticated production session"
+    },
+    {
+      "application": "system",
+      "path": "/api/internal/pedidos-policy",
+      "file": "features/pedidos/api.mjs",
+      "executionStatus": "Automated isolated integration tests; no authenticated production session"
+    },
+    {
+      "application": "control",
+      "path": "/api/pedidos-admin",
+      "file": "features/pedidos/api.mjs",
+      "executionStatus": "Automated isolated integration tests; no authenticated production session"
+    }
+  ]
+}
