@@ -1,3 +1,20 @@
+# Resposta ao toque — 15.23.2 — 07/11/2026
+
+Lançamento conjunto `2026-11-07-mobile-tap-01` publicado nos dois Workers.
+
+| Aplicação | Versão Worker | Implantação |
+| --- | --- | --- |
+| System | b9d6df1c-94e2-4a8a-892f-ccd5b75aa2bd | d7bdc26d-46db-4f98-8d1f-6c1a980ca77c |
+| Control | 5cff2387-f835-46c6-9a7b-26d1fa36b5d5 | 868d43c8-14b3-4b17-ac33-739f913dc3fe |
+
+Toques em botões e links agora têm pressão e retorno suave de 320 ms, inclusive na barra inferior. Listeners passivos não interceptam cliques nem rolagem; movimento acima de 10 px e cancelamento interrompem o efeito. Movimento reduzido e controles desabilitados não animam. CSS oferece indicação de pressão sem JavaScript.
+
+30 testes passaram, sintaxe e verificador conjunto passaram. Os dois pacotes foram validados antes da ativação; 123 módulos System, 56 Control e todos os bindings foram preservados. Leitura de volta confirmou os quatro módulos da extensão. As páginas públicas dos dois domínios abriram em navegador e incluem CSS/cliente 15.23.2. Não houve teste em aparelho móvel físico nem sessão autenticada.
+
+`features/liquid-glass/build-input.mjs` monta os recursos e incorpora `touch-feedback.mjs` no cliente. Base anterior em `baseline-15.23.2.json`.
+
+---
+
 # Cloudflare — barra personalizável 15.23.1 — 06/11/2026
 
 Versão conjunta `15.23.1`, lançamento `2026-11-06-all-module-shortcuts-01`, publicada nos dois Workers existentes.

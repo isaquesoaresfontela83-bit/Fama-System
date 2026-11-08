@@ -1,4 +1,5 @@
-import {DOCK_CATALOG,DOCK_LABELS,STORAGE_KEY,normalizePreferences,moveItem,allowedCatalog} from './fama-dock-model-15.23.1.mjs';
+// Touch feedback is bundled into this versioned client at publication.
+import {DOCK_CATALOG,DOCK_LABELS,STORAGE_KEY,normalizePreferences,moveItem,allowedCatalog} from './fama-dock-model-15.23.2.mjs';
 if(!window.__famaDockCustomizer){
  window.__famaDockCustomizer=true;
  let preferences=read(),dialog=null,trigger=null,nav=null,frame=0,draft=null,catalog=new Map(),scope='',loadToken=0,loading=false,loadError='',search='',activeOriginals=new Map();

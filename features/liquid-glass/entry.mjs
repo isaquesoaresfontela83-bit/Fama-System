@@ -1,6 +1,6 @@
-export const VERSION = '15.23.1';
-export const RELEASE = '2026-11-06-all-module-shortcuts-01';
-export const CSS_PATH = '/assets/fama-liquid-glass-15.23.1.css';
+export const VERSION = '15.23.2';
+export const RELEASE = '2026-11-07-mobile-tap-01';
+export const CSS_PATH = '/assets/fama-liquid-glass-15.23.2.css';
 
 /** Wrap the current live application without rebuilding its recovered modules. */
 export function withLiquidGlass(app, css, resources = {}) {
@@ -29,7 +29,7 @@ export function withLiquidGlass(app, css, resources = {}) {
       if (request.method !== 'GET' || !response.headers.get('content-type')?.includes('text/html')) return response;
       const rewritten = new HTMLRewriter()
         .on('head', {element(element) {element.append(`<link rel="stylesheet" href="${CSS_PATH}" data-fama-glass-style>`,{html:true});}})
-        .on('body', {element(element) {element.append('<script type="module" src="/assets/fama-dock-client-15.23.1.mjs"></script>',{html:true});}})
+        .on('body', {element(element) {element.append('<script type="module" src="/assets/fama-dock-client-15.23.2.mjs"></script>',{html:true});}})
         .transform(response);
       const headers = new Headers(rewritten.headers);
       headers.delete('content-length'); headers.delete('etag');

@@ -277,3 +277,10 @@ html:has([data-fama-glass-style]) .workspace-mobile-dock > button > small { max-
 .fama-dock-settings .fama-dock-search { display:block; width:100%; height:44px; margin-block:14px; border:1px solid var(--border,#cbddeb); border-radius:12px; background:var(--card,#fff); color:inherit; padding:10px 12px; font:inherit; }
 .fama-dock-settings-row[hidden] { display:none !important; }
 .fama-dock-choice-count { color:var(--muted-foreground,#5b7190); }
+
+/* Touch feedback also works without JavaScript and with reduced motion. */
+@media (any-pointer:coarse) {
+  html:has([data-fama-glass-style]) :is(button,a[href],[role="button"],input[type="submit"],input[type="button"]):not(:disabled):not([aria-disabled="true"]):not([data-disabled]):active {
+    filter: brightness(.92);
+  }
+}

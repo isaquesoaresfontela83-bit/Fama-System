@@ -33,3 +33,7 @@ O editor agora lista todas as áreas do catálogo liberadas para a empresa e o p
 Atalhos adicionais acionam o menu original, abrindo o menu móvel ou grupo recolhido quando necessário. A seleção não concede permissão nem usa rotas ou handlers internos alternativos. Se não há mais acesso, o atalho é removido da barra; a preferência local pode ser reutilizada quando voltar a ser permitida. A barra permite deslizar horizontalmente quando há muitos atalhos. Base: `baseline-15.23.1.json`.
 
 27 testes passaram. QA de DOM confirmou catálogo, seleção e busca, navegação original do Financeiro, abertura de Estoque em grupo recolhido, persistência e remoção de atalhos sem permissão. A área autenticada ainda não foi inspecionada visualmente em uma conta real.
+
+## Toque no celular — 15.23.2
+
+Pressão e retorno suave em botões/links via Pointer Events passivos, incluindo barra inferior e controles adicionados dinamicamente. Cancela ao rolar, perder foco ou interromper o gesto. Respeita movimento reduzido e controles desabilitados. `build-input.mjs` incorpora o módulo no cliente versionado sem adicionar recursos Worker. 30 testes passaram; páginas públicas e módulos publicados conferidos. Sem teste em aparelho físico ou sessão autenticada.
