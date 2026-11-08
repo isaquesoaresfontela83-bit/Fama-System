@@ -22,7 +22,44 @@
   },
   "advisorWarningsBefore": 6,
   "advisorWarningsAfter": 0,
-  "rlsChanged": false,
+  "rlsChanged": true,
   "businessRecordsChanged": false,
-  "migrationMetadataRecorded": true
+  "migrationMetadataRecorded": true,
+  "privateTableRls": {
+    "migration": "audit_enable_private_control_tables_rls",
+    "authorized": "2026-11-08",
+    "tables": [
+      "fama_platform_integrations",
+      "fama_provider_activity"
+    ],
+    "owner": "fama_control_backend",
+    "backup": "deployment/security/control-private-tables-backup-2026-11-08.json",
+    "backupScope": "Two empty private tables only, not a full-project backup",
+    "restoreVerified": "PGlite: columns, nullability, defaults, constraints, empty rows, owner CRUD, four unauthorized roles, exact RLS rollback",
+    "liveVerification": {
+      "rowCountsBefore": [
+        0,
+        0
+      ],
+      "rowCountsAfter": [
+        0,
+        0
+      ],
+      "rlsEnabled": [
+        true,
+        true
+      ],
+      "forceRls": [
+        false,
+        false
+      ],
+      "ownerAndAclPreserved": true,
+      "backendReadAfterWithinMigration": true,
+      "anonAndAuthenticatedSelect": false
+    },
+    "advisorAfter": {
+      "rls_enabled_no_policy": 69,
+      "auth_leaked_password_protection": 1
+    }
+  }
 }

@@ -1,0 +1,240 @@
+{
+  "schema": "fama_control_runtime",
+  "tables": [
+    {
+      "acl": null,
+      "rls": false,
+      "name": "fama_platform_integrations",
+      "owner": "fama_control_backend",
+      "columns": [
+        {
+          "name": "provider",
+          "type": "text",
+          "default": null,
+          "identity": "",
+          "not_null": true,
+          "generated": ""
+        },
+        {
+          "name": "encrypted_config",
+          "type": "text",
+          "default": null,
+          "identity": "",
+          "not_null": true,
+          "generated": ""
+        },
+        {
+          "name": "revision",
+          "type": "integer",
+          "default": null,
+          "identity": "",
+          "not_null": true,
+          "generated": ""
+        },
+        {
+          "name": "updated_at",
+          "type": "text",
+          "default": null,
+          "identity": "",
+          "not_null": true,
+          "generated": ""
+        }
+      ],
+      "indexes": [
+        "CREATE UNIQUE INDEX fama_platform_integrations_pkey ON fama_control_runtime.fama_platform_integrations USING btree (provider)"
+      ],
+      "options": null,
+      "policies": [],
+      "triggers": [],
+      "force_rls": false,
+      "row_count": 0,
+      "constraints": [
+        {
+          "name": "fama_platform_integrations_pkey",
+          "definition": "PRIMARY KEY (provider)"
+        }
+      ]
+    },
+    {
+      "acl": null,
+      "rls": false,
+      "name": "fama_provider_activity",
+      "owner": "fama_control_backend",
+      "columns": [
+        {
+          "name": "id",
+          "type": "text",
+          "default": null,
+          "identity": "",
+          "not_null": true,
+          "generated": ""
+        },
+        {
+          "name": "provider",
+          "type": "text",
+          "default": null,
+          "identity": "",
+          "not_null": true,
+          "generated": ""
+        },
+        {
+          "name": "action",
+          "type": "text",
+          "default": null,
+          "identity": "",
+          "not_null": true,
+          "generated": ""
+        },
+        {
+          "name": "scope",
+          "type": "text",
+          "default": null,
+          "identity": "",
+          "not_null": true,
+          "generated": ""
+        },
+        {
+          "name": "payload_hash",
+          "type": "text",
+          "default": "''::text",
+          "identity": "",
+          "not_null": true,
+          "generated": ""
+        },
+        {
+          "name": "status",
+          "type": "text",
+          "default": null,
+          "identity": "",
+          "not_null": true,
+          "generated": ""
+        },
+        {
+          "name": "result_id",
+          "type": "text",
+          "default": "''::text",
+          "identity": "",
+          "not_null": true,
+          "generated": ""
+        },
+        {
+          "name": "created_at",
+          "type": "text",
+          "default": null,
+          "identity": "",
+          "not_null": true,
+          "generated": ""
+        }
+      ],
+      "indexes": [
+        "CREATE UNIQUE INDEX fama_provider_activity_pkey ON fama_control_runtime.fama_provider_activity USING btree (id)"
+      ],
+      "options": null,
+      "policies": [],
+      "triggers": [],
+      "force_rls": false,
+      "row_count": 0,
+      "constraints": [
+        {
+          "name": "fama_provider_activity_pkey",
+          "definition": "PRIMARY KEY (id)"
+        }
+      ]
+    }
+  ],
+  "captured_at": "2026-11-08T11:52:08.593647+00:00",
+  "role_privileges": [
+    {
+      "role": "authenticated",
+      "table": "fama_platform_integrations",
+      "delete": false,
+      "insert": false,
+      "select": false,
+      "update": false,
+      "bypass_rls": false
+    },
+    {
+      "role": "anon",
+      "table": "fama_platform_integrations",
+      "delete": false,
+      "insert": false,
+      "select": false,
+      "update": false,
+      "bypass_rls": false
+    },
+    {
+      "role": "service_role",
+      "table": "fama_platform_integrations",
+      "delete": false,
+      "insert": false,
+      "select": false,
+      "update": false,
+      "bypass_rls": true
+    },
+    {
+      "role": "fama_system_backend",
+      "table": "fama_platform_integrations",
+      "delete": false,
+      "insert": false,
+      "select": false,
+      "update": false,
+      "bypass_rls": false
+    },
+    {
+      "role": "fama_control_backend",
+      "table": "fama_platform_integrations",
+      "delete": true,
+      "insert": true,
+      "select": true,
+      "update": true,
+      "bypass_rls": false
+    },
+    {
+      "role": "authenticated",
+      "table": "fama_provider_activity",
+      "delete": false,
+      "insert": false,
+      "select": false,
+      "update": false,
+      "bypass_rls": false
+    },
+    {
+      "role": "anon",
+      "table": "fama_provider_activity",
+      "delete": false,
+      "insert": false,
+      "select": false,
+      "update": false,
+      "bypass_rls": false
+    },
+    {
+      "role": "service_role",
+      "table": "fama_provider_activity",
+      "delete": false,
+      "insert": false,
+      "select": false,
+      "update": false,
+      "bypass_rls": true
+    },
+    {
+      "role": "fama_system_backend",
+      "table": "fama_provider_activity",
+      "delete": false,
+      "insert": false,
+      "select": false,
+      "update": false,
+      "bypass_rls": false
+    },
+    {
+      "role": "fama_control_backend",
+      "table": "fama_provider_activity",
+      "delete": true,
+      "insert": true,
+      "select": true,
+      "update": true,
+      "bypass_rls": false
+    }
+  ],
+  "data": [],
+  "scope": "Complete logical snapshot of these two empty private tables; not a backup of the whole project."
+}

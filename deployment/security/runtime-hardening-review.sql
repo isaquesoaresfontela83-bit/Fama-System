@@ -1,13 +1,7 @@
--- RLS PROPOSED ONLY. Automatic review rejected this part of the combined production proposal.
--- The six pure JSON function settings were approved separately, applied and verified.
--- Their exact SQL and rollback are in applied-json-search-path.sql.
--- The two tables are owned by fama_control_backend and have no anon/authenticated SELECT grant.
--- Before any future approval: recheck ownership, grants, function definitions and a verified backup.
+-- Historical proposal: the RLS migration was explicitly authorized, applied and verified
+-- on 2026-11-08. Exact guarded SQL and rollback: applied-private-control-rls.sql.
+-- Empty table snapshot and isolated restore test were verified beforehand.
+-- This file is documentation; use the recorded migration to avoid duplicate execution.
 
-ALTER TABLE fama_control_runtime.fama_platform_integrations ENABLE ROW LEVEL SECURITY;
-ALTER TABLE fama_control_runtime.fama_provider_activity ENABLE ROW LEVEL SECURITY;
-
--- Verification must confirm the functions still return the expected JSON and backend reads work.
--- Rollback for this exact captured configuration, only if this change was applied:
--- ALTER TABLE fama_control_runtime.fama_platform_integrations DISABLE ROW LEVEL SECURITY;
--- ALTER TABLE fama_control_runtime.fama_provider_activity DISABLE ROW LEVEL SECURITY;
+-- ALTER TABLE fama_control_runtime.fama_platform_integrations ENABLE ROW LEVEL SECURITY;
+-- ALTER TABLE fama_control_runtime.fama_provider_activity ENABLE ROW LEVEL SECURITY;
