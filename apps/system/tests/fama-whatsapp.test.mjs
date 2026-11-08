@@ -149,12 +149,12 @@ test('manual sends use the exact company connection and reject cross-origin, mal
   assert.equal((await manual.POST(req({to:sender,text:'Olá'},{Origin:'https://evil.test'}))).status,403);assert.equal((await manual.POST(req({object:'whatsapp_business_account'}))).status,401);
   assert.equal((await manual.POST(req({to:sender,text:'Olá'}))).status,200);assert.equal(state.messages[0].to,sender);
   const send=state.calls.find(c=>c.path==='/v23.0/11111/messages');assert.ok(send);assert.equal(send.headers.get('authorization'),`Bearer ${providerToken}`);
-  globalThis.__waUser=null;assert.equal((await manual.GET(req({action:'status'}))).status,401);
+  globalThis.__waUser=null;assert.equal((await manual.POST(req({action:'status'}))).status,401);
 });
 test('daily agenda uses Sao Paulo dates and omits warranties and orders the administrator cannot access',async()=>{
-  Object.assign(state.organization_members[0],{role:'admin',permissions:['crm','agenda','team']});state.employees=[{id:'employee',organization_id:'org-a',name:'Técnico',phone:sender,active:true}];state.appointments=[{id:'appointment',organization_id:'org-a',client_name:'Cliente A',title:'Visita',technician:'Técnico',start_at:'2026-10-04T01:00:00Z',kind:'servico',status:'agendado'}];
+  Object.assign(state.organization_members[0],{role:'admin',permissions:['crm','agenda','team','chat']});state.employees=[{id:'employee',organization_id:'org-a',name:'Técnico',phone:sender,active:true}];state.appointments=[{id:'appointment',organization_id:'org-a',client_name:'Cliente A',title:'Visita',technician:'Técnico',start_at:'2026-10-04T01:00:00Z',kind:'servico',status:'agendado'}];
   const req=date=>new Request('https://fama.example.test/api/whatsapp',{method:'POST',headers:{'Content-Type':'application/json',Origin:'https://fama.example.test','x-organization-id':'org-a'},body:JSON.stringify({action:'dailyAgenda',date})});
-  assert.equal((await manual.POST(req('2026-10-03'))).status,200);assert.equal(state.messages.length,1);assert.match(state.messages[0].text.body,/22:00/);assert.equal(queried('warranties'),false);assert.equal(queried('work_orders'),false);
+  const response=await manual.POST(req('2026-10-03'));assert.equal(response.status,200);const result=await response.json();assert.equal(result.manualShare,true);assert.equal(result.drafts.length,1);assert.match(result.drafts[0].text,/22:00/);assert.equal(state.messages.length,0);assert.equal(queried('warranties'),false);assert.equal(queried('work_orders'),false);
   assert.equal((await manual.POST(req('2026-02-30'))).status,400);
 });
 test('bounded stream readers cancel oversized or stalled bodies; provider redirects fail without forwarding credentials',async()=>{

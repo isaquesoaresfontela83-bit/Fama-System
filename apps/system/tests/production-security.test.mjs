@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import {FAMA_VERSION,FAMA_RELEASE_ID} from '../lib/fama-release.js';
 import test, { after } from 'node:test';
 import { glob, readFile } from 'node:fs/promises';
 const root=new URL('..',import.meta.url).pathname;
@@ -27,15 +28,11 @@ test('production headers allow the real map and device geolocation without deleg
   assert.equal(response.headers.get('x-frame-options'),'DENY');
 });
 test('source CSP restricts inline handlers and limits the local scanner to its two endpoints',async()=>{
-  const [config,blueprintText]=await Promise.all([
+  const [config,workerSource]=await Promise.all([
     readFile(new URL('../next.config.js',import.meta.url),'utf8'),
-    readFile(new URL('../../../render.yaml',import.meta.url),'utf8'),
+    readFile(new URL('../worker/index.js',import.meta.url),'utf8'),
   ]);
-  const blueprint=JSON.parse(blueprintText);
-  const service=blueprint.services.find(item=>item.name==='fama-system-web');
-  assert.ok(service);
-  const headers=new Map(service.headers.map(({name,value})=>[name,value]));
-  for(const policy of [config,headers.get('Content-Security-Policy')]){
+  for(const policy of [config,workerSource]){
     assert.match(policy,/script-src-attr 'none'/);
     assert.match(policy,/http:\/\/127\.0\.0\.1:17843\/status http:\/\/127\.0\.0\.1:17843\/scan/);
     assert.doesNotMatch(policy,/connect-src[^\n]*http:\/\/127\.0\.0\.1:17843(?:\s|;)/);
@@ -70,4 +67,4 @@ test('reader refresh clears only cache and reopens a fresh document without dele
  assert.doesNotMatch(html,/localStorage\.clear|sessionStorage\.clear|indexedDB\.deleteDatabase/);
 });
 
-test("public availability probe exposes only a small uncached service status",async()=>{const response=await worker.fetch(new Request("https://fama.example.test/api/health"),env,ctx);assert.equal(response.status,200);assert.equal(response.headers.get("cache-control"),"no-store");const payload=await response.json();assert.deepEqual(Object.keys(payload).sort(),["checkedAt","releaseId","service","status","version"]);assert.equal(payload.status,"ok");assert.ok(Number.isFinite(Date.parse(payload.checkedAt)));});
+test("public availability probe exposes only a small uncached service status",async()=>{const response=await worker.fetch(new Request("https://fama.example.test/api/health"),env,ctx);assert.equal(response.status,200);assert.equal(response.headers.get("cache-control"),"no-store");const payload=await response.json();assert.deepEqual(Object.keys(payload).sort(),["checkedAt","releaseId","service","status","version"]);assert.equal(payload.status,"ok");assert.equal(payload.releaseId,FAMA_RELEASE_ID);assert.equal(payload.version,FAMA_VERSION);assert.ok(Number.isFinite(Date.parse(payload.checkedAt)));});

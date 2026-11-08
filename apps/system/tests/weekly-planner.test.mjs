@@ -31,7 +31,8 @@ test('planner API requires agenda permission and never accepts foreign appointme
  assert.equal((await route.POST(f.request('POST','/api/agenda/weekly-plan',rules([job('foreign')])))).status,403);
  f.member().role='owner';assert.equal((await route.POST(f.request('POST','/api/agenda/weekly-plan',rules([job('foreign')])))).status,409);
 });
-test('authorized weekly planning reads server appointments and never writes business records',async()=>{
+test('authorized weekly planning reads server appointments and never writes business records',async t=>{
+ t.mock.timers.enable({apis:['Date'],now:Date.parse('2026-10-18T12:00:00Z')});
  f.reset();f.tables.appointments=[{id:'job-one',organization_id:'org-one',title:'Manutenção',client_name:'Cliente',start_at:'2026-10-19T08:00:00-03:00',technician:'Lucas',address:'',kind:'Manutenção',notes:'',status:'agendado'}];f.tables.employees=[{id:'tech-one',organization_id:'org-one',name:'Lucas',active:true,color:'blue'}];
  const route=await f.load('/app/api/agenda/weekly-plan/route.js');const response=await route.POST(f.request('POST','/api/agenda/weekly-plan',rules([job('job-one')])));
  assert.equal(response.status,200,await response.clone().text());const proposal=await response.json();assert.equal(proposal.suggestions.length,1);assert.equal(proposal.engine,'rules');assert.match(proposal.warnings.join(' '),/Sem previsão/);assert.equal(f.businessWrites().length,0);

@@ -75,10 +75,10 @@ test('incomplete and unsaved installations show repair and storage warnings hone
 });
 
 
-test('Workers AI suggestions are labelled separately while original facts and fallback messages remain visible', () => {
+test('server AI suggestions are labelled separately while original facts and fallback messages remain visible', () => {
   const native={source:'finance',text:'Recebimento autorizado de R$ 450,00.',actions:[],engine:'internal'};
   const html=renderToStaticMarkup(React.createElement(FamaAiResponse,{answer:{...native,engine:'cloudflare',cloudState:'ready',cloudNarrative:'Confira os vencimentos antes de cobrar.'},name:'Fama IA',data:{},onAsk(){}}));
-  assert.match(html,/Sugestão do Workers AI/);assert.match(html,/450,00/);assert.match(html,/Confira os vencimentos/);
+  assert.match(html,/Sugestão da Fama IA/);assert.match(html,/450,00/);assert.match(html,/Confira os vencimentos/);
   const fallback=renderToStaticMarkup(React.createElement(FamaAiResponse,{answer:{...native,cloudState:'unavailable'},name:'Fama IA',data:{},onAsk(){}}));
   assert.match(fallback,/resultados do núcleo Fama continuam disponíveis/);assert.match(fallback,/450,00/);
 });

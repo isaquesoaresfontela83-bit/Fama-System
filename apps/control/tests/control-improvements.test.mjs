@@ -6,9 +6,9 @@ const f=await operationalFixture(fileURLToPath(new URL("..",import.meta.url)),"s
 const [policy,plans,publicPlans,support,metrics,commercial,health,security]=await Promise.all(["/lib/plan-policy.js","/app/api/admin/plans/route.js","/app/api/public/plans/route.js","/app/api/admin/support/route.js","/lib/commercial-metrics.js","/app/api/admin/commercial/route.js","/app/api/admin/health/route.js","/app/api/admin/security/route.js"].map(f.load));
 beforeEach(()=>{f.reset();f.runtime.PLATFORM_OWNER_EMAIL=f.user.email;});
 after(()=>f.close());
-test("plan validation rejects duplicate identifiers, invalid limits and Basic finance",()=>{
+test("plan validation rejects duplicate identifiers, invalid limits and unknown features",()=>{
  const current=policy.defaultPlanPolicy().current;
- for(const change of [items=>items[1].id=items[0].id,items=>items[0].userLimit=0,items=>items[0].featureIds.push("finance")]){
+ for(const change of [items=>items[1].id=items[0].id,items=>items[0].userLimit=0,items=>items[0].featureIds.push("unknown-feature")]){
   const invalid=structuredClone(current);change(invalid);assert.throws(()=>policy.normalizePolicyPlans(invalid));
  }
  assert.equal(policy.normalizePolicyPlans(current)[2].price,35000);
