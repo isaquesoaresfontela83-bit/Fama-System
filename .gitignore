@@ -16,4 +16,6 @@ features/pedidos/dist/
 **/coverage/
 features/*/dist/
 *.log
+artifacts/
+test-results/
 .DS_Store

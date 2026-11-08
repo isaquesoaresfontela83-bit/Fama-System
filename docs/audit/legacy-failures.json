@@ -1,0 +1,196 @@
+{
+  "system": [
+    {
+      "location": "tests/barcode-decoder.test.mjs:1:1",
+      "name": "tests/barcode-decoder.test.mjs (663.778081ms)",
+      "error": "'test failed'"
+    },
+    {
+      "location": "tests/fama-ai-cache.test.mjs:1:1",
+      "name": "tests/fama-ai-cache.test.mjs (566.11906ms)",
+      "error": "'test failed'"
+    },
+    {
+      "location": "tests/fama-ai-compressed-runtime.test.mjs:6:1",
+      "name": "the released runtime fits the hosting limit and preserves the real WASM bytes (2.08348ms)",
+      "error": "Error: ENOENT: no such file or directory, scandir '/workspace/scratch/fe20ce5bde9f/Fama-System/apps/system/dist/'"
+    },
+    {
+      "location": "tests/fama-ai-compressed-runtime.test.mjs:20:1",
+      "name": "the published Worker serves the decoded WASM bytes through the hosting proxy (2.679622ms)",
+      "error": "Error [ERR_MODULE_NOT_FOUND]: Cannot find module '/workspace/scratch/fe20ce5bde9f/Fama-System/apps/system/dist/server/index.js' imported from /workspace/scratch/fe20ce5bde9f/Fama-S"
+    },
+    {
+      "location": "tests/fama-ai-downloads.test.mjs:1:1",
+      "name": "tests/fama-ai-downloads.test.mjs (585.411669ms)",
+      "error": "'test failed'"
+    },
+    {
+      "location": "tests/fama-ai-panel.test.mjs:78:1",
+      "name": "Workers AI suggestions are labelled separately while original facts and fallback messages remain visible (2.003382ms)",
+      "error": "AssertionError [ERR_ASSERTION]: The input did not match the regular expression /Sugestão do Workers AI/. Input:"
+    },
+    {
+      "location": "tests/fama-ai-startup-bundle.test.mjs:7:1",
+      "name": "an old open tab gets the current worker instead of a missing previous release hash (3.146335ms)",
+      "error": "Error [ERR_MODULE_NOT_FOUND]: Cannot find module '/workspace/scratch/fe20ce5bde9f/Fama-System/apps/system/dist/server/index.js' imported from /workspace/scratch/fe20ce5bde9f/Fama-S"
+    },
+    {
+      "location": "tests/fama-ai-startup-bundle.test.mjs:23:1",
+      "name": "a current worker asset is served directly without replacing it (0.842091ms)",
+      "error": "Error [ERR_MODULE_NOT_FOUND]: Cannot find module '/workspace/scratch/fe20ce5bde9f/Fama-System/apps/system/dist/server/index.js' imported from /workspace/scratch/fe20ce5bde9f/Fama-S"
+    },
+    {
+      "location": "tests/fama-ai-startup-bundle.test.mjs:30:1",
+      "name": "the real bundled mobile worker installs voice and refuses the large model without WebGPU or inference (74.257034ms)",
+      "error": "AssertionError [ERR_ASSERTION]: node:internal/fs/promises:1345"
+    },
+    {
+      "location": "tests/fama-whatsapp-bundle.test.mjs:3:1",
+      "name": "the production Worker routes reject unsigned webhooks and anonymous configuration access (2.857328ms)",
+      "error": "Error [ERR_MODULE_NOT_FOUND]: Cannot find module '/workspace/scratch/fe20ce5bde9f/Fama-System/apps/system/dist/server/index.js' imported from /workspace/scratch/fe20ce5bde9f/Fama-S"
+    },
+    {
+      "location": "tests/fama-whatsapp.test.mjs:147:1",
+      "name": "manual sends use the exact company connection and reject cross-origin, malformed and unauthenticated operations (4.173415ms)",
+      "error": "TypeError [Error]: manual.GET is not a function"
+    },
+    {
+      "location": "tests/fama-whatsapp.test.mjs:154:1",
+      "name": "daily agenda uses Sao Paulo dates and omits warranties and orders the administrator cannot access (3.197621ms)",
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:"
+    },
+    {
+      "location": "tests/inventory-camera.test.mjs:46:1",
+      "name": "native detection produces one reading and releases the camera (2015.987364ms)",
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:"
+    },
+    {
+      "location": "tests/inventory-camera.test.mjs:67:1",
+      "name": "live camera pixels are decoded by the actual WASM reader without native detection (2035.160491ms)",
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:"
+    },
+    {
+      "location": "tests/production-security.test.mjs:1:1",
+      "name": "tests/production-security.test.mjs (111.199489ms)",
+      "error": "'test failed'"
+    },
+    {
+      "location": "tests/provider-runtime.test.mjs:1:1",
+      "name": "tests/provider-runtime.test.mjs (114.663ms)",
+      "error": "'test failed'"
+    },
+    {
+      "location": "tests/real-use-regressions.test.mjs:70:3",
+      "name": "quotes: authenticated download returns a real private PDF attachment (5.814308ms)",
+      "error": "AssertionError [ERR_ASSERTION]: {\"error\":\"Não foi possível gerar o documento.\"}"
+    },
+    {
+      "location": "tests/real-use-regressions.test.mjs:70:3",
+      "name": "contracts: authenticated download returns a real private PDF attachment (4.228103ms)",
+      "error": "AssertionError [ERR_ASSERTION]: {\"error\":\"Não foi possível gerar o documento.\"}"
+    },
+    {
+      "location": "tests/real-use-regressions.test.mjs:70:3",
+      "name": "workOrders: authenticated download returns a real private PDF attachment (5.140843ms)",
+      "error": "AssertionError [ERR_ASSERTION]: {\"error\":\"Não foi possível gerar o documento.\"}"
+    },
+    {
+      "location": "tests/rendered-html.test.mjs:23:1",
+      "name": "renders production branding without development metadata (2.224449ms)",
+      "error": "Error [ERR_MODULE_NOT_FOUND]: Cannot find module '/workspace/scratch/fe20ce5bde9f/Fama-System/apps/system/dist/server/index.js' imported from /workspace/scratch/fe20ce5bde9f/Fama-S"
+    },
+    {
+      "location": "tests/rendered-html.test.mjs:54:1",
+      "name": "renders public plans with free-trial-first links (0.76419ms)",
+      "error": "Error [ERR_MODULE_NOT_FOUND]: Cannot find module '/workspace/scratch/fe20ce5bde9f/Fama-System/apps/system/dist/server/index.js' imported from /workspace/scratch/fe20ce5bde9f/Fama-S"
+    },
+    {
+      "location": "tests/rendered-html.test.mjs:89:1",
+      "name": "renders public checkout as optional payment after trial (0.710279ms)",
+      "error": "Error [ERR_MODULE_NOT_FOUND]: Cannot find module '/workspace/scratch/fe20ce5bde9f/Fama-System/apps/system/dist/server/index.js' imported from /workspace/scratch/fe20ce5bde9f/Fama-S"
+    },
+    {
+      "location": "tests/ui-components.test.mjs:38:1",
+      "name": "emits the catalog's animation and scrolling utilities (4.014597ms)",
+      "error": "Error: ENOENT: no such file or directory, scandir '/workspace/scratch/fe20ce5bde9f/Fama-System/apps/system/dist'"
+    },
+    {
+      "location": "tests/weekly-planner.test.mjs:34:1",
+      "name": "authorized weekly planning reads server appointments and never writes business records (8.69502ms)",
+      "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:"
+    },
+    {
+      "location": "tests/worker-assets.test.mjs:1:1",
+      "name": "tests/worker-assets.test.mjs (109.884951ms)",
+      "error": "'test failed'"
+    }
+  ],
+  "control": [
+    {
+      "location": "tests/control-improvements.test.mjs:9:1",
+      "name": "plan validation rejects duplicate identifiers, invalid limits and Basic finance (6.538068ms)",
+      "error": "AssertionError [ERR_ASSERTION]: Missing expected exception."
+    },
+    {
+      "location": "tests/fama-ai-cache.test.mjs:1:1",
+      "name": "tests/fama-ai-cache.test.mjs (549.903947ms)",
+      "error": "'test failed'"
+    },
+    {
+      "location": "tests/fama-ai-compressed-runtime.test.mjs:6:1",
+      "name": "the released runtime fits the hosting limit and preserves the real WASM bytes (2.399878ms)",
+      "error": "Error: ENOENT: no such file or directory, scandir '/workspace/scratch/fe20ce5bde9f/Fama-System/apps/control/dist/'"
+    },
+    {
+      "location": "tests/fama-ai-compressed-runtime.test.mjs:20:1",
+      "name": "the published Worker serves the decoded WASM bytes through the hosting proxy (2.415462ms)",
+      "error": "Error [ERR_MODULE_NOT_FOUND]: Cannot find module '/workspace/scratch/fe20ce5bde9f/Fama-System/apps/control/dist/server/index.js' imported from /workspace/scratch/fe20ce5bde9f/Fama-"
+    },
+    {
+      "location": "tests/fama-ai-downloads.test.mjs:1:1",
+      "name": "tests/fama-ai-downloads.test.mjs (613.961157ms)",
+      "error": "'test failed'"
+    },
+    {
+      "location": "tests/fama-ai-panel.test.mjs:78:1",
+      "name": "Workers AI suggestions are labelled separately while original facts and fallback messages remain visible (2.43406ms)",
+      "error": "AssertionError [ERR_ASSERTION]: The input did not match the regular expression /Sugestão do Workers AI/. Input:"
+    },
+    {
+      "location": "tests/fama-ai-startup-bundle.test.mjs:7:1",
+      "name": "an old open tab gets the current worker instead of a missing previous release hash (2.407971ms)",
+      "error": "Error [ERR_MODULE_NOT_FOUND]: Cannot find module '/workspace/scratch/fe20ce5bde9f/Fama-System/apps/control/dist/server/index.js' imported from /workspace/scratch/fe20ce5bde9f/Fama-"
+    },
+    {
+      "location": "tests/fama-ai-startup-bundle.test.mjs:23:1",
+      "name": "a current worker asset is served directly without replacing it (0.644293ms)",
+      "error": "Error [ERR_MODULE_NOT_FOUND]: Cannot find module '/workspace/scratch/fe20ce5bde9f/Fama-System/apps/control/dist/server/index.js' imported from /workspace/scratch/fe20ce5bde9f/Fama-"
+    },
+    {
+      "location": "tests/fama-ai-startup-bundle.test.mjs:30:1",
+      "name": "the real bundled mobile worker installs voice and refuses the large model without WebGPU or inference (51.795282ms)",
+      "error": "AssertionError [ERR_ASSERTION]: node:internal/fs/promises:1345"
+    },
+    {
+      "location": "tests/production-security.test.mjs:1:1",
+      "name": "tests/production-security.test.mjs (117.225463ms)",
+      "error": "'test failed'"
+    },
+    {
+      "location": "tests/rendered-html.test.mjs:7:1",
+      "name": "private administration disables indexing and omits development metadata (2.34609ms)",
+      "error": "Error [ERR_MODULE_NOT_FOUND]: Cannot find module '/workspace/scratch/fe20ce5bde9f/Fama-System/apps/control/dist/server/index.js' imported from /workspace/scratch/fe20ce5bde9f/Fama-"
+    },
+    {
+      "location": "tests/ui-components.test.mjs:38:1",
+      "name": "emits the catalog's animation and scrolling utilities (4.822323ms)",
+      "error": "Error: ENOENT: no such file or directory, scandir '/workspace/scratch/fe20ce5bde9f/Fama-System/apps/control/dist'"
+    },
+    {
+      "location": "tests/worker-assets.test.mjs:1:1",
+      "name": "tests/worker-assets.test.mjs (114.343695ms)",
+      "error": "'test failed'"
+    }
+  ]
+}

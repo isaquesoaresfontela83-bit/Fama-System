@@ -1,10 +1,14 @@
-export const VERSION = '15.21.0';
-export const RELEASE = '2026-10-30-pedidos-vendas-entregas-01';
+export const VERSION = '15.24.0';
+export const RELEASE = '2026-11-07-security-quality-01';
 export const STAGES = { registrado: 'A confirmar', confirmado: 'Confirmado', preparacao: 'Em preparação', pronto: 'Pronto para entrega', agendado: 'Entrega agendada', transporte: 'Em transporte', entregue: 'Entregue', cancelado: 'Cancelado' };
 export class OrderError extends Error {
   constructor(message, status = 400) { super(message); this.status = status; }
 }
-export function text(value, max = 250) { return String(value ?? '').trim().slice(0, max); }
+export function text(value, max = 250) {
+  if (value == null) return '';
+  if (typeof value !== 'string') throw new OrderError('Informe um texto válido.');
+  return value.trim().slice(0, max);
+}
 export function required(value, label, max = 250) {
   const result = text(value, max);
   if (!result) throw new OrderError(`${label} é obrigatório.`);
@@ -31,10 +35,13 @@ export function addMonths(value, offset) {
 export function normalizeOrder(input) {
   if (!input || typeof input !== 'object' || Array.isArray(input)) throw new OrderError('Pedido inválido.');
   if (!Array.isArray(input.items) || !input.items.length || input.items.length > 30) throw new OrderError('Adicione de 1 a 30 produtos.');
-  const items = input.items.map(item => ({
+  const items = input.items.map(item => {
+    if (!item || typeof item !== 'object' || Array.isArray(item)) throw new OrderError('Produto inválido.');
+    return ({
     name: required(item.name, 'Modelo ou produto', 180), dimensions: text(item.dimensions, 100), color: text(item.color, 80),
     quantity: integer(item.quantity, 'Quantidade', 1, 100), unitPriceCents: integer(item.unitPriceCents, 'Preço', 0),
-  }));
+    });
+  });
   const subtotalCents = items.reduce((sum, item) => sum + item.quantity * item.unitPriceCents, 0);
   integer(subtotalCents, 'Subtotal', 1);
   const discountCents = integer(input.discountCents ?? 0, 'Desconto', 0, subtotalCents);

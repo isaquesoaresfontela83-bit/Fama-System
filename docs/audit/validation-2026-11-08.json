@@ -1,0 +1,100 @@
+{
+  "sourceCommit": "473a62403be7d589b33fdd660e1914a0d1abfd5d",
+  "historicalSourceBuilds": {
+    "system": "passed",
+    "control": "passed",
+    "deploymentPerformed": false
+  },
+  "historicalSuites": {
+    "system": {
+      "tests": 1032,
+      "pass": 1032,
+      "fail": 0,
+      "skipped": 0,
+      "cancelled": 0,
+      "sha256": "7d340560d6e8f65606cec763eb1a83be52bf66855eeb18c1061104bd69792317",
+      "testProcesses": 2
+    },
+    "control": {
+      "tests": 614,
+      "pass": 614,
+      "fail": 0,
+      "skipped": 0,
+      "cancelled": 0,
+      "sha256": "8b08516eb6c6308c93c7a981e1353e90703c5db95b9ec382b3a3bde12f3b4beb",
+      "testProcesses": 2
+    }
+  },
+  "extensionSuite": {
+    "tests": 58,
+    "pass": 58,
+    "fail": 0
+  },
+  "coverage": {
+    "scope": "Pedidos backend only, 7 modules, 44 tests",
+    "lines": 99.45,
+    "branches": 93.31,
+    "functions": 96.58
+  },
+  "dependencyScans": [
+    {
+      "cwd": ".",
+      "code": 0,
+      "counts": {
+        "info": 0,
+        "low": 0,
+        "moderate": 0,
+        "high": 0,
+        "critical": 0,
+        "total": 0
+      }
+    },
+    {
+      "cwd": "apps/system",
+      "code": 0,
+      "counts": {
+        "info": 0,
+        "low": 0,
+        "moderate": 0,
+        "high": 0,
+        "critical": 0,
+        "total": 0
+      }
+    },
+    {
+      "cwd": "apps/control",
+      "code": 0,
+      "counts": {
+        "info": 0,
+        "low": 0,
+        "moderate": 0,
+        "high": 0,
+        "critical": 0,
+        "total": 0
+      }
+    }
+  ],
+  "syntaxFilesChecked": 694,
+  "secretPatternFilesChecked": 1231,
+  "secretPatternFindings": 0,
+  "localLockfileCiDryRun": {
+    "system": "passed",
+    "control": "passed"
+  },
+  "productionSourceSynchronized": false,
+  "productionWorkerDeploymentPerformed": false,
+  "githubActions": {
+    "runId": 42479099956,
+    "headSha": "473a62403be7d589b33fdd660e1914a0d1abfd5d",
+    "conclusion": "success",
+    "allSixJobsPassed": true,
+    "playwright": {
+      "pass": 9,
+      "fail": 0,
+      "seconds": 7.9
+    }
+  },
+  "totalDistinctTestCases": 1713,
+  "totalFailedTestCases": 0,
+  "totalSkippedTestCases": 0
+}

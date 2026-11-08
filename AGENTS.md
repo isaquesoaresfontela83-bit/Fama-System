@@ -1,5 +1,9 @@
 # Instruções permanentes
 
+## Auditoria de 07/11/2026 — candidato ainda não publicado
+
+A branch `audit/security-quality-2026-11-07` prepara `15.24.0` / `2026-11-07-security-quality-01`. A produção continua em **15.23.2**. Consulte `docs/audit/REPORT.md` e o resultado real do CI antes de qualquer publicação. O candidato atual atualiza Pedidos e Liquid Glass juntos; `deployGlass` sozinho não publica todas as correções. Atualização em 08/11: as dependências dos três lockfiles retornam zero alertas e os dois builds históricos passaram. O RLS das duas tabelas privadas foi autorizado expressamente, aplicado após backup vazio e restauração isolada verificados, e conferido no banco. O CI e o relatório atuais devem ser consultados antes de publicar. As atualizações dos lockfiles históricos não atualizam automaticamente os módulos originais em produção, que ainda exigem sincronização e homologação. Não declarar o sistema integralmente seguro ou a publicação concluída sem essa evidência.
+
 ## Atualização de 06/11/2026 — Liquid Glass 15.23.1
 
 A versão conjunta é `15.23.1` / `2026-11-06-all-module-shortcuts-01`. A extensão visual fica em `features/liquid-glass/` e envolve a entrada Pedidos sem recompilar as fontes antigas. Leia `docs/OPERACAO.md` e `docs/CLOUDFLARE-STATUS.md` para o fluxo vigente. As versões mencionadas abaixo são históricas.

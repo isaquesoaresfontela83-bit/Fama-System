@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import {FAMA_VERSION,FAMA_RELEASE_ID} from '../lib/fama-release.js';
 import test, { after } from 'node:test';
 import { glob, readFile } from 'node:fs/promises';
 const root=new URL('..',import.meta.url).pathname;
@@ -18,20 +19,16 @@ test('Control security headers block inline handlers and unused device/local ori
   assert.equal(directives.get('connect-src').some(value=>value.includes('127.0.0.1')),false);
 });
 test('Control static and server configs agree on the restrictive security headers',async()=>{
-  const [nextConfig,blueprintText]=await Promise.all([
+  const [nextConfig,workerSource]=await Promise.all([
     readFile(new URL('../next.config.js',import.meta.url),'utf8'),
-    readFile(new URL('../../../render.yaml',import.meta.url),'utf8'),
+    readFile(new URL('../worker/index.js',import.meta.url),'utf8'),
   ]);
-  const blueprint=JSON.parse(blueprintText);
-  const control=blueprint.services.find(service=>service.name==='fama-control-web');
-  assert.ok(control);
-  const headers=new Map(control.headers.map(({name,value})=>[name,value]));
   assert.match(nextConfig,/camera=\(\), microphone=\(self\), geolocation=\(\), payment=\(\)/);
   assert.match(nextConfig,/script-src-attr 'none'/);
   assert.doesNotMatch(nextConfig,/connect-src[^\n]*127\.0\.0\.1:17843/);
-  assert.equal(headers.get('Permissions-Policy'),'camera=(), microphone=(self), geolocation=(), payment=()');
-  assert.match(headers.get('Content-Security-Policy'),/script-src-attr 'none'/);
-  assert.doesNotMatch(headers.get('Content-Security-Policy'),/127\.0\.0\.1:17843/);
+  assert.match(workerSource,/camera=\(\), microphone=\(self\), geolocation=\(\), payment=\(\)/);
+  assert.match(workerSource,/script-src-attr 'none'/);
+  assert.doesNotMatch(workerSource,/127\.0\.0\.1:17843/);
 });
 for await(const file of glob('app/api/**/route.js',{cwd:root})){
   const path='/'+file.replace(/^app\//,'').replace(/\/route\.js$/,'').replace(/\[id\]/g,'fixture');
@@ -49,7 +46,7 @@ for(const [method,path] of [['POST','/api/records'],['PATCH','/api/records/fixtu
   assert.equal(response.status,403);
 });
 
-test("public availability probe exposes only a small uncached service status",async()=>{const response=await worker.fetch(new Request("https://fama.example.test/api/health"),env,ctx);assert.equal(response.status,200);assert.equal(response.headers.get("cache-control"),"no-store");const payload=await response.json();assert.deepEqual(Object.keys(payload).sort(),["checkedAt","releaseId","service","status","version"]);assert.equal(payload.status,"ok");assert.match(payload.releaseId,/^\d{4}-\d{2}-\d{2}-[a-z]+-\d+$/);});
+test("public availability probe exposes only a small uncached service status",async()=>{const response=await worker.fetch(new Request("https://fama.example.test/api/health"),env,ctx);assert.equal(response.status,200);assert.equal(response.headers.get("cache-control"),"no-store");const payload=await response.json();assert.deepEqual(Object.keys(payload).sort(),["checkedAt","releaseId","service","status","version"]);assert.equal(payload.status,"ok");assert.equal(payload.releaseId,FAMA_RELEASE_ID);assert.equal(payload.version,FAMA_VERSION);});
 
 test('anonymous OAuth callback returns only a fixed failure redirect without provider calls', async () => {
   const response = await worker.fetch(new Request('http://localhost/api/admin/integrations/google/callback?code=fixture-code&state=fixture-state'), env, ctx);

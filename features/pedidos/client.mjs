@@ -8,7 +8,7 @@ const formattedDate = value => value ? new Intl.DateTimeFormat('pt-BR',{timeZone
 const cents = value => Math.round(Number(value||0)*100);
 const roles = {owner:'Proprietário',admin:'Administrador',member:'Colaborador',technician:'Técnico'};
 function newRequestId(){if(crypto.randomUUID)return crypto.randomUUID();const bytes=crypto.getRandomValues(new Uint8Array(16));bytes[6]=(bytes[6]&15)|64;bytes[8]=(bytes[8]&63)|128;const hex=[...bytes].map(b=>b.toString(16).padStart(2,'0')).join('');return `${hex.slice(0,8)}-${hex.slice(8,12)}-${hex.slice(12,16)}-${hex.slice(16,20)}-${hex.slice(20)}`;}
-let opened=false, container=null, currentOrganization='', context=null, orders=[], selected=null, loading=false, generation=0, dialog=null, requestId=newRequestId();
+let opened=false, container=null, context=null, orders=[], selected=null, generation=0, dialog=null, requestId=newRequestId();
 let filters={query:'',status:'',overdue:false,seller:'',start:'',end:''};
 let adminData=null;
 function organizationId(){return document.querySelector('select.company-switcher,select[aria-label="Empresa ativa"]')?.value || '';}
@@ -40,19 +40,18 @@ const footer=(label='Salvar')=>`<footer>${button('Voltar','data-cancel',true)}<b
 function attachCancel(element){element.querySelector('[data-cancel]').onclick=()=>element.close();}
 function goBack(){selected=null;renderList();}
 async function refresh(){
-  const mine=++generation;loading=true;
+  const mine=++generation;
   if(!context)container.innerHTML=pageHeading('Pedidos de piscinas','Carregando seus pedidos…')+'<div class="fo-error"></div>';
   try {
     if(kind==='control'){adminData=await api('/api/pedidos-admin');if(mine===generation)renderAdmin();return;}
     const org=organizationId();if(!org)throw new Error('Selecione uma empresa para abrir os pedidos.');
     const [nextContext,first]=await Promise.all([api('/api/pedidos/context'),api('/api/pedidos')]);
-    if(mine!==generation)return;context=nextContext;currentOrganization=org;orders=first.orders;
+    if(mine!==generation)return;context=nextContext;orders=first.orders;
     let page=0,more=first.hasMore;
     while(more && mine===generation){const next=await api(`/api/pedidos?page=${++page}`);orders.push(...next.orders);more=next.hasMore;}
     if(mine!==generation)return;
     if(selected)await openDetail(selected.id);else renderList();
   }catch(error){if(mine===generation){container.innerHTML=pageHeading('Pedidos','Acompanhe as vendas e entregas da sua empresa.',button('Tentar novamente','data-retry',true))+'<div class="fo-error">'+alertBox(error.message)+'</div>';container.querySelector('[data-retry]').onclick=()=>void refresh();}}
-  finally{if(mine===generation)loading=false;}
 }
 function renderList(){
   selected=null;
@@ -170,13 +169,13 @@ function addNavigation(){
     document.querySelectorAll('.control-nav').forEach(nav=>{if(nav.querySelector('[data-pedidos-nav]'))return;const link=document.createElement('a');link.href='?pedidos=1';link.className='control-nav-item';link.dataset.pedidosNav='';link.innerHTML=icon+'<span>Pedidos</span>';link.onclick=event=>{event.preventDefault();openWorkspace();closeMobileNavigation(link);};nav.append(link);});
   } else {
     const contents=document.querySelectorAll('.workspace-navigation-content');
-    contents.forEach(nav=>{if(nav.querySelector('[data-pedidos-nav]'))return;const quote=[...nav.querySelectorAll('button,a')].find(n=>n.textContent.trim()==='Orçamentos');if(!quote)return;const parent=quote.closest('li')||quote.parentElement;const item=parent.cloneNode(false);item.removeAttribute('id');const link=document.createElement('a');link.href='?pedidos=1';link.className=quote.className;for(const attr of ['data-sidebar','data-slot','data-size'])if(quote.hasAttribute(attr))link.setAttribute(attr,quote.getAttribute(attr));link.dataset.pedidosNav='';link.innerHTML=icon+'<span>Pedidos</span>';link.onclick=event=>{event.preventDefault();event.stopPropagation();openWorkspace();closeMobileNavigation(link);};item.append(link);parent.after(item);});
+    contents.forEach(nav=>{if(nav.querySelector('[data-pedidos-nav]'))return;const quote=[...nav.querySelectorAll('button,a')].find(n=>n.textContent.trim()==='Orçamentos');if(!quote)return;const parent=quote.closest('li');const item=parent?parent.cloneNode(false):document.createElement('div');item.removeAttribute('id');const link=document.createElement('a');link.href='?pedidos=1';link.className=quote.className;for(const attr of ['data-sidebar','data-slot','data-size'])if(quote.hasAttribute(attr))link.setAttribute(attr,quote.getAttribute(attr));link.dataset.pedidosNav='';link.innerHTML=icon+'<span>Pedidos</span>';link.onclick=event=>{event.preventDefault();event.stopPropagation();openWorkspace();closeMobileNavigation(link);};item.append(link);if(parent)parent.after(item);else quote.after(item);});
   }
   if(opened && container && !container.isConnected)closeWorkspace();
   if(!opened && new URL(location.href).searchParams.has('pedidos') && document.querySelector('[data-pedidos-nav]'))openWorkspace();
 }
 document.addEventListener('click',event=>{if(!opened)return;const target=event.target instanceof Element?event.target:null;if(!target||target.closest('[data-pedidos-nav],#fama-pedidos-root,.fo-dialog'))return;if(target.closest('.workspace-navigation-content,.control-nav,.back-navigation')&&target.closest('button,a'))closeWorkspace();},true);
-document.addEventListener('change',event=>{if(event.target.matches('select.company-switcher,select[aria-label="Empresa ativa"]')&&opened){context=null;selected=null;orders=[];currentOrganization='';queueMicrotask(()=>void refresh());}},true);
+document.addEventListener('change',event=>{if(event.target.matches('select.company-switcher,select[aria-label="Empresa ativa"]')&&opened){context=null;selected=null;orders=[];queueMicrotask(()=>void refresh());}},true);
 let queued=false;
 new MutationObserver(()=>{if(queued)return;queued=true;queueMicrotask(()=>{queued=false;addNavigation();});}).observe(document.documentElement,{childList:true,subtree:true});
 addNavigation();

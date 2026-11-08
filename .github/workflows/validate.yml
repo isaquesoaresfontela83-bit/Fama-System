@@ -4,14 +4,111 @@ on:
   pull_request:
 permissions:
   contents: read
+concurrency:
+  group: audit-${{ github.head_ref || github.ref_name }}
+  cancel-in-progress: true
 jobs:
-  validate:
-    runs-on: ubuntu-latest
+  quality:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: '24'
+          cache: npm
+      - run: npm ci --ignore-scripts
       - run: npm run check:syntax
+      - run: npm run lint
+      - run: npm run check:types
+      - run: npm run check:secrets
       - run: npm run check:companion
       - run: npm test
+      - run: npm run test:coverage | tee coverage.txt
+        shell: bash
+      - run: npm run build
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: quality-evidence
+          path: |
+            coverage.txt
+            features/audit/dist/release-manifest.json
+          retention-days: 14
+  dependencies:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - run: node scripts/audit-dependencies.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: dependency-evidence
+          path: artifacts/security/*.json
+          retention-days: 14
+  interface:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+      - run: npm ci --ignore-scripts
+      - run: npm run build
+      - run: npx playwright install --with-deps chromium
+      - run: npm run test:e2e
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: interface-evidence
+          path: |
+            artifacts/playwright
+            test-results
+          retention-days: 14
+  historical-tests:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        app: [system, control]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - run: npm ci --ignore-scripts --no-audit --prefix apps/${{ matrix.app }}
+      - run: mkdir -p artifacts
+      - name: Build historical source without production credentials
+        working-directory: apps/${{ matrix.app }}
+        env:
+          FAMA_DEPLOY_TARGET: cloudflare
+        run: npm run build
+      - name: Test source and generated assets without production credentials
+        working-directory: apps/${{ matrix.app }}
+        shell: bash
+        run: node scripts/run-test-suite.mjs 2>&1 | tee ../../artifacts/historical-${{ matrix.app }}.txt
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: historical-${{ matrix.app }}-evidence
+          path: artifacts/historical-${{ matrix.app }}.txt
+          retention-days: 14
+  release-gate:
+    if: always()
+    needs: [quality, dependencies, interface, historical-tests]
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Require every verification before release
+        env:
+          QUALITY: ${{ needs.quality.result }}
+          DEPENDENCIES: ${{ needs.dependencies.result }}
+          INTERFACE: ${{ needs.interface.result }}
+          HISTORICAL: ${{ needs.historical-tests.result }}
+        run: test "$QUALITY" = success && test "$DEPENDENCIES" = success && test "$INTERFACE" = success && test "$HISTORICAL" = success

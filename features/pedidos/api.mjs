@@ -1,31 +1,15 @@
-import { VERSION, RELEASE, STAGES, OrderError, text, required, date, integer, today, normalizeOrder, installments, transition, resolvePolicy, validatePolicy } from './model.mjs';
+import { VERSION, STAGES, OrderError, text, required, date, integer, today, normalizeOrder, installments, transition, resolvePolicy, validatePolicy } from './model.mjs';
 import { seal, unseal, uuidFor, legacyStore, encode, decode } from './storage.mjs';
+import { readBoundedText as boundedText, readJsonObject as body } from './request-body.mjs';
+import { sessionForwarder } from './request-session.mjs';
+import { consumeRateLimit } from './rate-limit.mjs';
 
-const privateHeaders = { 'Cache-Control': 'private, no-store', 'X-Content-Type-Options': 'nosniff', Vary: 'Cookie, x-organization-id' };
-export function json(value, status = 200) { return Response.json(value, { status, headers: privateHeaders }); }
+const privateHeaders = { 'Cache-Control': 'private, no-store', 'X-Content-Type-Options': 'nosniff', 'X-Frame-Options':'DENY', 'Referrer-Policy':'strict-origin-when-cross-origin', 'Content-Security-Policy':"default-src 'none'; base-uri 'none'; frame-ancestors 'none'; form-action 'none'", Vary: 'Cookie, x-organization-id' };
+export function json(value, status = 200) { return Response.json(value, { status, headers: {...privateHeaders,...(status===429?{'Retry-After':'60'}:{})} }); }
 function trusted(request) {
   if (['GET', 'HEAD'].includes(request.method)) return;
   const origin = request.headers.get('origin');
   if (origin !== new URL(request.url).origin || request.headers.get('sec-fetch-site') === 'cross-site') throw new OrderError('Origem da solicitação inválida.', 403);
-}
-async function body(request, limit = 70_000) {
-  if (!request.headers.get('content-type')?.startsWith('application/json')) throw new OrderError('Envie os dados em JSON.', 415);
-  const raw=await boundedText(request,limit);
-  try { const result = JSON.parse(raw); if (!result || typeof result !== 'object' || Array.isArray(result)) throw new Error(); return result; }
-  catch { throw new OrderError('Os dados enviados são inválidos.'); }
-}
-async function boundedText(request,limit){
-  if (Number(request.headers.get('content-length') || 0) > limit) throw new OrderError('Arquivo ou pedido muito grande.', 413);
-  const reader = request.body?.getReader();
-  if (!reader) throw new OrderError('Dados ausentes.');
-  const parts = []; let size = 0;
-  for (;;) {
-    const {done, value} = await reader.read(); if (done) break;
-    size += value.byteLength; if (size > limit) { await reader.cancel(); throw new OrderError('Arquivo ou pedido muito grande.', 413); } parts.push(value);
-  }
-  const bytes = new Uint8Array(size); let offset = 0;
-  for (const chunk of parts) { bytes.set(chunk, offset); offset += chunk.byteLength; }
-  return new TextDecoder().decode(bytes);
 }
 async function original(app, request, env, ctx, path) {
   const url = new URL(path, request.url);
@@ -41,10 +25,9 @@ async function parsedOriginal(app, request, env, ctx, path) {
 async function tenant(app, request, env, ctx) {
   const organizationId = request.headers.get('x-organization-id');
   if (!organizationId || organizationId.length > 128) throw new OrderError('Selecione uma empresa para continuar.', 400);
-  const [accessData, session] = await Promise.all([
-    parsedOriginal(app, request, env, ctx, '/api/access'),
-    parsedOriginal(app, request, env, ctx, '/api/auth/session'),
-  ]);
+  // Refresh once, then authorize with the refreshed cookies instead of racing refresh tokens.
+  const session = await parsedOriginal(app, request, env, ctx, '/api/auth/session');
+  const accessData = await parsedOriginal(app, request, env, ctx, '/api/access');
   const access = accessData.access;
   const user = session.currentUser;
   if (!access || access.organizationId !== organizationId || !user?.id || !session.authenticated || !session.consent) throw new OrderError('Não foi possível validar a empresa e a sessão.', 403);
@@ -73,11 +56,13 @@ async function readOrder(db, env, id, org) {
 }
 async function financials(order, env, org) {
   const store = legacyStore(env);
-  return Promise.all(installments(order).map(async payment => {
-    const id = await uuidFor(`pedidos:${org}:${order.id}:parcela:${payment.sequence}`);
-    const row = await store.read('transactions', id, org);
+  const payments = installments(order);
+  const ids = await Promise.all(payments.map(payment => uuidFor(`pedidos:${org}:${order.id}:parcela:${payment.sequence}`)));
+  const rows = new Map((await store.readMany('transactions',ids,org)).map(row => [row.id,row]));
+  return payments.map((payment,index) => {
+    const id = ids[index], row = rows.get(id);
     return { ...payment, id, status: row?.status ?? 'nao_gerada', paid: row?.status === 'pago', amountCents: Number(row?.amount_cents ?? payment.amountCents), dueDate: row?.due_date ?? payment.dueDate };
-  }));
+  });
 }
 async function publicOrder(order, context, env, details = false) {
   const result = { ...order };
@@ -271,7 +256,7 @@ async function policyService(request,env) {
   if(!valid) throw new OrderError('Solicitação interna inválida.',403);
   if(request.method==='GET') return json({policies:(await env.DB.prepare('SELECT scope,policy,revision,updated_at,actor FROM sales_order_policies ORDER BY scope').all()).results.map(row=>({...row,policy:JSON.parse(row.policy)}))});
   if(request.method!=='POST') throw new OrderError('Método não permitido.',405);
-  let input;try{input=JSON.parse(payload);}catch{throw new OrderError('Configuração inválida.');}
+  let input;try{input=JSON.parse(payload);if(!input||typeof input!=='object'||Array.isArray(input))throw new Error();}catch{throw new OrderError('Configuração inválida.');}
   if(!/^(global|plan:(inicial|intermediario|profissional)|organization:[\w-]{1,128}|member:[\w-]{1,128}:[\w-]{1,128})$/.test(input.scope))throw new OrderError('Destino inválido.');
   const policy=validatePolicy(input.policy); const revision=integer(input.revision,'Revisão',0,2_000_000_000);
   const now=new Date().toISOString();
@@ -287,6 +272,9 @@ async function policyService(request,env) {
 async function adminPolicy(app,request,env,ctx) {
   const organizations=await parsedOriginal(app,request,env,ctx,'/api/admin/organizations'); // Existing owner + MFA authorization.
   const session=await parsedOriginal(app,request,env,ctx,'/api/auth/session');
+  const actorId=session.currentUser?.id||session.email;
+  if(!actorId)throw new OrderError('Não foi possível validar a sessão administrativa.',403);
+  if(request.method==='POST')await consumeRateLimit(env.DB,'control',actorId,'policy',15);
   const input=request.method==='POST'?await body(request,10000):null;
   if(input?.scope?.startsWith('organization:') && !organizations.organizations?.some(o=>`organization:${o.id}`===input.scope)) throw new OrderError('Empresa não encontrada.',404);
   if(input?.scope?.startsWith('member:')) {
@@ -302,7 +290,7 @@ async function adminPolicy(app,request,env,ctx) {
   const data=await response.json();
   return json(input?data:{...data,organizations:organizations.organizations?.map(o=>({id:o.id,name:o.name,plan:o.plan}))},response.status);
 }
-export async function handleOrders(app,request,env,ctx,kind='system') {
+async function handleRequest(app,request,env,ctx,kind) {
   const url=new URL(request.url);const path=url.pathname;
   const legacyConversion=kind==='system'&&request.method==='POST'?path.match(/^\/api\/quotes\/([^/]+)\/convert$/):null;
   if (!path.startsWith('/api/pedidos') && path!=='/api/internal/pedidos-policy' && !legacyConversion) return null;
@@ -328,6 +316,7 @@ export async function handleOrders(app,request,env,ctx,kind='system') {
     }
     if(!['GET','POST','PATCH'].includes(request.method))throw new OrderError('Método não permitido.',405);
     const context=await tenant(app,request,env,ctx);
+    if(request.method!=='GET')await consumeRateLimit(env.DB,context.organizationId,context.user.id,path.endsWith('/attachments')?'upload':'mutation',path.endsWith('/attachments')?10:60);
     if(path==='/api/pedidos/context' && request.method==='GET') {
       const data=await catalog(app,request,env,ctx);
       return json({permissions:context.permissions,user:context.user,organization:context.organization,version:VERSION,
@@ -372,7 +361,9 @@ export async function handleOrders(app,request,env,ctx,kind='system') {
         if(!context.permissions.edit && !context.permissions.deliver)throw new OrderError('Seu perfil não permite anexar arquivos.',403);
         const input=await body(request,1_450_000);let bytes;try{bytes=decode(String(input.data || ''));}catch{throw new OrderError('O conteúdo do anexo é inválido.');}
         if(bytes.length>1_048_576 || bytes.length<4)throw new OrderError('O anexo deve ter até 1 MB.');
-        const type=bytes[0]===255&&bytes[1]===216?'image/jpeg':bytes[0]===137&&bytes[1]===80&&bytes[2]===78&&bytes[3]===71?'image/png':new TextDecoder().decode(bytes.slice(0,5))==='%PDF-'?'application/pdf':'';
+        const type=bytes.length>=4&&bytes[0]===255&&bytes[1]===216&&bytes[2]===255?'image/jpeg'
+          :bytes.length>=24&&[137,80,78,71,13,10,26,10].every((value,index)=>bytes[index]===value)&&new TextDecoder().decode(bytes.slice(12,16))==='IHDR'?'image/png'
+          :/^%PDF-[12]\.\d/.test(new TextDecoder().decode(bytes.slice(0,8)))?'application/pdf':'';
         if(!type || input.type!==type)throw new OrderError('Anexe uma foto JPG, PNG ou documento PDF válido.');
         const attachment={id:crypto.randomUUID(),name:required(input.name,'Nome do anexo',150),type,size:bytes.length,at:new Date().toISOString()};
         const saved=await updateOrder(env.DB,env,id,context.organizationId,input.revision,async value=>{
@@ -393,4 +384,9 @@ export async function handleOrders(app,request,env,ctx,kind='system') {
     if(!(error instanceof OrderError))console.error(JSON.stringify({event:'pedidos_request_failed',path,error:error?.name||'Error'}));
     return json({error:error instanceof OrderError?error.message:'Não foi possível concluir a operação. Atualize e tente novamente.'},error instanceof OrderError?error.status:503);
   }
+}
+
+export async function handleOrders(app,request,env,ctx,kind='system') {
+  const session=sessionForwarder(app,request);
+  return session.finish(await handleRequest(session.app,request,env,ctx,kind));
 }

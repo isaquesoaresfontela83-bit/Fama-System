@@ -1,0 +1,63 @@
+{
+  "verifiedAt": "2026-11-08T12:14:39Z",
+  "runId": 42479099956,
+  "url": "https://github.com/isaquesoaresfontela83-bit/Fama-System/actions/runs/42479099956",
+  "headSha": "473a62403be7d589b33fdd660e1914a0d1abfd5d",
+  "status": "completed",
+  "conclusion": "success",
+  "jobs": [
+    {
+      "id": 128726937493,
+      "name": "quality",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128726937694,
+      "name": "historical-tests (control)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128726937731,
+      "name": "interface",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128726937796,
+      "name": "historical-tests (system)",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128726937842,
+      "name": "dependencies",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 128727542142,
+      "name": "release-gate",
+      "status": "completed",
+      "conclusion": "success"
+    }
+  ],
+  "testCounts": {
+    "system": 1032,
+    "control": 614,
+    "extensions": 58,
+    "playwright": 9,
+    "totalWithoutRepeatingCoverage": 1713,
+    "failures": 0,
+    "skipped": 0
+  },
+  "previousFailingRun": {
+    "id": 42438259815,
+    "headSha": "df3df9be42d92b1eca8e497ddf75eff50223786a",
+    "conclusion": "failure",
+    "systemFailures": 16,
+    "controlFailures": 11
+  },
+  "deploymentPerformed": false
+}

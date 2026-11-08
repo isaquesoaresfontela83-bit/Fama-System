@@ -1,0 +1,359 @@
+TAP version 13
+# Subtest: legacy layout migrates without suddenly showing every module
+ok 1 - legacy layout migrates without suddenly showing every module
+  ---
+  duration_ms: 1.696439
+  type: 'test'
+  ...
+# Subtest: malformed preferences cannot add arbitrary routes or hide More
+ok 2 - malformed preferences cannot add arbitrary routes or hide More
+  ---
+  duration_ms: 0.203581
+  type: 'test'
+  ...
+# Subtest: any known module can be selected, reordered and persisted
+ok 3 - any known module can be selected, reordered and persisted
+  ---
+  duration_ms: 0.410197
+  type: 'test'
+  ...
+# Subtest: permission catalog excludes denied modules and administrative areas
+ok 4 - permission catalog excludes denied modules and administrative areas
+  ---
+  duration_ms: 0.449324
+  type: 'test'
+  ...
+# Subtest: Pedidos policies and invoice plan features remain independent checks
+ok 5 - Pedidos policies and invoice plan features remain independent checks
+  ---
+  duration_ms: 0.18939
+  type: 'test'
+  ...
+# Subtest: restore default retains More and hides extra functions again
+ok 6 - restore default retains More and hides extra functions again
+  ---
+  duration_ms: 0.279764
+  type: 'test'
+  ...
+# Subtest: styles bypass application only for GET/HEAD; HEAD has no body
+ok 7 - styles bypass application only for GET/HEAD; HEAD has no body
+  ---
+  duration_ms: 5.659349
+  type: 'test'
+  ...
+# Subtest: health retains diagnostics and release fields match both apps
+ok 8 - health retains diagnostics and release fields match both apps
+  ---
+  duration_ms: 1.113967
+  type: 'test'
+  ...
+# Subtest: auth, redirects, API errors, cookies and other handlers remain unchanged
+ok 9 - auth, redirects, API errors, cookies and other handlers remain unchanged
+  ---
+  duration_ms: 0.528241
+  type: 'test'
+  ...
+# Subtest: HTML streams through rewriter and retains security headers
+ok 10 - HTML streams through rewriter and retains security headers
+  ---
+  duration_ms: 1.60243
+  type: 'test'
+  ...
+# Subtest: dock modules are immutable assets with empty HEAD and no POST interception
+ok 11 - dock modules are immutable assets with empty HEAD and no POST interception
+  ---
+  duration_ms: 0.786113
+  type: 'test'
+  ...
+# Subtest: quick taps retain a visible release animation and support repeated taps
+ok 12 - quick taps retain a visible release animation and support repeated taps
+  ---
+  duration_ms: 1.049191
+  type: 'test'
+  ...
+# Subtest: scrolling and cancelled gestures do not bounce on release
+ok 13 - scrolling and cancelled gestures do not bounce on release
+  ---
+  duration_ms: 0.454772
+  type: 'test'
+  ...
+# Subtest: disabled controls, reduced motion and mouse clicks do not animate
+ok 14 - disabled controls, reduced motion and mouse clicks do not animate
+  ---
+  duration_ms: 0.382225
+  type: 'test'
+  ...
+# Subtest: route and method allowlists never forward unknown order operations
+ok 15 - route and method allowlists never forward unknown order operations
+  ---
+  duration_ms: 21.51831
+  type: 'test'
+  ...
+# Subtest: mutations require exact origin, valid JSON and valid identifiers
+ok 16 - mutations require exact origin, valid JSON and valid identifiers
+  ---
+  duration_ms: 17.086823
+  type: 'test'
+  ...
+# Subtest: access, consent and selected company must agree with the authenticated session
+ok 17 - access, consent and selected company must agree with the authenticated session
+  ---
+  duration_ms: 10.523892
+  type: 'test'
+  ...
+# Subtest: non-financial sales can be registered without exposing payment terms
+ok 18 - non-financial sales can be registered without exposing payment terms
+  ---
+  duration_ms: 9.081269
+  type: 'test'
+  ...
+# Subtest: financial synchronization is resumable and refuses inconsistent prior records
+ok 19 - financial synchronization is resumable and refuses inconsistent prior records
+  ---
+  duration_ms: 41.055457
+  type: 'test'
+  ...
+# Subtest: notes, revision validation and unknown actions do not lose the audit history
+ok 20 - notes, revision validation and unknown actions do not lose the audit history
+  ---
+  duration_ms: 8.723389
+  type: 'test'
+  ...
+# Subtest: scheduling validates dates, time, agenda rights and linked delivery existence
+ok 21 - scheduling validates dates, time, agenda rights and linked delivery existence
+  ---
+  duration_ms: 36.621364
+  type: 'test'
+  ...
+# Subtest: attachment validation, limits and cross-company downloads leave no cleartext payload
+ok 22 - attachment validation, limits and cross-company downloads leave no cleartext payload
+  ---
+  duration_ms: 39.007163
+  type: 'test'
+  ...
+# Subtest: admin policies validate target membership, method, service availability and internal signatures
+ok 23 - admin policies validate target membership, method, service availability and internal signatures
+  ---
+  duration_ms: 6.717735
+  type: 'test'
+  ...
+# Subtest: HTML rewriting preserves status, cookies and security headers while removing stale validators
+ok 24 - HTML rewriting preserves status, cookies and security headers while removing stale validators
+  ---
+  duration_ms: 5.062527
+  type: 'test'
+  ...
+# Subtest: resource lookups ignore prototypes and HEAD responses have no body
+ok 25 - resource lookups ignore prototypes and HEAD responses have no body
+  ---
+  duration_ms: 1.041861
+  type: 'test'
+  ...
+# Subtest: money and quantities reject overflow, fractions, negative values and missing products
+ok 26 - money and quantities reject overflow, fractions, negative values and missing products
+  ---
+  duration_ms: 20.194583
+  type: 'test'
+  ...
+# Subtest: terminal states, lateness and administrative role lists fail closed
+ok 27 - terminal states, lateness and administrative role lists fail closed
+  ---
+  duration_ms: 1.416384
+  type: 'test'
+  ...
+# Subtest: navigation inserts exactly one shortcut in flat and list menus without cloning observer roots
+ok 28 - navigation inserts exactly one shortcut in flat and list menus without cloning observer roots
+  ---
+  duration_ms: 13.848278
+  type: 'test'
+  ...
+# Subtest: centavos, divisão de parcelas e datas no fim do mês
+ok 29 - centavos, divisão de parcelas e datas no fim do mês
+  ---
+  duration_ms: 2.127837
+  type: 'test'
+  ...
+# Subtest: cadastro criptografado, total autoritativo e criação idempotente
+ok 30 - cadastro criptografado, total autoritativo e criação idempotente
+  ---
+  duration_ms: 25.741296
+  type: 'test'
+  ...
+# Subtest: isolamento entre empresas, autenticação, origem e permissões
+ok 31 - isolamento entre empresas, autenticação, origem e permissões
+  ---
+  duration_ms: 9.912639
+  type: 'test'
+  ...
+# {"event":"pedidos_request_failed","path":"/api/pedidos/c261a5fb-e3f6-4ef0-826c-4f2e32f96ad1","error":"Error"}
+# Subtest: confirmação interrompida pode ser retomada sem duplicar ou alterar parcelas
+ok 32 - confirmação interrompida pode ser retomada sem duplicar ou alterar parcelas
+  ---
+  duration_ms: 14.474695
+  type: 'test'
+  ...
+# Subtest: edição comercial não altera condições de pagamento sem permissão financeira
+ok 33 - edição comercial não altera condições de pagamento sem permissão financeira
+  ---
+  duration_ms: 11.527837
+  type: 'test'
+  ...
+# Subtest: confirmação gera parcelas pendentes e pagamento só muda por confirmação
+ok 34 - confirmação gera parcelas pendentes e pagamento só muda por confirmação
+  ---
+  duration_ms: 16.272763
+  type: 'test'
+  ...
+# Subtest: fluxo completo de preparação, agenda, reagendamento e entrega manual
+ok 35 - fluxo completo de preparação, agenda, reagendamento e entrega manual
+  ---
+  duration_ms: 33.93373
+  type: 'test'
+  ...
+# Subtest: orçamento aprovado gera um único pedido mesmo com cliques distintos
+ok 36 - orçamento aprovado gera um único pedido mesmo com cliques distintos
+  ---
+  duration_ms: 5.380026
+  type: 'test'
+  ...
+# Subtest: orçamento vinculado ao pedido não pode gerar outra receita via OS
+ok 37 - orçamento vinculado ao pedido não pode gerar outra receita via OS
+  ---
+  duration_ms: 5.349141
+  type: 'test'
+  ...
+# Subtest: orçamento já convertido em OS é excluído das conversões para pedido
+ok 38 - orçamento já convertido em OS é excluído das conversões para pedido
+  ---
+  duration_ms: 2.735816
+  type: 'test'
+  ...
+# Subtest: cancelamento preserva o pedido e remove somente seus vínculos pendentes
+ok 39 - cancelamento preserva o pedido e remove somente seus vínculos pendentes
+  ---
+  duration_ms: 9.598234
+  type: 'test'
+  ...
+# Subtest: revisão impede ações simultâneas e evita perda de histórico
+ok 40 - revisão impede ações simultâneas e evita perda de histórico
+  ---
+  duration_ms: 6.054062
+  type: 'test'
+  ...
+# Subtest: anexos são criptografados e downloads exigem a empresa correta
+ok 41 - anexos são criptografados e downloads exigem a empresa correta
+  ---
+  duration_ms: 8.583513
+  type: 'test'
+  ...
+# Subtest: regras administrativas respeitam herança, planos e permissões existentes
+ok 42 - regras administrativas respeitam herança, planos e permissões existentes
+  ---
+  duration_ms: 0.289107
+  type: 'test'
+  ...
+# Subtest: Control autentica o administrador e salva regras por serviço assinado
+ok 43 - Control autentica o administrador e salva regras por serviço assinado
+  ---
+  duration_ms: 8.762979
+  type: 'test'
+  ...
+# Subtest: entrada preserva o aplicativo e informa o mesmo lançamento nos dois sistemas
+ok 44 - entrada preserva o aplicativo e informa o mesmo lançamento nos dois sistemas
+  ---
+  duration_ms: 1.903185
+  type: 'test'
+  ...
+# Subtest: durable quota cannot be bypassed by parallel calls or a fresh handler
+ok 45 - durable quota cannot be bypassed by parallel calls or a fresh handler
+  ---
+  duration_ms: 11.610209
+  type: 'test'
+  ...
+# Subtest: quotas isolate verified organizations, users and actions and store hashes only
+ok 46 - quotas isolate verified organizations, users and actions and store hashes only
+  ---
+  duration_ms: 3.164119
+  type: 'test'
+  ...
+# Subtest: JSON media type, syntax, shape and UTF-8 are checked
+ok 47 - JSON media type, syntax, shape and UTF-8 are checked
+  ---
+  duration_ms: 9.963964
+  type: 'test'
+  ...
+# Subtest: announced and actual byte limits include chunked multibyte input
+ok 48 - announced and actual byte limits include chunked multibyte input
+  ---
+  duration_ms: 1.938858
+  type: 'test'
+  ...
+# Subtest: stalled readers time out, cancel and release their lock
+ok 49 - stalled readers time out, cancel and release their lock
+  ---
+  duration_ms: 6.416198
+  type: 'test'
+  ...
+# Subtest: failed reads and aborted requests have explicit errors and release the reader
+ok 50 - failed reads and aborted requests have explicit errors and release the reader
+  ---
+  duration_ms: 1.111664
+  type: 'test'
+  ...
+# Subtest: malformed product entries are validation errors, without writes
+ok 51 - malformed product entries are validation errors, without writes
+  ---
+  duration_ms: 28.257662
+  type: 'test'
+  ...
+# Subtest: object and array values cannot become customer or seller names
+ok 52 - object and array values cannot become customer or seller names
+  ---
+  duration_ms: 6.828137
+  type: 'test'
+  ...
+# Subtest: JSON lookalike media types are rejected before a write
+ok 53 - JSON lookalike media types are rejected before a write
+  ---
+  duration_ms: 2.648647
+  type: 'test'
+  ...
+# Subtest: truncated image signatures are rejected
+ok 54 - truncated image signatures are rejected
+  ---
+  duration_ms: 10.009261
+  type: 'test'
+  ...
+# Subtest: session refresh reaches later authorization checks and the browser
+ok 55 - session refresh reaches later authorization checks and the browser
+  ---
+  duration_ms: 2.198952
+  type: 'test'
+  ...
+# Subtest: encryption has random IVs, detects tampering and supports both key encodings
+ok 56 - encryption has random IVs, detects tampering and supports both key encodings
+  ---
+  duration_ms: 9.388163
+  type: 'test'
+  ...
+# Subtest: batch lookup keeps a tenant predicate and uses one database read for 37 payments
+ok 57 - batch lookup keeps a tenant predicate and uses one database read for 37 payments
+  ---
+  duration_ms: 27.525314
+  type: 'test'
+  ...
+# Subtest: remote finance operations use bounded same-provider requests and tenant filters
+ok 58 - remote finance operations use bounded same-provider requests and tenant filters
+  ---
+  duration_ms: 3.394049
+  type: 'test'
+  ...
+1..58
+# tests 58
+# suites 0
+# pass 58
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 342.5803

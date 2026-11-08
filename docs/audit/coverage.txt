@@ -1,0 +1,75 @@
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> test:coverage
+> node --experimental-test-coverage --test-coverage-include='features/pedidos/*.mjs' --test-coverage-exclude='**/*.test.mjs' --test-coverage-exclude='**/test-support.mjs' --test-coverage-exclude='**/build.mjs' --test-coverage-exclude='**/preview.mjs' --test-coverage-lines=90 --test-coverage-branches=90 --test-coverage-functions=90 --test features/pedidos/*.test.mjs
+
+✔ route and method allowlists never forward unknown order operations (22.559606ms)
+✔ mutations require exact origin, valid JSON and valid identifiers (25.176327ms)
+✔ access, consent and selected company must agree with the authenticated session (16.543039ms)
+✔ non-financial sales can be registered without exposing payment terms (13.064566ms)
+✔ financial synchronization is resumable and refuses inconsistent prior records (54.121624ms)
+✔ notes, revision validation and unknown actions do not lose the audit history (12.195214ms)
+✔ scheduling validates dates, time, agenda rights and linked delivery existence (61.863436ms)
+✔ attachment validation, limits and cross-company downloads leave no cleartext payload (54.506151ms)
+✔ admin policies validate target membership, method, service availability and internal signatures (8.448986ms)
+✔ HTML rewriting preserves status, cookies and security headers while removing stale validators (9.424255ms)
+✔ resource lookups ignore prototypes and HEAD responses have no body (1.386616ms)
+✔ money and quantities reject overflow, fractions, negative values and missing products (25.250165ms)
+✔ terminal states, lateness and administrative role lists fail closed (2.010502ms)
+✔ navigation inserts exactly one shortcut in flat and list menus without cloning observer roots (20.133466ms)
+✔ centavos, divisão de parcelas e datas no fim do mês (3.011654ms)
+✔ cadastro criptografado, total autoritativo e criação idempotente (38.29364ms)
+✔ isolamento entre empresas, autenticação, origem e permissões (17.161321ms)
+{"event":"pedidos_request_failed","path":"/api/pedidos/6dc36147-4bb4-4f20-b87c-7cb87e9ec79c","error":"Error"}
+✔ confirmação interrompida pode ser retomada sem duplicar ou alterar parcelas (19.079241ms)
+✔ edição comercial não altera condições de pagamento sem permissão financeira (8.889817ms)
+✔ confirmação gera parcelas pendentes e pagamento só muda por confirmação (33.332851ms)
+✔ fluxo completo de preparação, agenda, reagendamento e entrega manual (55.956931ms)
+✔ orçamento aprovado gera um único pedido mesmo com cliques distintos (8.327948ms)
+✔ orçamento vinculado ao pedido não pode gerar outra receita via OS (7.824173ms)
+✔ orçamento já convertido em OS é excluído das conversões para pedido (4.105828ms)
+✔ cancelamento preserva o pedido e remove somente seus vínculos pendentes (15.587369ms)
+✔ revisão impede ações simultâneas e evita perda de histórico (8.830768ms)
+✔ anexos são criptografados e downloads exigem a empresa correta (11.826299ms)
+✔ regras administrativas respeitam herança, planos e permissões existentes (0.422454ms)
+✔ Control autentica o administrador e salva regras por serviço assinado (8.784411ms)
+✔ entrada preserva o aplicativo e informa o mesmo lançamento nos dois sistemas (1.953722ms)
+✔ durable quota cannot be bypassed by parallel calls or a fresh handler (20.055661ms)
+✔ quotas isolate verified organizations, users and actions and store hashes only (5.217308ms)
+✔ JSON media type, syntax, shape and UTF-8 are checked (16.624689ms)
+✔ announced and actual byte limits include chunked multibyte input (4.789947ms)
+✔ stalled readers time out, cancel and release their lock (7.164611ms)
+✔ failed reads and aborted requests have explicit errors and release the reader (2.186476ms)
+✔ malformed product entries are validation errors, without writes (27.131832ms)
+✔ object and array values cannot become customer or seller names (5.797594ms)
+✔ JSON lookalike media types are rejected before a write (2.705872ms)
+✔ truncated image signatures are rejected (9.076232ms)
+✔ session refresh reaches later authorization checks and the browser (2.55492ms)
+✔ encryption has random IVs, detects tampering and supports both key encodings (13.585755ms)
+✔ batch lookup keeps a tenant predicate and uses one database read for 37 payments (33.145555ms)
+✔ remote finance operations use bounded same-provider requests and tenant filters (3.982016ms)
+ℹ tests 44
+ℹ suites 0
+ℹ pass 44
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 409.78088
+ℹ start of coverage report
+ℹ ----------------------------------------------------------------------
+ℹ file                  | line % | branch % | funcs % | uncovered lines
+ℹ ----------------------------------------------------------------------
+ℹ features              |        |          |         | 
+ℹ  pedidos              |        |          |         | 
+ℹ   api.mjs             |  98.98 |    91.83 |   93.10 | 165-168
+ℹ   entry.mjs           | 100.00 |    94.12 |  100.00 | 
+ℹ   model.mjs           | 100.00 |    97.80 |  100.00 | 
+ℹ   rate-limit.mjs      | 100.00 |   100.00 |  100.00 | 
+ℹ   request-body.mjs    | 100.00 |    97.50 |  100.00 | 
+ℹ   request-session.mjs | 100.00 |    93.33 |  100.00 | 
+ℹ   storage.mjs         | 100.00 |    92.31 |  100.00 | 
+ℹ ----------------------------------------------------------------------
+ℹ all files             |  99.45 |    93.31 |   96.58 | 
+ℹ ----------------------------------------------------------------------
+ℹ end of coverage report

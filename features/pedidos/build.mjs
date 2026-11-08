@@ -6,7 +6,7 @@ import {existsSync} from 'node:fs';
 import {VERSION,RELEASE} from './model.mjs';
 const root=dirname(fileURLToPath(import.meta.url));
 const dist=join(root,'dist');await mkdir(dist,{recursive:true});
-const localBinary=join(root,'../../apps/system/node_modules/.bin/esbuild');
+const localBinary=join(root,'../../node_modules/.bin/esbuild');
 const executable=process.env.FAMA_ESBUILD_BIN||(existsSync(localBinary)?localBinary:'esbuild');
 function run(args,input){const result=spawnSync(executable,args,{cwd:root,input,encoding:'utf8'});if(result.status!==0)throw new Error(result.stderr||'Falha na compilação do módulo Pedidos.');}
 run(['entry.mjs','--bundle','--format=esm','--platform=neutral','--target=es2022','--minify',`--outfile=${join(dist,'pedidos-core.mjs')}`]);
