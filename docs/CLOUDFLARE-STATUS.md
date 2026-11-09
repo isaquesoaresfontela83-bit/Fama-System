@@ -1,3 +1,16 @@
+# Contas e aprovação de colaborador — 15.23.3 — 09/11/2026
+
+Lançamento conjunto `2026-11-09-account-access-01` publicado nos dois Workers existentes.
+
+| Aplicação | Versão Worker ativa | Implantação |
+| --- | --- | --- |
+| System | `29da1dc5-156d-4a12-bd9b-f5f1d0ce5231` | `ba5b6d66-2712-460e-84ba-d293c9b7a04a` |
+| Control | `c9338df9-528a-48c0-aecb-0bc9eeeb33f0` | `4143585a-516d-42d0-b92e-d8faf0987746` |
+
+A versão ativa 15.23.2 foi recuperada diretamente da Cloudflare com 127 módulos System e 60 Control. Antes da publicação, os hashes originais e as versões ativas foram conferidos; 41 bindings System e 29 Control foram herdados. Leitura de volta confirmou 131 e 64 módulos, incluindo os novos módulos de acesso. Os endpoints de saúde dos dois domínios responderam 15.23.3 / `2026-11-09-account-access-01` via Browser Rendering. O formulário público de segunda conta foi carregado no domínio System. O teste de login com duas credenciais e a página do Control autenticada dependem da sessão do proprietário.
+
+A solicitação para `grupofamaofc@gmail.com` está na tabela `control_collaborator_requests` do D1 Control com estado `pending` e `user_id` vazio. O convite e a permissão só serão emitidos após aprovação na página `/colaboradores-control`. Quatro testes locais passaram, além da checagem de sintaxe e do verificador de versão conjunta.
+
 # Resposta ao toque — 15.23.2 — 07/11/2026
 
 Lançamento conjunto `2026-11-07-mobile-tap-01` publicado nos dois Workers.
