@@ -1,3 +1,5 @@
+Versão conjunta vigente em 09/11/2026: **15.23.3**, `2026-11-09-account-access-01`. Extensão aditiva em `../../features/account-access/`. A solicitação de `grupofamaofc@gmail.com` permanece pendente, sem identidade criada. Consulte `../../docs/CLOUDFLARE-STATUS.md`.
+
 # Preferência permanente do proprietário
 
 Versão conjunta vigente em 06/11/2026: **15.23.2**, `2026-11-07-mobile-tap-01`. Extensão aditiva em `../../features/liquid-glass/`; não reconstruir esta árvore histórica sobre a produção. Consulte `../../docs/OPERACAO.md` e `../../docs/CLOUDFLARE-STATUS.md`.
