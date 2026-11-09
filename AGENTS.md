@@ -1,3 +1,7 @@
+# Atualização de 09/11/2026 — contas 15.23.3
+
+Versão conjunta `15.23.3` / `2026-11-09-account-access-01`. A extensão em `features/account-access/` corrige a conexão de segunda conta e exige aprovação do proprietário antes da criação do colaborador do Control. A solicitação de `grupofamaofc@gmail.com` está pendente e sem acesso. Consulte `docs/CLOUDFLARE-STATUS.md`.
+
 # Instruções permanentes
 
 ## Atualização de 06/11/2026 — Liquid Glass 15.23.1
