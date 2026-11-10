@@ -524,12 +524,12 @@ export function ControlApp({ displayName, email, signOutPath, systemUrl }) {
     const trialPlans = useMemo(() => organizations.filter((item) => item.status === "active" && item.billingEnabled !== false && item.billingProvider !== "courtesy" && (!item.planStatus || item.planStatus === "trial")), [organizations]);
     const criticalTickets = useMemo(() => tickets.filter((item) => ["critica", "alta"].includes(item.priority) && item.status !== "resolvido"), [tickets]);
     const salesFunnel = useMemo(() => [
-        { label: "Interessados", value: organizations.length },
+        { label: "Em teste", value: trialPlans.length },
         { label: "Aguardando Pix", value: organizations.filter((item) => item.planStatus === "pending_payment").length },
         { label: "Conta criada", value: billableOrganizations.length },
         { label: "Treinamento", value: tickets.filter((item) => item.type === "duvida" && item.status !== "resolvido").length },
         { label: "Ativos", value: activePlans.length },
-    ], [activePlans.length, billableOrganizations.length, organizations, tickets]);
+    ], [activePlans.length, billableOrganizations.length, organizations, tickets, trialPlans.length]);
     const platformAlerts = useMemo(() => [
         ...attentionPlans.slice(0, 4).map((item) => ({ title: `${item.name} precisa de cobrança`, detail: planStatusLabel(item.planStatus), tone: "warn" })),
         ...expiringPlans.slice(0, 3).map((item) => ({ title: `${item.name} vence em breve`, detail: item.planExpiresAt ? date(item.planExpiresAt) : "Sem data", tone: "warn" })),
@@ -587,7 +587,7 @@ export function ControlApp({ displayName, email, signOutPath, systemUrl }) {
 
       {activeSection === "health" && <ControlHealth />}
 
-      {activeSection === "sales" && <ControlCommercial />}
+      {activeSection === "sales" && <ControlCommercial pipeline={salesFunnel} />}
 
 
 
