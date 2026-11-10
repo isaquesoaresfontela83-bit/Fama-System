@@ -5,7 +5,7 @@ import { ArrowRight, CalendarDays, FileSignature, ShieldCheck, Sparkles } from "
 import { ThemeToggle } from "@/app/theme-toggle";
 import { LoginForm } from "@/app/login-form";
 
-export function AccessGate({ signInPath }: { signInPath: string }) {
+export function AccessGate({ signInPath }) {
   return <main className="public-page">
     <nav className="public-nav">
       <div className="public-brand">
