@@ -3,11 +3,19 @@ import { createFamaSession } from "@/lib/fama-session";
 
 export const dynamic = "force-dynamic";
 
-const SUPABASE_URL =
-  "https://mupnsdqahoybhmkpufmx.supabase.co";
+function supabaseConfig() {
+  const url = process.env.SUPABASE_URL?.trim();
+  const publishableKey = process.env.SUPABASE_PUBLISHABLE_KEY?.trim();
 
-const SUPABASE_KEY =
-  "sb_publishable_zIRS_RPPmub36dmBEwp_CA_6iByYsV_";
+  if (!url || !publishableKey) {
+    throw new Error("SUPABASE_AUTH_NOT_CONFIGURED");
+  }
+
+  return {
+    url: url.replace(/\/$/, ""),
+    publishableKey,
+  };
+}
 
 export async function POST(request: Request) {
   try {
@@ -29,12 +37,14 @@ export async function POST(request: Request) {
       );
     }
 
+    const { url, publishableKey } = supabaseConfig();
+
     const response = await fetch(
-      `${SUPABASE_URL}/auth/v1/token?grant_type=password`,
+      `${url}/auth/v1/token?grant_type=password`,
       {
         method: "POST",
         headers: {
-          apikey: SUPABASE_KEY,
+          apikey: publishableKey,
           "Content-Type": "application/json",
         },
         body: JSON.stringify({

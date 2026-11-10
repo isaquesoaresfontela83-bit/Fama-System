@@ -23,7 +23,7 @@ O frontend completo e a versão publicada do Control precisam ser identificados 
 
 A proposta de monorepo e expansão funcional do PR #2 tem escopo amplo. A mudança de configuração de login do PR #3 depende de variáveis no ambiente. Ambas exigem avaliação própria; a organização documental não valida nem publica essas funcionalidades.
 
-A URL e a chave publicável do Supabase continuam definidas no endpoint de login desta `main`. Documentar variáveis futuras não configura automaticamente o ambiente nem altera esse endpoint.
+O endpoint de login desta revisão lê a URL e a chave publicável do Supabase do ambiente. O PR #3 exige configurar `SUPABASE_URL` e `SUPABASE_PUBLISHABLE_KEY` e testar o login antes de integração; alterar o exemplo não configura o ambiente automaticamente.
 
 ## Antes de remover ou mover arquivos
 
