@@ -1,3 +1,7 @@
+# SEO 15.23.4 — preparado, não publicado — 15/11/2026
+
+Extensão em `features/seo/`. 41 testes passaram e os dois pacotes foram preparados contra a produção vigente. Ativação bloqueada pela revisão automática por falta de autorização explícita para publicação conjunta, especialmente no Control. Os Workers permanecem nas versões 15.23.3 abaixo. Search Console também está pendente.
+
 # Contas e aprovação de colaborador — 15.23.3 — 09/11/2026
 
 Lançamento conjunto `2026-11-09-account-access-01` publicado nos dois Workers existentes.
