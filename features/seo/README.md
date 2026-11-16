@@ -15,6 +15,6 @@ Extensão aditiva sobre a produção conjunta 15.23.3. Preserva integralmente 13
 
 41 testes passaram; sintaxe e verificação conjunta passaram. Preparação remota confirmou 133/66 módulos finais com 41/29 bindings. A primeira revisão automática identificou um problema no comando que incorporava o publicador: remover globalmente `export ` também removia o default export dentro do template da entrada. `build-tool-input.mjs` remove somente declarações nomeadas no início das linhas e valida o código final. A sintaxe das duas entradas geradas foi conferida.
 
-A publicação NÃO ocorreu. Após a correção, a revisão automática continuou recusando a ativação por exigir autorização clara para alterar ambos os Workers de produção, especialmente o Control. Produção segue 15.23.3. É necessária aprovação explícita para a publicação conjunta.
+Publicado em ambos os Workers após autorização explícita do proprietário. Leitura de volta conferiu todos os módulos. Endpoints de saúde confirmam 15.23.4; páginas públicas, sitemap e llms.txt responderam HTTP 200. Consulte docs/CLOUDFLARE-STATUS.md para versões e implantação.
 
-Search Console: propriedade/verificação e envio de sitemap ainda não executados. É preciso acesso à conta Google proprietária para concluir essa parte. Não foi feita alteração de DNS nem criada verificação fictícia. llms.txt é documentação auxiliar e não garante indexação ou citação em respostas de IA.
+Search Console concluído em 16/11/2026: domínio verificado pela conta autorizada, via TXT Cloudflare. Sitemap enviado e confirmado como Processado, com 4 páginas encontradas. Indexação e posicionamento não são garantidos. llms.txt é documentação auxiliar e não garante citação por IA.
