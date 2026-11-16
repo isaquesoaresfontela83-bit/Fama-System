@@ -1,3 +1,16 @@
+# SEO 15.23.4 — publicado e verificado
+
+Lançamento conjunto `2026-11-15-seo-discovery-01` publicado em 15/11/2026, confirmado em 16/11/2026 nos dois domínios.
+
+| Aplicação | Versão Worker | Implantação |
+| --- | --- | --- |
+| System | `9c9b68e3-0a55-40ba-93a9-5d6fdf45e0a0` | `327ca49f-093f-47e0-b610-d5e94f1cf875` |
+| Control | `362bd6e7-dec0-40a5-8eb5-6c7263931093` | `b18c3a2b-072e-4785-b402-0fa380d507a1` |
+
+Preservados integralmente 131/64 módulos originais e 41/29 bindings; leitura de volta confirmou 133/66 módulos. 41 testes, sintaxe e verificação conjunta aprovados. Os dois endpoints de saúde retornam 15.23.4. As quatro páginas públicas responderam HTTP 200 com canonical e JSON-LD; sitemap e llms.txt responderam HTTP 200. Control mantém noindex e robots restritivo. Fluxos autenticados não foram reexecutados nesta atualização.
+
+Em 16/11/2026, após autorização explícita do proprietário, a conta isaquesoaresfontela83@gmail.com foi verificada como proprietária do domínio no Google Search Console via registro TXT adicionado ao DNS Cloudflare, sem alterar outros registros. O sitemap https://famasystem.online/sitemap.xml foi enviado e a interface confirmou **Processado**, com **4 páginas encontradas**. Isso confirma descoberta do sitemap, não a indexação de todas as páginas nem posicionamento nas buscas. Não remover o TXT de verificação.
+
 # Contas e aprovação de colaborador — 15.23.3 — 09/11/2026
 
 Lançamento conjunto `2026-11-09-account-access-01` publicado nos dois Workers existentes.
