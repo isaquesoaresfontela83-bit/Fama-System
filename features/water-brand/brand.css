@@ -1,7 +1,9 @@
 .public-brand > .brand-mark {
   width: clamp(48px, 8vw, 60px) !important;
   height: clamp(48px, 8vw, 60px) !important;
-  flex-shrink: 0;
+  flex: 0 0 clamp(48px, 8vw, 60px) !important;
+  min-width: clamp(48px, 8vw, 60px) !important;
+  min-height: clamp(48px, 8vw, 60px) !important;
   padding: 0 !important;
 }
 
