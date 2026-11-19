@@ -3,13 +3,12 @@ import { normalizeCatalog } from './catalog-runtime.mjs';
 export const VERSION = '15.23.8';
 export const RELEASE = '2026-11-19-premium-public-themes-01';
 export const PREFIX = '/assets/fama-presentation-15.23.8/';
-const catalogUrl = 'https://control.famasystem.online/api/public/plans';
 
 function serialize(value) {
  return JSON.stringify(value).replaceAll('<', '\\u003c').replaceAll('\u2028', '\\u2028').replaceAll('\u2029', '\\u2029');
 }
 
-export function withPresentation(app, kind, resources, requestCatalog = fetch) {
+export function withPresentation(app, kind, resources, requestCatalog) {
  return {
   ...app,
   async fetch(request, env, ctx) {
@@ -41,7 +40,11 @@ export function withPresentation(app, kind, resources, requestCatalog = fetch) {
    if (!/<main\b[^>]*class=["'][^"']*\b(?:fp-page|plans-public-page)\b/.test(text)) return original;
    let catalog;
    try {
-    const result = await requestCatalog(catalogUrl, { signal: AbortSignal.timeout(5000), redirect: 'error' });
+    // Reuse the application's public catalog handler and its existing Control
+    // bridge. A second external Worker request is unnecessary here.
+    const catalogUrl = new URL('/api/public/plans', request.url).href;
+    const result = requestCatalog ? await requestCatalog(catalogUrl, { signal: AbortSignal.timeout(5000), redirect: 'error' }) :
+     await app.fetch(new Request(catalogUrl, { headers: { Accept: 'application/json' }, signal: AbortSignal.timeout(5000) }), env, ctx);
     if (!result.ok) return original;
     catalog = normalizeCatalog(await result.json());
    } catch {

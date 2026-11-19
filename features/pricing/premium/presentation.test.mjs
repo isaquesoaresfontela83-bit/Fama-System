@@ -1,10 +1,12 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { spawnSync } from 'node:child_process';
+import { readFile } from 'node:fs/promises';
 import { normalizeCatalog } from './catalog-runtime.mjs';
 import { withPresentation, VERSION, RELEASE, PREFIX } from './entry.mjs';
 import { deploy, fingerprint, readModules } from './deploy.mjs';
 import { buildResources } from './build.mjs';
+import { deployConnected } from './deploy-connected.mjs';
 
 const payload = { plans: [
  { id: 'inicial', name: 'Basic', price: 10900, users: 'Até 3 usuários', clients: 'Até 100.000 clientes', modules: 'Painel personalizável e gestão geral\nAgenda semanal e recorrente' },
@@ -62,6 +64,30 @@ test('catalog failures return the original commercial page and assets support HE
  assert.match(asset.headers.get('content-type'), /javascript/);
 });
 
+test('production catalog uses the existing application handler and normalized live limits', async () => {
+ let requests = 0;
+ const mapped = { plans: Object.fromEntries(payload.plans.map(plan => [plan.id, {
+  code: plan.id, name: plan.name, priceCents: plan.price, description: plan.description,
+  limits: { users: plan.id === 'inicial' ? 3 : plan.id === 'intermediario' ? 6 : 50, customers: 100000 },
+  highlights: plan.modules.split('\n'),
+ }])) };
+ const environment = {}, context = {};
+ const app = withPresentation({ fetch: async (request, env, ctx) => {
+  if (new URL(request.url).pathname === '/api/public/plans') {
+   assert.equal(env, environment);
+   assert.equal(ctx, context);
+   requests++;
+   return Response.json(mapped);
+  }
+  return new Response('<main class="fp-page">old</main>', { headers: { 'Content-Type': 'text/html' } });
+ } }, 'system', resources);
+ const response = await app.fetch(new Request('https://famasystem.online/planos'), environment, context);
+ const text = await response.text();
+ assert.match(text, /id="fama-public-catalog"/);
+ assert.match(text, /"priceCents":10900/);
+ assert.equal(requests, 1);
+});
+
 test('Control keeps operational routes and reports the same release without dropping diagnostics', async () => {
  const original = new Response('control');
  const app = withPresentation({ fetch: async request => request.url.endsWith('/api/health') ?
@@ -86,7 +112,7 @@ async function deploymentFixture(failSecond = false) {
   const url = new URL(urlValue);
   if (url.hostname !== 'api.cloudflare.com') {
    if (url.pathname === '/api/health') return Response.json({ status: 'ok', version: VERSION, release: RELEASE });
-   if (url.pathname === '/planos') return new Response('<button id="theme-toggle"></button><script id="fama-public-catalog"></script>');
+   if (url.pathname === '/' || url.pathname === '/planos') return new Response('<button id="theme-toggle"></button><script id="fama-public-catalog"></script>');
    return new Response(built[url.pathname]?.body || 'missing');
   }
   assert.equal(options.headers.get('Authorization'), 'Bearer test-token');
@@ -162,4 +188,33 @@ test('copied credentials tolerate surrounding line breaks before a dry run', asy
  const result = await deploy({ token: '\n test-token \r\n', accountId: ' test-account ', http: fixture.http });
  assert.equal(result.prepared, true);
  assert.ok([...fixture.state.values()].every(worker => worker.puts === 0));
+});
+
+for (const failSecond of [false, true]) test('connected publication ' + (failSecond ? 'rolls back an interrupted pair' : 'preserves binary source, bindings and both releases'), async () => {
+ const fixture = await deploymentFixture(failSecond);
+ const input = {
+  version: VERSION, release: RELEASE, resources: await buildResources(),
+  core: (await readFile(new URL('entry.mjs', import.meta.url), 'utf8')).replace('./catalog-runtime.mjs', './presentation-catalog.mjs'),
+  catalog: await readFile(new URL('catalog-runtime.mjs', import.meta.url), 'utf8'),
+  baseline: Object.fromEntries(['system', 'control'].map(kind => [kind, {
+   version: 'fama-' + kind + '-app-old', hash: fingerprint(fixture.baseParts), modules: fixture.baseParts.length,
+  }])),
+ };
+ const connector = { request: async ({ method, path, query, body }) => {
+  const url = new URL('https://api.cloudflare.com/client/v4' + path);
+  for (const [key, value] of Object.entries(query || {})) url.searchParams.set(key, value);
+  const response = await fixture.http(url, { method, body: body instanceof FormData ? body : body === undefined ? undefined : JSON.stringify(body), headers: new Headers({ Authorization: 'Bearer test-token' }) });
+  return response.headers.get('content-type')?.includes('application/json') ? response.json() : new Uint8Array(await response.arrayBuffer());
+ } };
+ const originalFetch = globalThis.fetch;
+ globalThis.fetch = fixture.http;
+ try {
+  const result = await deployConnected(connector, 'test-account', input, true);
+  assert.equal(result.success, !failSecond, result.error);
+  for (const [name, worker] of fixture.state) {
+   assert.equal(worker.version, name + (failSecond ? '-old' : '-new'));
+   assert.equal(fingerprint(worker.parts.filter(part => !part.name.startsWith('presentation-'))), fingerprint(fixture.baseParts));
+  }
+  if (failSecond) assert.equal(fixture.state.get('fama-system-app').rollbacks, 1);
+ } finally { globalThis.fetch = originalFetch; }
 });

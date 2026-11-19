@@ -1,0 +1,125 @@
+{
+  "success": true,
+  "version": "15.23.8",
+  "release": "2026-11-19-premium-public-themes-01",
+  "verifiedAt": "2026-11-19T14:25:11.726Z",
+  "publicVerification": "passed",
+  "applications": [
+    {
+      "name": "fama-system-app",
+      "previousVersion": "5506f59f-1d6c-458f-b732-91d6c6ad14ff",
+      "previousDeployment": "67aa5b9a-5068-4180-aca6-4f197d848138",
+      "preservedHash": "e02c8907d8cbeeac147e266ffe75fb374c8261534b483b618f380e076b698158",
+      "publishedHash": "2762ef6c36d8bae10230b55c7c655e80b1990bc017ba650e658c8fb83d4fe3c1",
+      "preservedModules": 140,
+      "modules": 144,
+      "bindings": 41,
+      "version": "dd4a6e14-7703-41b5-8e84-4edccd317100",
+      "deployment": "1869f832-b415-4552-b729-ec7b751cee9e",
+      "integrity": true
+    },
+    {
+      "name": "fama-control-app",
+      "previousVersion": "727aeeda-222e-4584-9e53-d8c215544425",
+      "previousDeployment": "3448e469-7046-47e9-b967-ee59a592104c",
+      "preservedHash": "536ed7c6db54f5327344be9556bca2e41a90fbdef4a87a3015737c4473cdb3c5",
+      "publishedHash": "e0cf5dee27ccaa22f54dcefcd363327b43260174af7227f1cef292255424398a",
+      "preservedModules": 73,
+      "modules": 77,
+      "bindings": 29,
+      "version": "bf7c1ba8-bce0-4b06-b917-c088fa9c9eb0",
+      "deployment": "f36fd360-65c9-4d85-b559-27a554675482",
+      "integrity": true
+    }
+  ],
+  "publicChecks": [
+    {
+      "url": "https://famasystem.online/",
+      "status": 200,
+      "final": "https://famasystem.online/",
+      "premium": true
+    },
+    {
+      "url": "https://famasystem.online/planos",
+      "status": 200,
+      "final": "https://famasystem.online/planos",
+      "premium": true
+    },
+    {
+      "url": "https://famasystem.online/api/health",
+      "status": 200,
+      "final": "https://famasystem.online/api/health",
+      "version": "15.23.8"
+    },
+    {
+      "url": "https://control.famasystem.online/api/health",
+      "status": 200,
+      "final": "https://control.famasystem.online/api/health",
+      "version": "15.23.8"
+    },
+    {
+      "url": "https://famasystem.online/entrar",
+      "status": 200,
+      "final": "https://famasystem.online/entrar",
+      "html": true
+    },
+    {
+      "url": "https://control.famasystem.online/",
+      "status": 200,
+      "final": "https://control.famasystem.online/",
+      "html": true
+    },
+    {
+      "url": "https://famasystem.online/assinar/inicial?cycle=annual",
+      "status": 200,
+      "final": "https://famasystem.online/assinar/inicial?cycle=annual",
+      "html": true
+    },
+    {
+      "url": "https://famasystem.online/assets/fama-presentation-15.23.8/app.js",
+      "status": 200,
+      "final": "https://famasystem.online/assets/fama-presentation-15.23.8/app.js",
+      "sha256": "8b545085e4323f5570e4ade8903d549585e78e1a0abaecf12c1f70db92f7563c"
+    },
+    {
+      "url": "https://famasystem.online/assets/fama-presentation-15.23.8/catalog.js",
+      "status": 200,
+      "final": "https://famasystem.online/assets/fama-presentation-15.23.8/catalog.js",
+      "sha256": "4772742aa89858806fd4eef2f7fa3614fb38e62d4f3d28517149e90e7c2c9909"
+    },
+    {
+      "url": "https://famasystem.online/assets/fama-presentation-15.23.8/theme.js",
+      "status": 200,
+      "final": "https://famasystem.online/assets/fama-presentation-15.23.8/theme.js",
+      "sha256": "981fa978986403a038aa1f8580977a89bb29fc10b4ea2b4cd9fd2a65f5d46918"
+    },
+    {
+      "url": "https://famasystem.online/assets/fama-presentation-15.23.8/style.css",
+      "status": 200,
+      "final": "https://famasystem.online/assets/fama-presentation-15.23.8/style.css",
+      "sha256": "853cff641eb384b2b292882d6807798528970607e0e0894a78c5cc5d1756280b"
+    }
+  ],
+  "validation": {
+    "tests": 59,
+    "syntax": true,
+    "companion": true,
+    "lightTheme": true,
+    "darkTheme": true,
+    "themePersistsAfterReload": true,
+    "annualCheckoutLinks": true,
+    "dashboardDemo": true,
+    "controlLoginPage": true,
+    "authenticatedOperations": "not_retested"
+  },
+  "initialProduction": {
+    "system": {
+      "version": "de9665a0-fefa-44bd-ab5c-ed648b3a53f4",
+      "deployment": "3e32037e-5ef9-4494-ae7b-26236cfe1d7e"
+    },
+    "control": {
+      "version": "c1ed30b3-75d2-4828-aa42-de63eec13338",
+      "deployment": "36e5bafc-5dd9-4792-8928-c8412f7454bc"
+    }
+  }
+}

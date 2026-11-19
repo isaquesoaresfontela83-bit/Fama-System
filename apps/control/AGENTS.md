@@ -1,3 +1,5 @@
+Versão conjunta vigente em 19/11/2026: **15.23.8**, `2026-11-19-premium-public-themes-01`, publicada nos dois Workers. Apresentação pública em `../../features/pricing/premium/`; produção e hashes em `../../docs/CLOUDFLARE-STATUS.md`. Preserve a aplicação operacional e recupere os módulos ativos antes de novas alterações. Não reconstruir esta árvore histórica sobre a produção.
+
 Versão conjunta vigente em 09/11/2026: **15.23.3**, `2026-11-09-account-access-01`. Extensão aditiva em `../../features/account-access/`. A solicitação de `grupofamaofc@gmail.com` permanece pendente, sem identidade criada. Consulte `../../docs/CLOUDFLARE-STATUS.md`.
 
 # Preferência permanente do proprietário

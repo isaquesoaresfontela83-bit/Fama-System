@@ -108,10 +108,13 @@ export async function deploy({ token, accountId, activate = false, http = fetch 
    json(path + '/versions?page=1&per_page=1'),
   ]);
   if (versions.items?.[0]?.id !== version) throw new Error('Há uma versão ainda não publicada em ' + name + '. A fonte ativa precisa ser conferida.');
-  const parts = await readModules(source);
-  if (!parts.some(part => part.name === previousEntry) || parts.some(part => part.name.startsWith('presentation-'))) {
+  const currentParts = await readModules(source);
+  const owned = ['presentation-main.mjs', 'presentation-core.mjs', 'presentation-catalog.mjs', 'presentation-resources.mjs'];
+  const installed = currentParts.filter(part => part.name.startsWith('presentation-'));
+  if (!currentParts.some(part => part.name === previousEntry) || installed.some(part => !owned.includes(part.name)) || (installed.length !== 0 && installed.length !== owned.length)) {
    throw new Error('A entrada de produção mudou em ' + name + '. Revise a fonte atual antes de publicar.');
   }
+  const parts = currentParts.filter(part => !owned.includes(part.name));
   const before = fingerprint(parts);
   const additional = [
    {

@@ -1,3 +1,7 @@
+# Atualização de 19/11/2026 — apresentação 15.23.8
+
+Versão conjunta vigente `15.23.8` / `2026-11-19-premium-public-themes-01`, publicada e verificada nos dois Workers. A apresentação pública e os temas estão em `features/pricing/premium/`. Consulte seu README, `deployment.json` e `docs/CLOUDFLARE-STATUS.md`. Recupere sempre a produção atual; preserve os 140/73 módulos anteriores e substitua somente os quatro módulos conhecidos da apresentação quando necessário. As autorizações e regras de preservação abaixo permanecem válidas.
+
 # Atualização de 09/11/2026 — contas 15.23.3
 
 Versão conjunta `15.23.3` / `2026-11-09-account-access-01`. A extensão em `features/account-access/` corrige a conexão de segunda conta e exige aprovação do proprietário antes da criação do colaborador do Control. A solicitação de `grupofamaofc@gmail.com` está pendente e sem acesso. Consulte `docs/CLOUDFLARE-STATUS.md`.

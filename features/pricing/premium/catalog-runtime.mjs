@@ -29,6 +29,14 @@ function shortFeature(value) {
 }
 
 export function normalizeCatalog(payload) {
+ if (payload?.plans && !Array.isArray(payload.plans) && typeof payload.plans === 'object') {
+  const plans = Object.entries(payload.plans).map(([id, plan]) => {
+   if (plan?.code !== id || !Array.isArray(plan.highlights) || !plan.highlights.every(value => typeof value === 'string')) throw new Error('Invalid application catalog');
+   return { id, name: plan.name, price: plan.priceCents, description: plan.description,
+    userLimit: plan.limits?.users, customerLimit: plan.limits?.customers, modules: plan.highlights.join('\n') };
+  });
+  payload = { plans };
+ }
  if (!Array.isArray(payload?.plans) || payload.plans.length !== 3) throw new Error('Invalid public catalog');
  const effective = [];
  const plans = order.map((code, index) => {

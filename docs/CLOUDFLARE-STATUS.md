@@ -1,3 +1,18 @@
+# Apresentação e preços 15.23.8 — 19/11/2026 — publicado e verificado
+
+Lançamento conjunto `2026-11-19-premium-public-themes-01`, publicado pela conexão autenticada da Cloudflare nos Workers existentes. A apresentação premium está em https://famasystem.online/ e https://famasystem.online/planos, com temas claro/escuro e preferência persistente.
+
+| Aplicação | Versão Worker ativa | Implantação | Módulos | Bindings |
+| --- | --- | --- | --- | --- |
+| System | `dd4a6e14-7703-41b5-8e84-4edccd317100` | `1869f832-b415-4552-b729-ec7b751cee9e` | 144 | 41 |
+| Control | `bf7c1ba8-bce0-4b06-b917-c088fa9c9eb0` | `f36fd360-65c9-4d85-b559-27a554675482` | 77 | 29 |
+
+Os 140/73 módulos anteriores foram preservados integralmente. Leitura posterior confirmou os hashes de todos os módulos e os bindings herdados, incluindo ASSETS e conexões existentes. A extensão usa somente quatro módulos adicionais por aplicação; o Control mantém suas rotas e recebe o identificador conjunto. Preços, limites e recursos são consultados pelo handler público vigente do System, conectado ao Control. Sessões, consentimento e contratação continuam sendo tratados pelo aplicativo original.
+
+59 testes, sintaxe e verificação conjunta passaram. HTTP confirmou 11 páginas/recursos com resposta 200, os dois endpoints de saúde em 15.23.8 e os quatro arquivos públicos idênticos aos preparados. A apresentação foi conferida no navegador nos dois temas, incluindo persistência ao recarregar, demonstração interativa e preços/links anuais. A tela privada de acesso do Control também foi carregada. Operações autenticadas e pagamento não foram reexecutados. A prévia óptica anterior permanece preservada.
+
+Detalhes e hashes em [deployment.json](../features/pricing/premium/deployment.json); fonte e procedimento em [apresentação comercial](../features/pricing/premium/README.md).
+
 # SEO 15.23.4 — publicado e verificado
 
 Lançamento conjunto `2026-11-15-seo-discovery-01` publicado em 15/11/2026, confirmado em 16/11/2026 nos dois domínios.

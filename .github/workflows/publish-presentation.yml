@@ -1,7 +1,5 @@
 name: Publicar apresentação Fama System
 on:
-  push:
-    branches: [release/15.23.8-premium-themes]
   workflow_dispatch:
 permissions:
   contents: read
