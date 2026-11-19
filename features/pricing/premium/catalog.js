@@ -1,4 +1,7 @@
-// Conferido na página oficial /planos em 19/11/2026.
+// A produção recebe o catálogo atual do Control no HTML.
+// A prévia local usa o retrato conferido em 19/11/2026.
+const catalogNode = typeof document === 'undefined' ? null : document.getElementById('fama-public-catalog');
+const liveCatalog = catalogNode ? JSON.parse(catalogNode.textContent) : null;
 export const cycles = {
  monthly: { name: 'Mensal', months: 1, discount: 0 },
  quarterly: { name: 'Trimestral', months: 3, discount: 5 },
@@ -6,7 +9,7 @@ export const cycles = {
  annual: { name: 'Anual', months: 12, discount: 15 },
 };
 
-export const plans = [
+export const plans = liveCatalog?.plans ?? [
  {
   code: 'inicial',
   name: 'Basic',
@@ -46,7 +49,7 @@ export const plans = [
 ];
 
 // Os níveis de inclusão refletem a comparação publicada do catálogo atual.
-export const featureGroups = [
+export const featureGroups = liveCatalog?.featureGroups ?? [
  {
   title: 'Organização e atendimento',
   minimum: 0,

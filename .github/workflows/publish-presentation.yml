@@ -1,0 +1,33 @@
+name: Publicar apresentação Fama System
+on:
+  push:
+    branches: [release/15.23.8-premium-themes]
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: fama-joint-publication
+  cancel-in-progress: false
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - run: npm run check:syntax
+      - run: npm run check:companion
+      - run: npm test
+      - name: Publicar nos Workers existentes
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: node features/pricing/premium/deploy.mjs --activate
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: fama-publication-result
+          path: deployment-result.json
+          if-no-files-found: ignore

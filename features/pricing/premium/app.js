@@ -43,6 +43,12 @@ let selectedDemo = 'overview';
 let expandedComparison = false;
 let chartFrame = 0;
 
+function escapeHtml(value) {
+ return String(value).replace(/[&<>"']/g, character => ({
+  '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;',
+ })[character]);
+}
+
 function icon(name) {
  return '<i data-icon="' + name + '"></i>';
 }
@@ -116,15 +122,15 @@ function renderPlanCards() {
   const featured = index === 1;
   return `
    <article class="plan-card reveal ${featured ? 'featured' : ''}" aria-labelledby="plan-${plan.code}">
-    <div class="plan-topline"><span class="feature-icon">${icon(plan.icon)}</span><span class="plan-label">${plan.label}</span></div>
-    <h3 id="plan-${plan.code}">${plan.name}</h3>
-    <p class="plan-description">${plan.description}</p>
-    <div class="price-row"><span class="price-currency">R$</span><strong class="price-number" data-price="${plan.code}">${number.format(plan.priceCents / 100)}</strong><span class="price-frequency">/mês</span></div>
+    <div class="plan-topline"><span class="feature-icon">${icon(plan.icon)}</span><span class="plan-label">${escapeHtml(plan.label)}</span></div>
+    <h3 id="plan-${plan.code}">${escapeHtml(plan.name)}</h3>
+    <p class="plan-description">${escapeHtml(plan.description)}</p>
+    <div class="price-row"><span class="price-currency">R$</span><strong class="price-number" data-price="${plan.code}">${money.format(plan.priceCents / 100).replace(/^R\$\s*/, "").replace(/,00$/, "")}</strong><span class="price-frequency">/mês</span></div>
     <p class="price-billing" data-billing="${plan.code}">${billingDescription(plan)}</p>
-    <a class="button plan-cta ${featured ? '' : 'button-outline'}" data-checkout="${plan.code}" href="${checkoutUrl(plan.code)}">Escolher ${plan.name}${icon('arrow')}</a>
+    <a class="button plan-cta ${featured ? '' : 'button-outline'}" data-checkout="${plan.code}" href="${checkoutUrl(plan.code)}">Escolher ${escapeHtml(plan.name)}${icon('arrow')}</a>
     <p class="plan-limits"><span>${icon('users')}Até ${plan.users} usuários</span><span>${icon('building')}${number.format(plan.customers)} clientes</span></p>
-    <p class="plan-features-title">${plan.featureTitle}</p>
-    <ul class="plan-features">${plan.features.map(feature => '<li>' + icon('check') + '<span>' + feature + '</span></li>').join('')}</ul>
+    <p class="plan-features-title">${escapeHtml(plan.featureTitle)}</p>
+    <ul class="plan-features">${plan.features.map(feature => '<li>' + icon('check') + '<span>' + escapeHtml(feature) + '</span></li>').join('')}</ul>
     <a class="plan-more" href="#recursos">Ver todos os recursos ${icon('down')}</a>
    </article>`;
  }).join('');
@@ -162,17 +168,20 @@ function selectCycle(code) {
 }
 
 function renderComparison() {
+ document.querySelectorAll('.comparison-table thead th').forEach((heading, index) => {
+  if (index > 0) heading.textContent = plans[index - 1].name;
+ });
  const rows = [
   '<tr><th scope="row">Usuários</th>' + plans.map(plan => '<td>Até ' + plan.users + '</td>').join('') + '</tr>',
   '<tr><th scope="row">Clientes cadastrados</th>' + plans.map(plan => '<td>' + number.format(plan.customers) + '</td>').join('') + '</tr>',
  ];
  featureGroups.forEach((group, groupIndex) => {
   if (!expandedComparison && groupIndex > 0) return;
-  rows.push('<tr class="comparison-group"><th colspan="4" scope="rowgroup">' + group.title + '</th></tr>');
+  rows.push('<tr class="comparison-group"><th colspan="4" scope="rowgroup">' + escapeHtml(group.title) + '</th></tr>');
   const features = expandedComparison ? group.features : group.features.slice(0, 6);
   for (const feature of features) {
-   rows.push('<tr><th scope="row">' + feature + '</th>' + plans.map((plan, planIndex) => '<td>' + (
-    planIndex >= group.minimum
+   rows.push('<tr><th scope="row">' + escapeHtml(feature) + '</th>' + plans.map((plan, planIndex) => '<td>' + (
+    (group.availability?.[feature]?.[planIndex] ?? planIndex >= group.minimum)
      ? '<span class="table-check" role="img" aria-label="Incluído">' + icon('check') + '</span>'
      : '<span class="table-no" aria-label="Não incluído">—</span>'
    ) + '</td>').join('') + '</tr>');
@@ -181,7 +190,7 @@ function renderComparison() {
  document.querySelector('#comparison-body').innerHTML = rows.join('');
  const button = document.querySelector('#comparison-toggle');
  button.setAttribute('aria-expanded', String(expandedComparison));
- button.innerHTML = (expandedComparison ? 'Recolher comparação' : 'Ver todos os 20 recursos') + icon(expandedComparison ? 'up' : 'down');
+ button.innerHTML = (expandedComparison ? 'Recolher comparação' : 'Ver todos os ' + featureGroups.reduce((count, group) => count + group.features.length, 0) + ' recursos') + icon(expandedComparison ? 'up' : 'down');
  renderIcons();
 }
 
