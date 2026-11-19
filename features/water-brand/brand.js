@@ -1,0 +1,64 @@
+(() => {
+ const script = document.currentScript;
+ const asset = new URL('icon.webp', script.src).pathname;
+ const marks = new Set(['/fama-piscinas-mark.png', '/fama-piscinas-logo.png']);
+ const attributes = ['alt', 'aria-label', 'title', 'placeholder'];
+ const ignored = 'script,style,noscript,textarea,input,select,[contenteditable],pre,code';
+ const brandSelectors = '.brand, .app-brand, .control-brand, .control-login-brand, .brand-lockup, .brand-text';
+
+ function rename(value, brand) {
+  return value.replace(/\bFama[ \t]+(System|Control)\b|\bFama(?=System\b|Control\b)/gi, (name, product) => {
+   const prefix = name === name.toUpperCase() ? 'WATER' : 'Water';
+   return product ? prefix + ' ' + (name === name.toUpperCase() ? product.toUpperCase() : product[0].toUpperCase() + product.slice(1).toLowerCase()) : prefix;
+  }).replace(brand ? /\bFama\b/gi : /$^/, name => name === 'FAMA' ? 'WATER' : 'Water');
+ }
+
+ function update(node) {
+  const element = node.nodeType === Node.TEXT_NODE ? node.parentElement : node;
+  if (!(element instanceof Element) || element.closest(ignored)) return;
+  if (node.nodeType === Node.TEXT_NODE) {
+   const next = rename(node.data, element.closest(brandSelectors));
+   if (next !== node.data) node.data = next;
+   return;
+  }
+  for (const attr of attributes) {
+   const value = element.getAttribute(attr);
+   if (value === null) continue;
+   const next = rename(value, element.closest(brandSelectors));
+   if (next !== value) element.setAttribute(attr, next);
+  }
+  if (element instanceof HTMLImageElement && element.hasAttribute('src')) {
+   const src = new URL(element.getAttribute('src'), document.baseURI);
+   if (src.origin === location.origin && marks.has(src.pathname) && src.pathname.endsWith('-mark.png')) {
+    element.src = asset;
+   }
+  }
+ }
+
+ function scan(node) {
+  update(node);
+  if (!(node instanceof Element)) return;
+  const walker = document.createTreeWalker(node, NodeFilter.SHOW_ELEMENT | NodeFilter.SHOW_TEXT, {
+   acceptNode(candidate) {
+    return candidate instanceof Element && candidate.matches(ignored) ? NodeFilter.FILTER_REJECT : NodeFilter.FILTER_ACCEPT;
+   },
+  });
+  while (walker.nextNode()) update(walker.currentNode);
+ }
+
+ function start() {
+  const observer = new MutationObserver(records => {
+   for (const record of records) {
+    if (record.type === 'childList') record.addedNodes.forEach(scan);
+    else update(record.target);
+   }
+  });
+  scan(document.body);
+  observer.observe(document.body, {
+   subtree: true, childList: true, characterData: true, attributes: true,
+   attributeFilter: [...attributes, 'src'],
+  });
+ }
+ if (document.readyState === 'complete') setTimeout(start, 0);
+ else window.addEventListener('load', () => setTimeout(start, 0), { once: true });
+})();
