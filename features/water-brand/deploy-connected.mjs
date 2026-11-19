@@ -61,10 +61,14 @@ export async function deployWaterBrand(cloudflare, accountId, input, activate = 
   if (active.version !== baseline.version || versions.items?.[0]?.id !== active.version || (baseline.hash && baseHash !== baseline.hash) || currentParts.length !== baseline.modules) {
    throw new Error('Production changed in ' + name);
   }
+  const owned = new Set(['water-brand-main.mjs', 'water-brand-core.mjs', 'water-brand-resources.mjs']);
+  const installed = currentParts.filter(part => part.name.startsWith('water-brand-'));
   if (!currentParts.some(part => part.name === 'motion-main.mjs') ||
-      currentParts.some(part => part.name.startsWith('water-brand-'))) throw new Error('Unexpected production entry');
-  const parts = currentParts;
-  const before = baseHash;
+      installed.some(part => !owned.has(part.name)) || (installed.length !== 0 && installed.length !== owned.size)) {
+   throw new Error('Unexpected production entry');
+  }
+  const parts = currentParts.filter(part => !owned.has(part.name));
+  const before = await fingerprint(parts);
   const added = [
    { name: 'water-brand-main.mjs', body: "import app from './motion-main.mjs';\nexport * from './motion-main.mjs';\nimport {withWaterBrand} from './water-brand-core.mjs';\nimport resources from './water-brand-resources.mjs';\nexport default withWaterBrand(app,resources);" },
    { name: 'water-brand-core.mjs', body: input.core },

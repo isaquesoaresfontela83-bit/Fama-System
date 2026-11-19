@@ -1,6 +1,6 @@
-export const VERSION = '15.23.13';
-export const RELEASE = '2026-11-19-water-brand-01';
-export const PREFIX = '/assets/water-brand-15.23.13/';
+export const VERSION = '15.23.14';
+export const RELEASE = '2026-11-19-water-brand-02';
+export const PREFIX = '/assets/water-brand-15.23.14/';
 
 const oldIcon = /^(?:\/fama-piscinas-mark\.png|\/favicon\.ico|\/apple-touch-icon(?:-\d+x\d+)?\.png|\/icon-(?:192|512)\.png)$/;
 const oldLogo = '/fama-piscinas-logo.png';
@@ -17,7 +17,7 @@ function transformManifest(manifest) {
   if (typeof manifest[key] === 'string') manifest[key] = brandName(manifest[key]).replace(/^Fama$/i, 'Water');
  }
  if (Array.isArray(manifest.icons)) {
-  manifest.icons = [{ src: PREFIX + 'icon.webp', sizes: '256x256', type: 'image/webp', purpose: 'any' }];
+  manifest.icons = [192, 512].map(size => ({ src: PREFIX + 'icon-' + size + '.webp', sizes: size + 'x' + size, type: 'image/webp', purpose: 'any' }));
  }
  return manifest;
 }
@@ -47,13 +47,13 @@ export function withWaterBrand(app, resources) {
     } });
    }
    const response = await app.fetch(request, env, ctx);
-   if (!response.ok) return response;
-   if (path === '/api/health' && !head) {
+   if (!response.ok && response.status !== 404) return response;
+   if (path === '/api/health' && !head && response.ok) {
     const data = await response.json();
     if (typeof data.service === 'string') data.service = brandName(data.service);
     return Response.json({ ...data, version: VERSION, release: RELEASE, releaseId: RELEASE }, { status: response.status, headers: headersFor(response) });
    }
-   if (path === '/site.webmanifest' && !head) {
+   if (path === '/site.webmanifest' && !head && response.ok) {
     const data = await response.clone().json().catch(() => null);
     return data ? Response.json(transformManifest(data), { headers: { ...Object.fromEntries(headersFor(response)), 'content-type': 'application/manifest+json' } }) : response;
    }

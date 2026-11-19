@@ -1,10 +1,10 @@
 (() => {
  const script = document.currentScript;
  const asset = new URL('icon.webp', script.src).pathname;
- const marks = new Set(['/fama-piscinas-mark.png', '/fama-piscinas-logo.png']);
+ const legacyMark = '/fama-piscinas-mark.png';
  const attributes = ['alt', 'aria-label', 'title', 'placeholder'];
- const ignored = 'script,style,noscript,textarea,input,select,[contenteditable],pre,code';
- const brandSelectors = '.brand, .app-brand, .control-brand, .control-login-brand, .brand-lockup, .brand-text';
+ const ignored = 'script,style,noscript,textarea,select,[contenteditable],pre,code';
+ const brandSelectors = '.brand, .app-brand, .control-brand, .control-login-brand, .brand-lockup, .brand-text, .public-brand';
 
  function rename(value, brand) {
   return value.replace(/\bFama[ \t]+(System|Control)\b|\bFama(?=System\b|Control\b)/gi, (name, product) => {
@@ -29,7 +29,7 @@
   }
   if (element instanceof HTMLImageElement && element.hasAttribute('src')) {
    const src = new URL(element.getAttribute('src'), document.baseURI);
-   if (src.origin === location.origin && marks.has(src.pathname) && src.pathname.endsWith('-mark.png')) {
+   if (src.origin === location.origin && src.pathname === legacyMark) {
     element.src = asset;
    }
   }
@@ -53,6 +53,15 @@
     else update(record.target);
    }
   });
+  const title = document.querySelector('title');
+  if (title) {
+   const updateTitle = () => {
+    const next = rename(title.textContent, false);
+    if (next !== title.textContent) title.textContent = next;
+   };
+   new MutationObserver(updateTitle).observe(title, { subtree: true, childList: true, characterData: true });
+   updateTitle();
+  }
   scan(document.body);
   observer.observe(document.body, {
    subtree: true, childList: true, characterData: true, attributes: true,
