@@ -1,6 +1,6 @@
-export const VERSION = '15.23.15';
-export const RELEASE = '2026-11-19-water-brand-03';
-export const PREFIX = '/assets/water-brand-15.23.15/';
+export const VERSION = '15.23.16';
+export const RELEASE = '2026-11-19-water-brand-04';
+export const PREFIX = '/assets/water-brand-15.23.16/';
 
 const oldIcon = /^(?:\/fama-piscinas-mark\.png|\/favicon\.ico|\/apple-touch-icon(?:-\d+x\d+)?\.png|\/icon-(?:192|512)\.png)$/;
 const oldLogo = '/fama-piscinas-logo.png';
@@ -85,6 +85,7 @@ export function withWaterBrand(app, resources) {
    });
    rewriter.on('head', {
     element(element) {
+     element.append('<link rel="stylesheet" href="' + PREFIX + 'brand.css">', { html: true });
      element.append('<script defer src="' + PREFIX + 'brand.js"></script>', { html: true });
     },
    });

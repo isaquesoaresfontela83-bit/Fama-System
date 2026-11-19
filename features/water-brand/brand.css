@@ -1,0 +1,23 @@
+.public-brand > .brand-mark {
+  width: clamp(48px, 8vw, 60px) !important;
+  height: clamp(48px, 8vw, 60px) !important;
+  flex-shrink: 0;
+  padding: 0 !important;
+}
+
+.dark .public-brand > .brand-mark {
+  background: transparent !important;
+  border-color: transparent !important;
+  box-shadow: none !important;
+}
+
+.public-brand > .brand-mark img {
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: contain;
+}
+
+.dark .public-brand > .brand-mark img {
+  filter: invert(.83) hue-rotate(180deg) saturate(1.25) !important;
+}
