@@ -1,7 +1,30 @@
 'use strict';
 const status=document.querySelector('#engine-status'),toggle=document.querySelector('#lens-toggle'),lensEl=document.querySelector('#optical-lens'),reduced=matchMedia('(prefers-reduced-motion:reduce)').matches;
+const thicknessControl = document.querySelector('#thickness');
 let mainLenses=[],floating=null,readyCount=0,enabled=true,software=false;
-function startSoftware(){software=true;document.body.classList.remove('unavailable');floating?.destroy();initialPosition();floating=createSoftwareGlass({element:lensEl,source:document.querySelector('main'),onReady:()=>{readyCount++;document.documentElement.dataset.refraction='svg';status.textContent='Vidro pronto. Arraste a lente sobre os textos.';}});}
+
+function glassThickness() {
+ return Number(thicknessControl.value) / 100;
+}
+
+function gpuThickness() {
+ const thickness = glassThickness();
+ return {
+  refraction: .015 + thickness * .11,
+  bevelDepth: .05 + thickness * .29,
+  magnify: 1.02 + thickness * .24,
+ };
+}
+
+function createSoftwareLens(onReady) {
+ return createSoftwareGlass({
+  element: lensEl,
+  source: document.querySelector('main'),
+  strength: glassThickness(),
+  onReady,
+ });
+}
+function startSoftware(){software=true;document.body.classList.remove('unavailable');floating?.destroy();initialPosition();floating=createSoftwareLens(()=>{readyCount++;document.documentElement.dataset.refraction='svg';status.textContent='Vidro pronto. Arraste a lente sobre os textos.';});}
 function gpuReady(instance){if(instance.renderer?.backend){readyCount++;document.documentElement.dataset.refraction='gpu';status.textContent='Vidro pronto. Mova a lente ou deslize a página.';}else{document.body.classList.add('unavailable');status.textContent='Este navegador não disponibilizou a refração. Abra em um navegador com aceleração gráfica.';}}
 function initialPosition(){const price=document.querySelector('.price').getBoundingClientRect();const x=Math.max(12,Math.min(innerWidth-lensEl.offsetWidth-12,price.left+60));const y=Math.max(115,Math.min(innerHeight-lensEl.offsetHeight-50,price.top-16));lensEl.style.left=x+'px';lensEl.style.top=y+'px';}
 function asArray(value){return Array.isArray(value)?value:[value];}
@@ -13,15 +36,21 @@ function init(){try{
  mainLenses.push(...asArray(liquidGL({...base,target:'.navigation',content:'.nav-content',zIndex:20,bevelWidth:.09,refraction:.02,frost:1.5})));
  mainLenses.push(...asArray(liquidGL({...base,target:'.cycle-indicator',zIndex:2,refraction:.035,bevelDepth:.10,magnify:1.04,tint:'rgba(160,190,230,0.08)'})));
  initialPosition();
- floating=liquidGL({...base,target:'#optical-lens',zIndex:50,draggable:true,interaction:'fluid',interactionStrength:.32,refraction:.065,aberration:.035,bevelDepth:.18,bevelWidth:.23,magnify:1.13,frost:0,tint:'rgba(155,190,230,0.02)',shadow:true,on:{init:gpuReady,dragstart:()=>document.body.classList.add('dragging'),dragend:()=>document.body.classList.remove('dragging')}});
+ floating=liquidGL({...base,target:'#optical-lens',zIndex:50,draggable:true,interaction:'fluid',interactionStrength:.32,...gpuThickness(),aberration:.035,bevelWidth:.23,frost:0,tint:'rgba(155,190,230,0.02)',shadow:true,on:{init:gpuReady,dragstart:()=>document.body.classList.add('dragging'),dragend:()=>document.body.classList.remove('dragging')}});
  if(!floating?.renderer){startSoftware();}
  liquidGL.registerDynamic('.price');liquidGL.registerDynamic('.billing');liquidGL.registerDynamic('.cycles');
  setTimeout(()=>{if(!readyCount){document.body.classList.add('unavailable');status.textContent='Não foi possível iniciar a refração neste navegador. A página continua acessível.';}},18000);
  }catch(error){try{startSoftware();}catch(fallbackError){document.body.classList.add('unavailable');status.textContent='Não foi possível iniciar o vidro neste navegador.';}console.error('Prévia do vidro:',error);}}
 function setLens(value){enabled=value;toggle.setAttribute('aria-pressed',String(value));toggle.querySelector('span').textContent=value?'ativa':'oculta';document.body.classList.toggle('lens-hidden',!value);if(floating?.options){floating.options.specular=value&&!reduced;}}
 toggle.addEventListener('click',()=>setLens(!enabled));document.querySelector('#close-lens').addEventListener('click',()=>setLens(false));
-document.querySelector('#thickness').addEventListener('input',event=>{const t=Number(event.target.value)/100;if(software){floating.setStrength(t);return;}if(floating?.options){floating.options.refraction=.015+t*.11;floating.options.bevelDepth=.05+t*.29;floating.options.magnify=1.02+t*.24;}});
-document.querySelector('#reset-lens').addEventListener('click',()=>{setLens(true);if(floating){floating.destroy();floating=null;}const rect=document.querySelector('.specimen').getBoundingClientRect();lensEl.style.display='block';lensEl.style.left=Math.max(12,Math.min(innerWidth-lensEl.offsetWidth-12,rect.left+40))+'px';lensEl.style.top=Math.max(95,Math.min(innerHeight-lensEl.offsetHeight-45,rect.top))+'px';if(software){floating=createSoftwareGlass({element:lensEl,source:document.querySelector('main')});lensEl.style.removeProperty('display');return;}floating=liquidGL({target:'#optical-lens',snapshot:'body',engine:'webgl2',resolution:Math.min(devicePixelRatio||1,1.5),zIndex:50,draggable:true,interaction:reduced?'none':'fluid',refraction:.065,aberration:.035,bevelDepth:.18,bevelWidth:.23,magnify:1.13,frost:0,shadow:true,specular:!reduced,tint:'rgba(155,190,230,0.02)',on:{init:gpuReady}});lensEl.style.removeProperty('display');});
+thicknessControl.addEventListener('input', () => {
+ if (software) {
+  floating?.setStrength(glassThickness());
+ } else if (floating?.options) {
+  Object.assign(floating.options, gpuThickness());
+ }
+});
+document.querySelector('#reset-lens').addEventListener('click',()=>{setLens(true);if(floating){floating.destroy();floating=null;}const rect=document.querySelector('.specimen').getBoundingClientRect();lensEl.style.display='block';lensEl.style.left=Math.max(12,Math.min(innerWidth-lensEl.offsetWidth-12,rect.left+40))+'px';lensEl.style.top=Math.max(95,Math.min(innerHeight-lensEl.offsetHeight-45,rect.top))+'px';if(software){floating=createSoftwareLens();lensEl.style.removeProperty('display');return;}floating=liquidGL({target:'#optical-lens',snapshot:'body',engine:'webgl2',resolution:Math.min(devicePixelRatio||1,1.5),zIndex:50,draggable:true,interaction:reduced?'none':'fluid',...gpuThickness(),aberration:.035,bevelWidth:.23,frost:0,shadow:true,specular:!reduced,tint:'rgba(155,190,230,0.02)',on:{init:gpuReady}});lensEl.style.removeProperty('display');});
 const prices={inicial:10900,intermediario:19900,profissional:39900};const currency=v=>new Intl.NumberFormat('pt-BR',{style:'currency',currency:'BRL'}).format(v/100);
 document.querySelectorAll('[data-cycle]').forEach(button=>button.addEventListener('click',()=>{const annual=button.dataset.cycle==='annual';document.querySelector('.cycles').dataset.annual=String(annual);document.querySelectorAll('[data-cycle]').forEach(b=>b.setAttribute('aria-pressed',String(b===button)));document.querySelectorAll('[data-plan]').forEach(card=>{const total=annual?Math.round(prices[card.dataset.plan]*12*.85):prices[card.dataset.plan];card.querySelector('[data-price]').textContent=currency(total/(annual?12:1)).replace(/^R\$\s*/,'').replace(/,00$/,'');card.querySelector('[data-billing]').textContent=annual?currency(total)+' por ano':'Pagamento mensal';card.querySelector('[data-checkout]').href='/assinar/'+card.dataset.plan+'?cycle='+button.dataset.cycle;});if(software)floating?.refresh();}));
 window.addEventListener('load',()=>requestAnimationFrame(init));

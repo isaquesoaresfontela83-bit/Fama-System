@@ -1,10 +1,10 @@
 /* CPU optical fallback: a normal-derived SVG displacement field samples live DOM content. */
-window.createSoftwareGlass=function({element,source,onReady}){
+window.createSoftwareGlass=function({element,source,strength=.45,onReady}){
  const ns='http://www.w3.org/2000/svg',svg=document.createElementNS(ns,'svg');svg.setAttribute('aria-hidden','true');svg.style.cssText='position:absolute;width:0;height:0;pointer-events:none';
  svg.innerHTML='<defs><filter id="fama-optical-field" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB"><feImage result="normals" preserveAspectRatio="none" x="0" y="0" width="100%" height="100%"/><feDisplacementMap in="SourceGraphic" in2="normals" scale="90" xChannelSelector="R" yChannelSelector="G"/></filter></defs>';document.body.append(svg);
  const image=svg.querySelector('feImage'),displacement=svg.querySelector('feDisplacementMap');
  const viewport=document.createElement('div');viewport.className='software-viewport';viewport.setAttribute('aria-hidden','true');viewport.inert=true;const specular=document.createElement('div');specular.className='software-specular';element.prepend(viewport);element.append(specular);
- let clone=null,strength=.45,raf=0,down=null,disposed=false;
+ let clone=null,raf=0,down=null,disposed=false;
  function field(){const r=element.getBoundingClientRect(),w=Math.round(r.width),h=Math.round(r.height),radius=parseFloat(getComputedStyle(element).borderRadius)||35,c=document.createElement('canvas');c.width=w;c.height=h;const ctx=c.getContext('2d'),data=ctx.createImageData(w,h),scale=90;
  function sdf(x,y){const qx=Math.abs(x-w/2)-(w/2-radius),qy=Math.abs(y-h/2)-(h/2-radius);return Math.hypot(Math.max(qx,0),Math.max(qy,0))+Math.min(Math.max(qx,qy),0)-radius;}
  for(let y=0;y<h;y++)for(let x=0;x<w;x++){const d=sdf(x+.5,y+.5),gx=sdf(x+1,y)-sdf(x-1,y),gy=sdf(x,y+1)-sdf(x,y-1),len=Math.hypot(gx,gy)||1,nx=gx/len,ny=gy/len,bevel=Math.min(radius*.8,30),edge=Math.max(0,1-Math.max(0,-d)/bevel),curve=Math.sin(edge*Math.PI*.5),bend=curve*(8+strength*20),mag=.025+strength*.095,dx=-(x-w/2)*mag-nx*bend,dy=-(y-h/2)*mag-ny*bend,i=(y*w+x)*4;data.data[i]=Math.max(0,Math.min(255,Math.round(127.5+dx/scale*255)));data.data[i+1]=Math.max(0,Math.min(255,Math.round(127.5+dy/scale*255)));data.data[i+2]=128;data.data[i+3]=255;}
