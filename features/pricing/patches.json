@@ -1,0 +1,142 @@
+[
+  {
+    "old": "Come\\xE7ar com 7 dias gr\\xE1tis ",
+    "new": "Ver planos e pre\\xE7os",
+    "scope": "plans-view"
+  },
+  {
+    "old": "Teste sem cobran\\xE7a inicial",
+    "new": "Ativa\\xE7\\xE3o ap\\xF3s confirma\\xE7\\xE3o do pagamento",
+    "scope": "plans-view"
+  },
+  {
+    "old": "Comece com 7 dias gr\\xE1tis.",
+    "new": "O plano certo para sua pr\\xF3xima etapa.",
+    "scope": "plans-view"
+  },
+  {
+    "old": "Selecione seu plano para experimentar. O teste n\\xE3o gera uma cobran\\xE7a autom\\xE1tica no cadastro.",
+    "new": "Compare os recursos, escolha o per\\xEDodo e contrate com clareza. Valores e condi\\xE7\\xF5es apresentados antes do pagamento.",
+    "scope": "plans-view"
+  },
+  {
+    "old": "O cliente cria a conta em teste gr\\xE1tis por 7 dias. Depois, o propriet\\xE1rio escolhe o plano e paga por Pix dentro do Fama System para continuar usando.",
+    "new": "Escolha o plano e conclua o pagamento. Ap\\xF3s a confirma\\xE7\\xE3o, crie sua conta e ative o ambiente da empresa.",
+    "scope": "plans-view"
+  },
+  {
+    "old": "Como funcionam os 7 dias gr\\xE1tis?",
+    "new": "Como funciona a contrata\\xE7\\xE3o?",
+    "scope": "plans-view"
+  },
+  {
+    "old": "Crie sua conta e a empresa com o plano escolhido. O cadastro n\\xE3o cria cobran\\xE7a. Ao terminar o teste, escolha uma contrata\\xE7\\xE3o para continuar usando os m\\xF3dulos operacionais.",
+    "new": "Selecione o plano e o per\\xEDodo, preencha os dados de cobran\\xE7a e conclua o pagamento. A cria\\xE7\\xE3o da empresa \\xE9 liberada ap\\xF3s a confirma\\xE7\\xE3o. Consulte as condi\\xE7\\xF5es no checkout.",
+    "scope": "plans-view"
+  },
+  {
+    "old": "Para crescer",
+    "new": "Opera\\xE7\\xE3o completa",
+    "scope": "plans-view"
+  },
+  {
+    "old": "Come\\xE7ar teste gr\\xE1tis ",
+    "new": "Contratar plano",
+    "scope": "plans-view"
+  },
+  {
+    "old": "Pagar agora sem teste mensal",
+    "new": "Ver condi\\xE7\\xF5es de pagamento",
+    "scope": "plans-view"
+  },
+  {
+    "old": "href:`/entrar?signup=1&plan=${s}`",
+    "new": "href:`/assinar/${s}?cycle=${cycle}`",
+    "scope": "plans-view"
+  },
+  {
+    "old": "function F({plans:r}){return",
+    "new": "function F({plans:r}){const[cycle,setCycle]=(0,D.useState)(\"monthly\");return",
+    "scope": "plans-view"
+  },
+  {
+    "old": "children:[g(e.priceCents),(0,a.jsx)(\"small\",{children:\"/m\\xEAs\"})]",
+    "new": "children:[g(A(e.priceCents,cycle)/d[cycle].months),(0,a.jsx)(\"small\",{children:\"/m\\xEAs\"})]",
+    "scope": "plans-view"
+  },
+  {
+    "old": "children:\"Valor total de cada per\\xEDodo:\"",
+    "new": "children:cycle===\"monthly\"?\"Cobrança mensal\":`Total de ${g(A(e.priceCents,cycle))} por ${d[cycle].shortLabel}`",
+    "scope": "plans-view"
+  },
+  {
+    "old": "(0,a.jsx)(\"div\",{className:\"plans-cycle-list\",children:R.map(o=>(0,a.jsxs)(\"a\",{href:`/assinar/${s}?cycle=${o}`,children:[(0,a.jsx)(\"span\",{children:d[o].label}),(0,a.jsx)(\"strong\",{children:g(A(e.priceCents,o))}),d[o].discountPercent>0&&(0,a.jsxs)(\"small\",{children:[\"-\",d[o].discountPercent,\"%\"]})]},o))}),",
+    "new": "",
+    "scope": "plans-view"
+  },
+  {
+    "old": "(0,a.jsxs)(\"section\",{id:\"planos\",className:\"plans-public-grid\"",
+    "new": "(0,a.jsx)(\"div\",{className:\"pricing-cycle-tabs\",role:\"group\",\"aria-label\":\"Período de cobrança\",children:R.map(cycleOption=>(0,a.jsxs)(\"button\",{type:\"button\",\"aria-pressed\":cycle===cycleOption,onClick:()=>setCycle(cycleOption),children:[d[cycleOption].label,d[cycleOption].discountPercent>0&&(0,a.jsxs)(\"small\",{children:[\"Economize \",d[cycleOption].discountPercent,\"%\"]})]},cycleOption))}),(0,a.jsxs)(\"section\",{id:\"planos\",className:\"plans-public-grid\"",
+    "scope": "plans-view"
+  },
+  {
+    "old": "children:[\"Ver planos e pre\\xE7os\",(0,a.jsx)(l,{})]",
+    "new": "children:[\"Ver planos e preços\"]",
+    "scope": "plans-view"
+  },
+  {
+    "old": "children:[\"Contratar plano\",(0,a.jsx)(l,{})]",
+    "new": "children:[\"Contratar plano\"]",
+    "scope": "plans-view"
+  },
+  {
+    "old": "O teste gr\\xE1tis libera a cria\\xE7\\xE3o da empresa por 7 dias. O pagamento Pix \\xE9 opcional para quem j\\xE1 quer ativar o plano agora.",
+    "new": "A ativa\\xE7\\xE3o do ambiente da empresa depende da confirma\\xE7\\xE3o do pagamento do plano escolhido.",
+    "scope": "checkout-client"
+  },
+  {
+    "old": "Teste gr\\xE1tis dispon\\xEDvel",
+    "new": "CONTRATA\\xC7\\xC3O DO PLANO",
+    "scope": "checkout-client"
+  },
+  {
+    "old": "Comece sem pagar agora",
+    "new": "Ative sua assinatura",
+    "scope": "checkout-client"
+  },
+  {
+    "old": "Crie a conta e use o Fama System por 7 dias. Quando o teste acabar, o sistema bloqueia os m\\xF3dulos e solicita o pagamento do plano.",
+    "new": "Confira o per\\xEDodo e o valor total. Ap\\xF3s a confirma\\xE7\\xE3o do pagamento, voc\\xEA poder\\xE1 criar sua conta e o ambiente da empresa.",
+    "scope": "checkout-client"
+  },
+  {
+    "old": "Pagar agora sem usar o teste gr\\xE1tis",
+    "new": "Dados para pagamento",
+    "scope": "checkout-client"
+  },
+  {
+    "old": "(0,e.jsxs)(\"a\",{className:\"button checkout-trial-button\",href:`/entrar?signup=1&plan=${p}`,children:[\"Come\\xE7ar teste gr\\xE1tis \",(0,e.jsx)(b,{})]}),",
+    "new": "",
+    "scope": "checkout-client"
+  },
+  {
+    "old": "(0,e.jsxs)(\"details\",{className:\"checkout-pay-now\",children:",
+    "new": "(0,e.jsxs)(\"details\",{className:\"checkout-pay-now\",open:!0,children:",
+    "scope": "checkout-client"
+  },
+  {
+    "old": "Teste gr\\xE1tis de 7 dias. Depois disso o acesso ser\\xE1 bloqueado at\\xE9 o pagamento do plano.",
+    "new": "Confirme o pagamento do plano para criar o ambiente da empresa.",
+    "scope": "company-onboarding"
+  },
+  {
+    "old": "7 dias gr\\xE1tis",
+    "new": "Pagamento",
+    "scope": "company-onboarding"
+  },
+  {
+    "old": "if(s){const C=await aD(s,i,t.email);",
+    "new": "if(!s)return Response.json({error:\"Escolha um plano e confirme o pagamento antes de criar a empresa.\"},{status:402});if(s){const C=await aD(s,i,t.email);",
+    "scope": "backend"
+  }
+]

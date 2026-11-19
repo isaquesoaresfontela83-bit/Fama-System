@@ -1,0 +1,66 @@
+{
+  "success": true,
+  "packages": [
+    {
+      "kind": "system",
+      "before": "fa26207b65d36eaa765b264d662b96d855e883a90749b8a922f0850bef07226a",
+      "modules": 137,
+      "changed": [
+        "ssr/assets/plans-view-DDXMRDt8.js",
+        "ssr/assets/checkout-client-Bkyk8b9R.js",
+        "ssr/assets/company-onboarding-BMfc0nCZ.js",
+        "index.js"
+      ],
+      "bindings": 41
+    },
+    {
+      "kind": "control",
+      "before": "7ff9736a55c07943febd443e624c4df992cf99464bbda5d4c36c1af77ba6bc66",
+      "modules": 70,
+      "changed": [],
+      "bindings": 29
+    }
+  ],
+  "deployments": [
+    {
+      "kind": "system",
+      "deployment": {
+        "id": "fc7b8d0e-5d39-495a-86b5-c3bc27621be7",
+        "source": "api",
+        "strategy": "percentage",
+        "author_email": "isaquesoaresfontela83@gmail.com",
+        "annotations": {
+          "workers/message": "Automatic deployment on upload.",
+          "workers/triggered_by": "upload"
+        },
+        "versions": [
+          {
+            "version_id": "a1908ff3-669b-447e-bf58-5be56f5f103d",
+            "percentage": 100
+          }
+        ],
+        "created_on": "2026-11-19T00:19:03.622619Z"
+      }
+    },
+    {
+      "kind": "control",
+      "deployment": {
+        "id": "7dc12669-158f-4bef-9948-a587481b3353",
+        "source": "api",
+        "strategy": "percentage",
+        "author_email": "isaquesoaresfontela83@gmail.com",
+        "annotations": {
+          "workers/message": "Automatic deployment on upload.",
+          "workers/triggered_by": "upload"
+        },
+        "versions": [
+          {
+            "version_id": "476e2e24-7b82-40f3-920b-f06435170e93",
+            "percentage": 100
+          }
+        ],
+        "created_on": "2026-11-19T00:19:06.966602Z"
+      }
+    }
+  ]
+}
