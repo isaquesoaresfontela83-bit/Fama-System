@@ -1,8 +1,7 @@
 (() => {
  const script = document.currentScript;
  const asset = new URL('icon.webp', script.src).pathname;
- const installed = matchMedia('(display-mode: standalone)').matches || navigator.standalone === true;
- if (installed && !location.hostname.startsWith('control.') && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+ if (!location.hostname.startsWith('control.') && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
   let firstLaunch = false;
   try {
    firstLaunch = !sessionStorage.getItem('water-opening-played');
@@ -22,7 +21,7 @@
    opening.addEventListener('animationend', event => {
     if (event.target === opening) opening.remove();
    });
-   setTimeout(() => opening.remove(), 2000);
+   setTimeout(() => opening.remove(), 4000);
   }
  }
  const legacyMark = '/fama-piscinas-mark.png';

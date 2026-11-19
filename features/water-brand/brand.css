@@ -25,6 +25,7 @@
 }
 
 .water-opening {
+  --water-opening-duration: 3.6s;
   position: fixed;
   inset: 0;
   z-index: 2147483647;
@@ -34,7 +35,7 @@
   background: #0a1529;
   color: #f3f9ff;
   pointer-events: none;
-  animation: water-opening-exit 1.72s ease-in-out both;
+  animation: water-opening-exit var(--water-opening-duration) ease-in-out both;
 }
 
 .water-opening > img {
@@ -42,7 +43,7 @@
   width: clamp(64px, 20vw, 86px);
   height: auto;
   filter: invert(.83) hue-rotate(180deg) saturate(1.25);
-  animation: water-opening-mark 1.72s cubic-bezier(.3, 0, .2, 1) both;
+  animation: water-opening-mark var(--water-opening-duration) cubic-bezier(.3, 0, .2, 1) both;
 }
 
 .water-opening > span {
@@ -50,21 +51,21 @@
   font: 700 clamp(20px, 7vw, 32px) / 1.1 system-ui, sans-serif;
   letter-spacing: -.035em;
   white-space: nowrap;
-  animation: water-opening-name 1.72s cubic-bezier(.3, 0, .2, 1) both;
+  animation: water-opening-name var(--water-opening-duration) cubic-bezier(.3, 0, .2, 1) both;
 }
 
 @keyframes water-opening-mark {
-  0%, 12%, 78%, 100% { transform: translateX(0); }
-  32%, 59% { transform: translateX(clamp(-92px, -21vw, -64px)) scale(.82); }
+  0%, 9%, 88%, 100% { transform: translateX(0); }
+  21%, 76% { transform: translateX(clamp(-92px, -21vw, -64px)) scale(.82); }
 }
 
 @keyframes water-opening-name {
-  0%, 12%, 76%, 100% { opacity: 0; transform: translateX(12px) scale(.92); clip-path: inset(0 100% 0 0); }
-  34%, 58% { opacity: 1; transform: translateX(24px); clip-path: inset(0); }
+  0%, 9%, 87%, 100% { opacity: 0; transform: translateX(12px) scale(.92); clip-path: inset(0 100% 0 0); }
+  23%, 75% { opacity: 1; transform: translateX(24px); clip-path: inset(0); }
 }
 
 @keyframes water-opening-exit {
-  0%, 81% { opacity: 1; }
+  0%, 91% { opacity: 1; }
   100% { opacity: 0; }
 }
 
