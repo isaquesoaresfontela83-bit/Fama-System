@@ -147,3 +147,19 @@ test('failed second upload restores the first Worker to its captured version', a
 test('missing deployment credentials fail before any API request', async () => {
  await assert.rejects(() => deploy({ http: () => { throw new Error('Must not be called'); } }), /Configure CLOUDFLARE_API_TOKEN/);
 });
+
+test('invalid token formatting is rejected without revealing the credential', async () => {
+ const privateValue = 'private-token with spaces';
+ await assert.rejects(() => deploy({ token: privateValue, accountId: 'test-account', http: () => { throw new Error('Must not be called'); } }), error => {
+  assert.match(error.message, /formato do token/);
+  assert.ok(!error.message.includes(privateValue));
+  return true;
+ });
+});
+
+test('copied credentials tolerate surrounding line breaks before a dry run', async () => {
+ const fixture = await deploymentFixture();
+ const result = await deploy({ token: '\n test-token \r\n', accountId: ' test-account ', http: fixture.http });
+ assert.equal(result.prepared, true);
+ assert.ok([...fixture.state.values()].every(worker => worker.puts === 0));
+});

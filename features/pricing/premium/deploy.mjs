@@ -48,7 +48,12 @@ function uploadBody(parts, metadata) {
 }
 
 export async function deploy({ token, accountId, activate = false, http = fetch }) {
- if (!token || !accountId) throw new Error('Configure CLOUDFLARE_API_TOKEN e CLOUDFLARE_ACCOUNT_ID nos segredos do repositório.');
+ if (typeof token !== 'string' || typeof accountId !== 'string' || !token.trim() || !accountId.trim()) {
+  throw new Error('Configure CLOUDFLARE_API_TOKEN e CLOUDFLARE_ACCOUNT_ID nos segredos do repositório.');
+ }
+ token = token.trim();
+ accountId = accountId.trim();
+ if (!/^[\x21-\x7e]+$/.test(token)) throw new Error('O formato do token de implantação está inválido. Confira o valor no campo privado.');
  const base = 'https://api.cloudflare.com/client/v4/accounts/' + encodeURIComponent(accountId);
  async function api(path, options = {}) {
   const headers = new Headers(options.headers);
