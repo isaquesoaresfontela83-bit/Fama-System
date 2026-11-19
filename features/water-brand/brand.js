@@ -53,15 +53,12 @@
     else update(record.target);
    }
   });
-  const title = document.querySelector('title');
-  if (title) {
-   const updateTitle = () => {
-    const next = rename(title.textContent, false);
-    if (next !== title.textContent) title.textContent = next;
-   };
-   new MutationObserver(updateTitle).observe(title, { subtree: true, childList: true, characterData: true });
-   updateTitle();
-  }
+  const updateTitle = () => {
+   const next = rename(document.title, false);
+   if (next !== document.title) document.title = next;
+  };
+  new MutationObserver(updateTitle).observe(document.head, { subtree: true, childList: true, characterData: true });
+  updateTitle();
   scan(document.body);
   observer.observe(document.body, {
    subtree: true, childList: true, characterData: true, attributes: true,

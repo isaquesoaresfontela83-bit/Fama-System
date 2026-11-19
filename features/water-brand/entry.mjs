@@ -1,6 +1,6 @@
-export const VERSION = '15.23.14';
-export const RELEASE = '2026-11-19-water-brand-02';
-export const PREFIX = '/assets/water-brand-15.23.14/';
+export const VERSION = '15.23.15';
+export const RELEASE = '2026-11-19-water-brand-03';
+export const PREFIX = '/assets/water-brand-15.23.15/';
 
 const oldIcon = /^(?:\/fama-piscinas-mark\.png|\/favicon\.ico|\/apple-touch-icon(?:-\d+x\d+)?\.png|\/icon-(?:192|512)\.png)$/;
 const oldLogo = '/fama-piscinas-logo.png';
