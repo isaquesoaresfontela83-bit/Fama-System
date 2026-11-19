@@ -1,6 +1,30 @@
 (() => {
  const script = document.currentScript;
  const asset = new URL('icon.webp', script.src).pathname;
+ const installed = matchMedia('(display-mode: standalone)').matches || navigator.standalone === true;
+ if (installed && !location.hostname.startsWith('control.') && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  let firstLaunch = false;
+  try {
+   firstLaunch = !sessionStorage.getItem('water-opening-played');
+   if (firstLaunch) sessionStorage.setItem('water-opening-played', '1');
+  } catch {}
+  if (firstLaunch) {
+   const opening = document.createElement('div');
+   opening.className = 'water-opening';
+   opening.setAttribute('aria-hidden', 'true');
+   const logo = document.createElement('img');
+   logo.src = asset;
+   logo.alt = '';
+   const name = document.createElement('span');
+   name.textContent = 'Water System';
+   opening.append(logo, name);
+   document.body.append(opening);
+   opening.addEventListener('animationend', event => {
+    if (event.target === opening) opening.remove();
+   });
+   setTimeout(() => opening.remove(), 2000);
+  }
+ }
  const legacyMark = '/fama-piscinas-mark.png';
  const attributes = ['alt', 'aria-label', 'title', 'placeholder'];
  const ignored = 'script,style,noscript,textarea,select,[contenteditable],pre,code';
