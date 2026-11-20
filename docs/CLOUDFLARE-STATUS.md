@@ -1,3 +1,16 @@
+# Water System e Water Control 15.23.22 — 20/11/2026
+
+Lançamento conjunto `2026-11-20-water-demo-button-01`. O texto e o ícone da ação da demonstração ficam na mesma linha na página inicial e em `/planos`. A folha `apps/system/app/product-demo.css` entra no pacote incremental em `productResources.system`, com a chave `DEMO_ACTION_CSS`.
+
+| Aplicação | Versão ativa do Worker | Implantação | Módulos | Bindings |
+| --- | --- | --- | --- | --- |
+| Water System | `da101620-d3a6-4dd6-9e2c-495fc4b4c5e1` | `342d0849-1aa5-4dc6-8d42-681bc2601ef9` | 144 | 41 |
+| Water Control | `a5abeb32-1eb8-465b-ad39-c6e1420c5269` | `6411d70c-dbda-4403-9a6f-d69c8de7f859` | 77 | 29 |
+
+Os 62 testes e as verificações de sintaxe e sincronização passaram. Os hashes ativos conferem com os pacotes preparados. Os dois endpoints de saúde responderam com a nova versão. O Chromium validou as quatro etapas da demonstração em 320 px no tema escuro, 390 px no tema claro e 1280 px no tema escuro.
+
+---
+
 # Water System e Water Control 15.23.21 — 19/11/2026
 
 Lançamento conjunto `2026-11-19-water-opening-domain-01`. Confira os dois aplicativos em [Water System](https://watersystem.online/) e [Water Control](https://control.watersystem.online/).
