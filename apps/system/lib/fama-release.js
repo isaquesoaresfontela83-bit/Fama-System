@@ -1,3 +1,3 @@
-export const FAMA_VERSION = "15.23.21";
-export const FAMA_RELEASE_DATE = "19/11/2026";
-export const FAMA_RELEASE_ID = "2026-11-19-water-opening-domain-01";
+export const FAMA_VERSION = "15.23.22";
+export const FAMA_RELEASE_DATE = "20/11/2026";
+export const FAMA_RELEASE_ID = "2026-11-20-water-demo-button-01";

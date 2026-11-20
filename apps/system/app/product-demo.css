@@ -1,0 +1,38 @@
+.product-demo-content > button.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 44px;
+  max-width: 100%;
+  padding: 0.625rem 0.875rem;
+  border: 1px solid var(--primary);
+  border-radius: 0.75rem;
+  background: #1767b8;
+  color: #fff;
+  font-size: 0.9rem;
+  font-weight: 700;
+  line-height: 1.25;
+  cursor: pointer;
+}
+
+.product-demo-content > button.button:hover {
+  background: #10579e;
+}
+
+.product-demo-content > button.button:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 3px;
+}
+
+.product-demo-content > button.button > svg {
+  flex: none;
+  width: 1.125rem;
+  height: 1.125rem;
+}
+
+@media (max-width: 420px) {
+  .product-demo-content > button.button {
+    width: 100%;
+  }
+}

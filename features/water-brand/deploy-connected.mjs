@@ -87,11 +87,12 @@ export async function deployWaterBrand(cloudflare, accountId, input, activate = 
    return part;
   });
   const before = await fingerprint(preserved);
+  const resources = { ...input.resources, ...input.productResources?.[kind] };
   const added = [
    { name: 'water-brand-main.mjs', body: "import app from './motion-main.mjs';\nexport * from './motion-main.mjs';\nimport {withWaterBrand} from './water-brand-core.mjs';\nimport resources from './water-brand-resources.mjs';\nexport default withWaterBrand(app,resources," +
       JSON.stringify(kind) + "," + JSON.stringify(input.migratedAssetPaths[kind]) + ");" },
    { name: 'water-brand-core.mjs', body: input.core.replace("'./hosts.mjs'", "'./water-brand-hosts.mjs'") },
-   { name: 'water-brand-resources.mjs', body: 'export default ' + JSON.stringify(input.resources) + ';\n' },
+   { name: 'water-brand-resources.mjs', body: 'export default ' + JSON.stringify(resources) + ';\n' },
    { name: 'water-brand-hosts.mjs', body: input.hosts },
   ].map(part => ({ name: part.name, bytes: encode(part.body), type: 'application/javascript+module' }));
   const combined = [...parts, ...added];

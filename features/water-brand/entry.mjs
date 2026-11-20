@@ -1,8 +1,9 @@
 import { migrateLegacyReferences, renameProducts } from './hosts.mjs';
 
-export const VERSION = '15.23.21';
-export const RELEASE = '2026-11-19-water-opening-domain-01';
+export const VERSION = '15.23.22';
+export const RELEASE = '2026-11-20-water-demo-button-01';
 export const PREFIX = '/assets/water-brand-15.23.21/';
+export const DEMO_ACTION_CSS = 'demo-action-15.23.22.css';
 
 const oldIcon = /^(?:\/fama-piscinas-mark\.png|\/favicon\.ico|\/apple-touch-icon(?:-\d+x\d+)?\.png|\/icon-(?:192|512)\.png)$/;
 const oldLogo = '/fama-piscinas-logo.png';
@@ -95,6 +96,9 @@ export function withWaterBrand(app, resources, product, migratedAssetPaths = [])
    rewriter.on('head', {
     element(element) {
      element.append('<link rel="stylesheet" href="' + PREFIX + 'brand.css">', { html: true });
+     if (product === 'system' && Object.hasOwn(resources, DEMO_ACTION_CSS)) {
+      element.append('<link rel="stylesheet" href="' + PREFIX + DEMO_ACTION_CSS + '">', { html: true });
+     }
      const opening = product === 'system' ? ' data-water-opening' : '';
      element.append('<script defer' + opening + ' src="' + PREFIX + 'brand.js"></script>', { html: true });
     },
