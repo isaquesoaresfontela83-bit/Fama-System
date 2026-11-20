@@ -1,3 +1,16 @@
+# Water System e Water Control 15.23.24 — 20/11/2026
+
+Lançamento conjunto `2026-11-20-water-control-gear-stop-01`. Na abertura do Water Control, o W e a engrenagem ficam na posição em que a engrenagem termina de recolher as letras até o desaparecimento da tela de abertura.
+
+| Aplicação | Versão ativa do Worker | Implantação | Módulos | Bindings |
+| --- | --- | --- | --- | --- |
+| Water System | `b6834496-f699-4eaf-8d4b-86935521a847` | `14481494-523d-414a-9469-c2a623b088a8` | 144 | 41 |
+| Water Control | `b8bbb654-1da6-4236-aeb3-50f58da950df` | `d2609e53-3c8a-4f05-8b8f-41a2e5c3e08f` | 77 | 29 |
+
+Os 62 testes e as verificações de sintaxe e sincronização passaram. Os dois domínios responderam na nova versão. Os hashes dos módulos e o CSS público conferem com o pacote preparado. No Chromium, a sequência de recolhimento e a posição final foram verificadas em 320, 390 e 1280 px.
+
+---
+
 # Water System e Water Control 15.23.23 — 20/11/2026
 
 Lançamento conjunto `2026-11-20-water-control-opening-01`. A abertura do Water Control dura 4,2 segundos e toca na primeira abertura de cada sessão. O W forma o nome, a engrenagem gira recolhendo as letras da direita para a esquerda e o par final fica centralizado. A preferência de movimento reduzido desativa a abertura.
