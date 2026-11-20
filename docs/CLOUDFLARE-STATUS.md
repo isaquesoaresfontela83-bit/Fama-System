@@ -1,3 +1,18 @@
+# Water System e Water Control 15.23.23 — 20/11/2026
+
+Lançamento conjunto `2026-11-20-water-control-opening-01`. A abertura do Water Control dura 4,2 segundos e toca na primeira abertura de cada sessão. O W forma o nome, a engrenagem gira recolhendo as letras da direita para a esquerda e o par final fica centralizado. A preferência de movimento reduzido desativa a abertura.
+
+Os arquivos `control-opening.css` e `control-opening.js` de `features/water-brand/` entram em `productResources.control`, com nomes definidos por `CONTROL_OPENING` na extensão de marca.
+
+| Aplicação | Versão ativa do Worker | Implantação | Módulos | Bindings |
+| --- | --- | --- | --- | --- |
+| Water System | `3344039b-bd10-4c3c-8f81-b07f805f2614` | `237b0504-0b5e-41f5-9614-5efb0a0995a2` | 144 | 41 |
+| Water Control | `fbf53ac2-004f-4440-9c60-4806be0c55de` | `ae06bd94-0d41-4ce6-b2ed-fc47d8fbce47` | 77 | 29 |
+
+Os 62 testes e as verificações de sintaxe e sincronização passaram. Os hashes dos arquivos públicos e dos módulos ativos conferem com os pacotes preparados. A sequência foi conferida no Chromium em 320, 390 e 1280 px. As páginas públicas e os endpoints de saúde dos dois domínios responderam na nova versão.
+
+---
+
 # Water System e Water Control 15.23.22 — 20/11/2026
 
 Lançamento conjunto `2026-11-20-water-demo-button-01`. O texto e o ícone da ação da demonstração ficam na mesma linha na página inicial e em `/planos`. A folha `apps/system/app/product-demo.css` entra no pacote incremental em `productResources.system`, com a chave `DEMO_ACTION_CSS`.
