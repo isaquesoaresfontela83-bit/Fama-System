@@ -1,0 +1,21 @@
+.control-login-brand > span,
+.control-brand-mark,
+.brand-mark:has(> img[src="/fama-piscinas-mark.png"], > img[src*="/control-brand-"][src$="-mark.webp"]) {
+  background: transparent !important;
+  border-color: transparent !important;
+  box-shadow: none !important;
+}
+
+.control-login-brand-light,
+.control-brand-mark,
+.dark .control-login-mobile-head .control-login-brand,
+.dark .brand-mark,
+.main-sidebar .sidebar-brand {
+  --water-control-logo-filter: invert(.83) hue-rotate(180deg) saturate(1.25);
+}
+
+.control-login-brand > span > img,
+.control-brand-mark > img,
+.brand-mark > img:is([src="/fama-piscinas-mark.png"], [src*="/control-brand-"][src$="-mark.webp"]) {
+  filter: var(--water-control-logo-filter, none);
+}

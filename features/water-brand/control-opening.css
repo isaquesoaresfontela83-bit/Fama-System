@@ -25,9 +25,8 @@
   display: flex;
   align-items: center;
   direction: ltr;
-  inline-size: calc(var(--water-opening-mark-width) + var(--water-control-name-width) + var(--water-control-name-gap) + var(--water-control-gear-size) + var(--water-control-gear-gap));
+  inline-size: max-content;
   font: 700 clamp(1.2rem, 6.75vw, 2.7rem) / 1.15 system-ui, sans-serif;
-  animation: water-control-opening-lockup var(--water-control-opening-duration) var(--water-control-opening-ease) both;
 }
 
 .water-control-opening .water-opening-mark {
@@ -50,6 +49,7 @@
 
 .water-control-opening-gear-slot {
   flex: none;
+  min-inline-size: 0;
   animation: water-control-opening-gear-slot var(--water-control-opening-duration) var(--water-control-opening-ease) both;
 }
 
@@ -60,11 +60,6 @@
   stroke: #8ecaff;
   filter: drop-shadow(0 0 .28rem #48a9ff60);
   animation: water-control-opening-gear var(--water-control-opening-duration) var(--water-control-opening-ease) both;
-}
-
-@keyframes water-control-opening-lockup {
-  0%, 10% { transform: translateX(calc((100% - var(--water-opening-mark-width)) / 2)); }
-  39%, 100% { transform: translateX(0); }
 }
 
 @keyframes water-control-opening-mark {

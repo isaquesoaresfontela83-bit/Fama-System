@@ -54,18 +54,17 @@ test('public names and the repository move without changing storage and binding 
  assert.equal(migrateLegacyReferences(updated), updated);
 });
 
-test('Control uses its own brand mark and favicon while its opening keeps the original monogram', async () => {
+test('Control uses its transparent mark for the panel and favicon while the opening keeps its monogram', async () => {
  const image = body => ({ body, type: 'image/webp' });
  const resources = {
   'icon.webp': image('original monogram'),
   [CONTROL_BRAND + '-mark.webp']: image('Control logo'),
-  [CONTROL_BRAND + '-icon.webp']: image('Control favicon'),
   [CONTROL_BRAND + '.js']: { body: '', type: 'application/javascript' },
  };
  const app = { fetch: () => assert.fail('Brand images should be handled by the extension') };
  const routes = [
   ['/fama-piscinas-mark.png', 'Control logo'],
-  ['/favicon.ico', 'Control favicon'],
+  ['/favicon.ico', 'Control logo'],
   [PREFIX + 'icon.webp', 'original monogram'],
  ];
  for (const product of ['control', 'system']) {

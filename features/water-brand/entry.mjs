@@ -4,8 +4,9 @@ export const VERSION = '15.23.25';
 export const RELEASE = '2026-11-20-water-control-logo-01';
 export const PREFIX = '/assets/water-brand-15.23.21/';
 export const DEMO_ACTION_CSS = 'demo-action-15.23.22.css';
-export const CONTROL_OPENING = 'control-opening-15.23.24';
+export const CONTROL_OPENING = 'control-opening-15.23.25-r2';
 export const CONTROL_BRAND = 'control-brand-15.23.25';
+export const CONTROL_BRAND_CSS = 'control-brand-15.23.25-r2.css';
 
 const oldIcon = /^(?:\/favicon\.ico|\/apple-touch-icon(?:-\d+x\d+)?\.png|\/icon-(?:192|512)\.png)$/;
 const oldMark = '/fama-piscinas-mark.png';
@@ -30,11 +31,9 @@ function headersFor(response) {
 export function withWaterBrand(app, resources, product, migratedAssetPaths = []) {
  const migratedAssets = new Set(migratedAssetPaths);
  const controlMark = CONTROL_BRAND + '-mark.webp';
- const controlIcon = CONTROL_BRAND + '-icon.webp';
  const controlScript = CONTROL_BRAND + '.js';
- const hasControlBrand = product === 'control' && [controlMark, controlIcon, controlScript].every(name => Object.hasOwn(resources, name));
+ const hasControlBrand = product === 'control' && [controlMark, controlScript].every(name => Object.hasOwn(resources, name));
  const mark = hasControlBrand ? controlMark : 'icon.webp';
- const icon = hasControlBrand ? controlIcon : 'icon.webp';
  return {
   ...app,
   async fetch(request, env, ctx) {
@@ -43,8 +42,7 @@ export function withWaterBrand(app, resources, product, migratedAssetPaths = [])
    const head = request.method === 'HEAD';
    const path = url.pathname;
    let assetName = '';
-   if (path === oldMark) assetName = mark;
-   else if (oldIcon.test(path)) assetName = icon;
+   if (path === oldMark || oldIcon.test(path)) assetName = mark;
    else if (path === oldLogo) assetName = hasControlBrand ? controlMark : 'logo.webp';
    else if (path.startsWith(PREFIX)) assetName = path.slice(PREFIX.length);
    if (Object.hasOwn(resources, assetName)) {
@@ -101,7 +99,7 @@ export function withWaterBrand(app, resources, product, migratedAssetPaths = [])
    rewriter.on('link[rel][href]', {
     element(element) {
      if (!/\b(?:icon|apple-touch-icon)\b/.test(element.getAttribute('rel'))) return;
-     element.setAttribute('href', PREFIX + icon);
+     element.setAttribute('href', PREFIX + mark);
      element.setAttribute('type', 'image/webp');
      element.removeAttribute('sizes');
     },
@@ -109,6 +107,9 @@ export function withWaterBrand(app, resources, product, migratedAssetPaths = [])
    rewriter.on('head', {
     element(element) {
      element.append('<link rel="stylesheet" href="' + PREFIX + 'brand.css">', { html: true });
+     if (hasControlBrand && Object.hasOwn(resources, CONTROL_BRAND_CSS)) {
+      element.append('<link rel="stylesheet" href="' + PREFIX + CONTROL_BRAND_CSS + '">', { html: true });
+     }
      if (product === 'system' && Object.hasOwn(resources, DEMO_ACTION_CSS)) {
       element.append('<link rel="stylesheet" href="' + PREFIX + DEMO_ACTION_CSS + '">', { html: true });
      }
