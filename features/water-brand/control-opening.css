@@ -64,8 +64,7 @@
 
 @keyframes water-control-opening-lockup {
   0%, 10% { transform: translateX(calc((100% - var(--water-opening-mark-width)) / 2)); }
-  39%, 76% { transform: translateX(0); }
-  84%, 100% { transform: translateX(calc((var(--water-control-name-width) + var(--water-control-name-gap)) / 2)); }
+  39%, 100% { transform: translateX(0); }
 }
 
 @keyframes water-control-opening-mark {
@@ -80,8 +79,8 @@
 
 @keyframes water-control-opening-gear-slot {
   0%, 31% { inline-size: 0; margin-inline-start: 0; }
-  39%, 51%, 79%, 100% { inline-size: var(--water-control-gear-size); margin-inline-start: var(--water-control-gear-gap); }
-  56%, 75% { inline-size: var(--water-control-gear-size); margin-inline-start: 0; }
+  39%, 51% { inline-size: var(--water-control-gear-size); margin-inline-start: var(--water-control-gear-gap); }
+  56%, 100% { inline-size: var(--water-control-gear-size); margin-inline-start: 0; }
 }
 
 @keyframes water-control-opening-gear {

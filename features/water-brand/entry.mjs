@@ -1,10 +1,10 @@
 import { migrateLegacyReferences, renameProducts } from './hosts.mjs';
 
-export const VERSION = '15.23.23';
-export const RELEASE = '2026-11-20-water-control-opening-01';
+export const VERSION = '15.23.24';
+export const RELEASE = '2026-11-20-water-control-gear-stop-01';
 export const PREFIX = '/assets/water-brand-15.23.21/';
 export const DEMO_ACTION_CSS = 'demo-action-15.23.22.css';
-export const CONTROL_OPENING = 'control-opening-15.23.23';
+export const CONTROL_OPENING = 'control-opening-15.23.24';
 
 const oldIcon = /^(?:\/fama-piscinas-mark\.png|\/favicon\.ico|\/apple-touch-icon(?:-\d+x\d+)?\.png|\/icon-(?:192|512)\.png)$/;
 const oldLogo = '/fama-piscinas-logo.png';
