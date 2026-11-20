@@ -1,15 +1,16 @@
-> **Versão publicada: 15.23.1 — Liquid Glass (06/11/2026).**
->
-> O código organizado do System e do Control está na [branch release/15.23.1-all-module-shortcuts](https://github.com/isaquesoaresfontela83-bit/Fama-System/tree/release/15.23.1-all-module-shortcuts).
-> Consulte o [mapa das pastas e comandos](https://github.com/isaquesoaresfontela83-bit/Fama-System/blob/release/15.23.1-all-module-shortcuts/README.md), a [documentação](https://github.com/isaquesoaresfontela83-bit/Fama-System/blob/release/15.23.1-all-module-shortcuts/docs/README.md) e o [estado publicado](https://github.com/isaquesoaresfontela83-bit/Fama-System/blob/release/15.23.1-all-module-shortcuts/docs/CLOUDFLARE-STATUS.md).
->
-> Esta `main` contém a base histórica. Não implantá-la sobre a produção atual. O guia abaixo descreve essa base histórica.
+# Water System · Water Control
 
-# Fama System
+**Versão publicada 15.23.21.** A abertura do Water System foi reenquadrada e os dois serviços usam a marca Water e seus endereços oficiais.
+
+- [Water System](https://watersystem.online/)
+- [Water Control](https://control.watersystem.online/)
+- [Código e documentação da versão publicada](https://github.com/isaquesoaresfontela83-bit/Water-System/tree/release/15.23.21-water-opening)
+
+## Base histórica desta branch
 
 ERP multiempresa para negócios de piscinas, com CRM, clientes, orçamentos e contratos em PDF, agenda, ordens de serviço, garantias, estoque, financeiro e equipe.
 
-Este guia descreve a base presente neste repositório. Uma versão publicada pode usar outra revisão; confira a origem do código antes de implantar. O frontend independente do Fama Control não está completo nesta `main`: aqui existem funções de backend e materiais históricos relacionados a ele.
+Este guia descreve a base presente neste repositório. Uma versão publicada pode usar outra revisão; confira a origem do código antes de implantar. O frontend independente do Water Control não está completo nesta `main`: aqui existem funções de backend e materiais históricos relacionados a ele.
 
 ## Começar
 
@@ -62,7 +63,7 @@ Nesta `main`, o endpoint de login ainda contém a URL e a chave publicável do S
 | `public/` | Imagens e ícones |
 | `build/` | Código-fonte do plugin de compilação; deve continuar no Git |
 | `vendor/` | CSS de terceiros e sua licença; importado pela aplicação |
-| `supabase/functions/` | Funções de backend relacionadas ao Fama Control |
+| `supabase/functions/` | Funções de backend relacionadas ao Water Control |
 | `sites-release/` | Material histórico de publicação e compatibilidade |
 | `docs/` | Guia de manutenção do repositório |
 
