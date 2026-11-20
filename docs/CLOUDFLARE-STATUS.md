@@ -1,3 +1,16 @@
+# Water System e Water Control 15.23.25 — 20/11/2026
+
+Lançamento conjunto `2026-11-20-water-control-logo-01`. A marca do Water Control combina o W com a engrenagem azul da abertura. `control-mark.webp` é o símbolo transparente usado no login e no painel. `control-icon.webp` é a versão com fundo para o ícone da aba. Os dois arquivos e o script de marca entram em `productResources.control` com nomes definidos por `CONTROL_BRAND`. A abertura carrega o monograma W antes de animar a engrenagem.
+
+| Aplicação | Versão ativa do Worker | Implantação | Módulos | Bindings |
+| --- | --- | --- | --- | --- |
+| Water System | `bbcdfb84-f18a-44ac-8848-ef960524e4ce` | `849ce86f-8a4d-4dc1-8219-9c8b17e62325` | 144 | 41 |
+| Water Control | `179b3fac-f5c3-4755-af6a-8aab9df6caf6` | `2580714a-33f0-4e02-8670-90ed9ec2a9b7` | 77 | 29 |
+
+Os 63 testes e as verificações de sintaxe e sincronização passaram. Os hashes ativos e os arquivos WebP públicos conferem com o pacote preparado. O Chromium confirmou o logotipo e o ícone da aba no login em 390 e 1280 px. As duas páginas públicas e os endpoints de saúde responderam na nova versão.
+
+---
+
 # Water System e Water Control 15.23.24 — 20/11/2026
 
 Lançamento conjunto `2026-11-20-water-control-gear-stop-01`. Na abertura do Water Control, o W e a engrenagem ficam na posição em que a engrenagem termina de recolher as letras até o desaparecimento da tela de abertura.
