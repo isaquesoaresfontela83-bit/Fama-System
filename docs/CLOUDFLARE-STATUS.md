@@ -1,3 +1,16 @@
+# Water System e Water Control 15.23.26 — 20/11/2026
+
+Lançamento conjunto `2026-11-20-water-mobile-brand-01`. O nome na barra móvel foi corrigido para WATER SYSTEM; o rótulo fixo da IA ao lado dos módulos aparece como Water IA. Nomes de empresas e textos de clientes não são alterados. O script usa um novo endereço para não reaproveitar a versão antiga do cache.
+
+| Aplicação | Versão ativa do Worker | Implantação | Módulos | Bindings |
+| --- | --- | --- | --- | --- |
+| Water System | `fe4e3473-8405-4b58-9663-f265064749fe` | `58c500e6-5017-436f-abe5-3eb915b24b63` | 144 | 41 |
+| Water Control | `fe857ca3-5ce6-4ff7-b441-1e8bb2e1a245` | `19fc273f-0e70-4f7f-ad36-e4a1d96832ee` | 77 | 29 |
+
+Os 63 testes, sintaxe, verificação conjunta e simulação do DOM passaram. O carregamento do script novo na página pública foi confirmado, os dois endpoints de saúde responderam com o lançamento e a leitura de volta confirmou os módulos e bindings. A tela autenticada não foi acessada nesta conferência.
+
+---
+
 # Water System e Water Control 15.23.25 — 20/11/2026
 
 Lançamento conjunto `2026-11-20-water-control-logo-01`. A marca do Water Control combina o W com a engrenagem azul da abertura. `control-mark.webp` é o símbolo transparente usado no login e no painel. `control-icon.webp` é a versão com fundo para o ícone da aba. Os dois arquivos e o script de marca entram em `productResources.control` com nomes definidos por `CONTROL_BRAND`. A abertura carrega o monograma W antes de animar a engrenagem.

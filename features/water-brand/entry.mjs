@@ -1,8 +1,9 @@
 import { migrateLegacyReferences, renameProducts } from './hosts.mjs';
 
-export const VERSION = '15.23.25';
-export const RELEASE = '2026-11-20-water-control-logo-01';
+export const VERSION = '15.23.26';
+export const RELEASE = '2026-11-20-water-mobile-brand-01';
 export const PREFIX = '/assets/water-brand-15.23.21/';
+export const SYSTEM_BRAND_JS = 'brand-15.23.26.js';
 export const DEMO_ACTION_CSS = 'demo-action-15.23.22.css';
 export const CONTROL_OPENING = 'control-opening-15.23.25-r2';
 export const CONTROL_BRAND = 'control-brand-15.23.25';
@@ -114,7 +115,7 @@ export function withWaterBrand(app, resources, product, migratedAssetPaths = [])
       element.append('<link rel="stylesheet" href="' + PREFIX + DEMO_ACTION_CSS + '">', { html: true });
      }
      const brandAttributes = hasControlBrand ? ' data-water-mark="' + controlMark + '"' : product === 'system' ? ' data-water-opening' : '';
-     element.append('<script defer' + brandAttributes + ' src="' + PREFIX + (hasControlBrand ? controlScript : 'brand.js') + '"></script>', { html: true });
+     element.append('<script defer' + brandAttributes + ' src="' + PREFIX + (hasControlBrand ? controlScript : SYSTEM_BRAND_JS) + '"></script>', { html: true });
      if (product === 'control' && Object.hasOwn(resources, CONTROL_OPENING + '.css') && Object.hasOwn(resources, CONTROL_OPENING + '.js')) {
       element.append('<link rel="stylesheet" href="' + PREFIX + CONTROL_OPENING + '.css">', { html: true });
       element.append('<link rel="preload" as="image" href="' + PREFIX + 'icon.webp">', { html: true });

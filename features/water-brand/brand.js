@@ -34,7 +34,7 @@
  const legacyMark = '/fama-piscinas-mark.png';
  const attributes = ['alt', 'aria-label', 'title', 'placeholder'];
  const ignored = 'script,style,noscript,textarea,select,[contenteditable],pre,code';
- const brandSelectors = '.brand, .app-brand, .control-brand, .control-login-brand, .brand-lockup, .brand-text, .public-brand';
+ const brandSelectors = '.brand, .app-brand, .ops-mobile-brand, .sidebar-brand, .control-brand, .control-login-brand, .brand-lockup, .brand-text, .public-brand';
 
  function rename(value, brand) {
   return value.replace(/\bFama[ \t]+(System|Control)\b|\bFama(?=System\b|Control\b)/gi, (name, product) => {
@@ -47,7 +47,11 @@
   const element = node.nodeType === Node.TEXT_NODE ? node.parentElement : node;
   if (!(element instanceof Element) || element.closest(ignored)) return;
   if (node.nodeType === Node.TEXT_NODE) {
-   const next = rename(node.data, element.closest(brandSelectors));
+   let next = rename(node.data, element.closest(brandSelectors));
+   // The module assistant is a fixed UI label; leave tenant names and chat content alone.
+   if (element.matches('.business-assistant strong')) {
+    next = next.replace(/\bFama[ \t\u00a0]+IA\b/gi, name => name === name.toUpperCase() ? 'WATER IA' : 'Water IA');
+   }
    if (next !== node.data) node.data = next;
    return;
   }
