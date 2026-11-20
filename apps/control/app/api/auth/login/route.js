@@ -27,7 +27,7 @@ export async function POST(request) {
             await supabaseAuthRequest("/auth/v1/logout", { method: "POST" }, session.access_token).catch(() => undefined);
             await clearSupabaseSession();
             await logAudit({ actorUserId: user.id, eventType: "security", entityType: "control_auth", metadata: { result: "denied" } }).catch(() => undefined);
-            return Response.json({ error: "Esta conta não está autorizada a acessar o Fama Control." }, { status: 403 });
+            return Response.json({ error: "Esta conta não está autorizada a acessar o Water Control." }, { status: 403 });
         }
         const factors = session.user?.factors ?? user.factors ?? [];
         const verified = factors.find((factor) => factor.status === "verified" && factor.factor_type === "totp");

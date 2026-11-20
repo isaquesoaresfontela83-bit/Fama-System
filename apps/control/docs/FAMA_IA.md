@@ -92,7 +92,7 @@ Execute `npm run typecheck` e `npm test`. Os testes cobrem consultas, períodos,
 
 ## Controle central de blocos
 
-O Fama Control aplica regras gerais, por empresa e por pessoa em **Blocos do sistema**. A regra mais específica prevalece. A IA recebe somente os dados dos blocos efetivamente liberados, inclusive quando o usuário é proprietário. Remover Fama IA impede abrir a central, preparar modelos automaticamente ou consultar a API, e interrompe a assistente dessa pessoa no WhatsApp. Uma mudança de acesso descarta o contexto e histórico anteriores; os arquivos dos modelos continuam salvos.
+O Water Control aplica regras gerais, por empresa e por pessoa em **Blocos do sistema**. A regra mais específica prevalece. A IA recebe somente os dados dos blocos efetivamente liberados, inclusive quando o usuário é proprietário. Remover Fama IA impede abrir a central, preparar modelos automaticamente ou consultar a API, e interrompe a assistente dessa pessoa no WhatsApp. Uma mudança de acesso descarta o contexto e histórico anteriores; os arquivos dos modelos continuam salvos.
 
 
 ## Conectar Cloudflare Workers AI

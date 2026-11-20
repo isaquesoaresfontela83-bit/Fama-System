@@ -23,7 +23,7 @@ export function WorkspaceNavigationMenu({ groups, section, onNavigate, onPreload
 
     useEffect(() => { setExpanded(activeGroup); }, [section, activeGroup]);
 
-    return <nav className="workspace-navigation" aria-label="Módulos do Fama System">
+    return <nav className="workspace-navigation" aria-label="Módulos do Water System">
         {primary.map(group => <SidebarGroup key={group.id}>
             <SidebarGroupLabel>{group.label}</SidebarGroupLabel>
             <SidebarGroupContent><SidebarMenu>{group.items.map(item => <SidebarMenuItem key={item.id}>

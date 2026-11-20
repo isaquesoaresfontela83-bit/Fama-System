@@ -1,4 +1,4 @@
--- Fama Control: acesso individual por módulo.
+-- Water Control: acesso individual por módulo.
 -- Execute uma única vez no SQL Editor do projeto Supabase.
 alter table public.organization_members
   add column if not exists permissions jsonb not null default '["dashboard","crm","quotes","agenda","mobile","orders","warranties","customers","contracts","inventory","finance","team"]'::jsonb;

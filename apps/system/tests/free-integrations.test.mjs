@@ -65,7 +65,7 @@ test('test push targets only the current tenant device regardless of its selecte
 test('foreground reception displays a system notification and rejects another company',async()=>{
  const {displayForegroundPush}=await f.load('/lib/push-display.js');const displayed=[];
  const environment={permission:()=> 'granted',registration:async()=>({showNotification:async(...args)=>displayed.push(args)})};
- const data={organizationId:'org-one',title:'Fama System',body:'Teste recebido',eventId:'test-event'};
+ const data={organizationId:'org-one',title:'Water System',body:'Teste recebido',eventId:'test-event'};
  assert.equal(await displayForegroundPush(data,'org-one',environment),true);
  assert.equal(displayed.length,1);assert.equal(displayed[0][1].tag,'test-event');assert.equal(displayed[0][1].body,'Teste recebido');
  assert.equal(await displayForegroundPush(data,'another-org',environment),false);assert.equal(displayed.length,1);

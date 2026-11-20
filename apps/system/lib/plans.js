@@ -1,7 +1,7 @@
 import { defaultPlanCatalog } from "./plan-catalog";
 export { PLAN_PRICE_NOTICE } from "./plan-catalog";
 export const PLAN_CONSULTATION_PHONE = "(61) 99138-8546";
-export const PLAN_CONSULTATION_URL = "https://wa.me/5561991388546?text=" + encodeURIComponent("Olá! Quero uma consultoria para entender qual plano do Fama System é mais adequado para minha empresa.");
+export const PLAN_CONSULTATION_URL = "https://wa.me/5561991388546?text=" + encodeURIComponent("Olá! Quero uma consultoria para entender qual plano do Water System é mais adequado para minha empresa.");
 export const PLANS = Object.fromEntries(defaultPlanCatalog.map(plan => [plan.id, {
     name: plan.name,
     priceCents: plan.price,
@@ -15,7 +15,7 @@ export const BILLING_CYCLES = {
     semiannual: { label: "Semestral", shortLabel: "semestre", months: 6, discountPercent: 10 },
     annual: { label: "Anual", shortLabel: "ano", months: 12, discountPercent: 15 },
 };
-const controlPlansUrl = "https://control.famasystem.online/api/public/plans";
+const controlPlansUrl = "https://control.watersystem.online/api/public/plans";
 export function isPlanCode(value) {
     return typeof value === "string" && Object.hasOwn(PLANS, value);
 }

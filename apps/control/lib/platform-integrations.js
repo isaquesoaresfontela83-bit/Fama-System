@@ -93,7 +93,7 @@ function filePayload(input, maximum = 5 * 1024 * 1024) {
 }
 async function driveToken(fields) {
     const token = await upstream('https://oauth2.googleapis.com/token', { method: 'POST', body: new URLSearchParams({ client_id: fields.clientId, client_secret: fields.clientSecret, refresh_token: fields.refreshToken, grant_type: 'refresh_token' }) });
-    if (!token.access_token) throw new RequestError('Reconecte a conta do Google no Fama Control.', 424);
+    if (!token.access_token) throw new RequestError('Reconecte a conta do Google no Water Control.', 424);
     return String(token.access_token);
 }
 function sentryTarget(value) {
@@ -107,7 +107,7 @@ export async function runPlatformIntegration(action, input = {}, scope = 'platfo
     if (!provider) throw new RequestError('Ação de integração inválida.', 400);
     const config = await readPlatformIntegration(provider);
     if (!config) return null; // Preserve existing connections until explicitly managed here.
-    if (!config.enabled) throw new RequestError('Esta integração está pausada no Fama Control.', 424);
+    if (!config.enabled) throw new RequestError('Esta integração está pausada no Water Control.', 424);
     if (!configured(provider, config)) return null; // Draft setup keeps the previous connection available.
     const fields = config.fields;
     let data, source;
@@ -133,7 +133,7 @@ export async function runPlatformIntegration(action, input = {}, scope = 'platfo
         data = { text: parsed.map(item => String(item.ParsedText || '')).join('\n').slice(0,500000), partial: result.IsErroredOnProcessing === true };
     } else if (action === 'sentry_capture') {
         const target = sentryTarget(fields.dsn), id = crypto.randomUUID().replace(/-/g, '');
-        const result = await upstream(target.url, { method: 'POST', headers: { 'Content-Type': 'application/json', 'X-Sentry-Auth': `Sentry sentry_version=7,sentry_client=fama-control/15.5,sentry_key=${target.key}` }, body: JSON.stringify({ event_id: id, platform: 'javascript', level: 'error', timestamp: Date.now()/1000, message: input.test === true ? 'Teste de conexão do Fama Control' : 'Falha técnica no navegador Fama System' }) });
+        const result = await upstream(target.url, { method: 'POST', headers: { 'Content-Type': 'application/json', 'X-Sentry-Auth': `Sentry sentry_version=7,sentry_client=fama-control/15.5,sentry_key=${target.key}` }, body: JSON.stringify({ event_id: id, platform: 'javascript', level: 'error', timestamp: Date.now()/1000, message: input.test === true ? 'Teste de conexão do Water Control' : 'Falha técnica no navegador Water System' }) });
         if (!result.id) throw new RequestError('O Sentry não confirmou o evento.', 502);
         data = { event_id: String(result.id).slice(0,100) };
     } else if (action === 'sentry_issues') {

@@ -55,7 +55,7 @@ async function requestPython(config, path, body, signal) {
     const send = env.FAMA_PYTHON_SERVICE?.fetch ? env.FAMA_PYTHON_SERVICE.fetch.bind(env.FAMA_PYTHON_SERVICE) : fetch;
     const response = await send(new URL(path, config.endpoint).href, {
       method: 'POST', redirect: 'manual', signal: controller.signal,
-      headers: { 'Content-Type': 'application/json', 'User-Agent': 'Fama-System/1.0', Authorization: `Bearer ${config.token}` },
+      headers: { 'Content-Type': 'application/json', 'User-Agent': 'Water-System/1.0', Authorization: `Bearer ${config.token}` },
       body: JSON.stringify(body),
     });
     const payload = await readBoundedJson(response);

@@ -12,7 +12,7 @@ export async function publicApiProbe(id) {
         valid = data.code === 1 && typeof data.name === 'string';
     } else if (id === 'met-norway') {
         // Fixed public coordinates; no customer location is transmitted by a health check.
-        const data = await readApiJson('https://api.met.no/weatherapi/locationforecast/2.0/compact?lat=-15.79&lon=-47.88', { headers: { 'User-Agent': 'FamaSystem/1.0 (+https://famasystem.online)', Accept: 'application/json' } });
+        const data = await readApiJson('https://api.met.no/weatherapi/locationforecast/2.0/compact?lat=-15.79&lon=-47.88', { headers: { 'User-Agent': 'WaterSystem/1.0 (+https://watersystem.online)', Accept: 'application/json' } });
         valid = Array.isArray(data.properties?.timeseries) && data.properties.timeseries.length > 0;
     } else throw new Error('Unsupported public check');
     if (!valid) throw new Error('Invalid provider response');

@@ -8,11 +8,11 @@ import { whatsappPhoneInput } from './fama-whatsapp';
 
 const headers={'Cache-Control':'private,no-store'};
 export async function baileysBridge(organizationId,action,input={}) {
-    if(!env.FAMA_DATA_BRIDGE_SECRET)throw new RequestError('A conexão segura com o Fama Control está indisponível.',503);
+    if(!env.FAMA_DATA_BRIDGE_SECRET)throw new RequestError('A conexão segura com o Water Control está indisponível.',503);
     const send=env.FAMA_CONTROL?.fetch ? env.FAMA_CONTROL.fetch.bind(env.FAMA_CONTROL) : fetch;
     let response;
-    try { response=await send('https://control.famasystem.online/api/internal/baileys',{method:'POST',redirect:'manual',signal:AbortSignal.timeout(28000),headers:{Authorization:'Bearer '+env.FAMA_DATA_BRIDGE_SECRET,'Content-Type':'application/json'},body:JSON.stringify({...input,organizationId,action})}); }
-    catch { throw new RequestError('O Fama Control não respondeu. Tente novamente.',502); }
+    try { response=await send('https://control.watersystem.online/api/internal/baileys',{method:'POST',redirect:'manual',signal:AbortSignal.timeout(28000),headers:{Authorization:'Bearer '+env.FAMA_DATA_BRIDGE_SECRET,'Content-Type':'application/json'},body:JSON.stringify({...input,organizationId,action})}); }
+    catch { throw new RequestError('O Water Control não respondeu. Tente novamente.',502); }
     let result;
     try { result=JSON.parse(new TextDecoder().decode(await readLimitedBody(response,1024*1024,28000))); }catch{throw new RequestError('A conexão com o Baileys não retornou uma resposta válida.',502);}
     if(!response.ok)throw new RequestError(typeof result.error==='string'?result.error.slice(0,300):'O Baileys não confirmou a operação.',[400,401,403,409,429,503].includes(response.status)?response.status:502);

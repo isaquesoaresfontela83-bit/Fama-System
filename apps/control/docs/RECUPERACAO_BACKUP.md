@@ -1,6 +1,6 @@
 # Recuperar o backup completo
 
-Em **Fama Control → Segurança**, guarde a chave de recuperação em um local privado separado do backup. A cópia diária inclui tabelas do Supabase, arquivos reais e os bancos locais dos dois sistemas. A cópia externa no Cloudflare R2 é criptografada e mantida por 30 dias. O download **Baixar cópia externa** lê essa cópia, sem depender da tabela de backups no banco principal.
+Em **Water Control → Segurança**, guarde a chave de recuperação em um local privado separado do backup. A cópia diária inclui tabelas do Supabase, arquivos reais e os bancos locais dos dois sistemas. A cópia externa no Cloudflare R2 é criptografada e mantida por 30 dias. O download **Baixar cópia externa** lê essa cópia, sem depender da tabela de backups no banco principal.
 
 Para conferir o arquivo baixado sem alterar produção:
 

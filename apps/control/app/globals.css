@@ -849,7 +849,7 @@ button, input, textarea, select { font: inherit; }
   .theme-toggle { width: 36px; height: 36px; flex-basis: 36px; }
 }
 
-/* Fama Control: private owner workspace */
+/* Water Control: private owner workspace */
 .control-shell { min-height: 100svh; display: grid; grid-template-columns: 260px minmax(0, 1fr); background: var(--background); }
 .control-sidebar { display: flex; min-height: 100svh; flex-direction: column; background: linear-gradient(180deg, #071b43 0%, #030d25 100%); border-right: 1px solid rgba(23,199,238,.2); }
 .control-brand { display: flex; align-items: center; gap: 11px; min-height: 92px; padding: 20px 18px; }

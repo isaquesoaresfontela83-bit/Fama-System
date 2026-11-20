@@ -29,7 +29,7 @@ export async function asaasRequest(apiKey, environment, path, init = {}) {
         signal: init.signal ?? AbortSignal.timeout(20000),
         headers: {
             "Content-Type": "application/json",
-            "User-Agent": "Fama-System/1.0",
+            "User-Agent": "Water-System/1.0",
             access_token: apiKey,
             ...(init.headers ?? {}),
         },

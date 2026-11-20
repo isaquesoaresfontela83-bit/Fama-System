@@ -13,7 +13,7 @@ export async function POST(request) {
             && email.indexOf(".", atIndex + 2) > atIndex + 1
             && !email.includes(" ");
         if (!validEmail || !isPlatformAdmin(candidate)) {
-            return Response.json({ error: "Este e-mail não está autorizado para o Fama Control." }, { status: 403 });
+            return Response.json({ error: "Este e-mail não está autorizado para o Water Control." }, { status: 403 });
         }
         validatePasswordLength(password);
         await assertRateLimit(request, "control_auth_setup", email, 4, 60 * 60);

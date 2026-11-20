@@ -4,7 +4,7 @@ import { camelizeRow, insertRow, selectRows, usesSupabase } from "@/lib/supabase
 import { requireTenant, tenantError } from "@/lib/tenant";
 const allowedTypes = new Set(["melhoria", "erro", "duvida", "financeiro"]);
 const allowedPriorities = new Set(["baixa", "media", "alta", "critica"]);
-const controlSupportUrl = "https://control.famasystem.online/api/public/support";
+const controlSupportUrl = "https://control.watersystem.online/api/public/support";
 async function ensureSupportTable() {
     if (usesSupabase())
         return;

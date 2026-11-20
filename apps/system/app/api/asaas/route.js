@@ -274,7 +274,7 @@ export async function POST(request) {
                         billingType,
                         value: asaasMoney(amountCents),
                         dueDate,
-                        description: String(body.description ?? "Cobrança Fama System").trim().slice(0, 180),
+                        description: String(body.description ?? "Cobrança Water System").trim().slice(0, 180),
                     }),
                 });
                 const paymentId = String(payment.id ?? "");
@@ -302,7 +302,7 @@ export async function POST(request) {
                         operationType: "PIX",
                         pixAddressKey,
                         pixAddressKeyType,
-                        description: String(body.description ?? "Pix enviado pelo Fama System").trim().slice(0, 180),
+                        description: String(body.description ?? "Pix enviado pelo Water System").trim().slice(0, 180),
                     }),
                 });
                 return Response.json({ transfer: publicTransfer(transfer) }, { status: 201 });

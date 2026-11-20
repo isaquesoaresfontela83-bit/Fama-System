@@ -1,10 +1,10 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 620" role="img" aria-labelledby="title desc">
-  <title id="title">Visão do Financeiro do Fama System</title>
+  <title id="title">Visão do Financeiro do Water System</title>
   <desc id="desc">Referência visual do resumo financeiro com saldo, contas, bancos e inteligência operacional.</desc>
   <rect width="1200" height="620" rx="24" fill="#f7fbff"/>
   <rect x="30" y="28" width="1140" height="564" rx="18" fill="#fff" stroke="#d8e6f2"/>
   <rect x="30" y="28" width="215" height="564" rx="18" fill="#102e5f"/>
-  <text x="62" y="72" fill="#fff" font-family="Arial,sans-serif" font-size="22" font-weight="800">FAMA SYSTEM</text>
+  <text x="62" y="72" fill="#fff" font-family="Arial,sans-serif" font-size="22" font-weight="800">WATER SYSTEM</text>
   <text x="62" y="112" fill="#9fd9f1" font-family="Arial,sans-serif" font-size="13" font-weight="700">OPERAÇÃO</text>
   <text x="62" y="153" fill="#fff" font-family="Arial,sans-serif" font-size="16" font-weight="700">Visão geral</text>
   <text x="62" y="196" fill="#d4e8f7" font-family="Arial,sans-serif" font-size="16">CRM</text>

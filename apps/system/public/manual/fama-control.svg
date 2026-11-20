@@ -1,10 +1,10 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 560" role="img" aria-labelledby="title desc">
-  <title id="title">Painel administrativo Fama Control</title>
+  <title id="title">Painel administrativo Water Control</title>
   <desc id="desc">Referência visual do painel de empresas, usuários, permissões, auditoria e segurança.</desc>
   <rect width="1200" height="560" rx="24" fill="#f7fbff"/>
   <rect x="28" y="28" width="1144" height="504" rx="18" fill="#fff" stroke="#d8e6f2"/>
   <rect x="28" y="28" width="240" height="504" rx="18" fill="#132b55"/>
-  <text x="58" y="76" fill="#fff" font-family="Arial,sans-serif" font-size="23" font-weight="800">FAMA CONTROL</text>
+  <text x="58" y="76" fill="#fff" font-family="Arial,sans-serif" font-size="23" font-weight="800">WATER CONTROL</text>
   <text x="58" y="115" fill="#9fd9f1" font-family="Arial,sans-serif" font-size="13" font-weight="700">ADMINISTRAÇÃO</text>
   <rect x="48" y="140" width="200" height="42" rx="9" fill="#1a78a7"/><text x="66" y="167" fill="#fff" font-family="Arial,sans-serif" font-size="15" font-weight="700">Visão geral</text>
   <text x="66" y="214" fill="#d4e8f7" font-family="Arial,sans-serif" font-size="15">Empresas</text>

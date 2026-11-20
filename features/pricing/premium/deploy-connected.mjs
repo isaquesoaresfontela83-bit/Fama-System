@@ -118,18 +118,18 @@ export async function deployConnected(cloudflare, accountId, input, activate = f
   // Connector environments can restrict fetch to the provider API. In that
   // case the caller must finish the public checks in the live browser.
   if (input.verifyPublic !== false) {
-  for (const origin of ['https://famasystem.online', 'https://control.famasystem.online']) {
+  for (const origin of ['https://watersystem.online', 'https://control.watersystem.online']) {
    await verify(origin + '/api/health', async response => {
     const health = await response.json();
     return health.version === input.version && health.release === input.release;
    });
   }
-  for (const path of ['/', '/planos']) await verify('https://famasystem.online' + path, async response => {
+  for (const path of ['/', '/planos']) await verify('https://watersystem.online' + path, async response => {
    const html = await response.text();
    return html.includes('id="theme-toggle"') && html.includes('id="fama-public-catalog"');
   });
   for (const [path, resource] of Object.entries(input.resources)) {
-   if (path !== 'html') await verify('https://famasystem.online' + path, async response => await response.text() === resource.body);
+   if (path !== 'html') await verify('https://watersystem.online' + path, async response => await response.text() === resource.body);
   }
   }
   return { success: true, version: input.version, release: input.release, verifiedAt: new Date().toISOString(),

@@ -6,7 +6,7 @@ import { decryptText } from "@/lib/crypto";
 import { database } from "@/lib/database";
 import { selectRows, usesSupabase } from "@/lib/supabase";
 import { RequestError } from "@/lib/tenant";
-export const BILLING_WEBHOOK_URL = "https://famasystem.online/api/billing/asaas-webhook";
+export const BILLING_WEBHOOK_URL = "https://watersystem.online/api/billing/asaas-webhook";
 export const BILLING_WEBHOOK_EVENTS = [
     "PAYMENT_CONFIRMED", "PAYMENT_RECEIVED", "PAYMENT_OVERDUE",
     "PAYMENT_DELETED", "PAYMENT_REFUNDED", "PAYMENT_CHARGEBACK_REQUESTED", "PAYMENT_CHARGEBACK_DISPUTE",
@@ -37,7 +37,7 @@ async function probeBillingReceiver() {
     try {
         const response = await fetch(BILLING_WEBHOOK_URL, {
             method: "POST", redirect: "manual", signal: AbortSignal.timeout(15000),
-            headers: { "Content-Type": "application/json", "asaas-access-token": token, "User-Agent": "Fama-System/1.0" },
+            headers: { "Content-Type": "application/json", "asaas-access-token": token, "User-Agent": "Water-System/1.0" },
             // An unhandled event verifies authentication and reachability without changing any payment.
             body: JSON.stringify({ event: "FAMA_LAUNCH_PROBE" }),
         });
@@ -66,7 +66,7 @@ export async function configureBillingWebhook() {
     if (!/^\S+@\S+\.\S+$/.test(email))
         throw new RequestError("Configure o e-mail do responsável pela plataforma.", 503);
     const payload = {
-        name: "Fama System — assinaturas", url: BILLING_WEBHOOK_URL, email,
+        name: "Water System — assinaturas", url: BILLING_WEBHOOK_URL, email,
         enabled: true, interrupted: false, apiVersion: 3, authToken: token, sendType: "SEQUENTIALLY",
         events: [...new Set([...(Array.isArray(existing?.events) ? existing.events.map(String) : []), ...BILLING_WEBHOOK_EVENTS])],
     };

@@ -1,9 +1,9 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 650" role="img" aria-labelledby="title desc">
-  <title id="title">Tela de entrada do Fama System</title>
+  <title id="title">Tela de entrada do Water System</title>
   <desc id="desc">Referência visual da tela pública com marca, prévia dos módulos e formulário de login.</desc>
   <rect width="1200" height="650" rx="28" fill="#f5faff"/>
   <circle cx="1030" cy="60" r="250" fill="#dff7ff"/>
-  <text x="58" y="62" fill="#12366f" font-family="Arial,sans-serif" font-size="26" font-weight="800">Fama System</text>
+  <text x="58" y="62" fill="#12366f" font-family="Arial,sans-serif" font-size="26" font-weight="800">Water System</text>
   <text x="58" y="89" fill="#6a829b" font-family="Arial,sans-serif" font-size="16">Gestão inteligente para piscinas</text>
   <rect x="58" y="150" width="650" height="390" rx="22" fill="#ffffff" stroke="#d8e6f2"/>
   <text x="92" y="196" fill="#1a78a7" font-family="Arial,sans-serif" font-size="13" font-weight="800" letter-spacing="2">GESTÃO COMPLETA PARA EMPRESAS DE PISCINAS</text>

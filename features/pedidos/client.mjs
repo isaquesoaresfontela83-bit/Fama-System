@@ -22,7 +22,7 @@ async function api(path, options={}) {
 }
 function alertBox(message){return `<div class="fo-alert" role="alert">${esc(message)}</div>`;}
 function showError(message){const area=dialog?.querySelector('.fo-error')||container?.querySelector('.fo-error');if(area)area.innerHTML=alertBox(message);}
-function pageHeading(title,description,actions=''){return `<header class="fo-heading"><div><span class="fo-kicker">${esc(context?.organization?.name || (kind==='control'?'FAMA CONTROL':'FAMA SYSTEM'))}</span><h1>${title}</h1><p>${description}</p></div><div class="fo-actions">${actions}</div></header>`;}
+function pageHeading(title,description,actions=''){return `<header class="fo-heading"><div><span class="fo-kicker">${esc(context?.organization?.name || (kind==='control'?'WATER CONTROL':'WATER SYSTEM'))}</span><h1>${title}</h1><p>${description}</p></div><div class="fo-actions">${actions}</div></header>`;}
 function button(label,attrs='',secondary=false){return `<button type="button" class="fo-button ${secondary?'fo-secondary':''}" ${attrs}>${label}</button>`;}
 function modal(title,content,onSubmit){
   dialog?.close();dialog?.remove();

@@ -1,4 +1,4 @@
-# Fama Control
+# Water Control
 
 Plataforma SaaS multiempresa para gestão de negócios de piscinas. Reúne CRM, orçamentos e contratos em PDF, agenda, ordens de serviço, garantias, clientes e piscinas, estoque, financeiro, equipe, arquivos e controle de usuários, com temas claro e escuro persistidos por usuário.
 
@@ -84,19 +84,19 @@ O Control atende o serviço privado de dados em `/api/internal/data`, protegido 
 
 ## Empresas, usuários e mensalidade
 
-No Fama Control, abra **Empresas e usuários → Nova empresa** e informe nome da empresa, e-mail e senha (mínimo de 8 caracteres). O nome do responsável é opcional. A conta é criada no Supabase Auth e vinculada como proprietária. A função transacional `fama_admin_create_company` grava empresa, proprietário e auditoria juntos. Empresas criadas pelo Control começam com `billing_enabled=false`, `block_on_expiry=false` e sem vencimento; escolher um plano define os recursos, sem ativar cobrança.
+No Water Control, abra **Empresas e usuários → Nova empresa** e informe nome da empresa, e-mail e senha (mínimo de 8 caracteres). O nome do responsável é opcional. A conta é criada no Supabase Auth e vinculada como proprietária. A função transacional `fama_admin_create_company` grava empresa, proprietário e auditoria juntos. Empresas criadas pelo Control começam com `billing_enabled=false`, `block_on_expiry=false` e sem vencimento; escolher um plano define os recursos, sem ativar cobrança.
 
-O responsável entra em `https://famasystem.online/entrar` com o nome da empresa, e-mail e senha definidos. Em **Usuários**, cadastre pessoas, escolha função, modelo de acesso e módulos. **Editar** permite alterar nome, e-mail, senha, função, situação e permissões; a senha em branco mantém a atual. O proprietário não pode ser rebaixado, desativado ou perder módulos. A conta principal da plataforma é protegida. Alterações de e-mail são confirmadas no Supabase Auth; contas compartilhadas entre empresas exigem o fluxo da própria conta.
+O responsável entra em `https://watersystem.online/entrar` com o nome da empresa, e-mail e senha definidos. Em **Usuários**, cadastre pessoas, escolha função, modelo de acesso e módulos. **Editar** permite alterar nome, e-mail, senha, função, situação e permissões; a senha em branco mantém a atual. O proprietário não pode ser rebaixado, desativado ou perder módulos. A conta principal da plataforma é protegida. Alterações de e-mail são confirmadas no Supabase Auth; contas compartilhadas entre empresas exigem o fluxo da própria conta.
 
 Em **Empresa e mensalidade**, altere nome/plano e habilite a mensalidade somente quando desejar. Para habilitar, defina ciclo e vencimento. O bloqueio por vencimento ou pendência tem um controle separado. Ao habilitar uma empresa gratuita, o plano passa a aguardar pagamento; com bloqueio automático desligado, o acesso operacional continua permitido. **Bloquear** suspende manualmente a empresa inteira; **Reativar** não remove uma pendência de assinatura. Desativar mensalidade não cancela cobranças que já tenham sido emitidas pelo provedor.
 
-Empresas isentas não entram no MRR, nas pendências ou alertas de vencimento. O Fama System publicado respeita ambos os controles no navegador e no servidor, mostra a isenção e impede checkout enquanto a mensalidade estiver desativada. Senhas seguem apenas para o serviço de autenticação e não são gravadas nas tabelas de empresas, membros ou auditoria.
+Empresas isentas não entram no MRR, nas pendências ou alertas de vencimento. O Water System publicado respeita ambos os controles no navegador e no servidor, mostra a isenção e impede checkout enquanto a mensalidade estiver desativada. Senhas seguem apenas para o serviço de autenticação e não são gravadas nas tabelas de empresas, membros ou auditoria.
 
 O SQL aditivo correspondente está em `supabase/company-access.sql`. A suíte local verifica criação, edição, proteção do proprietário, origem das requisições, confirmação da persistência e ativação explícita de cobrança.
 
 ## Central Fama IA
 
-As consultas administrativas, preferências globais e prévia ficam no painel. A documentação do copiloto, permissões e conexão generativa opcional está em [docs/FAMA_IA.md](docs/FAMA_IA.md). O planejamento e os cadastros operacionais são acessados na empresa selecionada no Fama System.
+As consultas administrativas, preferências globais e prévia ficam no painel. A documentação do copiloto, permissões e conexão generativa opcional está em [docs/FAMA_IA.md](docs/FAMA_IA.md). O planejamento e os cadastros operacionais são acessados na empresa selecionada no Water System.
 
 ## JavaScript e Python
 

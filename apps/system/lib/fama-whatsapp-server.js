@@ -225,7 +225,7 @@ async function processMessage(request, connection, message) {
             const data = await whatsappAssistantData(organizationId, String(member.role), member.permissions, settings, moduleAccess);
             const calendar = assistantCalendar(data, 'America/Sao_Paulo');
             const answer = answerNative({ question: message.text.body.trim(), source: 'overview', history, timeZone: 'America/Sao_Paulo' }, calendar.data, settings, calendar.now);
-            reply = `${answer.text}\n\nFama IA · ${String(org.name || 'Sua empresa')}\nPara salvar ou alterar registros, revise no Fama System.`.slice(0, 4096);
+            reply = `${answer.text}\n\nFama IA · ${String(org.name || 'Sua empresa')}\nPara salvar ou alterar registros, revise no Water System.`.slice(0, 4096);
             nextContext = await encryptText(JSON.stringify({ accessKey, history: [...history, message.text.body.trim()].slice(-4) }));
         }
         const [latestLink, latestConnection, latestAccess] = await Promise.all([

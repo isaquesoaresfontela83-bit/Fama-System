@@ -1,20 +1,15 @@
-export const VERSION = '15.23.20';
-export const RELEASE = '2026-11-19-water-brand-08';
-export const PREFIX = '/assets/water-brand-15.23.20/';
+import { migrateLegacyReferences, renameProducts } from './hosts.mjs';
+
+export const VERSION = '15.23.21';
+export const RELEASE = '2026-11-19-water-opening-domain-01';
+export const PREFIX = '/assets/water-brand-15.23.21/';
 
 const oldIcon = /^(?:\/fama-piscinas-mark\.png|\/favicon\.ico|\/apple-touch-icon(?:-\d+x\d+)?\.png|\/icon-(?:192|512)\.png)$/;
 const oldLogo = '/fama-piscinas-logo.png';
 
-export function brandName(value) {
- return value.replace(/\bFama[ \t]+(System|Control)\b/gi, (name, product) => {
-  const brand = product.toLowerCase() === 'system' ? 'Water System' : 'Water Control';
-  return name === name.toUpperCase() ? brand.toUpperCase() : brand;
- });
-}
-
 function transformManifest(manifest) {
  for (const key of ['name', 'short_name', 'description']) {
-  if (typeof manifest[key] === 'string') manifest[key] = brandName(manifest[key]).replace(/^Fama$/i, 'Water');
+  if (typeof manifest[key] === 'string') manifest[key] = renameProducts(manifest[key]).replace(/^Fama$/i, 'Water');
  }
  if (Array.isArray(manifest.icons)) {
   manifest.icons = [192, 512].map(size => ({ src: PREFIX + 'icon-' + size + '.webp', sizes: size + 'x' + size, type: 'image/webp', purpose: 'any' }));
@@ -28,7 +23,8 @@ function headersFor(response) {
  return headers;
 }
 
-export function withWaterBrand(app, resources) {
+export function withWaterBrand(app, resources, product, migratedAssetPaths = []) {
+ const migratedAssets = new Set(migratedAssetPaths);
  return {
   ...app,
   async fetch(request, env, ctx) {
@@ -46,11 +42,24 @@ export function withWaterBrand(app, resources) {
      'X-Content-Type-Options': 'nosniff',
     } });
    }
-   const response = await app.fetch(request, env, ctx);
+   let assetRequest = request;
+   const migratedAsset = migratedAssets.has(path);
+   if (migratedAsset) {
+    const headers = new Headers(request.headers);
+    for (const name of ['range', 'if-range', 'if-none-match', 'if-modified-since']) headers.delete(name);
+    assetRequest = new Request(request, { headers });
+   }
+   const response = await app.fetch(assetRequest, env, ctx);
+   if (migratedAsset && response.status === 200 && !response.headers.get('content-type')?.includes('text/html')) {
+    const headers = headersFor(response);
+    headers.delete('accept-ranges');
+    headers.set('Cache-Control', 'public, max-age=300');
+    return new Response(head ? null : migrateLegacyReferences(await response.text()), { headers });
+   }
    if (!response.ok && response.status !== 404) return response;
    if (path === '/api/health' && !head && response.ok) {
     const data = await response.json();
-    if (typeof data.service === 'string') data.service = brandName(data.service);
+    if (typeof data.service === 'string') data.service = renameProducts(data.service);
     return Response.json({ ...data, version: VERSION, release: RELEASE, releaseId: RELEASE }, { status: response.status, headers: headersFor(response) });
    }
    if (path === '/site.webmanifest' && !head && response.ok) {
@@ -63,7 +72,7 @@ export function withWaterBrand(app, resources) {
    rewriter.on('title', {
     text(chunk) {
      this.title = (this.title || '') + chunk.text;
-     chunk.replace(chunk.lastInTextNode ? brandName(this.title) : '');
+     chunk.replace(chunk.lastInTextNode ? renameProducts(this.title) : '');
      if (chunk.lastInTextNode) this.title = '';
     },
    });
@@ -71,7 +80,7 @@ export function withWaterBrand(app, resources) {
     element(element) {
      const property = element.getAttribute('property') || element.getAttribute('name') || '';
      if (/^(?:og:|twitter:|description$|application-name$|apple-mobile-web-app-title$)/.test(property)) {
-      element.setAttribute('content', brandName(element.getAttribute('content')));
+      element.setAttribute('content', migrateLegacyReferences(element.getAttribute('content')));
      }
     },
    });
@@ -86,7 +95,8 @@ export function withWaterBrand(app, resources) {
    rewriter.on('head', {
     element(element) {
      element.append('<link rel="stylesheet" href="' + PREFIX + 'brand.css">', { html: true });
-     element.append('<script defer src="' + PREFIX + 'brand.js"></script>', { html: true });
+     const opening = product === 'system' ? ' data-water-opening' : '';
+     element.append('<script defer' + opening + ' src="' + PREFIX + 'brand.js"></script>', { html: true });
     },
    });
    return rewriter.transform(new Response(response.body, { status: response.status, statusText: response.statusText, headers: headersFor(response) }));

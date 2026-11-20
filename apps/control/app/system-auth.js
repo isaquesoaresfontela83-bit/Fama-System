@@ -93,7 +93,7 @@ export async function signUpOwner(email, password) {
         body: JSON.stringify({
             email,
             password,
-            data: { display_name: "Proprietário Fama Control" },
+            data: { display_name: "Proprietário Water Control" },
         }),
     });
 }

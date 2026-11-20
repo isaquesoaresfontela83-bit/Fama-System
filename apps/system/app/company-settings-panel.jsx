@@ -185,7 +185,7 @@ export function CompanySettingsPanel({ organization }) {
 
     <section className="surface settings-safe-box">
       <ShieldCheck />
-      <p><strong>Controle isolado por empresa.</strong> Essas configurações afetam apenas a empresa ativa. O Fama Control pode ajustar a mesma tela em caso de suporte ou necessidade administrativa.</p>
+      <p><strong>Controle isolado por empresa.</strong> Essas configurações afetam apenas a empresa ativa. O Water Control pode ajustar a mesma tela em caso de suporte ou necessidade administrativa.</p>
     </section>
   </form><BaileysPanel key={organization.id+':baileys'} organizationId={organization.id} canManage={true}/><SelectedIntegrationsPanel key={organization.id + ':integrations'} organizationId={organization.id}/><CompanyWeatherSettings key={organization.id + ":weather"} organizationId={organization.id}/>{planIncludesFeature(organization.plan, 'assistant') && <FamaWhatsappPanel key={organization.id} organizationId={organization.id}/>}</div>;
 }

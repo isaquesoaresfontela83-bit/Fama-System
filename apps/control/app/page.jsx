@@ -12,5 +12,5 @@ export default async function Home() {
     const signOutPath = appSignOutPath("/");
     if (!isPlatformAdmin(user))
         return <RestrictedAccess signOutPath={signOutPath}/>;
-    return <ControlApp displayName={user.displayName} email={user.email} signOutPath={signOutPath} systemUrl="https://famasystem.online"/>;
+    return <ControlApp displayName={user.displayName} email={user.email} signOutPath={signOutPath} systemUrl="https://watersystem.online"/>;
 }

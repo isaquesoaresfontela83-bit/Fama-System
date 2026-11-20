@@ -17,7 +17,7 @@ export async function configureAsaasFiscalWebhook(settings, token, organizationI
     const email = settings.email.trim();
     if (!/^\S+@\S+\.\S+$/.test(email))
         throw new RequestError("Informe o e-mail da empresa para receber avisos fiscais da Asaas.", 400);
-    const url = `https://famasystem.online/api/finance/asaas-webhook?organizationId=${encodeURIComponent(organizationId)}`;
+    const url = `https://watersystem.online/api/finance/asaas-webhook?organizationId=${encodeURIComponent(organizationId)}`;
     const rows = await asaasFiscalRequest(settings, token, "/webhooks?limit=100&offset=0");
     if (!Array.isArray(rows.data) || rows.hasMore === true)
         throw new RequestError("Não foi possível conferir todos os webhooks fiscais da Asaas.", 503);
@@ -25,7 +25,7 @@ export async function configureAsaasFiscalWebhook(settings, token, organizationI
     if (existing && !existing.id)
         throw new RequestError("A Asaas não retornou o identificador do webhook fiscal.", 503);
     const payload = {
-        name: "Fama System - NFS-e", url, email, authToken,
+        name: "Water System - NFS-e", url, email, authToken,
         enabled: true, interrupted: false, apiVersion: 3, sendType: "SEQUENTIALLY",
         events: [...new Set([...(Array.isArray(existing?.events) ? existing.events.map(String) : []), ...ASAAS_INVOICE_EVENTS])],
     };

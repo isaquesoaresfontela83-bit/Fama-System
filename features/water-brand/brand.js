@@ -1,7 +1,7 @@
 (() => {
  const script = document.currentScript;
  const asset = new URL('icon.webp', script.src).pathname;
- if (!location.hostname.startsWith('control.') && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+ if (script.hasAttribute('data-water-opening') && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
   let firstLaunch = false;
   try {
    firstLaunch = !sessionStorage.getItem('water-opening-played');
@@ -13,12 +13,16 @@
    opening.setAttribute('aria-hidden', 'true');
    const lockup = document.createElement('div');
    lockup.className = 'water-opening-lockup';
+   const mark = document.createElement('span');
+   mark.className = 'water-opening-mark';
    const logo = document.createElement('img');
    logo.src = asset;
    logo.alt = '';
    const name = document.createElement('span');
+   name.className = 'water-opening-name';
    name.textContent = 'ater System';
-   lockup.append(logo, name);
+   mark.append(logo);
+   lockup.append(mark, name);
    opening.append(lockup);
    document.body.append(opening);
    opening.addEventListener('animationend', event => {

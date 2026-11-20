@@ -18,16 +18,16 @@ export function appointmentEvent(a, duration) {
     const start = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}(:\d{2})?$/.test(a.startAt) ? a.startAt + '-03:00' : a.startAt;
     if (!Number.isFinite(Date.parse(start)))
         throw new Error('Atendimento com horário inválido.');
-    return { summary: `Fama · ${a.title}`.slice(0, 300), location: a.address || '', description: `Cliente: ${a.clientName}\nTécnico: ${a.technician}\nEnviado pelo Fama System. Revise alterações e cancelamentos no Google Calendar.`, start: { dateTime: new Date(start).toISOString(), timeZone: 'America/Sao_Paulo' }, end: { dateTime: new Date(Date.parse(start) + duration * 60000).toISOString(), timeZone: 'America/Sao_Paulo' }, transparency: 'opaque', reminders: { useDefault: true } };
+    return { summary: `Fama · ${a.title}`.slice(0, 300), location: a.address || '', description: `Cliente: ${a.clientName}\nTécnico: ${a.technician}\nEnviado pelo Water System. Revise alterações e cancelamentos no Google Calendar.`, start: { dateTime: new Date(start).toISOString(), timeZone: 'America/Sao_Paulo' }, end: { dateTime: new Date(Date.parse(start) + duration * 60000).toISOString(), timeZone: 'America/Sao_Paulo' }, transparency: 'opaque', reminders: { useDefault: true } };
 }
 export async function calendarEventId(organizationId, appointmentId) { const bytes = await crypto.subtle.digest('SHA-256', new TextEncoder().encode('fama-calendar-v1:' + organizationId + ':' + appointmentId)); return 'fama' + Array.from(new Uint8Array(bytes), b => b.toString(16).padStart(2, '0')).join(''); }
 export function calendarIcs(appointments, organizationId, duration) {
     const escape = (s) => s.replace(/\\/g, '\\\\').replace(/\r?\n/g, '\\n').replace(/;/g, '\\;').replace(/,/g, '\\,');
     const stamp = (s) => new Date(s).toISOString().replace(/[-:]/g, '').replace(/\.\d{3}Z$/, 'Z');
-    const lines = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Fama System//Agenda//PT-BR', 'CALSCALE:GREGORIAN'];
+    const lines = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Water System//Agenda//PT-BR', 'CALSCALE:GREGORIAN'];
     for (const a of appointments) {
         const e = appointmentEvent(a, duration);
-        lines.push('BEGIN:VEVENT', `UID:${escape(encodeURIComponent(organizationId) + '.' + encodeURIComponent(a.id))}@famasystem.online`, `DTSTAMP:${stamp(new Date().toISOString())}`, `DTSTART:${stamp(e.start.dateTime)}`, `DTEND:${stamp(e.end.dateTime)}`, `SUMMARY:${escape(e.summary)}`, `LOCATION:${escape(e.location)}`, `DESCRIPTION:${escape(e.description)}`, 'END:VEVENT');
+        lines.push('BEGIN:VEVENT', `UID:${escape(encodeURIComponent(organizationId) + '.' + encodeURIComponent(a.id))}@watersystem.online`, `DTSTAMP:${stamp(new Date().toISOString())}`, `DTSTART:${stamp(e.start.dateTime)}`, `DTEND:${stamp(e.end.dateTime)}`, `SUMMARY:${escape(e.summary)}`, `LOCATION:${escape(e.location)}`, `DESCRIPTION:${escape(e.description)}`, 'END:VEVENT');
     }
     lines.push('END:VCALENDAR');
     // Fold by UTF-8 octets, keeping Unicode characters intact (RFC 5545).

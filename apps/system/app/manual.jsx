@@ -24,7 +24,7 @@ const firstSteps = [
     [
         "5",
         "Cadastre a equipe",
-        "Abra Usuários e empresas para convidar colaboradores pelo e-mail que eles usarão no Fama System. Depois defina o perfil e os módulos permitidos.",
+        "Abra Usuários e empresas para convidar colaboradores pelo e-mail que eles usarão no Water System. Depois defina o perfil e os módulos permitidos.",
     ],
     [
         "6",
@@ -111,7 +111,7 @@ export function Manual() {
         </div>
         <div>
           <small>MANUAL COMPLETO</small>
-          <h2>Como operar o Fama System</h2>
+          <h2>Como operar o Water System</h2>
           <p>
             Um roteiro do primeiro acesso ao controle diário de vendas,
             serviços, contratos, equipe, documentos e segurança.
@@ -191,16 +191,16 @@ export function Manual() {
         </p>
         <div className="manual-image-grid">
           <figure className="manual-image-card">
-            <img src="/manual/login-fama-system.svg" alt="Tela de entrada do Fama System com login e prévia dos módulos"/>
+            <img src="/manual/login-fama-system.svg" alt="Tela de entrada do Water System com login e prévia dos módulos"/>
             <figcaption><strong>1. Entrada:</strong> use Entrar ou Criar conta e confirme a empresa antes de operar.</figcaption>
           </figure>
           <figure className="manual-image-card">
-            <img src="/manual/financeiro-fama-system.svg" alt="Resumo do Financeiro do Fama System com saldo, contas, bancos e IA"/>
+            <img src="/manual/financeiro-fama-system.svg" alt="Resumo do Financeiro do Water System com saldo, contas, bancos e IA"/>
             <figcaption><strong>2. Financeiro:</strong> consulte saldo, contas, bancos, sincronização e prioridades da IA.</figcaption>
           </figure>
           <figure className="manual-image-card manual-image-card-wide">
-            <img src="/manual/fama-control.svg" alt="Painel Fama Control com empresas, usuários, permissões, auditoria e segurança"/>
-            <figcaption><strong>3. Fama Control:</strong> o proprietário administra empresas, usuários, permissões, auditoria, backup e segurança.</figcaption>
+            <img src="/manual/fama-control.svg" alt="Painel Water Control com empresas, usuários, permissões, auditoria e segurança"/>
+            <figcaption><strong>3. Water Control:</strong> o proprietário administra empresas, usuários, permissões, auditoria, backup e segurança.</figcaption>
           </figure>
         </div>
       </section>
@@ -244,7 +244,7 @@ export function Manual() {
         </div>
         <figure className="manual-figure">
           <div className="manual-screen-head">
-            <span>Fama System</span>
+            <span>Water System</span>
             <small>PRÉVIA ILUSTRATIVA — MENU PRINCIPAL</small>
           </div>
           <div className="manual-screen-menu">
@@ -436,7 +436,7 @@ export function Manual() {
             <strong>Asaas:</strong> conecte uma conta existente com uma chave de
             API do ambiente correto ou inicie o cadastro no site oficial. A
             chave fica criptografada no servidor e a senha
-            nunca é solicitada pelo Fama System. Também é possível usar conta
+            nunca é solicitada pelo Water System. Também é possível usar conta
             manual ou extrato CSV.
           </p>
         </div>
@@ -576,7 +576,7 @@ export function Manual() {
             Administradores.
           </li>
           <li>
-            No Fama Control, use <strong>Configurar</strong> para marcar os
+            No Water Control, use <strong>Configurar</strong> para marcar os
             módulos permitidos.
           </li>
           <li>
@@ -585,19 +585,19 @@ export function Manual() {
         </ol>
         <p className="manual-muted">
           O perfil e os módulos permitidos definem o acesso inicial. As regras
-          de Blocos do sistema no Fama Control também se aplicam, inclusive ao
+          de Blocos do sistema no Water Control também se aplicam, inclusive ao
           proprietário. Cada pessoa só visualiza e opera os módulos liberados;
           a permissão é conferida na tela e também no servidor.
         </p>
         <figure className="manual-figure manual-control-reference">
-          <img src="/manual/fama-control.svg" alt="Referência visual do Fama Control para permissões por usuário"/>
+          <img src="/manual/fama-control.svg" alt="Referência visual do Water Control para permissões por usuário"/>
           <figcaption>Use Configurar no usuário correto e marque somente os módulos necessários para a função.</figcaption>
         </figure>
       </section>
 
       <section id="blocos" className="surface manual-section">
         <div className="manual-section-heading"><div><small>ADMINISTRAÇÃO CENTRAL</small><h2>Adicionar e remover blocos</h2></div><UsersRound /></div>
-        <p>O proprietário da plataforma controla 14 blocos em <strong>Fama Control → Blocos do sistema</strong>. É possível configurar todos os usuários, uma empresa ou uma pessoa, inclusive proprietários de empresas.</p>
+        <p>O proprietário da plataforma controla 14 blocos em <strong>Water Control → Blocos do sistema</strong>. É possível configurar todos os usuários, uma empresa ou uma pessoa, inclusive proprietários de empresas.</p>
         <ol>
           <li>Escolha o alcance da regra: geral, empresa ou pessoa. Confira o destinatário antes de editar.</li>
           <li>Em cada bloco, escolha <strong>Adicionar</strong>, <strong>Remover</strong> ou <strong>Herdar</strong>. Também há ações para todos os blocos do destino selecionado.</li>
@@ -673,7 +673,7 @@ export function Manual() {
               <h3>Exportação e backup</h3>
               <p>
                 Administradores podem exportar a cópia da empresa. O
-                proprietário pode baixar o backup global no Fama Control.
+                proprietário pode baixar o backup global no Water Control.
               </p>
             </div>
           </article>
@@ -718,7 +718,7 @@ export function Manual() {
               <li>Confira contratos que vencem nos próximos 30 dias.</li>
               <li>Revise permissões e remova acessos desnecessários.</li>
               <li>Exporte uma cópia dos dados importantes.</li>
-              <li>Confira Auditoria e Segurança no Fama Control.</li>
+              <li>Confira Auditoria e Segurança no Water Control.</li>
             </ol>
           </div>
         </div>
@@ -739,7 +739,7 @@ export function Manual() {
           </p>
           <p>
             <strong>Módulo escondido:</strong> peça ao proprietário ou
-            administrador para revisar sua permissão no Fama Control.
+            administrador para revisar sua permissão no Water Control.
           </p>
           <p>
             <strong>Lista vazia:</strong> confirme a empresa, atualize a página
@@ -780,7 +780,7 @@ export function Manual() {
           <div className="panel-heading">
             <div>
               <small>PROPRIETÁRIO</small>
-              <h2>Fama Control</h2>
+              <h2>Water Control</h2>
             </div>
             <ShieldCheck />
           </div>
@@ -799,7 +799,7 @@ export function Manual() {
             <BookOpenCheck />
           </div>
           <p>
-            Este manual acompanha a versão atual do Fama System e pode ser
+            Este manual acompanha a versão atual do Water System e pode ser
             aberto pela área Manual de uso ou pelo rodapé da tela de acesso.
           </p>
         </section>

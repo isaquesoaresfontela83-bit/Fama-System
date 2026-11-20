@@ -1,4 +1,4 @@
-# Fama Control na Cloudflare
+# Water Control na Cloudflare
 
 `npm run build:cloudflare` gera a versão independente em `dist/server` e os arquivos da interface em `dist/client`.
 

@@ -14,7 +14,7 @@ const parts=[];let corrupted=false;
 f.tables.fama_full_backup_runs=[];
 globalThis.fetch=async(input,init={})=>{
  const url=new URL(String(input));const body=typeof init.body==='string'?JSON.parse(init.body):init.body;
- if(url.origin==='https://famasystem.online'){assert.equal(new Headers(init.headers).get('Authorization'),'Bearer fixture-backup-only');return Response.json({snapshot:{capturedAt:'now',tables:[]},verification:{valid:true,tables:0,records:0}})}
+ if(url.origin==='https://watersystem.online'){assert.equal(new Headers(init.headers).get('Authorization'),'Bearer fixture-backup-only');return Response.json({snapshot:{capturedAt:'now',tables:[]},verification:{valid:true,tables:0,records:0}})}
  if(url.pathname.includes('/storage/v1/object/')){
   const method=init.method??'GET';if(method==='POST'){assert.ok(url.pathname.includes('__fama_backup_verify/'));temp=new Uint8Array(body);return Response.json({ok:true})}
   if(method==='DELETE'){assert.ok(body.prefixes[0].startsWith('__fama_backup_verify/'));temp=null;return Response.json({ok:true})}

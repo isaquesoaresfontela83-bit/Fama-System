@@ -10,6 +10,6 @@ export async function displayForegroundPush(data, organizationId, environment = 
     const registration = await environment.registration();
     if (!registration)
         throw new Error('Mensagem recebida, mas o serviço de notificações não está ativo. Ative novamente neste aparelho.');
-    await registration.showNotification(data.title || 'Fama System', { body: data.body || 'Você tem uma atualização no Fama.', icon: '/fama-piscinas-mark.png', tag: data.eventId || 'fama-update', data: { url: '/' } });
+    await registration.showNotification(data.title || 'Water System', { body: data.body || 'Você tem uma atualização no Fama.', icon: '/fama-piscinas-mark.png', tag: data.eventId || 'fama-update', data: { url: '/' } });
     return true;
 }

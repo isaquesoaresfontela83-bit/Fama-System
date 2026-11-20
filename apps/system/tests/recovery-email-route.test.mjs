@@ -23,11 +23,11 @@ const vite=await createServer({appType:'custom',configFile:false,root,resolve:{a
 const {POST}=await vite.ssrLoadModule('/app/api/auth/recover/route.js');
 beforeEach(()=>{globalThis.__recoveryEmailFixture.events=[];});
 after(async()=>{globalThis.fetch=originalFetch;delete globalThis.__recoveryEmailFixture;await vite.close();});
-const request=(email='fixture@example.test')=>new Request('https://famasystem.online/api/auth/recover',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email})});
+const request=(email='fixture@example.test')=>new Request('https://watersystem.online/api/auth/recover',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email})});
 
 test('recovery validates email and uses the production recovery destination',async()=>{
   let calls=0;globalThis.fetch=async(input,init)=>{
-    calls++;assert.equal(new URL(input).searchParams.get('redirect_to'),'https://famasystem.online/auth/recuperar');
+    calls++;assert.equal(new URL(input).searchParams.get('redirect_to'),'https://watersystem.online/auth/recuperar');
     assert.deepEqual(JSON.parse(init.body),{email:'fixture@example.test'});return Response.json({});
   };
   assert.equal((await POST(request('invalid'))).status,400);assert.equal(calls,0);

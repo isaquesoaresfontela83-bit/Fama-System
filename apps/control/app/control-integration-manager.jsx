@@ -26,7 +26,7 @@ function ConfigurationCard({ definition, value, legacy, onSave, onTest, onConnec
                 </label>)}
                 <label className="integration-enabled"><input type="checkbox" checked={enabled} disabled={busy} onChange={event => setEnabled(event.target.checked)}/>Ativar esta integração</label>
                 <p className="integration-form-help">Valores secretos ficam ocultos após salvar. Campos secretos vazios preservam o valor atual. Um cadastro incompleto mantém a conexão anterior até ficar pronto; pausar interrompe o uso.</p>
-                {definition.id === 'drive' && <p className="integration-form-help">Salve o identificador e o segredo do aplicativo e clique em Conectar Google. Se a pasta ficar vazia, o Fama cria uma pasta de documentos durante a conexão. Retorno autorizado do aplicativo: <code>https://control.famasystem.online/api/admin/integrations/google/callback</code>.</p>}
+                {definition.id === 'drive' && <p className="integration-form-help">Salve o identificador e o segredo do aplicativo e clique em Conectar Google. Se a pasta ficar vazia, o Fama cria uma pasta de documentos durante a conexão. Retorno autorizado do aplicativo: <code>https://control.watersystem.online/api/admin/integrations/google/callback</code>.</p>}
                 {definition.id === 'ipinfo' && <p className="integration-form-help">Sem token, utiliza a consulta pública disponível. Com o token, utiliza IPinfo Lite.</p>}
                 <Button type="submit" disabled={busy || !value}><Save />Salvar configuração</Button>
             </form>

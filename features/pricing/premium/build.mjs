@@ -8,11 +8,11 @@ export async function buildResources() {
   resources[PREFIX + file] = { type, body: await readFile(new URL(file, import.meta.url), 'utf8') };
  }
  let html = await readFile(new URL('index.html', import.meta.url), 'utf8');
- html = html.replaceAll('https://famasystem.online/fama-piscinas-mark.png', '/fama-piscinas-mark.png');
+ html = html.replaceAll('https://watersystem.online/fama-piscinas-mark.png', '/fama-piscinas-mark.png');
  for (const file of Object.keys(types)) {
   html = html.replaceAll('"' + file + '"', '"' + PREFIX + file + '"');
  }
- html = html.replace('</head>', '<link rel="canonical" href="https://famasystem.online/"><!--FAMA_CATALOG--></head>');
+ html = html.replace('</head>', '<link rel="canonical" href="https://watersystem.online/"><!--FAMA_CATALOG--></head>');
  resources.html = { type: 'text/html', body: html };
  return resources;
 }

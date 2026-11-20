@@ -400,7 +400,7 @@ test('data service uses the private server bridge when a direct key is unavailab
   runtime.SUPABASE_SECRET_KEY = ''; runtime.FAMA_DATA_BRIDGE_SECRET = 'fixture-bridge';
   await supabase.selectRows('customers', { organization_id: 'org-fixture' });
   const request = requests.at(-1);
-  assert.equal(request.url, 'https://control.famasystem.online/api/internal/data'); assert.equal(request.headers.get('authorization'), 'Bearer fixture-bridge'); assert.equal(request.headers.get('x-fama-data-method'), 'GET'); assert.match(request.headers.get('x-fama-data-path'), /^\/rest\/v1\/customers\?/);
+  assert.equal(request.url, 'https://control.watersystem.online/api/internal/data'); assert.equal(request.headers.get('authorization'), 'Bearer fixture-bridge'); assert.equal(request.headers.get('x-fama-data-method'), 'GET'); assert.match(request.headers.get('x-fama-data-path'), /^\/rest\/v1\/customers\?/);
 });
 
 test('legacy fiscal configurations fall back to the official portal without credentials or custom endpoints', () => {

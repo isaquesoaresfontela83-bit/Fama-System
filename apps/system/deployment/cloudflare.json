@@ -31,11 +31,11 @@
   ],
   "routes": [
     {
-      "pattern": "famasystem.online",
+      "pattern": "watersystem.online",
       "custom_domain": true
     },
     {
-      "pattern": "www.famasystem.online",
+      "pattern": "www.watersystem.online",
       "custom_domain": true
     }
   ],

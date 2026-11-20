@@ -49,7 +49,7 @@ async function request(path, init = {}) {
         headers.set("x-fama-data-method", init.method ?? "GET");
     }
     const send = !key && env.FAMA_CONTROL?.fetch ? env.FAMA_CONTROL.fetch.bind(env.FAMA_CONTROL) : fetch;
-    const response = await send(key ? `${url}${path}` : "https://control.famasystem.online/api/internal/data", {
+    const response = await send(key ? `${url}${path}` : "https://control.watersystem.online/api/internal/data", {
         ...init,
         ...(!key ? { method: "POST" } : {}),
         headers,

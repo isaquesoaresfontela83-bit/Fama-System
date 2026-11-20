@@ -111,7 +111,7 @@ export async function generateContractPdf(contract, organizationName) {
         pdf.setTextColor(117, 141, 148);
         pdf.setFontSize(8);
         pdf.text("Documento gerado a partir dos dados cadastrados", left, 285);
-        pdf.text(`Fama System · ${page}/${pageCount}`, right, 285, { align: "right" });
+        pdf.text(`Water System · ${page}/${pageCount}`, right, 285, { align: "right" });
     }
     const filename = contract.clientName.toLocaleLowerCase("pt-BR").normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
     pdf.save(`${contract.contractNumber.toLowerCase()}-${filename || "cliente"}.pdf`);

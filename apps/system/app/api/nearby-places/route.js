@@ -10,7 +10,7 @@ export async function POST(request) {
             throw new RequestError('Seu perfil não tem acesso ao mapa operacional.', 403);
         const input = nearbyInput(await readJsonObject(request, 2000));
         await assertRateLimit(request, 'nearby_places', user.id, 6, 60);
-        await assertRateLimit(new Request('https://famasystem.online/'), 'nearby_places_shared', 'fama-system', 20, 60);
+        await assertRateLimit(new Request('https://watersystem.online/'), 'nearby_places_shared', 'fama-system', 20, 60);
         return Response.json({ places: await nearbyPlaces(input), reference: input, source: 'OpenStreetMap / Overpass' }, { headers: { 'Cache-Control': 'private,no-store' } });
     }
     catch (e) {

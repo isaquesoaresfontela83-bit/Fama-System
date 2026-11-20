@@ -295,10 +295,10 @@ async function adminPolicy(app,request,env,ctx) {
     const members=await parsedOriginal(app,request,env,ctx,`/api/admin/organizations/${org}/members`);
     if(!members.members?.some(m=>m.userId===userId || m.user_id===userId))throw new OrderError('Usuário não encontrado nesta empresa.',404);
   }
-  if(!env.FAMA_SYSTEM?.fetch)throw new OrderError('A conexão com o Fama System está indisponível.',503);
+  if(!env.FAMA_SYSTEM?.fetch)throw new OrderError('A conexão com o Water System está indisponível.',503);
   const path='/api/internal/pedidos-policy';const method=input?'POST':'GET';const timestamp=String(Date.now());
   const payload=input?JSON.stringify({...input,actor:session.email || session.displayName || 'Administração'}):'';
-  const response=await env.FAMA_SYSTEM.fetch(new Request(`https://famasystem.online${path}`,{method,headers:{'Content-Type':'application/json','x-pedidos-time':timestamp,'x-pedidos-signature':await sign(env,method,path,timestamp,payload)},body:payload||undefined}));
+  const response=await env.FAMA_SYSTEM.fetch(new Request(`https://watersystem.online${path}`,{method,headers:{'Content-Type':'application/json','x-pedidos-time':timestamp,'x-pedidos-signature':await sign(env,method,path,timestamp,payload)},body:payload||undefined}));
   const data=await response.json();
   return json(input?data:{...data,organizations:organizations.organizations?.map(o=>({id:o.id,name:o.name,plan:o.plan}))},response.status);
 }

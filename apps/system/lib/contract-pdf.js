@@ -7,7 +7,7 @@ const date = (value) => value
     : "Não informada";
 async function brandMarkDataUrl() {
     try {
-        const response = await fetch(typeof window === "undefined" ? "https://famasystem.online/fama-piscinas-mark.png" : "/fama-piscinas-mark.png");
+        const response = await fetch(typeof window === "undefined" ? "https://watersystem.online/fama-piscinas-mark.png" : "/fama-piscinas-mark.png");
         if (!response.ok)
             return null;
         const bytes = new Uint8Array(await response.arrayBuffer());
@@ -111,7 +111,7 @@ export async function generateContractPdf(contract, organizationName, download =
         pdf.setTextColor(117, 141, 148);
         pdf.setFontSize(8);
         pdf.text("Documento gerado a partir dos dados cadastrados", left, 285);
-        pdf.text(`Fama System · ${page}/${pageCount}`, right, 285, { align: "right" });
+        pdf.text(`Water System · ${page}/${pageCount}`, right, 285, { align: "right" });
     }
     const filename = contract.clientName.toLocaleLowerCase("pt-BR").normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
     if (download)

@@ -4,8 +4,8 @@
 
 | Aplicação | Worker | Domínio |
 | --- | --- | --- |
-| System | `fama-system-app` | https://famasystem.online/entrar |
-| Control | `fama-control-app` | https://control.famasystem.online/ |
+| System | `fama-system-app` | https://watersystem.online/entrar |
+| Control | `fama-control-app` | https://control.watersystem.online/ |
 
 O estado verificado está em [CLOUDFLARE-STATUS.md](CLOUDFLARE-STATUS.md). A infraestrutura híbrida é histórica e não deve ser restaurada como destino.
 

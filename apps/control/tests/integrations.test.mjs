@@ -10,7 +10,7 @@ const d1={prepare(query){const stmt=sql.prepare(query);let args=[];const api={bi
 let backend,systemVersion,systemRelease,mode;
 beforeEach(()=>{
  f.reset();f.runtime.DB=d1;delete globalThis.__operationAccessToken;f.runtime.PLATFORM_OWNER_EMAIL=f.user.email;backend=[];mode='';systemVersion=FAMA_VERSION;systemRelease=FAMA_RELEASE_ID;
- f.runtime.FAMA_SYSTEM={async fetch(url){assert.equal(url,'https://famasystem.online/api/health');if(mode==='system-down')throw new Error('Fixture down');return Response.json({service:'Fama System',version:systemVersion,releaseId:systemRelease});}};
+ f.runtime.FAMA_SYSTEM={async fetch(url){assert.equal(url,'https://watersystem.online/api/health');if(mode==='system-down')throw new Error('Fixture down');return Response.json({service:'Water System',version:systemVersion,releaseId:systemRelease});}};
  const delegated=globalThis.fetch;
  globalThis.fetch=async(input,init={})=>{
   const url=new URL(String(input));assert.equal(url.origin,'https://operation.fixture.test');

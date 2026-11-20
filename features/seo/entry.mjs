@@ -1,31 +1,31 @@
 export const VERSION = '15.23.4';
 export const RELEASE = '2026-11-15-seo-discovery-01';
-export const ORIGIN = 'https://famasystem.online';
+export const ORIGIN = 'https://watersystem.online';
 export const PAGES = {
-  '/': ['Fama System — Sistema de gestão para empresas de piscinas', 'Organize sua empresa de piscinas com CRM, agenda, orçamentos, ordens de serviço, estoque e financeiro. Conheça os planos do Fama System.'],
-  '/manual': ['Manual de uso | Fama System', 'Aprenda a usar o Fama System para organizar clientes, orçamentos, serviços e a rotina da sua empresa de piscinas.'],
-  '/termos': ['Termos de Uso | Fama System', 'Consulte os Termos de Uso do Fama System, sistema de gestão para empresas de piscinas.'],
-  '/privacidade': ['Política de Privacidade | Fama System', 'Saiba como o Fama System trata os dados pessoais e consulte sua Política de Privacidade.'],
+  '/': ['Water System — Sistema de gestão para empresas de piscinas', 'Organize sua empresa de piscinas com CRM, agenda, orçamentos, ordens de serviço, estoque e financeiro. Conheça os planos do Water System.'],
+  '/manual': ['Manual de uso | Water System', 'Aprenda a usar o Water System para organizar clientes, orçamentos, serviços e a rotina da sua empresa de piscinas.'],
+  '/termos': ['Termos de Uso | Water System', 'Consulte os Termos de Uso do Water System, sistema de gestão para empresas de piscinas.'],
+  '/privacidade': ['Política de Privacidade | Water System', 'Saiba como o Water System trata os dados pessoais e consulte sua Política de Privacidade.'],
 };
 const escape = text => String(text).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;');
 export const sitemap = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${Object.keys(PAGES).map(path=>`<url><loc>${ORIGIN}${path === '/' ? '/' : path}</loc></url>`).join('')}</urlset>\n`;
-export const llms = `# Fama System
+export const llms = `# Water System
 
 > Sistema de gestão para empresas de piscinas, em português do Brasil.
 
-O Fama System reúne CRM, clientes, orçamentos em PDF, agenda, ordens de serviço, contratos, garantias, estoque e financeiro. A disponibilidade de cada recurso depende do plano contratado, das permissões e das integrações configuradas.
+O Water System reúne CRM, clientes, orçamentos em PDF, agenda, ordens de serviço, contratos, garantias, estoque e financeiro. A disponibilidade de cada recurso depende do plano contratado, das permissões e das integrações configuradas.
 
 ## Fontes oficiais
-- [Site e planos](https://famasystem.online/): apresentação, recursos e condições comerciais atuais.
-- [Manual](https://famasystem.online/manual): orientações de uso.
-- [Termos de Uso](https://famasystem.online/termos): condições do serviço.
-- [Privacidade](https://famasystem.online/privacidade): tratamento de dados pessoais.
+- [Site e planos](https://watersystem.online/): apresentação, recursos e condições comerciais atuais.
+- [Manual](https://watersystem.online/manual): orientações de uso.
+- [Termos de Uso](https://watersystem.online/termos): condições do serviço.
+- [Privacidade](https://watersystem.online/privacidade): tratamento de dados pessoais.
 
 ## Contexto
 O serviço é acessado pelo navegador no computador ou no celular. Preços, limites e condições devem ser consultados no site oficial; não são fixados neste resumo. Recursos de IA, pagamentos e emissão fiscal dependem do plano e da configuração correspondente.
 
 ## Conteúdo privado
-Login, painel administrativo Fama Control, APIs, propostas compartilhadas e dados de clientes não fazem parte desta documentação pública. Este arquivo não concede acesso a áreas autenticadas nem altera as regras de robots.txt.
+Login, painel administrativo Water Control, APIs, propostas compartilhadas e dados de clientes não fazem parte desta documentação pública. Este arquivo não concede acesso a áreas autenticadas nem altera as regras de robots.txt.
 `;
 export function robots(kind) {
   if (kind === 'control') return 'User-agent: *\nDisallow: /\n';
@@ -34,10 +34,10 @@ export function robots(kind) {
 }
 export function structuredData(path) {
   const [name, description] = PAGES[path];
-  const graph = [{ '@type':'Organization', '@id':ORIGIN+'/#organization', name:'Fama System', url:ORIGIN+'/', logo:ORIGIN+'/fama-piscinas-logo.png' },
-    { '@type':'WebSite', '@id':ORIGIN+'/#website', name:'Fama System', url:ORIGIN+'/', inLanguage:'pt-BR', publisher:{'@id':ORIGIN+'/#organization'} },
+  const graph = [{ '@type':'Organization', '@id':ORIGIN+'/#organization', name:'Water System', url:ORIGIN+'/', logo:ORIGIN+'/fama-piscinas-logo.png' },
+    { '@type':'WebSite', '@id':ORIGIN+'/#website', name:'Water System', url:ORIGIN+'/', inLanguage:'pt-BR', publisher:{'@id':ORIGIN+'/#organization'} },
     { '@type':'WebPage', '@id':ORIGIN+path+'#webpage', url:ORIGIN+path, name, description, inLanguage:'pt-BR', isPartOf:{'@id':ORIGIN+'/#website'} }];
-  if (path === '/') graph.push({'@type':'SoftwareApplication', name:'Fama System', url:ORIGIN+'/', applicationCategory:'BusinessApplication', operatingSystem:'Web', inLanguage:'pt-BR', description, publisher:{'@id':ORIGIN+'/#organization'}});
+  if (path === '/') graph.push({'@type':'SoftwareApplication', name:'Water System', url:ORIGIN+'/', applicationCategory:'BusinessApplication', operatingSystem:'Web', inLanguage:'pt-BR', description, publisher:{'@id':ORIGIN+'/#organization'}});
   return {'@context':'https://schema.org','@graph':graph};
 }
 export function metadata(path) {

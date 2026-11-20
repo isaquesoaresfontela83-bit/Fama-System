@@ -3,7 +3,7 @@ import { getFamaUser } from "../system-auth";
 import { redirect } from "next/navigation";
 import { onboardingPath } from "@/lib/onboarding-intent";
 export const dynamic = "force-dynamic";
-export const metadata = { title: "Entrar | Fama System" };
+export const metadata = { title: "Entrar | Water System" };
 export default async function LoginPage(props) {
     const { searchParams } = props ?? {};
     const values = await searchParams ?? {};

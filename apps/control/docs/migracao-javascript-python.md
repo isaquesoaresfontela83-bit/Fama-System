@@ -1,6 +1,6 @@
 # Migração para JavaScript e Python
 
-Escopo: Fama System e Fama Control. O código atual publicado foi usado como base, preservando os módulos operacionais, login e controles de acesso.
+Escopo: Water System e Water Control. O código atual publicado foi usado como base, preservando os módulos operacionais, login e controles de acesso.
 
 | Parte | Linguagem e execução |
 | --- | --- |

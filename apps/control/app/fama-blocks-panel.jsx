@@ -79,7 +79,7 @@ export function FamaBlocksPanel({ companies, members, available }) {
             const saved = parseBlockRules(response.rules);
             setRules(saved);
             setDraft(saved[scope].overrides);
-            toast.success('Blocos salvos. O Fama System aplicará os novos acessos automaticamente.');
+            toast.success('Blocos salvos. O Water System aplicará os novos acessos automaticamente.');
         }
         catch (cause) {
             if (current === generation.current) {
@@ -93,7 +93,7 @@ export function FamaBlocksPanel({ companies, members, available }) {
         }
     }
     return <section className="control-panel fama-blocks-panel">
-    <div className="control-panel-heading"><div><p className="control-kicker">FAMA SYSTEM</p><h2>Blocos do sistema</h2></div><Badge variant="secondary">{famaBlocks.length} blocos disponíveis</Badge></div>
+    <div className="control-panel-heading"><div><p className="control-kicker">WATER SYSTEM</p><h2>Blocos do sistema</h2></div><Badge variant="secondary">{famaBlocks.length} blocos disponíveis</Badge></div>
     <p className="control-muted">O plano da empresa define os recursos disponíveis. Dentro desse plano, a regra da pessoa prevalece sobre a empresa; a da empresa prevalece sobre a geral. Para liberar recursos de outro plano, altere o plano de recursos da empresa. A cobrança pode continuar desativada nas cortesias.</p>
     {selectedPlan !== undefined && company && <p className="control-muted">Plano de {company.name}: <strong>{planNames[normalizePlanTier(selectedPlan)]}</strong></p>}
     <div className="fama-block-targets">
@@ -101,7 +101,7 @@ export function FamaBlocksPanel({ companies, members, available }) {
       {scope !== 'global' && <label>Empresa<NativeSelect value={companyId} disabled={saving || !available} onChange={event => { setCompanyId(event.target.value); setMemberId(''); }}><NativeSelectOption value="">Escolha a empresa</NativeSelectOption>{companiesHere.map(item => <NativeSelectOption key={item.id} value={item.id}>{item.name}</NativeSelectOption>)}</NativeSelect></label>}
       {scope === 'member' && <label>Pessoa<NativeSelect value={memberId} disabled={saving || !companyId || !available} onChange={event => setMemberId(event.target.value)}><NativeSelectOption value="">Escolha a pessoa</NativeSelectOption>{membersHere.map(item => <NativeSelectOption key={item.id} value={item.id}>{item.displayName || item.email} · {item.email}{item.role === 'owner' ? ' · Proprietário' : ''}{item.status !== 'active' ? ' · Inativo ou convidado' : ''}</NativeSelectOption>)}</NativeSelect></label>}
     </div>
-    {!available && <p role="alert" className="control-empty">A lista de empresas e pessoas está indisponível. Recarregue o Fama Control para conferir os destinos.</p>}
+    {!available && <p role="alert" className="control-empty">A lista de empresas e pessoas está indisponível. Recarregue o Water Control para conferir os destinos.</p>}
     {available && !ready && <p className="control-empty">Escolha {scope === 'member' ? 'a empresa e a pessoa' : 'a empresa'} para configurar seus blocos.</p>}
     {loading && <p role="status" className="control-empty">Conferindo os blocos…</p>}
     {error && <div role="alert" className="fama-block-error"><p>{error}</p><Button variant="outline" disabled={saving} onClick={() => setReload(value => value + 1)}>Recarregar regras</Button></div>}

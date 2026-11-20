@@ -1,10 +1,8 @@
-# Fama System · Fama Control
+# Water System · Water Control
 
 Gestão para empresas de piscinas e administração central da plataforma.
 
-**Versão publicada: 15.23.2** · `2026-11-07-mobile-tap-01`
-
-[Fama System](https://famasystem.online/entrar) · [Fama Control](https://control.famasystem.online/) · [Documentação](docs/README.md)
+[Water System](https://watersystem.online/entrar) · [Water Control](https://control.watersystem.online/) · [Documentação](docs/README.md)
 
 ## Estrutura do repositório
 
@@ -14,6 +12,7 @@ Gestão para empresas de piscinas e administração central da plataforma.
 | `apps/control/` | Fontes históricas do painel administrativo. |
 | `features/pedidos/` | Módulo de vendas, parcelas e entregas, aplicado sobre a produção recuperada. |
 | `features/liquid-glass/` | Tema de vidro, testes, manifesto da base e publicação aditiva. |
+| `features/water-brand/` | Marca Water, animação de abertura e migração dos endereços públicos. |
 | `deployment/cloudflare/` | Ferramentas e documentação de implantação; conferir o guia vigente antes de usar. |
 | `deployment/hybrid/` | Infraestrutura histórica retirada do tráfego de produção. |
 | `docs/` | Guia de desenvolvimento, operação e histórico de versões. |

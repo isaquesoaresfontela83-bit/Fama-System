@@ -17,7 +17,7 @@ export async function POST(request) {
             return Response.json({ error: "Operação indisponível para esta integração." }, { status: 403, headers });
         if (input.method === "POST" && ["/customers", "/payments", "/transfers"].includes(input.path) && !String(input.body?.externalReference ?? "").startsWith("pool:"))
             return Response.json({ error: "Referência da operação inválida." }, { status: 422, headers });
-        const webhookTarget = "https://famasystem.online/api/pool-provider/webhook", legacyTarget = "https://fama-pool-servicos.isaquesoaresfontela8.chatgpt.site/api/asaas/webhook";
+        const webhookTarget = "https://watersystem.online/api/pool-provider/webhook", legacyTarget = "https://fama-pool-servicos.isaquesoaresfontela8.chatgpt.site/api/asaas/webhook";
         if (["POST", "PUT"].includes(input.method) && input.path.startsWith("/webhooks") && input.body?.url !== webhookTarget)
             return Response.json({ error: "Destino não autorizado." }, { status: 403, headers });
         const key = String(env.FAMA_ASAAS_API_KEY ?? ""), environment = parseAsaasEnvironment(env.FAMA_ASAAS_ENVIRONMENT);

@@ -1,10 +1,10 @@
 import Link from "next/link";
-export const metadata = { title: "Privacidade | Fama System" };
+export const metadata = { title: "Privacidade | Water System" };
 export default function PrivacyPage() {
     return <main className="legal-page"><article className="legal-document">
-    <header><Link href="/" className="legal-brand">Fama System</Link><span>Versão de 11 de outubro de 2026</span></header>
+    <header><Link href="/" className="legal-brand">Water System</Link><span>Versão de 11 de outubro de 2026</span></header>
     <h1>Política de Privacidade</h1>
-    <p>Esta Política explica como o Fama System trata dados pessoais e dados operacionais da empresa. Para dados da conta, pagamento do plano, segurança e administração da plataforma, o Fama System pode atuar como controlador. Para dados de clientes, técnicos, fornecedores e registros inseridos pela empresa, em regra a empresa é controladora e o Fama System atua como operador.</p>
+    <p>Esta Política explica como o Water System trata dados pessoais e dados operacionais da empresa. Para dados da conta, pagamento do plano, segurança e administração da plataforma, o Water System pode atuar como controlador. Para dados de clientes, técnicos, fornecedores e registros inseridos pela empresa, em regra a empresa é controladora e o Water System atua como operador.</p>
 
     <h2>1. Dados da conta e da empresa</h2>
     <p>Podemos tratar nome, e-mail, telefone, senha protegida, identificadores de sessão, empresa, plano, status de pagamento, permissões, usuários convidados, preferências, idioma, tema, aceite de políticas, logs de acesso e trilhas de auditoria.</p>
@@ -28,7 +28,7 @@ export default function PrivacyPage() {
     <p>Dados podem ser compartilhados com fornecedores necessários à operação, como hospedagem, banco de dados, autenticação, armazenamento, processamento de pagamentos, mensageria, suporte, segurança e provedores financeiros conectados pela empresa. O compartilhamento é limitado à finalidade contratada ou exigida por lei.</p>
 
     <h2>8. Provedores financeiros</h2>
-    <p>Ao conectar uma conta financeira ou gerar cobrança por provedor externo, a empresa também se sujeita aos termos e políticas desse provedor. O Fama System pode receber de volta identificadores de cliente, cobrança, pagamento, status, saldo, link de pagamento, Pix copia e cola e dados mínimos necessários para conciliação.</p>
+    <p>Ao conectar uma conta financeira ou gerar cobrança por provedor externo, a empresa também se sujeita aos termos e políticas desse provedor. O Water System pode receber de volta identificadores de cliente, cobrança, pagamento, status, saldo, link de pagamento, Pix copia e cola e dados mínimos necessários para conciliação.</p>
 
     <h2>9. IA e automações</h2>
     <p>Recursos de IA podem usar dados do próprio sistema para produzir resumos, sugestões, mensagens, cronogramas e análises. As respostas podem conter erros e devem ser revisadas pela empresa. Não use a IA para inserir dados sensíveis desnecessários, segredos, senhas, documentos excessivos ou informações sem autorização.</p>
@@ -61,6 +61,6 @@ export default function PrivacyPage() {
     <h2>18. Contato</h2>
     <p>Use o <Link href="/privacidade/solicitar">Canal de Privacidade</Link>. Usuários autenticados também podem acompanhar solicitações na área Privacidade e segurança do sistema.</p>
 
-    <footer><Link href="/">Voltar ao Fama System</Link><Link href="/termos">Termos de Uso</Link><Link href="/privacidade/solicitar">Fazer solicitação</Link></footer>
+    <footer><Link href="/">Voltar ao Water System</Link><Link href="/termos">Termos de Uso</Link><Link href="/privacidade/solicitar">Fazer solicitação</Link></footer>
   </article></main>;
 }

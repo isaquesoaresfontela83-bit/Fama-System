@@ -17,7 +17,7 @@ export function ProductDemo() {
   return <section className="product-demo" id="demonstracao" aria-labelledby="demo-title">
     <div className="product-section-heading"><span className="product-eyebrow">DO PRIMEIRO CONTATO AO HISTÓRICO</span><h2 id="demo-title">Veja o fluxo acontecer.</h2><p>Explore um exemplo antes de criar sua conta.</p></div>
     <div className="product-demo-window">
-      <div className="product-demo-bar"><span><i aria-hidden="true"/>Fama System</span><small>Demonstração · dados fictícios</small></div>
+      <div className="product-demo-bar"><span><i aria-hidden="true"/>Water System</span><small>Demonstração · dados fictícios</small></div>
       <div className="product-demo-layout">
         <nav className="product-demo-stages" aria-label="Etapas da demonstração">{stages.map((item, index) => <button type="button" key={item.name} aria-pressed={active === index} onClick={() => setActive(index)}><item.icon aria-hidden="true"/><span>{item.name}</span><small>0{index + 1}</small></button>)}</nav>
         <div className="product-demo-content" aria-live="polite" aria-atomic="true">

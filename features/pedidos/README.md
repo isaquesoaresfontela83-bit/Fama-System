@@ -1,6 +1,6 @@
 # Pedidos de piscinas — venda e entrega
 
-Módulo semiautomático 15.21.0, compartilhado pelo Fama System e pelo Fama Control. O pedido nasce como “A confirmar”. A confirmação da venda gera parcelas pendentes; pagamentos e recebimento da piscina exigem confirmação humana. Agendamento e reagendamento mantêm uma única entrega vinculada à Agenda. Não há envio automático pelo WhatsApp: o botão abre uma mensagem para revisão e envio pelo usuário.
+Módulo semiautomático 15.21.0, compartilhado pelo Water System e pelo Water Control. O pedido nasce como “A confirmar”. A confirmação da venda gera parcelas pendentes; pagamentos e recebimento da piscina exigem confirmação humana. Agendamento e reagendamento mantêm uma única entrega vinculada à Agenda. Não há envio automático pelo WhatsApp: o botão abre uma mensagem para revisão e envio pelo usuário.
 
 ## Integração com a produção existente
 

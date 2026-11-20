@@ -2,16 +2,16 @@
 
 # Implantação híbrida publicada — 22/10/2026
 
-**Fama System e Fama Control 15.8.0 / 2026-10-22-customers-agenda-01.** Ambos os domínios confirmaram HTTP 200 com a mesma versão e identificador após a troca do encaminhamento. O frontend original foi preservado. AppDeploy não foi usado.
+**Water System e Water Control 15.8.0 / 2026-10-22-customers-agenda-01.** Ambos os domínios confirmaram HTTP 200 com a mesma versão e identificador após a troca do encaminhamento. O frontend original foi preservado. AppDeploy não foi usado.
 
 | Aplicação | Endereço público | API Render | Origem de arquivos estáticos |
 | --- | --- | --- | --- |
-| System | https://famasystem.online | https://fama-system-api.onrender.com | https://fama-system-web.onrender.com |
-| Control | https://control.famasystem.online | https://fama-control-api.onrender.com | https://fama-control-web.onrender.com |
+| System | `https://famasystem.online` | https://fama-system-api.onrender.com | https://fama-system-web.onrender.com |
+| Control | `https://control.famasystem.online` | https://fama-control-api.onrender.com | https://fama-control-web.onrender.com |
 
 ## Arquitetura
 
-As APIs Node/Docker e os estáticos estão nos quatro serviços Render existentes, workspace Fama system (`tea-dbcgqg3rjlhs73be8ojg`). Auto-deploy continua desativado. As branches de implantação existentes são `deploy/hybrid-15.7.0` e `release/15.7.2`; os nomes históricos não indicam a versão dos arquivos. A fonte preparada fica em `release/15.8.0-prepared`. Não implantar main, que está antigo.
+As APIs Node/Docker e os estáticos estão nos quatro serviços Render existentes, workspace Water system (`tea-dbcgqg3rjlhs73be8ojg`). Auto-deploy continua desativado. As branches de implantação existentes são `deploy/hybrid-15.7.0` e `release/15.7.2`; os nomes históricos não indicam a versão dos arquivos. A fonte preparada fica em `release/15.8.0-prepared`. Não implantar main, que está antigo.
 
 A Render não tinha aplicado os rewrites das origens estáticas. Os Workers `fama-system-app` e `fama-control-app` agora fazem somente o encaminhamento leve de `deployment/hybrid/`: navegação para o índice estático, arquivos para a origem estática e APIs/páginas especiais para Node. As URLs estáticas onrender são origens de arquivos; usar os domínios principais para o aplicativo. DNS, certificados, público e identidade visual foram preservados. Os assets e bindings anteriores foram retidos para recuperação; a aplicação completa antiga não é executada pelo encaminhamento.
 

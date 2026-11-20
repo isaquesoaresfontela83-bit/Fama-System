@@ -177,13 +177,13 @@ export function answerInternal(message, data, selected = 'overview', now = new D
     if (!message.trim() || message.length > 2000)
         return { text: 'Digite uma pergunta de até 2.000 caracteres.', source: selected, actions: [] };
     if (!settings.enabled)
-        return { text: 'O assistente está desativado pelo Fama Control.', source: selected, actions: [] };
+        return { text: 'O assistente está desativado pelo Water Control.', source: selected, actions: [] };
     const command = settings.commands.find(item => item.enabled && normalizeCommand(item.trigger) === normalizeCommand(message));
     const source = command?.source ?? context?.forceSource ?? resolveSource(normalize(message), selected, context);
     if (!settings.sources[source])
-        return { text: `A função ${assistantSources[source]} está desativada pelo Fama Control.`, source, actions: [] };
+        return { text: `A função ${assistantSources[source]} está desativada pelo Water Control.`, source, actions: [] };
     if (source === 'agenda' && /\bconflitos?\b/.test(normalize(message)) && !settings.detectConflicts)
-        return { text: 'A detecção de conflitos na agenda está desativada pelo Fama Control.', source, actions: [] };
+        return { text: 'A detecção de conflitos na agenda está desativada pelo Water Control.', source, actions: [] };
     if (command)
         return { text: command.response, title: command.trigger, source, actions: [] };
     const permitted = pruneData(data, settings);
@@ -217,7 +217,7 @@ function answerWithRules(message, data, source, now, settings) {
         });
     }
     if (/\b(ajuda|como funciona|o que voce faz)\b/.test(query))
-        return result('Analiso os registros autorizados do Fama System. Posso organizar as pendências do dia, sugerir horários para a equipe, reunir o histórico de um cliente, comparar meses financeiros e preparar cadastros e mensagens. Consulte também propostas, contratos, estoque e períodos financeiros. Use “buscar: nome” para filtrar ou datas DD/MM/AAAA. Você pode continuar com “e amanhã?” ou “somente os pendentes”. As ações abrem os formulários para revisão e salvamento.', { title: 'Como posso ajudar', suggestions: [{ label: 'Ver prioridades', question: 'Plano de ação da empresa', source: 'overview' }, { label: 'Agenda de hoje', question: 'Agenda de hoje', source: 'agenda' }] });
+        return result('Analiso os registros autorizados do Water System. Posso organizar as pendências do dia, sugerir horários para a equipe, reunir o histórico de um cliente, comparar meses financeiros e preparar cadastros e mensagens. Consulte também propostas, contratos, estoque e períodos financeiros. Use “buscar: nome” para filtrar ou datas DD/MM/AAAA. Você pode continuar com “e amanhã?” ou “somente os pendentes”. As ações abrem os formulários para revisão e salvamento.', { title: 'Como posso ajudar', suggestions: [{ label: 'Ver prioridades', question: 'Plano de ação da empresa', source: 'overview' }, { label: 'Agenda de hoje', question: 'Agenda de hoje', source: 'agenda' }] });
     if (source === 'agenda') {
         if (!data.appointments)
             return missing();

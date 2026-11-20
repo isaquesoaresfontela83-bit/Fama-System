@@ -1,13 +1,13 @@
-# Manual de uso do Fama System
+# Manual de uso do Water System
 
 Este manual orienta a rotina comercial, operacional e financeira da empresa. A tela **Manual de uso** dentro do site contém figuras de navegação e também pode ser aberta pela tela de entrada.
 
 ## 1. Entrar e preparar a empresa
 
-1. Abra o endereço oficial do Fama System e entre com seu e-mail e senha. Se ainda não tem uma conta, escolha **Criar conta**, informe seu nome e crie uma senha com pelo menos oito caracteres.
+1. Abra o endereço oficial do Water System e entre com seu e-mail e senha. Se ainda não tem uma conta, escolha **Criar conta**, informe seu nome e crie uma senha com pelo menos oito caracteres.
 2. Aceite os Termos de Uso e a Política de Privacidade. Se receber um e-mail de confirmação, confirme antes de voltar ao login.
 3. No primeiro acesso, crie o perfil da empresa. Se tiver acesso a mais de uma, use o seletor da barra superior para escolher qual quer operar.
-4. Convide a equipe em **Usuários e empresas**. Use o e-mail que cada pessoa usará para entrar e peça ao proprietário para limitar os módulos necessários no Fama Control.
+4. Convide a equipe em **Usuários e empresas**. Use o e-mail que cada pessoa usará para entrar e peça ao proprietário para limitar os módulos necessários no Water Control.
 5. Em **Privacidade e segurança**, ative a verificação em duas etapas quando disponível e guarde o acesso ao autenticador em local seguro.
 
 ## 2. Entender a tela
@@ -22,7 +22,7 @@ O manual dentro do sistema traz imagens fiéis da versão atual para facilitar a
 
 - Tela de entrada: diferencia **Entrar** de **Criar conta** e mostra a organização dos módulos.
 - Financeiro: mostra a posição do saldo, valores a receber, atrasos, sincronização bancária e o painel de IA.
-- Fama Control: mostra a área administrativa de empresas, usuários, permissões, auditoria, backup e segurança.
+- Water Control: mostra a área administrativa de empresas, usuários, permissões, auditoria, backup e segurança.
 
 Os números nas imagens são exemplos e não representam os dados da sua empresa. Para ver os dados reais, entre com sua conta e confirme o ambiente selecionado.
 
@@ -59,7 +59,7 @@ Use a lista para acompanhar valores de clientes ainda não recebidos e identific
 - Para conectar a Asaas, abra **Financeiro > Bancos e conciliação**, escolha Sandbox ou Produção e informe uma chave de API do mesmo ambiente. A chave é validada no servidor, criptografada e nunca volta para o navegador. O sistema não solicita a senha da conta Asaas.
 - Mercado Pago e PagBank podem ser cadastrados com segurança e escolhidos como principal. A sincronização nativa desses dois provedores fica preparada para a próxima conexão; a sincronização automática já funciona para as conexões Asaas disponíveis.
 - Ao abrir o Financeiro, o sistema tenta atualizar as conexões automaticamente. O botão **Sincronizar tudo** permite repetir a atualização manualmente e mostra o resultado de cada provedor.
-- Quem ainda não possui conta pode iniciar o cadastro pelo botão **Criar conta no Asaas**. Senha, documentos, selfie e aprovação são tratados no ambiente oficial da Asaas; depois, gere a chave de API e conecte-a ao Fama System.
+- Quem ainda não possui conta pode iniciar o cadastro pelo botão **Criar conta no Asaas**. Senha, documentos, selfie e aprovação são tratados no ambiente oficial da Asaas; depois, gere a chave de API e conecte-a ao Water System.
 
 ### Notas fiscais pela Asaas
 
@@ -82,7 +82,7 @@ Evite registrar a mesma nota mais de uma vez. Compare data, número da nota e va
 
 Cadastre profissionais em **Equipe** e mantenha ativos somente os que podem receber novas tarefas. A agenda mostra a carga dos técnicos com base nos compromissos atribuídos.
 
-O proprietário ou administrador convida colaboradores em **Usuários e empresas**. O Fama Control permite que o proprietário marque os módulos permitidos por pessoa. Libere apenas o que cada função requer. Após a alteração, a pessoa deve atualizar ou reabrir o sistema. Se um módulo não aparecer, peça ao administrador para conferir a permissão.
+O proprietário ou administrador convida colaboradores em **Usuários e empresas**. O Water Control permite que o proprietário marque os módulos permitidos por pessoa. Libere apenas o que cada função requer. Após a alteração, a pessoa deve atualizar ou reabrir o sistema. Se um módulo não aparecer, peça ao administrador para conferir a permissão.
 
 ## 7. PDFs e arquivos
 
@@ -92,7 +92,7 @@ Propostas e contratos podem ser gerados em PDF pelo próprio registro; confira d
 
 **Todo dia:** veja a Visão geral; confirme agenda, equipe e endereços; atualize a próxima ação dos leads; acompanhe orçamentos enviados; finalize ordens e registre medições; atualize recebimentos, despesas e estoque.
 
-**Toda semana:** revise negócios parados, cobranças atrasadas, garantias e contratos próximos do vencimento, níveis mínimos de estoque, usuários e permissões. Combine com o proprietário uma revisão de backup no Fama Control.
+**Toda semana:** revise negócios parados, cobranças atrasadas, garantias e contratos próximos do vencimento, níveis mínimos de estoque, usuários e permissões. Combine com o proprietário uma revisão de backup no Water Control.
 
 ## 9. Segurança e solução de problemas
 
@@ -113,6 +113,6 @@ Os botões de WhatsApp do sistema abrem mensagens pré-preenchidas para revisão
 
 **Abrir conversa de teste** abre a pergunta “Agenda de hoje” no WhatsApp da empresa. Use um dos telefones autorizados, revise e envie a pergunta. A IA só responde aos telefones vinculados e consulta os módulos permitidos para cada usuário. Use **Pausar IA** ou **Revogar** para interromper o acesso.
 
-## 10. Fama Control
+## 10. Water Control
 
-O Fama Control é um painel separado para o proprietário administrar empresas, usuários e permissões e conferir segurança, auditoria, privacidade e backups. Para instruções detalhadas, abra o **Manual completo do Fama Control** a partir da tela de entrada desse painel.
+O Water Control é um painel separado para o proprietário administrar empresas, usuários e permissões e conferir segurança, auditoria, privacidade e backups. Para instruções detalhadas, abra o **Manual completo do Water Control** a partir da tela de entrada desse painel.

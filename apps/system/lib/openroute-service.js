@@ -18,7 +18,7 @@ export async function openRouteDirections(origin, destination) {
         return existing;
     const operation = (async () => {
         const cache = typeof caches === 'undefined' ? undefined : caches.default;
-        const cacheKey = new Request('https://famasystem.online/__ors-route/v1/' + hash);
+        const cacheKey = new Request('https://watersystem.online/__ors-route/v1/' + hash);
         const valid = (v) => v && Number.isFinite(v.distanceKm) && v.distanceKm > 0 && v.distanceKm <= 10000 && Number.isFinite(v.durationMinutes) && v.durationMinutes >= 0 && v.durationMinutes <= 10080;
         try {
             const stored = await cache?.match(cacheKey);
@@ -29,7 +29,7 @@ export async function openRouteDirections(origin, destination) {
             }
         }
         catch { }
-        const shared = new Request('https://famasystem.online/');
+        const shared = new Request('https://watersystem.online/');
         await assertRateLimit(shared, 'ors_routes_minute', 'fama-system', 35, 60);
         await assertRateLimit(shared, 'ors_routes_daily', 'fama-system', 1800, 86400);
         let response;

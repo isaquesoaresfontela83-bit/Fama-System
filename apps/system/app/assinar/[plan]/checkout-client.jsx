@@ -127,7 +127,7 @@ export function CheckoutClient({ planCode, plan, initialCycle = "monthly" }) {
         {!checkout ? (<>
             <small>Teste grátis disponível</small>
             <h2>Comece sem pagar agora</h2>
-            <p className="checkout-trial-copy">Crie a conta e use o Fama System por 7 dias. Quando o teste acabar, o sistema bloqueia os módulos e solicita o pagamento do plano.</p>
+            <p className="checkout-trial-copy">Crie a conta e use o Water System por 7 dias. Quando o teste acabar, o sistema bloqueia os módulos e solicita o pagamento do plano.</p>
             <a className="button checkout-trial-button" href={`/entrar?signup=1&plan=${planCode}`}>Começar teste grátis <ArrowRight /></a>
             <details className="checkout-pay-now">
               <summary>Pagar agora sem usar o teste grátis</summary>
@@ -170,7 +170,7 @@ export function CheckoutClient({ planCode, plan, initialCycle = "monthly" }) {
             {error && <p className="form-error" role="alert">{error}</p>}
             {checkout.signupUrl ? (<a className="button" href={checkout.signupUrl}>Pagamento confirmado. Criar conta <ArrowRight /></a>) : checkout.provider === "asaas" ? (<div className="checkout-review-note"><ShieldCheck /><p>A Asaas confirma o pagamento automaticamente. Depois de pagar, confira a confirmação para continuar.</p><Button type="button" onClick={() => void checkPayment()} disabled={checking}>{checking ? <><Loader2 className="spin-icon"/>Conferindo</> : "Conferir pagamento"}</Button></div>) : checkout.status === "awaiting_review" || proofSent ? (<div className="checkout-review-note">
                 <CheckCircle2 />
-                <p>Comprovante enviado. Agora aguarde a aprovação no Fama Control. Depois clique em “Conferir aprovação”.</p>
+                <p>Comprovante enviado. Agora aguarde a aprovação no Water Control. Depois clique em “Conferir aprovação”.</p>
                 <Button type="button" onClick={() => void checkPayment()} disabled={checking}>{checking ? <><Loader2 className="spin-icon"/>Conferindo</> : "Conferir aprovação"}</Button>
               </div>) : (<form className="checkout-proof-form" onSubmit={sendProof}>
                 <Label htmlFor="proofText">Comprovante ou ID da transação</Label>

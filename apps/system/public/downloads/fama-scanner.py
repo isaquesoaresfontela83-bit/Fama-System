@@ -15,7 +15,7 @@ import tempfile
 import threading
 from pathlib import Path
 
-ORIGIN = 'https://famasystem.online'
+ORIGIN = 'https://watersystem.online'
 TOKEN = secrets.token_urlsafe(32)
 LOCK = threading.Lock()
 SCRIPT = r'''

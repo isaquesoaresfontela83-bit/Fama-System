@@ -23,7 +23,7 @@ export async function beginDriveAuthorization(actorId, origin) {
 }
 export async function completeDriveAuthorization(actorId, url) {
     const state = url.searchParams.get('state') || '', code = url.searchParams.get('code') || '';
-    if (state.length < 20 || state.length > 150 || !code || code.length > 4096) throw new RequestError('A autorização expirou ou não foi concluída. Conecte novamente pelo Fama Control.', 400);
+    if (state.length < 20 || state.length > 150 || !code || code.length > 4096) throw new RequestError('A autorização expirou ou não foi concluída. Conecte novamente pelo Water Control.', 400);
     const db = await store(), id = await hash(state), now = new Date().toISOString();
     const row = await db.prepare('SELECT * FROM fama_integration_oauth WHERE id=? AND actor_id=? AND expires_at>?').bind(id, actorId, now).first();
     if (!row) throw new RequestError('A autorização expirou ou já foi utilizada.', 400);

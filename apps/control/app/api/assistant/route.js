@@ -63,7 +63,7 @@ export async function POST(request) {
         const envelope = parseAssistantSettingsEnvelope(await settingsResponse.json());
         const settings = restrictAssistantSettings(envelope.settings, ['overview', 'companies', 'users', 'audit', 'privacy']);
         if (!settings.enabled || !settings.sources[input.source])
-            throw new RequestError('Esta função está disponível apenas dentro da empresa no Fama System.', 403);
+            throw new RequestError('Esta função está disponível apenas dentro da empresa no Water System.', 403);
         const calendar = assistantCalendar(await administrativeData(settings), input.timeZone);
         const native = answerNative(input, calendar.data, settings, calendar.now);
         const answer = await enrichWithCloudflare(input, native, request.signal);

@@ -9,6 +9,6 @@ test('MET forecast preserves rainfall volume without inventing a probability and
 test('MET fetch identifies Fama, rounds coordinates, coalesces calls and respects provider expiry',async()=>{
  f.reset();let calls=0;const actual=globalThis.fetch;
  const liveRaw=structuredClone(raw);liveRaw.properties.meta.updated_at=new Date().toISOString();liveRaw.properties.timeseries[0].time=new Date(Date.now()+3600000).toISOString();
- globalThis.fetch=async(input,init)=>{const u=new URL(String(input));if(u.hostname==='api.met.no'){calls++;assert.match(new Headers(init.headers).get('user-agent'),/FamaSystem.*famasystem.online/);assert.ok(u.searchParams.get('lat').split('.')[1].length<=4);return Response.json(liveRaw,{headers:{Expires:new Date(Date.now()+3600000).toUTCString(),'Last-Modified':new Date().toUTCString()}});}return actual(input,init);};
+ globalThis.fetch=async(input,init)=>{const u=new URL(String(input));if(u.hostname==='api.met.no'){calls++;assert.match(new Headers(init.headers).get('user-agent'),/WaterSystem.*watersystem.online/);assert.ok(u.searchParams.get('lat').split('.')[1].length<=4);return Response.json(liveRaw,{headers:{Expires:new Date(Date.now()+3600000).toUTCString(),'Last-Modified':new Date().toUTCString()}});}return actual(input,init);};
  try{await Promise.all([metNorwayForecast(-15.7939123,-47.8828123),metNorwayForecast(-15.7939123,-47.8828123)]);await metNorwayForecast(-15.7939123,-47.8828123);assert.equal(calls,1);}finally{globalThis.fetch=actual;}
 });

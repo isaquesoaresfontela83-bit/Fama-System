@@ -49,7 +49,7 @@ export function MembersPanel({ organization }) {
                 throw new Error(payload.error ?? "Não foi possível adicionar o usuário.");
             setMembers((current) => [...current, payload.member]);
             setInviteOpen(false);
-            toast.success("Convite criado. O acesso será liberado quando esse e-mail entrar no Fama System.");
+            toast.success("Convite criado. O acesso será liberado quando esse e-mail entrar no Water System.");
         }
         catch (cause) {
             toast.error(cause instanceof Error ? cause.message : "Não foi possível adicionar o usuário.");
@@ -93,7 +93,7 @@ export function MembersPanel({ organization }) {
     </div>
     <section className="surface members-surface">
       <div className="panel-heading"><div><small>ACESSO DA EMPRESA</small><h2>Usuários e permissões</h2></div><div className="panel-actions"><Button variant="outline" onClick={() => setCompanyOpen(true)}><Building2 />Nova empresa</Button><Button onClick={() => setInviteOpen(true)}><UserPlus />Adicionar usuário</Button></div></div>
-      <p className="members-intro">Cada usuário entra com o próprio e-mail. O Fama System valida a participação e mantém os registros de {organization.name} separados de todas as outras empresas.</p>
+      <p className="members-intro">Cada usuário entra com o próprio e-mail. O Water System valida a participação e mantém os registros de {organization.name} separados de todas as outras empresas.</p>
       <div className="members-list">
         {loading ? Array.from({ length: 3 }).map((_, index) => <Skeleton key={index} className="h-16 w-full"/>) : members.map((member) => <article key={member.id}>
           <span className="member-avatar">{(member.displayName || member.email).slice(0, 2).toLocaleUpperCase("pt-BR")}</span>

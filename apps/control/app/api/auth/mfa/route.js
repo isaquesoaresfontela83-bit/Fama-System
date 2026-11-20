@@ -33,7 +33,7 @@ export async function POST(request) {
         if (action === "enroll") {
             const enrolled = await supabaseAuthRequest("/auth/v1/factors", {
                 method: "POST",
-                body: JSON.stringify({ factor_type: "totp", friendly_name: "Fama Control" }),
+                body: JSON.stringify({ factor_type: "totp", friendly_name: "Water Control" }),
             }, token);
             await logAudit({ actorUserId: user.id, eventType: "security", entityType: "mfa", recordId: enrolled.id, metadata: { action: "enroll_started" } });
             return Response.json({ factorId: enrolled.id, qrCode: enrolled.totp?.qr_code ?? "", secret: enrolled.totp?.secret ?? "", uri: enrolled.totp?.uri ?? "" });

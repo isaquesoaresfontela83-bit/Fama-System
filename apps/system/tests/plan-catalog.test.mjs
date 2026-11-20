@@ -11,7 +11,7 @@ after(async () => { globalThis.fetch = originalFetch; await vite.close(); });
 test('System follows edited Control prices, descriptions, limits and feature lines without stale cache', async () => {
   let calls = 0;
   globalThis.fetch = async (url, options) => {
-    assert.equal(url, 'https://control.famasystem.online/api/public/plans');
+    assert.equal(url, 'https://control.watersystem.online/api/public/plans');
     assert.equal(options.cache, 'no-store');
     calls++;
     return Response.json({ plans: [{ id: 'profissional', name: 'Pro', price: calls === 1 ? 35000 : 36000, description: 'Descrição publicada pelo Control', users: 'Até 10 usuários', clients: 'Até 5.000 clientes', modules: 'Consulta de CEP\nFrete automático' }] });

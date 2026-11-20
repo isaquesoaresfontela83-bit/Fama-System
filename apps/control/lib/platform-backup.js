@@ -106,12 +106,12 @@ export async function stepBackup(id) {
                 throw new Error('A chave do backup compartilhado não está configurada.');
             const values = runtime();
             const send = values.FAMA_SYSTEM?.fetch ? values.FAMA_SYSTEM.fetch.bind(values.FAMA_SYSTEM) : fetch;
-            const response = await send('https://famasystem.online/api/internal/backup-d1', { headers: { Authorization: `Bearer ${token}` }, redirect: 'manual', signal: AbortSignal.timeout(45000) });
+            const response = await send('https://watersystem.online/api/internal/backup-d1', { headers: { Authorization: `Bearer ${token}` }, redirect: 'manual', signal: AbortSignal.timeout(45000) });
             if (!response.ok)
-                throw new Error('O Fama System não confirmou o backup local.');
+                throw new Error('O Water System não confirmou o backup local.');
             const system = await response.json();
             if (system.verification?.valid !== true || !Array.isArray(system.snapshot?.tables))
-                throw new Error('A restauração local do Fama System não foi confirmada.');
+                throw new Error('A restauração local do Water System não foi confirmada.');
             await part(run, lease, 'd1-system', system.snapshot);
             run.manifest.d1 = { control: controlCheck, system: system.verification };
             run.manifest.stage = 'files';

@@ -1,4 +1,4 @@
-# Fama System na Cloudflare
+# Water System na Cloudflare
 
 `npm run build:cloudflare` gera o servidor em `dist/server` e os arquivos da interface em `dist/client`.
 

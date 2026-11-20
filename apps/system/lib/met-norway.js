@@ -30,7 +30,7 @@ export async function metNorwayForecast(latitude, longitude, label = 'Ponto sele
     if (!operation) {
         operation = (async () => {
             const storage = typeof caches === 'undefined' ? undefined : caches.default;
-            const cacheKey = new Request('https://famasystem.online/__metno/v1/' + encodeURIComponent(id));
+            const cacheKey = new Request('https://watersystem.online/__metno/v1/' + encodeURIComponent(id));
             let previous = cached;
             try {
                 const stored = await storage?.match(cacheKey);
@@ -44,11 +44,11 @@ export async function metNorwayForecast(latitude, longitude, label = 'Ponto sele
             }
             if (cooldown > Date.now())
                 throw new RequestError('A previsão está ocupada. Tente novamente mais tarde.', 429);
-            await assertRateLimit(new Request('https://famasystem.online/'), 'metno_upstream', 'fama-system', 8, 1);
+            await assertRateLimit(new Request('https://watersystem.online/'), 'metno_upstream', 'fama-system', 8, 1);
             const endpoint = new URL('https://api.met.no/weatherapi/locationforecast/2.0/compact');
             endpoint.searchParams.set('lat', String(lat));
             endpoint.searchParams.set('lon', String(lon));
-            const headers = { 'User-Agent': 'FamaSystem/1.0 (+https://famasystem.online)', Accept: 'application/json' };
+            const headers = { 'User-Agent': 'WaterSystem/1.0 (+https://watersystem.online)', Accept: 'application/json' };
             if (previous?.modified)
                 headers['If-Modified-Since'] = previous.modified;
             let response;

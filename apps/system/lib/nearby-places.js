@@ -39,7 +39,7 @@ export async function nearbyPlaces(point) {
         return existing;
     const task = (async () => {
         const cache = typeof caches === 'undefined' ? undefined : caches.default;
-        const cacheKey = new Request('https://famasystem.online/__nearby/v1/' + encodeURIComponent(key));
+        const cacheKey = new Request('https://watersystem.online/__nearby/v1/' + encodeURIComponent(key));
         const saved = await cache?.match(cacheKey);
         if (saved)
             return await saved.json();

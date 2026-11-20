@@ -8,11 +8,11 @@ A fonte estática usa o retrato do catálogo conferido em 19/11/2026 para revis�
 
 ## Publicação
 
-A versão 15.23.8 foi publicada em 19/11/2026 pela conexão autenticada da Cloudflare, usando `deploy-connected.mjs`. Os identificadores, hashes e verificações estão em `deployment.json`. A página está em https://famasystem.online/ e https://famasystem.online/planos.
+A versão 15.23.8 foi publicada em 19/11/2026 pela conexão autenticada da Cloudflare, usando `deploy-connected.mjs`. Os identificadores, hashes e verificações estão em `deployment.json`. A página está em `https://famasystem.online/` e `https://famasystem.online/planos`.
 
 O publicador conectado recebe os recursos preparados por `build.mjs`, o código de `entry.mjs` com o import renomeado para `presentation-catalog.mjs`, o normalizador e um retrato atualizado das versões, hashes e contagens dos dois Workers. Primeiro executar sem ativação, depois com `activate=true`. O código roda com APIs Web, sem exportar credenciais da conexão. Quando o ambiente da conexão restringir o acesso HTTP aos domínios, `verifyPublic=false` deixa a verificação pública pendente; ela precisa ser concluída por HTTP e navegador antes de registrar a publicação como verificada.
 
-O fluxo manual `Publicar apresentação Fama System` é uma alternativa com sintaxe, verificação conjunta e testes. Ele requer os segredos `CLOUDFLARE_API_TOKEN` e `CLOUDFLARE_ACCOUNT_ID` do repositório. As credenciais ficam no ambiente do job e são usadas apenas nas solicitações à API oficial da Cloudflare. Commits de documentação não disparam nova publicação.
+O fluxo manual `Publicar apresentação Water System` é uma alternativa com sintaxe, verificação conjunta e testes. Ele requer os segredos `CLOUDFLARE_API_TOKEN` e `CLOUDFLARE_ACCOUNT_ID` do repositório. As credenciais ficam no ambiente do job e são usadas apenas nas solicitações à API oficial da Cloudflare. Commits de documentação não disparam nova publicação.
 
 `deploy.mjs` recupera os módulos e a configuração dos dois Workers, confere as versões ativas e mantém todos os arquivos anteriores, incluindo módulos binários. Os bindings são herdados com validação estrita e os assets são conservados. Os dois pacotes são preparados antes da ativação. Mudança concorrente da fonte interrompe a publicação. Uma falha na segunda aplicação restaura a primeira quando a fonte publicada ainda corresponde à atualização feita pelo fluxo.
 

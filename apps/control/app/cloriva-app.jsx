@@ -61,7 +61,7 @@ const sectionMeta = {
     finance: { eyebrow: "Receitas e despesas", title: "Financeiro", entity: "transactions", action: "Novo lançamento" },
     team: { eyebrow: "Capacidade operacional", title: "Equipe", entity: "employees", action: "Novo membro" },
     members: { eyebrow: "Conta da empresa", title: "Usuários e permissões" },
-    platform: { eyebrow: "Fama System", title: "Administração da plataforma" },
+    platform: { eyebrow: "Water System", title: "Administração da plataforma" },
 };
 const leadStages = [
     { id: "novo", label: "Novos" },
@@ -118,7 +118,7 @@ function Metric({ icon: Icon, label, value, helper, tone }) {
 function Empty({ children }) {
     return <div className="empty-state"><Droplets /><p>{children}</p></div>;
 }
-export function FamaSystemApp({ organizations, currentUser, signOutPath }) {
+export function WaterSystemApp({ organizations, currentUser, signOutPath }) {
     const [section, setSection] = useState("dashboard");
     const [activeOrganizationId, setActiveOrganizationId] = useState(organizations[0].id);
     const [data, setData] = useState(emptyData);
@@ -252,7 +252,7 @@ export function FamaSystemApp({ organizations, currentUser, signOutPath }) {
     const title = sectionMeta[section];
     return <SidebarProvider>
     <Sidebar collapsible="icon" className="main-sidebar">
-      <SidebarHeader className="sidebar-brand"><BrandMark /><div><strong>Fama System</strong><small>Gestão para piscinas</small></div></SidebarHeader>
+      <SidebarHeader className="sidebar-brand"><BrandMark /><div><strong>Water System</strong><small>Gestão para piscinas</small></div></SidebarHeader>
       <SidebarContent>
         {[...navGroups, { label: "Conta", items: [
                     ...(canManageAccess ? [{ id: "members", label: "Usuários e empresas", icon: UsersRound }] : []),

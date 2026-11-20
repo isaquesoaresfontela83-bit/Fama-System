@@ -1,4 +1,4 @@
-/* Fama Control: approved midnight-blue and gold workspace. */
+/* Water Control: approved midnight-blue and gold workspace. */
 .control-shell,.control-mobile-menu {
  --background:#03152b;--foreground:#f0f6ff;--card:#071e36;--card-foreground:#f0f6ff;--popover:#0b2440;--popover-foreground:#f0f6ff;--primary:#168ff2;--primary-foreground:#fff;--secondary:#102f50;--secondary-foreground:#e6f3ff;--muted:#102b46;--muted-foreground:#adc7e2;--accent:#123e64;--accent-foreground:#edf8ff;--border:#1d4264;--input:#255075;--ring:#1ab8f6;color-scheme:dark;color:var(--foreground);
  background:radial-gradient(ellipse at 65% -10%,#0c3056 0,transparent 50%),#03152b;

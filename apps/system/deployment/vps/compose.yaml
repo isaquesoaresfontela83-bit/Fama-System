@@ -52,7 +52,7 @@ services:
       FAMA_AI_GENERATIVE_ENABLED: ${FAMA_AI_GENERATIVE_ENABLED:-false}
       FAMA_DATA_BRIDGE_SECRET: ${FAMA_DATA_BRIDGE_SECRET}
       FAMA_INTERNAL_BAILEYS_URL: http://baileys:3010
-      BAILEYS_SERVICE_URL: https://baileys.famasystem.online
+      BAILEYS_SERVICE_URL: https://baileys.watersystem.online
       BAILEYS_API_TOKEN: ${BAILEYS_API_TOKEN}
     volumes: [control-data:/data]
 

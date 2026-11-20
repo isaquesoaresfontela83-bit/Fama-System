@@ -24,7 +24,7 @@ export async function integrationStatus(organizationId) {
     });
 }
 export async function readIntegration(organizationId, provider) {
-    if (!selectedIntegrations.some(item => item.id === provider)) throw new RequestError('Esta integração é administrada no Fama Control.', 410);
+    if (!selectedIntegrations.some(item => item.id === provider)) throw new RequestError('Esta integração é administrada no Water Control.', 410);
     return (await integrationStatus(organizationId)).find(item => item.provider === provider);
 }
 function providerFile(bytes, mimeType, name) {
@@ -46,7 +46,7 @@ export async function copyDocumentToDrive(organizationId, attachment, bytes) {
 }
 export async function sendSentryEvent(organizationId, input) {
     const kind = ['browser_error', 'unhandled_rejection', 'react_boundary', 'integration_test'].includes(input.kind) ? input.kind : 'browser_error';
-    const { data } = await integrationBackend('fama-system-integrations', 'sentry_capture', { organization_id: organizationId, message: kind === 'integration_test' ? 'Verificação da integração Fama System' : 'Falha técnica no navegador Fama System' });
+    const { data } = await integrationBackend('fama-system-integrations', 'sentry_capture', { organization_id: organizationId, message: kind === 'integration_test' ? 'Verificação da integração Water System' : 'Falha técnica no navegador Water System' });
     if (!data.event_id) throw new RequestError('O Sentry não confirmou o evento.', 502);
     return { eventId: data.event_id, accepted: true };
 }

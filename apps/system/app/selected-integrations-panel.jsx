@@ -18,7 +18,7 @@ export function SelectedIntegrationsPanel({ organizationId }) {
     return <details id="integracoes" className="surface settings-section selected-integrations">
         <summary><Link2 aria-hidden="true" /><span><strong>Integrações</strong><small>Drive, e-mail, monitoramento e leitura de documentos</small></span><b>{selectedIntegrations.length}</b></summary>
         <div className="selected-integrations-body">
-            <p>Configuração, ativação e testes ficam na central de Integrações do Fama Control. As credenciais permanecem protegidas no servidor.</p>
+            <p>Configuração, ativação e testes ficam na central de Integrações do Water Control. As credenciais permanecem protegidas no servidor.</p>
             {!items && !error && <p role="status"><Loader2 className="spin-icon" /> Conferindo configurações…</p>}
             {error && <p role="alert">{error}</p>}
             {items && selectedIntegrations.map(definition => {

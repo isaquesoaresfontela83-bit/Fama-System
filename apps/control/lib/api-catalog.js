@@ -1,8 +1,8 @@
 // Public inventory. Credentials, provider URLs supplied by users and customer data never belong here.
 const both = ['system', 'control'], system = ['system'], control = ['control'];
 export const apiCatalog = [
-    { id: 'system-api', name: 'Fama System', category: 'Infraestrutura', scopes: system, usage: 'API dos módulos operacionais, documentos, agenda e financeiro.', endpoints: ['/api/health', '/api/records', '/api/finance'], management: 'health', probe: true },
-    { id: 'control-api', name: 'Fama Control', category: 'Infraestrutura', scopes: control, usage: 'Administração de empresas, planos, permissões e integrações.', endpoints: ['/api/health', '/api/admin'], management: 'health', probe: true },
+    { id: 'system-api', name: 'Water System', category: 'Infraestrutura', scopes: system, usage: 'API dos módulos operacionais, documentos, agenda e financeiro.', endpoints: ['/api/health', '/api/records', '/api/finance'], management: 'health', probe: true },
+    { id: 'control-api', name: 'Water Control', category: 'Infraestrutura', scopes: control, usage: 'Administração de empresas, planos, permissões e integrações.', endpoints: ['/api/health', '/api/admin'], management: 'health', probe: true },
     { id: 'data-bridge', name: 'Conexão System ↔ Control', category: 'Infraestrutura', scopes: both, usage: 'Canal interno autenticado para dados, suporte e integrações.', endpoints: ['/api/internal/data', '/api/internal/integrations', '/api/internal/api-status'], management: 'health', probe: true },
     { id: 'supabase-auth', name: 'Supabase Auth', category: 'Infraestrutura', scopes: both, usage: 'Login, sessão, recuperação de acesso e autenticação.', endpoints: ['/auth/v1'], management: 'security' },
     { id: 'supabase-database', name: 'Supabase REST', category: 'Infraestrutura', scopes: both, usage: 'Dados das empresas e políticas de acesso.', endpoints: ['/rest/v1'], management: 'health', probe: true },
@@ -42,7 +42,7 @@ export const apiCatalog = [
     { id: 'scanner', name: 'Ponte local de digitalização', category: 'Documentos', scopes: system, usage: 'Scanner instalado no computador, com autorização local do usuário.', endpoints: ['127.0.0.1:17843/status', '127.0.0.1:17843/scan'], management: 'companies' },
     { id: 'pool-bridge', name: 'Fama Pool · conexão de serviços', category: 'Infraestrutura', scopes: system, usage: 'Ponte de pagamentos e encaminhamento de webhooks para o serviço de piscinas.', endpoints: ['/api/pool-provider', '/api/pool-provider/webhook'], management: 'health' },
 ];
-export const apiScopeLabels = { system: 'Fama System', control: 'Fama Control' };
+export const apiScopeLabels = { system: 'Water System', control: 'Water Control' };
 export const apiStatusLabels = { verified: 'Conexão verificada', configured: 'Configurada · não testada', public: 'Sem chave · não testada', unconfigured: 'Não configurada', paused: 'Pausada', unavailable: 'Sem resposta', unknown: 'Não conferida', device: 'Depende do dispositivo', company: 'Conexão por empresa', standby: 'Em reserva', mixed: 'Status diferentes' };
 export const apiCategories = [...new Set(apiCatalog.map(item => item.category))];
 

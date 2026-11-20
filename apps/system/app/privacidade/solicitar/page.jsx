@@ -30,10 +30,10 @@ export default function PrivacyRequestPage() {
         }
     }
     return <main className="legal-page"><article className="legal-document privacy-form-page">
-    <header><Link href="/privacidade" className="legal-brand">Fama System</Link><span>Canal de Privacidade</span></header>
+    <header><Link href="/privacidade" className="legal-brand">Water System</Link><span>Canal de Privacidade</span></header>
     <h1>Solicitação sobre dados pessoais</h1>
     <p>Informe um e-mail para contato e descreva seu pedido. Os dados deste formulário são criptografados e acessíveis somente pela administração autorizada.</p>
-    {protocol ? <div className="privacy-success"><strong>Solicitação registrada</strong><p>Guarde o protocolo: <b>{protocol}</b></p><Link href="/">Voltar ao Fama System</Link></div> : <form className="record-form" onSubmit={submit}>
+    {protocol ? <div className="privacy-success"><strong>Solicitação registrada</strong><p>Guarde o protocolo: <b>{protocol}</b></p><Link href="/">Voltar ao Water System</Link></div> : <form className="record-form" onSubmit={submit}>
       <div className="form-field span-2"><Label htmlFor="privacy-email">E-mail para contato</Label><Input id="privacy-email" name="email" type="email" required/></div>
       <div className="form-field span-2"><Label htmlFor="privacy-type">Tipo de solicitação</Label><NativeSelect id="privacy-type" name="requestType" defaultValue="access"><NativeSelectOption value="access">Confirmar ou acessar dados</NativeSelectOption><NativeSelectOption value="correction">Corrigir dados</NativeSelectOption><NativeSelectOption value="export">Exportar ou portar dados</NativeSelectOption><NativeSelectOption value="deletion">Eliminar dados</NativeSelectOption><NativeSelectOption value="revocation">Revogar consentimento ou se opor</NativeSelectOption></NativeSelect></div>
       <div className="form-field span-2"><Label htmlFor="privacy-details">Detalhes</Label><Textarea id="privacy-details" name="details" minLength={10} maxLength={3000} required/></div>

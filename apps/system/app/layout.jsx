@@ -12,13 +12,13 @@ import "./professional-layout.css";
 import "./daily-work-panel.css";
 import "./module-analytics.css";
 export const metadata = {
-    metadataBase: new URL("https://famasystem.online"),
-    title: "Fama System — Gestão para empresas de piscinas",
+    metadataBase: new URL("https://watersystem.online"),
+    title: "Water System — Gestão para empresas de piscinas",
     description: "CRM, orçamentos, contratos, garantias, agenda, ordens de serviço, clientes, estoque e financeiro em uma única operação.",
-    applicationName: "Fama System",
+    applicationName: "Water System",
     manifest: "/site.webmanifest",
-    openGraph: { type: "website", locale: "pt_BR", siteName: "Fama System", title: "Fama System — Gestão para empresas de piscinas", description: "Mais controle. Mais resultado. Mais Fama. Conheça os planos e experimente por 7 dias.", images: [{ url: "/fama-piscinas-logo.png", alt: "Fama System" }] },
-    twitter: { card: "summary", title: "Fama System", description: "Gestão para empresas de piscinas. Experimente por 7 dias." },
+    openGraph: { type: "website", locale: "pt_BR", siteName: "Water System", title: "Water System — Gestão para empresas de piscinas", description: "Mais controle. Mais resultado. Mais Fama. Conheça os planos e experimente por 7 dias.", images: [{ url: "/fama-piscinas-logo.png", alt: "Water System" }] },
+    twitter: { card: "summary", title: "Water System", description: "Gestão para empresas de piscinas. Experimente por 7 dias." },
     icons: {
         icon: [
             { url: "/favicon.ico", sizes: "16x16 32x32 48x48 64x64" },

@@ -65,7 +65,7 @@
           "sync": false
         }
       ],
-      "repo": "https://github.com/isaquesoaresfontela83-bit/Fama-System",
+      "repo": "https://github.com/isaquesoaresfontela83-bit/Water-System",
       "branch": "deploy/hybrid-15.7.0",
       "region": "virginia",
       "dockerContext": "apps/system",
@@ -157,7 +157,7 @@
           "value": "24"
         }
       ],
-      "repo": "https://github.com/isaquesoaresfontela83-bit/Fama-System",
+      "repo": "https://github.com/isaquesoaresfontela83-bit/Water-System",
       "branch": "deploy/hybrid-15.7.0",
       "autoDeployTrigger": "off"
     },
@@ -230,7 +230,7 @@
           "sync": false
         }
       ],
-      "repo": "https://github.com/isaquesoaresfontela83-bit/Fama-System",
+      "repo": "https://github.com/isaquesoaresfontela83-bit/Water-System",
       "branch": "deploy/hybrid-15.7.0",
       "region": "virginia",
       "dockerContext": "apps/control",
@@ -307,7 +307,7 @@
           "value": "24"
         }
       ],
-      "repo": "https://github.com/isaquesoaresfontela83-bit/Fama-System",
+      "repo": "https://github.com/isaquesoaresfontela83-bit/Water-System",
       "branch": "deploy/hybrid-15.7.0",
       "autoDeployTrigger": "off"
     }

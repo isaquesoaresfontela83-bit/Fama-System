@@ -1,6 +1,10 @@
+import { CONTROL_ORIGIN, SYSTEM_ORIGIN, migrateLegacyReferences } from './hosts.mjs';
+
 // Portable publisher for the authenticated Cloudflare connector. No credentials
 // leave the connection. The input contains only the new public source files.
 export async function deployWaterBrand(cloudflare, accountId, input, activate = false) {
+ const uploadTarget = input.uploadTarget;
+ if (uploadTarget && (activate || !['system', 'control'].includes(uploadTarget))) throw new Error('Invalid version upload target');
  const encode = value => new TextEncoder().encode(value);
  const sha = async bytes => [...new Uint8Array(await crypto.subtle.digest('SHA-256', bytes))]
   .map(value => value.toString(16).padStart(2, '0')).join('');
@@ -47,9 +51,10 @@ export async function deployWaterBrand(cloudflare, accountId, input, activate = 
   if (!parts.length) throw new Error('Empty Worker source');
   return parts;
  }
- if (activate && Object.values(input.baseline).some(base => !base.hash)) throw new Error('Run preparation and pin both hashes before activation');
+ const roles = uploadTarget ? [uploadTarget] : ['system', 'control'];
+ if ((activate || uploadTarget) && roles.some(role => !input.baseline[role]?.hash)) throw new Error('Run preparation and pin the baseline hashes before publishing');
  const packages = [];
- for (const kind of ['system', 'control']) {
+ for (const kind of roles) {
   const name = 'fama-' + kind + '-app';
   const path = '/accounts/' + accountId + '/workers/scripts/' + name;
   const [raw, settings, active, versions] = await Promise.all([
@@ -61,20 +66,37 @@ export async function deployWaterBrand(cloudflare, accountId, input, activate = 
   if (active.version !== baseline.version || versions.items?.[0]?.id !== active.version || (baseline.hash && baseHash !== baseline.hash) || currentParts.length !== baseline.modules) {
    throw new Error('Production changed in ' + name);
   }
-  const owned = new Set(['water-brand-main.mjs', 'water-brand-core.mjs', 'water-brand-resources.mjs']);
+  const owned = new Set(['water-brand-main.mjs', 'water-brand-core.mjs', 'water-brand-resources.mjs', 'water-brand-hosts.mjs']);
   const installed = currentParts.filter(part => part.name.startsWith('water-brand-'));
   if (!currentParts.some(part => part.name === 'motion-main.mjs') ||
-      installed.some(part => !owned.has(part.name)) || (installed.length !== 0 && installed.length !== owned.size)) {
+      installed.some(part => !owned.has(part.name)) || ![0, 3, owned.size].includes(installed.length)) {
    throw new Error('Unexpected production entry');
   }
-  const parts = currentParts.filter(part => !owned.has(part.name));
-  const before = await fingerprint(parts);
+  const updatedModules = new Set();
+  const preserved = [];
+  const parts = currentParts.filter(part => !owned.has(part.name)).map(part => {
+   if (/\.(?:mjs|js)$/.test(part.name)) {
+    const source = new TextDecoder('utf-8', { fatal: true, ignoreBOM: true }).decode(part.bytes);
+    const migrated = migrateLegacyReferences(source);
+    if (migrated !== source) {
+     updatedModules.add(part.name);
+     return { ...part, bytes: encode(migrated) };
+    }
+   }
+   preserved.push(part);
+   return part;
+  });
+  const before = await fingerprint(preserved);
   const added = [
-   { name: 'water-brand-main.mjs', body: "import app from './motion-main.mjs';\nexport * from './motion-main.mjs';\nimport {withWaterBrand} from './water-brand-core.mjs';\nimport resources from './water-brand-resources.mjs';\nexport default withWaterBrand(app,resources);" },
-   { name: 'water-brand-core.mjs', body: input.core },
+   { name: 'water-brand-main.mjs', body: "import app from './motion-main.mjs';\nexport * from './motion-main.mjs';\nimport {withWaterBrand} from './water-brand-core.mjs';\nimport resources from './water-brand-resources.mjs';\nexport default withWaterBrand(app,resources," +
+      JSON.stringify(kind) + "," + JSON.stringify(input.migratedAssetPaths[kind]) + ");" },
+   { name: 'water-brand-core.mjs', body: input.core.replace("'./hosts.mjs'", "'./water-brand-hosts.mjs'") },
    { name: 'water-brand-resources.mjs', body: 'export default ' + JSON.stringify(input.resources) + ';\n' },
+   { name: 'water-brand-hosts.mjs', body: input.hosts },
   ].map(part => ({ name: part.name, bytes: encode(part.body), type: 'application/javascript+module' }));
   const combined = [...parts, ...added];
+  const expected = await fingerprint(combined);
+  if ((activate || uploadTarget) && baseline.candidateHash !== expected) throw new Error('Prepared contents changed in ' + name);
   const metadata = { main_module: 'water-brand-main.mjs', keep_assets: true,
    bindings: settings.bindings.map(binding => ({ name: binding.name, type: 'inherit' })) };
   for (const key of ['compatibility_date', 'compatibility_flags', 'observability', 'usage_model', 'logpush', 'tail_consumers', 'tags', 'placement', 'limits']) {
@@ -84,12 +106,20 @@ export async function deployWaterBrand(cloudflare, accountId, input, activate = 
   const form = new FormData();
   form.append('metadata', new Blob([JSON.stringify(metadata)], { type: 'application/json' }));
   for (const part of combined) form.append(part.name, new Blob([part.bytes], { type: part.type }), part.name);
-  packages.push({ kind, name, path, before, baseHash, expected: await fingerprint(combined), form, active,
-   preservedModules: parts.length, modules: combined.length,
+  packages.push({ name, path, before, baseHash, expected, form, active, updatedModules,
+   preservedModules: preserved.length, modules: combined.length,
    bindingNames: settings.bindings.map(binding => binding.name).sort(), attempted: false });
  }
  const summarize = pkg => ({ name: pkg.name, previousVersion: pkg.active.version, previousDeployment: pkg.active.deployment,
-  preservedHash: pkg.before, publishedHash: pkg.expected, preservedModules: pkg.preservedModules, modules: pkg.modules, bindings: pkg.bindingNames.length });
+  baselineHash: pkg.baseHash, preservedHash: pkg.before, publishedHash: pkg.expected, preservedModules: pkg.preservedModules,
+  modules: pkg.modules, updatedModules: [...pkg.updatedModules], bindings: pkg.bindingNames.length });
+ if (uploadTarget) {
+  const [pkg] = packages;
+  await assertBase(pkg);
+  const version = await json(pkg.path + '/versions', { method: 'POST', query: { bindings_inherit: 'strict' }, body: pkg.form });
+  if (!version?.id || version.id === pkg.active.version) throw new Error('Cloudflare did not return a new version ID');
+  return { staged: true, version: input.version, release: input.release, application: summarize(pkg), versionId: version.id };
+ }
  if (!activate) return { prepared: true, version: input.version, release: input.release, applications: packages.map(summarize) };
  async function assertBase(pkg) {
   const [active, latest, raw] = await Promise.all([current(pkg.path), json(pkg.path + '/versions', { query: { page: 1, per_page: 1 } }), api(pkg.path)]);
@@ -103,7 +133,8 @@ export async function deployWaterBrand(cloudflare, accountId, input, activate = 
    await api(pkg.path, { method: 'PUT', query: { bindings_inherit: 'strict' }, body: pkg.form });
    pkg.published = await current(pkg.path);
    const modules = await readModules(await api(pkg.path));
-   if (await fingerprint(modules) !== pkg.expected || await fingerprint(modules.filter(part => !part.name.startsWith('water-brand-'))) !== pkg.before) throw new Error('Published module integrity mismatch');
+   const preserved = modules.filter(part => !part.name.startsWith('water-brand-') && !pkg.updatedModules.has(part.name));
+   if (await fingerprint(modules) !== pkg.expected || await fingerprint(preserved) !== pkg.before) throw new Error('Published module integrity mismatch');
    const settings = await json(pkg.path + '/settings');
    if (JSON.stringify(settings.bindings.map(binding => binding.name).sort()) !== JSON.stringify(pkg.bindingNames)) throw new Error('Published binding mismatch');
   }
@@ -120,13 +151,13 @@ export async function deployWaterBrand(cloudflare, accountId, input, activate = 
   // Connector environments can restrict fetch to the provider API. In that
   // case the caller must finish the public checks in the live browser.
   if (input.verifyPublic !== false) {
-  for (const origin of ['https://famasystem.online', 'https://control.famasystem.online']) {
+  for (const origin of [SYSTEM_ORIGIN, CONTROL_ORIGIN]) {
    await verify(origin + '/api/health', async response => {
     const health = await response.json();
     return health.version === input.version && health.release === input.release;
    });
   }
-  for (const [origin, path] of [['https://famasystem.online', '/entrar'], ['https://control.famasystem.online', '/']]) {
+  for (const [origin, path] of [[SYSTEM_ORIGIN, '/entrar'], [CONTROL_ORIGIN, '/']]) {
    await verify(origin + path, async response => (await response.text()).includes(input.prefix + 'brand.js'));
    await verify(origin + input.prefix + 'icon.webp', async response => response.headers.get('Content-Type') === 'image/webp');
   }

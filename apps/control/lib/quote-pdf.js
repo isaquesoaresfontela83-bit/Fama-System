@@ -115,6 +115,6 @@ export async function generateQuotePdf(quote, organizationName) {
     pdf.setFontSize(8);
     pdf.setTextColor(117, 141, 148);
     pdf.text(`Proposta emitida pela ${organizationName}`.slice(0, 70), left, 283);
-    pdf.text("Gerado pelo Fama System", right, 283, { align: "right" });
+    pdf.text("Gerado pelo Water System", right, 283, { align: "right" });
     pdf.save(`${quote.quoteNumber.toLowerCase()}-${quote.clientName.toLowerCase().replace(/[^a-z0-9]+/g, "-")}.pdf`);
 }

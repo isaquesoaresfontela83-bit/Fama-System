@@ -1,14 +1,14 @@
 import Link from "next/link";
 import { PLAN_PRICE_NOTICE } from "@/lib/plans";
-export const metadata = { title: "Termos de Uso | Fama System" };
+export const metadata = { title: "Termos de Uso | Water System" };
 export default function TermsPage() {
     return <main className="legal-page"><article className="legal-document">
-    <header><Link href="/" className="legal-brand">Fama System</Link><span>Atualizado em 11 de outubro de 2026</span></header>
+    <header><Link href="/" className="legal-brand">Water System</Link><span>Atualizado em 11 de outubro de 2026</span></header>
     <h1>Termos de Uso</h1>
-    <p>Estes Termos regulam o acesso e o uso do Fama System, plataforma de gestão para empresas de piscinas, manutenção, contratos, CRM, financeiro, cobranças, suporte e automações internas. Ao criar uma conta, criar uma empresa, contratar um plano, conectar integrações ou continuar usando o sistema, o usuário declara que leu, compreendeu e aceitou estas regras.</p>
+    <p>Estes Termos regulam o acesso e o uso do Water System, plataforma de gestão para empresas de piscinas, manutenção, contratos, CRM, financeiro, cobranças, suporte e automações internas. Ao criar uma conta, criar uma empresa, contratar um plano, conectar integrações ou continuar usando o sistema, o usuário declara que leu, compreendeu e aceitou estas regras.</p>
 
     <h2>1. Quem pode usar</h2>
-    <p>O Fama System deve ser usado por pessoas autorizadas pela empresa contratante. O responsável pela contratação declara que possui poderes para representar a empresa, cadastrar usuários, aceitar políticas, contratar planos e administrar dados operacionais, financeiros e comerciais.</p>
+    <p>O Water System deve ser usado por pessoas autorizadas pela empresa contratante. O responsável pela contratação declara que possui poderes para representar a empresa, cadastrar usuários, aceitar políticas, contratar planos e administrar dados operacionais, financeiros e comerciais.</p>
 
     <h2>2. Conta, senha e acesso</h2>
     <p>Cada pessoa deve usar sua própria conta. É proibido compartilhar senha, emprestar acesso, vender acesso não autorizado, tentar entrar em conta de terceiros ou contornar controles de segurança. A empresa deve manter dados de login atualizados, remover usuários que saírem da equipe e usar senhas fortes.</p>
@@ -18,7 +18,7 @@ export default function TermsPage() {
 
     <h2>4. Planos, contratação e ativação</h2>
     <p>O primeiro ambiente criado pelo próprio cliente tem teste grátis de 7 dias. Ao terminar, os módulos ficam bloqueados até a confirmação do pagamento do plano. O teste não gera cobrança automática. A contratação antecipada é opcional e o pagamento deve ser conferido antes de ativar o ambiente.</p>
-    <p>O acesso pode depender de plano pago, teste ou autorização administrativa. Quando houver pagamento antes da criação da empresa, o ambiente só será liberado após confirmação do pagamento ou aprovação manual no Fama Control. Valores, limites, usuários, recursos, suporte e vencimentos podem variar conforme o plano contratado.</p>
+    <p>O acesso pode depender de plano pago, teste ou autorização administrativa. Quando houver pagamento antes da criação da empresa, o ambiente só será liberado após confirmação do pagamento ou aprovação manual no Water Control. Valores, limites, usuários, recursos, suporte e vencimentos podem variar conforme o plano contratado.</p>
     <p>{PLAN_PRICE_NOTICE}</p>
 
     <h2>5. Pagamentos, Pix e cobranças</h2>
@@ -28,7 +28,7 @@ export default function TermsPage() {
     <h2>6. Financeiro, bancos e integrações</h2>
     <p>Notas fiscais podem ser preparadas e arquivadas no sistema após emissão pelo portal oficial. A emissão automática de NFS-e pela Asaas exige conta aprovada, configuração fiscal da empresa e disponibilidade do município. O plano, sozinho, não ativa essa integração.</p>
     <p>Funcionalidades de saldo, extrato, conciliação, envio de Pix, criação de clientes, cobranças e sincronização automática dependem de chaves, permissões e disponibilidade do provedor conectado. A empresa deve conectar somente contas próprias ou contas que esteja autorizada a administrar.</p>
-    <p>Ao cadastrar chave de API, token ou credencial de integração, a empresa autoriza o Fama System a executar as ações técnicas necessárias para exibir dados, sincronizar movimentações, criar cobranças e, quando habilitado, iniciar pagamentos. A empresa deve revisar cada operação financeira antes de confirmar.</p>
+    <p>Ao cadastrar chave de API, token ou credencial de integração, a empresa autoriza o Water System a executar as ações técnicas necessárias para exibir dados, sincronizar movimentações, criar cobranças e, quando habilitado, iniciar pagamentos. A empresa deve revisar cada operação financeira antes de confirmar.</p>
 
     <h2>7. Orçamentos, juros e cálculos</h2>
     <p>O sistema pode calcular orçamento, mão de obra, deslocamento, urgência, descontos, juros de cartão, parcelas e total final. Esses cálculos são ferramentas de apoio. A empresa deve conferir taxas, impostos, regras do adquirente, margem, condições comerciais e obrigações legais antes de enviar a proposta ao cliente.</p>
@@ -40,7 +40,7 @@ export default function TermsPage() {
     <p>Recursos de IA podem gerar sugestões, resumos, mensagens, cronogramas, lembretes e análises. A IA pode errar, omitir contexto ou interpretar dados de forma incompleta. Antes de enviar mensagens, cronogramas, propostas, cobranças ou decisões para clientes e técnicos, a empresa deve revisar o conteúdo.</p>
 
     <h2>10. WhatsApp, mensagens e comunicação</h2>
-    <p>Quando houver integração ou apoio para comunicação por WhatsApp, e-mail ou outros canais, a empresa deve respeitar consentimento dos destinatários, horários adequados, regras anti-spam, políticas das plataformas e legislação aplicável. O Fama System não garante entrega de mensagens por serviços de terceiros.</p>
+    <p>Quando houver integração ou apoio para comunicação por WhatsApp, e-mail ou outros canais, a empresa deve respeitar consentimento dos destinatários, horários adequados, regras anti-spam, políticas das plataformas e legislação aplicável. O Water System não garante entrega de mensagens por serviços de terceiros.</p>
 
     <h2>11. Suporte e feedback</h2>
     <p>A aba de suporte pode ser usada para reportar erros, melhorias e solicitações. O envio de feedback autoriza o uso das informações necessárias para análise técnica, correção e melhoria do sistema. Dados sensíveis não devem ser enviados em excesso no campo de suporte.</p>
@@ -61,7 +61,7 @@ export default function TermsPage() {
     <p>O acesso pode ser suspenso por falta de pagamento, risco de segurança, violação destes Termos, ordem legal, uso indevido ou tentativa de fraude. O encerramento não elimina obrigações anteriores, débitos, registros de auditoria ou retenções necessárias para segurança, defesa de direitos e cumprimento legal.</p>
 
     <h2>17. Limitação de responsabilidade</h2>
-    <p>O Fama System organiza processos e automatiza rotinas, mas não substitui assessoria jurídica, contábil, fiscal, técnica, bancária ou financeira. A empresa é responsável por decisões comerciais, cobranças, pagamentos, mensagens, execução dos serviços e relacionamento com clientes.</p>
+    <p>O Water System organiza processos e automatiza rotinas, mas não substitui assessoria jurídica, contábil, fiscal, técnica, bancária ou financeira. A empresa é responsável por decisões comerciais, cobranças, pagamentos, mensagens, execução dos serviços e relacionamento com clientes.</p>
 
     <h2>18. Privacidade</h2>
     <p>O tratamento de dados pessoais segue a <Link href="/privacidade">Política de Privacidade</Link>. Incidentes, suspeitas de acesso indevido ou solicitações de titulares devem ser comunicados pelo <Link href="/privacidade/solicitar">Canal de Privacidade</Link>.</p>
@@ -69,6 +69,6 @@ export default function TermsPage() {
     <h2>19. Alterações destes Termos</h2>
     <p>Estes Termos podem ser atualizados quando houver mudanças no sistema, planos, integrações, segurança, legislação ou operação. Quando a alteração for relevante, o sistema poderá exigir novo aceite antes da continuidade de uso.</p>
 
-    <footer><Link href="/">Voltar ao Fama System</Link><Link href="/privacidade">Política de Privacidade</Link><Link href="/privacidade/solicitar">Canal de Privacidade</Link></footer>
+    <footer><Link href="/">Voltar ao Water System</Link><Link href="/privacidade">Política de Privacidade</Link><Link href="/privacidade/solicitar">Canal de Privacidade</Link></footer>
   </article></main>;
 }

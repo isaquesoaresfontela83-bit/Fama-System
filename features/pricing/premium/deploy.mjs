@@ -171,18 +171,18 @@ export async function deploy({ token, accountId, activate = false, http = fetch 
    }
    throw new Error('A publicação não foi confirmada em ' + url);
   }
-  for (const origin of ['https://famasystem.online', 'https://control.famasystem.online']) {
+  for (const origin of ['https://watersystem.online', 'https://control.watersystem.online']) {
    await verifyResponse(origin + '/api/health', async response => {
     const health = await response.json();
     return health.version === VERSION && health.release === RELEASE;
    });
   }
-  await verifyResponse('https://famasystem.online/planos', async response => {
+  await verifyResponse('https://watersystem.online/planos', async response => {
    const html = await response.text();
    return html.includes('id="theme-toggle"') && html.includes('id="fama-public-catalog"');
   });
   for (const file of ['app.js', 'catalog.js', 'theme.js', 'style.css']) {
-   await verifyResponse('https://famasystem.online' + PREFIX + file, async response =>
+   await verifyResponse('https://watersystem.online' + PREFIX + file, async response =>
     await response.text() === resources[PREFIX + file].body);
   }
   return { success: true, version: VERSION, release: RELEASE, applications: packages.map((pkg, index) => ({ ...summary[index], version: pkg.newVersion })) };

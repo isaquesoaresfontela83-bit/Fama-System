@@ -13,12 +13,12 @@ async function centralOperation(action, input) {
     const send = env.FAMA_CONTROL?.fetch ? env.FAMA_CONTROL.fetch.bind(env.FAMA_CONTROL) : fetch;
     let response;
     try {
-        response = await send('https://control.famasystem.online/api/internal/integrations', {
+        response = await send('https://control.watersystem.online/api/internal/integrations', {
             method: 'POST', redirect: 'manual', signal: AbortSignal.timeout(30000),
             headers: { Authorization: 'Bearer ' + env.FAMA_DATA_BRIDGE_SECRET, 'Content-Type': 'application/json' },
             body: JSON.stringify({ ...input, action }),
         });
-    } catch { throw new RequestError('A central de integrações do Fama Control está indisponível.', 502); }
+    } catch { throw new RequestError('A central de integrações do Water Control está indisponível.', 502); }
     // Allows a compatible rolling update while the companion's new route is published.
     if (response.status === 404) { await response.body?.cancel(); return null; }
     let result;

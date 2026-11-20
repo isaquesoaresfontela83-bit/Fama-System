@@ -1,4 +1,4 @@
-# Central de integrações do Fama Control
+# Central de integrações do Water Control
 
 Em **Integrações**, o proprietário configura Google Drive, Resend, Sentry, OCR.space, IPinfo Lite e GitHub. A central reúne configuração, ativação, testes, documentos, consultas e atividade. As rotas administrativas verificam a sessão do proprietário e a origem das alterações.
 
@@ -15,7 +15,7 @@ As credenciais são criptografadas com AES-GCM no D1 do Control usando `FAMA_DAT
 
 Drive e e-mail aceitam arquivos de até 5 MB; OCR, até 1 MB. A central aceita PDF, JPG e PNG, confere a assinatura do arquivo e não envia nada ao selecionar o arquivo. E-mails usam identificação de operação, registro durável e chave de idempotência; timeouts ou resultados incertos não geram repetição automática. O registro da atividade contém provedor, operação, situação, recibo e horário, sem conteúdo dos documentos ou destinatários.
 
-## Integração com Fama System
+## Integração com Water System
 
 O System mantém as ações de documento em seus registros. Após a validação de empresa, papel, módulo e documento, usa a rota interna do Control com `FAMA_DATA_BRIDGE_SECRET` e o binding `FAMA_CONTROL` quando presente. Chaves dos provedores ficam apenas no Control. A rota interna não expõe operações administrativas de GitHub/IPinfo, configuração ou leitura de outras empresas.
 

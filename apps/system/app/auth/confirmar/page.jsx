@@ -28,5 +28,5 @@ export default function ConfirmAccountPage() {
             setStatus(payload.requiresMfa ? "Conta confirmada. Entre novamente para concluir a verificação em duas etapas." : "Conta confirmada. Seu acesso está pronto.");
         }).catch((error) => setStatus(error instanceof Error ? error.message : "Não foi possível confirmar a conta."));
     }, []);
-    return <main className="legal-page"><section className="legal-document auth-result"><span className="legal-brand">Fama System</span><h1>{success ? "Tudo certo" : "Confirmação da conta"}</h1><p>{status}</p><Link href={nextPath}>Ir para o Fama System</Link></section></main>;
+    return <main className="legal-page"><section className="legal-document auth-result"><span className="legal-brand">Water System</span><h1>{success ? "Tudo certo" : "Confirmação da conta"}</h1><p>{status}</p><Link href={nextPath}>Ir para o Water System</Link></section></main>;
 }

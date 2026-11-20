@@ -34,7 +34,7 @@ test('search, area and status filters compose and provide an empty state', async
 });
 test('a diagnostic runs only after clicking and updates only the requested scope', async () => {
     await open(); assert.ok(calls.every(call => !call.init.method));
-    await act(async () => renderer.root.findByProps({ 'aria-label': 'Testar Cloudflare D1 no Fama Control' }).props.onClick());
+    await act(async () => renderer.root.findByProps({ 'aria-label': 'Testar Cloudflare D1 no Water Control' }).props.onClick());
     const request = calls.find(call => call.init.method === 'POST'); assert.deepEqual(JSON.parse(request.init.body), { id: 'cloudflare-d1', scope: 'control' });
     const card = renderer.root.findByProps({ 'data-api-id': 'cloudflare-d1' }); assert.match(label(card), /Conexão verificada/); assert.match(label(card), /Configurada · não testada/); assert.match(label(card), /Resposta conferida em/);
 });

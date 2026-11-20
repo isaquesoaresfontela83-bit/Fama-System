@@ -1,6 +1,6 @@
 # Prévia óptica — 15.23.7
 
-https://famasystem.online/previa-liquidglass
+https://watersystem.online/previa-liquidglass
 
 Protótipo independente em tema escuro e fundo sem imagem. Há lentes WebGL com refração, interação fluida e reflexos por liquidGL, e uma lente demonstrativa arrastável sobre conteúdo real. A alternativa sem GPU usa um campo de deslocamento SVG calculado a partir das normais de uma lente arredondada, com ampliação e espessura ajustável. A camada visual clonada é inert e aria-hidden, e não substitui os controles acessíveis da página.
 

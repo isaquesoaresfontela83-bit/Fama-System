@@ -1,4 +1,4 @@
--- Accept every CRM stage offered by Fama System; preserve existing records.
+-- Accept every CRM stage offered by Water System; preserve existing records.
 SET lock_timeout = '5s';
 SET statement_timeout = '15s';
 ALTER TABLE public.leads

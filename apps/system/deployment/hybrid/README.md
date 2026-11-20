@@ -1,4 +1,4 @@
-# Fama System e Fama Control: hospedagem híbrida
+# Water System e Water Control: hospedagem híbrida
 
 Versão conjunta 15.7.0. As interfaces React são compiladas como sites estáticos; os endpoints protegidos continuam em Node.js na Render; login e dados operacionais permanecem no Supabase. O banco auxiliar passa para esquemas PostgreSQL privados no mesmo projeto Supabase. O Control arquiva backups criptografados em um bucket Supabase privado quando configurado.
 
@@ -52,4 +52,4 @@ Os caminhos excepcionais de configuração Asaas e atualização do leitor são 
 
 Conferir os dois logins, MFA, confirmação e recuperação, alternância de contas, isolamento de empresas, contratos, orçamentos/PDF, planos, cobranças, agenda, notificações, Gerenciar APIs e backups. Comparar registros importados, contagens e campos criptografados com as cópias originais. Despertar a Render após suspensão e confirmar que configurações continuam salvas. Não ativar geração Python nem WhatsApp Baileys até existir serviço persistente apropriado.
 
-Os testes locais não substituem validação dos cookies, limites de memória, credenciais, banco e rede na hospedagem real. Só trocar `famasystem.online` e `control.famasystem.online` depois de os dois destinos passarem pela validação. Guardar as versões e os dados atuais para retorno. Este arquivo não comprova publicação.
+Os testes locais não substituem validação dos cookies, limites de memória, credenciais, banco e rede na hospedagem real. Só trocar `watersystem.online` e `control.watersystem.online` depois de os dois destinos passarem pela validação. Guardar as versões e os dados atuais para retorno. Este arquivo não comprova publicação.

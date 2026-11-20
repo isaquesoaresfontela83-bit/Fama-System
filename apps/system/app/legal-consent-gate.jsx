@@ -30,7 +30,7 @@ export function LegalConsentGate({ currentUser, displayName, signOutPath }) {
     }
     return <main className="onboarding-page">
     <section className="onboarding-panel legal-gate">
-      <div className="onboarding-head"><div className="onboarding-brand"><span className="brand-mark"><img src="/fama-piscinas-mark.png" alt=""/></span><div><strong>Fama System</strong><small>Atualização de segurança e privacidade</small></div></div><div className="onboarding-head-actions">{currentUser && <AccountSwitcher currentUser={currentUser}/>}<ThemeToggle /></div></div>
+      <div className="onboarding-head"><div className="onboarding-brand"><span className="brand-mark"><img src="/fama-piscinas-mark.png" alt=""/></span><div><strong>Water System</strong><small>Atualização de segurança e privacidade</small></div></div><div className="onboarding-head-actions">{currentUser && <AccountSwitcher currentUser={currentUser}/>}<ThemeToggle /></div></div>
       <span className="onboarding-icon"><FileCheck2 /></span>
       <p className="onboarding-step">ANTES DE CONTINUAR</p>
       <h1>Confirme os documentos da plataforma</h1>

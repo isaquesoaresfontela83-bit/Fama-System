@@ -108,7 +108,7 @@ window.addEventListener('storage', event => {
 });
 
 function checkoutUrl(planCode) {
- return 'https://famasystem.online/assinar/' + planCode + '?cycle=' + selectedCycle;
+ return 'https://watersystem.online/assinar/' + planCode + '?cycle=' + selectedCycle;
 }
 
 function billingDescription(plan) {

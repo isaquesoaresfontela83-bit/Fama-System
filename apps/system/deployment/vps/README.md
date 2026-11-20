@@ -1,4 +1,4 @@
-# Fama System + Fama Control em VPS
+# Water System + Water Control em VPS
 
 Destino escolhido: Oracle Cloud Always Free, sujeito à aprovação do cadastro e à disponibilidade de capacidade. Esta preparação não cria uma conta Oracle, não provisiona um servidor e não altera os domínios atuais.
 

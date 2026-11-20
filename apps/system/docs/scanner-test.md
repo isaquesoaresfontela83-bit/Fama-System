@@ -7,7 +7,7 @@ No detalhe de um cliente, contrato ou pedido, abra Arquivos do registro → Digi
 - Windows, macOS ou Linux com Python 3, NAPS2 e perfil chamado Fama configurado com a digitalizadora. Windows aceita WIA sem NAPS2.
 - Scanner disponível e conectado ao mesmo computador do navegador.
 - A compatibilidade física com Epson L350 ainda não foi validada.
-- Acesso a https://famasystem.online e armazenamento de anexos já configurado na empresa.
+- Acesso a https://watersystem.online e armazenamento de anexos já configurado na empresa.
 
 Baixe o conector pela própria tela e execute `python fama-scanner.py`. Informe o código temporário exibido. O código muda a cada execução e não é armazenado no navegador. Autorize acesso à rede local se o navegador solicitar.
 

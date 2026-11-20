@@ -38,7 +38,7 @@ export async function POST(request) {
             const hash = deviceCookie(request);
             if (!hash)
                 throw new RequestError('Ative as notificações neste navegador antes de testar.', 400);
-            return Response.json(await deliverPush(organization.id, user.id, crypto.randomUUID(), 'agenda', 'Fama System', 'Teste recebido! As notificações deste aparelho estão funcionando.', hash), { headers });
+            return Response.json(await deliverPush(organization.id, user.id, crypto.randomUUID(), 'agenda', 'Water System', 'Teste recebido! As notificações deste aparelho estão funcionando.', hash), { headers });
         }
         if (input.action === 'sync') {
             const snapshot = await bootstrap(request);
@@ -49,7 +49,7 @@ export async function POST(request) {
             const alerts = workspaceAlerts(data, allowed, 0).slice(0, 10);
             let sent = 0;
             for (const alert of alerts) {
-                const result = await deliverPush(organization.id, user.id, new Date().toISOString().slice(0, 10) + ':' + alert.id, alert.item.section, 'Fama System · ' + alert.title, 'Há uma pendência na sua empresa. Abra o Fama para consultar os detalhes.');
+                const result = await deliverPush(organization.id, user.id, new Date().toISOString().slice(0, 10) + ':' + alert.id, alert.item.section, 'Water System · ' + alert.title, 'Há uma pendência na sua empresa. Abra o Fama para consultar os detalhes.');
                 sent += result.sent;
             }
             return Response.json({ sent }, { headers });

@@ -119,7 +119,7 @@ export function AccessGate({ initialMode = "login", addingAccount = false, recon
     <nav className="public-nav">
       <div className="public-brand">
         <span className="brand-mark" aria-hidden="true"><img src="/fama-piscinas-mark.png" alt=""/></span>
-        <div><strong>Fama System</strong><small>Gestão inteligente para piscinas</small></div>
+        <div><strong>Water System</strong><small>Gestão inteligente para piscinas</small></div>
       </div>
       <div className="public-nav-actions">
         <a href="/planos" className="public-manual-link">Planos e valores</a>
@@ -134,8 +134,8 @@ export function AccessGate({ initialMode = "login", addingAccount = false, recon
         <h1>Sua operação inteira, organizada em um só lugar.</h1>
         <p>CRM, orçamentos em PDF, agenda, ordens de serviço, garantias, contratos, estoque, financeiro e equipe — com uma área privada para cada empresa.</p>
         <div className="public-trust"><ShieldCheck /><span><strong>Dados isolados por empresa</strong>Criptografia, histórico de segurança e recuperação de exclusões.</span></div>
-        <section className="login-product-visual" aria-label="Prévia ilustrativa dos módulos do Fama System">
-          <div className="login-product-top"><span>FAMA SYSTEM <i>AMBIENTE DE GESTÃO</i></span><b>● Operação</b></div>
+        <section className="login-product-visual" aria-label="Prévia ilustrativa dos módulos do Water System">
+          <div className="login-product-top"><span>WATER SYSTEM <i>AMBIENTE DE GESTÃO</i></span><b>● Operação</b></div>
           <div className="login-product-body"><aside><strong>F</strong><span>Visão geral</span><span>Clientes</span><span>Agenda</span><span>Financeiro</span></aside><div className="login-product-main"><small>RESUMO DA OPERAÇÃO</small><h3>Hoje, em um só lugar</h3><div className="login-product-stats"><span><small>Visitas</small><b>Agenda</b></span><span><small>Atendimentos</small><b>Ordens de serviço</b></span><span><small>Contas</small><b>Financeiro</b></span></div><div className="login-product-flow"><i>CRM</i><span>→</span><i>Orçamento</i><span>→</span><i>Serviço</i><span>→</span><i>Recebimento</i></div></div></div>
           <p>Prévia ilustrativa · acesse o manual para ver cada área</p>
         </section>
@@ -149,7 +149,7 @@ export function AccessGate({ initialMode = "login", addingAccount = false, recon
         <form onSubmit={submit}>
           {mode === "signup" && <div className="form-field"><Label htmlFor="auth-name">Seu nome</Label><Input id="auth-name" name="fullName" autoComplete="name" minLength={2} maxLength={80} required/></div>}
           {(mode === "login" || mode === "signup" || mode === "recover") && <div className="form-field"><Label htmlFor="auth-email">E-mail</Label><Input id="auth-email" name="email" type="email" autoComplete="email" defaultValue={initialEmail} required/></div>}
-          {mode === "login" && <div className="form-field"><Label htmlFor="auth-company">Empresa (opcional)</Label><Input id="auth-company" name="company" autoComplete="organization" placeholder="Nome cadastrado no Fama System"/><small className="auth-help">Use para confirmar a empresa antes do acesso.</small></div>}
+          {mode === "login" && <div className="form-field"><Label htmlFor="auth-company">Empresa (opcional)</Label><Input id="auth-company" name="company" autoComplete="organization" placeholder="Nome cadastrado no Water System"/><small className="auth-help">Use para confirmar a empresa antes do acesso.</small></div>}
           {(mode === "login" || mode === "signup") && <div className="form-field"><Label htmlFor="auth-password">Senha</Label><div className="password-field"><Input id="auth-password" name="password" type={showPassword ? "text" : "password"} autoComplete={mode === "signup" ? "new-password" : "current-password"} minLength={mode === "signup" ? MIN_PASSWORD_LENGTH : undefined} maxLength={mode === "signup" ? MAX_PASSWORD_LENGTH : undefined} required/><button type="button" onClick={() => setShowPassword((value) => !value)} aria-label={showPassword ? "Ocultar senha" : "Mostrar senha"}>{showPassword ? <EyeOff /> : <Eye />}</button></div>{mode === "signup" && <small className="auth-help">{PASSWORD_HELP}</small>}</div>}
           {mode === "signup" && <label className="auth-consent"><input name="accepted" type="checkbox" required/><span>Li e aceito os <a href="/termos" target="_blank">Termos de Uso</a> e a <a href="/privacidade" target="_blank">Política de Privacidade</a>.</span></label>}
           {mode === "signup" && <label className="auth-consent"><input name="localAiStorage" type="checkbox"/><span><strong>Autorizar armazenamento da IA neste aparelho</strong><br />Permito salvar os modelos neste navegador e baixar automaticamente ao entrar. Voz: cerca de 70 MB; conversa local: cerca de 600 MB em aparelhos compatíveis. Pode consumir dados móveis. Posso pausar depois. Esta opção é opcional.</span></label>}
@@ -171,6 +171,6 @@ export function AccessGate({ initialMode = "login", addingAccount = false, recon
       <article><CalendarDays /><h2>Organize a equipe</h2><p>Centralize agenda, serviços e atendimentos de garantia.</p></article>
       <article><ShieldCheck /><h2>Proteja a operação</h2><p>Controle acessos, registre atividades e recupere exclusões.</p></article>
     </section>
-    <footer className="public-legal"><span>© 2026 Fama System · v{FAMA_VERSION}</span><a href="/manual">Manual completo</a><a href="/termos">Termos de Uso</a><a href="/privacidade">Privacidade</a></footer>
+    <footer className="public-legal"><span>© 2026 Water System · v{FAMA_VERSION}</span><a href="/manual">Manual completo</a><a href="/termos">Termos de Uso</a><a href="/privacidade">Privacidade</a></footer>
   </main>;
 }

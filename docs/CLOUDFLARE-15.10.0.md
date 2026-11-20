@@ -1,11 +1,11 @@
 # Cloudflare — gráficos por módulo 15.10.0 — 22/10/2026
 
-Fama System e Fama Control **15.10.0**, lançamento `2026-10-22-module-charts-01`, ativados e conferidos nos dois domínios existentes.
+Water System e Water Control **15.10.0**, lançamento `2026-10-22-module-charts-01`, ativados e conferidos nos dois domínios existentes.
 
 | Aplicação | Endereço | Versão Worker ativa | Implantação |
 | --- | --- | --- | --- |
-| System | https://famasystem.online/entrar | `23bf135c-62ac-4df4-a370-280b582df8e5` | `c472d7c3-25c8-4b6c-b004-3eb61ae5a16c` |
-| Control | https://control.famasystem.online/ | `15496083-fb79-4f35-b084-340d49ea6b7e` | `c57452a6-0591-441d-8dc3-e2508b71a79d` |
+| System | `https://famasystem.online/entrar` | `23bf135c-62ac-4df4-a370-280b582df8e5` | `c472d7c3-25c8-4b6c-b004-3eb61ae5a16c` |
+| Control | `https://control.famasystem.online/` | `15496083-fb79-4f35-b084-340d49ea6b7e` | `c57452a6-0591-441d-8dc3-e2508b71a79d` |
 
 ## Comportamento publicado
 

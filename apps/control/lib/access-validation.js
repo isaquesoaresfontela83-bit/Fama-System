@@ -9,7 +9,7 @@ import { POST as createCompany } from "@/app/api/admin/organizations/route";
 import { PATCH as changeCompany } from "@/app/api/admin/organizations/[id]/route";
 import { POST as createMember } from "@/app/api/admin/organizations/[id]/members/route";
 import { PATCH as changeMember } from "@/app/api/admin/members/[id]/route";
-const SYSTEM_ORIGIN = "https://famasystem.online";
+const SYSTEM_ORIGIN = "https://watersystem.online";
 const ENTITY = "access_validation";
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 const stages = ["start", "members", "access", "cleanup"];
@@ -73,7 +73,7 @@ async function login(run, person) {
     const entries = cookieHeaders.flatMap(value => value.split(/,(?=\s*__Host-)/)).map(value => value.trim().split(";")[0]);
     const access = entries.find(value => value.startsWith("__Host-fama-access="));
     if (!access)
-        throw new RequestError("O Fama System não confirmou a sessão da conta de teste.", 502);
+        throw new RequestError("O Water System não confirmou a sessão da conta de teste.", 502);
     return { cookie: entries.filter(value => value.startsWith("__Host-fama-access=") || value.startsWith("__Host-fama-refresh=")).join("; "), accessToken: access.slice("__Host-fama-access=".length) };
 }
 async function system(session, run, path, body, organizationId = run.organizationId) {
@@ -177,7 +177,7 @@ export async function executeValidation(parent, actorId, stage, runId) {
             session = await login(run, "owner");
             const access = await system(session, run, "/api/access");
             const accessPayload = await access.json();
-            check(run, "login", "Login real do responsável no Fama System", access.status === 200 && accessPayload.access?.role === "owner" && accessPayload.access.billingEnabled === false && accessPayload.access.blockOnExpiry === false);
+            check(run, "login", "Login real do responsável no Water System", access.status === 200 && accessPayload.access?.role === "owner" && accessPayload.access.billingEnabled === false && accessPayload.access.blockOnExpiry === false);
             check(run, "bootstrap", "Módulos liberados sem mensalidade", (await system(session, run, "/api/bootstrap")).status === 200);
             check(run, "exemption", "Empresa isenta não pode gerar cobrança de mensalidade", (await system(session, run, "/api/billing", { plan: "profissional", billingCycle: "monthly" })).status === 409);
         }

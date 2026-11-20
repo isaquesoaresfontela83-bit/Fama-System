@@ -4,7 +4,7 @@ import test, { before, after } from "node:test";
 const originalFetch = globalThis.fetch;
 before(() => {
   globalThis.fetch = async (url) => {
-    assert.equal(String(url), "https://control.famasystem.online/api/public/plans");
+    assert.equal(String(url), "https://control.watersystem.online/api/public/plans");
     return Response.json({ plans: [] });
   };
 });
@@ -47,7 +47,7 @@ test("renders production branding without development metadata", async () => {
     /^text\/html\b/i,
   );
   const html = await response.text();
-  assert.match(html, /Fama System/);
+  assert.match(html, /Water System/);
   assert.doesNotMatch(html, developmentPreviewMeta);
 });
 

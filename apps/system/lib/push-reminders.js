@@ -59,7 +59,7 @@ export async function runPushReminderBatch(cursor = '') {
                 data[category] = await rows(table, pair.organization_id, fields);
             }
             for (const reminder of dueReminders(data)) {
-                const result = await deliverPush(pair.organization_id, pair.user_id, 'scheduled:' + reminder.id, reminder.category, 'Fama System', reminder.title + ' Abra o Fama para ver os detalhes.');
+                const result = await deliverPush(pair.organization_id, pair.user_id, 'scheduled:' + reminder.id, reminder.category, 'Water System', reminder.title + ' Abra o Fama para ver os detalhes.');
                 sent += result.sent;
                 if (result.sent)
                     break;

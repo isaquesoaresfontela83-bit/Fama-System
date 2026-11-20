@@ -31,6 +31,9 @@
   z-index: 2147483647;
   display: grid;
   place-items: center;
+  box-sizing: border-box;
+  padding-inline: max(1rem, env(safe-area-inset-left), env(safe-area-inset-right));
+  padding-block: max(.75rem, env(safe-area-inset-top), env(safe-area-inset-bottom));
   overflow: hidden;
   background: #0a1529;
   color: #f3f9ff;
@@ -39,28 +42,42 @@
 }
 
 .water-opening-lockup {
-  --water-opening-mark-width: clamp(64px, 20vw, 86px);
+  --water-opening-mark-width: clamp(3rem, 17vw, 6rem);
   display: flex;
   align-items: center;
+  gap: clamp(.16rem, .65vw, .28rem);
   animation: water-opening-lockup var(--water-opening-duration) cubic-bezier(.3, 0, .2, 1) both;
 }
 
-.water-opening-lockup > img {
-  display: block;
+.water-opening-mark {
+  position: relative;
+  flex: none;
   width: var(--water-opening-mark-width);
+  /* Frame the visible 226 × 132 region of the 256 × 256 monogram. */
+  aspect-ratio: 226 / 132;
+  overflow: hidden;
+}
+
+.water-opening-mark > img {
+  position: absolute;
+  left: calc(-1500% / 226);
+  top: calc(-6200% / 132);
+  display: block;
+  width: calc(25600% / 226);
+  max-width: none;
   height: auto;
   filter: invert(.83) hue-rotate(180deg) saturate(1.25);
 }
 
-.water-opening-lockup > span {
-  font: 700 clamp(20px, 7vw, 32px) / 1.1 system-ui, sans-serif;
+.water-opening-name {
+  font: 700 clamp(1.25rem, 6.2vw, 2.25rem) / 1 system-ui, sans-serif;
   letter-spacing: -.035em;
   white-space: nowrap;
   animation: water-opening-name var(--water-opening-duration) cubic-bezier(.3, 0, .2, 1) both;
 }
 
 @keyframes water-opening-lockup {
-  0%, 9%, 88%, 100% { transform: translateX(calc(50% - var(--water-opening-mark-width) / 2)); }
+  0%, 9%, 88%, 100% { transform: translateX(calc((100% - var(--water-opening-mark-width)) / 2)); }
   23%, 75% { transform: translateX(0); }
 }
 

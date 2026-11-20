@@ -2,7 +2,7 @@ import { createRoot } from 'react-dom/client';
 import { useEffect, useState } from 'react';
 import { ThemeProvider } from '../../app/theme-provider';
 import { AccessGate } from '../../app/access-gate';
-import { FamaSystemApp } from '../../app/cloriva-app';
+import { WaterSystemApp } from '../../app/cloriva-app';
 import { CompanyOnboarding } from '../../app/company-onboarding';
 import { LegalConsentGate } from '../../app/legal-consent-gate';
 import { PlansView } from '../../app/plans-view';
@@ -45,7 +45,7 @@ function Home() {
  const {currentUser,signOutPath,organizations,plans}=session;
  if(!session.consent)return <LegalConsentGate currentUser={currentUser} displayName={currentUser.displayName} signOutPath={signOutPath}/>;
  if(!organizations.length){const intent=onboardingIntent(query);return <CompanyOnboarding currentUser={currentUser} displayName={currentUser.displayName} email={currentUser.email} signOutPath={signOutPath} plans={plans} initialPlan={intent.plan} initialCheckoutId={intent.checkout}/>;}
- return <FamaSystemApp organizations={organizations} currentUser={currentUser} signOutPath={signOutPath}/>;
+ return <WaterSystemApp organizations={organizations} currentUser={currentUser} signOutPath={signOutPath}/>;
 }
 function App(){
  if(path==='/entrar')return <AccessGate initialMode={query.signup==='1'?'signup':'login'} addingAccount={query.add_account==='1'} reconnectingAccount={query.reconnect==='1'} initialEmail={String(query.email||'').slice(0,254)}/>;
@@ -55,6 +55,6 @@ function App(){
  const pages={'/manual':Manual,'/termos':Terms,'/privacidade':Privacy,'/privacidade/solicitar':PrivacyRequest,'/auth/confirmar':Confirm,'/auth/recuperar':Recover};
  if(pages[path]){const Page=pages[path];return <Page/>;}
  if(path==='/')return <Home/>;
- return <main className="legal-page"><h1>Página não encontrada</h1><a href="/">Voltar ao Fama System</a></main>;
+ return <main className="legal-page"><h1>Página não encontrada</h1><a href="/">Voltar ao Water System</a></main>;
 }
 createRoot(document.getElementById('root')).render(<ThemeProvider><a className="skip-link" href="#conteudo">Pular para o conteúdo</a><div id="conteudo" tabIndex={-1}><App/></div><ServiceNotice/></ThemeProvider>);

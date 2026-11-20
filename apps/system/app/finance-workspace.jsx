@@ -1179,7 +1179,7 @@ export function FinanceWorkspace({ onEdit, organizationId, transactions, tab, on
                       <NativeSelectOption value="BOLETO">Boleto</NativeSelectOption>
                       <NativeSelectOption value="UNDEFINED">Link Asaas: Pix, boleto ou cartão</NativeSelectOption>
                     </NativeSelect>
-                    <Input name="description" placeholder="Descrição da cobrança" defaultValue="Cobrança Fama System"/>
+                    <Input name="description" placeholder="Descrição da cobrança" defaultValue="Cobrança Water System"/>
                     <Input name="value" required inputMode="decimal" placeholder="Valor (R$)"/>
                     <Input name="dueDate" required type="date" aria-label="Vencimento"/>
                     <Button disabled={busy || !asaas.connections.length || !asaasControl.customers.length}><QrCode />Gerar cobrança</Button>

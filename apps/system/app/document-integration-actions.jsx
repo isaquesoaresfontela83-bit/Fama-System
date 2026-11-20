@@ -48,7 +48,7 @@ export function DocumentIntegrationActions({ organizationId, attachments }) {
                     <Button type="button" variant="outline" disabled={Boolean(busy) || !status.drive.configured || !attachment || attachment.sizeBytes > 5 * 1024 * 1024} onClick={() => void run('drive')}><CloudUpload />{busy === 'drive' ? 'Copiando…' : 'Copiar para o Drive'}</Button>
                     <Button type="button" variant="outline" disabled={Boolean(busy) || !status.ocrspace.configured || !attachment || !['application/pdf','image/jpeg','image/png'].includes(attachment.mimeType) || attachment.sizeBytes > 1024 * 1024} onClick={() => void run('ocrspace')}><FileSearch />{busy === 'ocrspace' ? 'Lendo…' : 'Extrair texto'}</Button>
                 </div>
-                <small>Disponível para proprietários e administradores. As conexões são gerenciadas no backend pelo Fama Control. Drive aceita até 5 MB; leitura de texto, até 1 MB. Confira o texto extraído antes de utilizá-lo.</small>
+                <small>Disponível para proprietários e administradores. As conexões são gerenciadas no backend pelo Water Control. Drive aceita até 5 MB; leitura de texto, até 1 MB. Confira o texto extraído antes de utilizá-lo.</small>
             </>}
             {notice && <p role="status">{notice}</p>}
             {driveUrl && <a href={driveUrl} target="_blank" rel="noreferrer">Abrir cópia no Google Drive</a>}

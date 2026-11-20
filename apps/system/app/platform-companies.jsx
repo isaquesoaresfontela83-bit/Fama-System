@@ -214,7 +214,7 @@ export function PlatformCompanies() {
             return toast.error(payload.error ?? "Não foi possível salvar as permissões.");
         setMembers((current) => current.map((member) => member.id === permissionsMember.id ? { ...member, permissions: payload.permissions ?? selectedPermissions } : member));
         setPermissionsMember(null);
-        toast.success("Permissões atualizadas pelo Fama Control.");
+        toast.success("Permissões atualizadas pelo Water Control.");
     }
     async function openCompanySettings(organization) {
         setSettingsOrganization(organization);
@@ -250,7 +250,7 @@ export function PlatformCompanies() {
                 throw new Error(payload.error ?? "Não foi possível salvar as configurações.");
             setCompanySettings(payload.settings);
             setSettingsOrganization(null);
-            toast.success("Configurações da empresa atualizadas pelo Fama Control.");
+            toast.success("Configurações da empresa atualizadas pelo Water Control.");
         }
         catch (error) {
             toast.error(error instanceof Error ? error.message : "Não foi possível salvar as configurações.");
@@ -306,7 +306,7 @@ export function PlatformCompanies() {
     return <div className="platform-control">
     <section className="surface platform-hero">
       <div>
-        <small>FAMA CONTROL</small>
+        <small>WATER CONTROL</small>
         <h2>Centro de comando da plataforma</h2>
         <p>Controle empresas, acompanhe chamados e mantenha a operação comercial protegida sem entrar nos dados internos dos clientes.</p>
       </div>
@@ -316,7 +316,7 @@ export function PlatformCompanies() {
       </div>
     </section>
 
-    <nav className="platform-tabs" aria-label="Áreas do Fama Control">
+    <nav className="platform-tabs" aria-label="Áreas do Water Control">
       {[
             ["overview", "Visão geral"],
             ["finance", "Financeiro"],
@@ -351,7 +351,7 @@ export function PlatformCompanies() {
         <Textarea className="asaas-key-input" value={billingKey} onChange={(event) => setBillingKey(event.target.value)} placeholder={billingEnvironment === "production" ? "$aact_prod_..." : "$aact_hmlg_..."} autoComplete="off" spellCheck={false}/>
         <Button type="submit" disabled={savingBilling || !billingKey.trim()}>{savingBilling ? "Validando..." : "Salvar chave Asaas"}</Button>
       </form>
-      <p>{billing.configured ? `Última atualização: ${billing.updatedAt ? new Date(billing.updatedAt).toLocaleString("pt-BR") : "configuração por ambiente"}.` : "Enquanto não salvar a chave, o site continua usando o Pix manual aprovado no Fama Control."}</p>
+      <p>{billing.configured ? `Última atualização: ${billing.updatedAt ? new Date(billing.updatedAt).toLocaleString("pt-BR") : "configuração por ambiente"}.` : "Enquanto não salvar a chave, o site continua usando o Pix manual aprovado no Water Control."}</p>
     </section>}
 
     {tab === "finance" && <section className="surface platform-finance-control">
@@ -396,7 +396,7 @@ export function PlatformCompanies() {
 
     {tab === "access" && <section className="surface platform-access-control">
       <div className="panel-heading"><div><small>ACESSOS E ABAS</small><h2>Permissões dos usuários</h2></div><Badge variant="secondary">{members.length} usuários</Badge></div>
-      <p className="members-intro">Controle no Fama Control quais abas cada usuário pode abrir na Fama System, mantendo a lista atualizada com a estrutura mais recente do sistema.</p>
+      <p className="members-intro">Controle no Water Control quais abas cada usuário pode abrir na Water System, mantendo a lista atualizada com a estrutura mais recente do sistema.</p>
       <Table><TableHeader><TableRow><TableHead>Usuário</TableHead><TableHead>Empresa</TableHead><TableHead>Perfil</TableHead><TableHead>Abas liberadas</TableHead><TableHead>Ação</TableHead></TableRow></TableHeader><TableBody>{members.map((member) => <TableRow key={member.id}><TableCell><strong>{member.displayName || "Convite pendente"}</strong><small className="table-muted">{member.email}</small></TableCell><TableCell>{member.organizationName}</TableCell><TableCell>{member.role}</TableCell><TableCell>{member.role === "owner" ? "Todas as abas" : permissionSummary(member.permissions)}</TableCell><TableCell>{member.role === "owner" ? <Badge variant="outline">Proprietário</Badge> : <Button variant="outline" size="sm" onClick={() => { setPermissionsMember(member); setSelectedPermissions(member.permissions ?? []); }}>Configurar abas</Button>}</TableCell></TableRow>)}</TableBody></Table>
     </section>}
 
@@ -429,7 +429,7 @@ export function PlatformCompanies() {
       </div>
       <DialogFooter><Button type="button" variant="outline" onClick={() => setSettingsOrganization(null)}>Cancelar</Button><Button type="submit" disabled={savingSettings}>{savingSettings ? "Salvando..." : "Salvar configurações"}</Button></DialogFooter>
     </form>}</DialogContent></Dialog>
-    <Dialog open={Boolean(permissionsMember)} onOpenChange={(open) => !open && setPermissionsMember(null)}><DialogContent className="sm:max-w-3xl"><DialogHeader><DialogTitle>Permissões por aba</DialogTitle><DialogDescription>{permissionsMember?.displayName || permissionsMember?.email} · {permissionsMember?.organizationName}. Lista alinhada com as abas atuais da Fama System.</DialogDescription></DialogHeader><form className="platform-permission-picker" onSubmit={saveMemberPermissions}>
+    <Dialog open={Boolean(permissionsMember)} onOpenChange={(open) => !open && setPermissionsMember(null)}><DialogContent className="sm:max-w-3xl"><DialogHeader><DialogTitle>Permissões por aba</DialogTitle><DialogDescription>{permissionsMember?.displayName || permissionsMember?.email} · {permissionsMember?.organizationName}. Lista alinhada com as abas atuais da Water System.</DialogDescription></DialogHeader><form className="platform-permission-picker" onSubmit={saveMemberPermissions}>
       <div className="permission-toolbar"><div><strong>{permissionSummary(selectedPermissions)}</strong><small>Manual, suporte e privacidade seguem disponíveis para orientação e segurança.</small></div><div className="record-actions"><Button type="button" variant="outline" size="sm" onClick={() => setSelectedPermissions(featurePermissions.map((permission) => permission.id))}>Liberar tudo</Button><Button type="button" variant="outline" size="sm" onClick={() => setSelectedPermissions([])}>Limpar abas</Button></div></div>
       {permissionGroups.map((group) => <section className="permission-group" key={group}><header><span>{group}</span><small>{group === "Operação" ? "Atendimento, venda e execução." : "Cadastros, estoque, financeiro e equipe."}</small></header><div>{featurePermissions.filter((permission) => permission.group === group).map((permission) => <label key={permission.id}><input type="checkbox" checked={selectedPermissions.includes(permission.id)} onChange={(event) => setSelectedPermissions((current) => event.target.checked ? [...current, permission.id] : current.filter((item) => item !== permission.id))}/><span><strong>{permission.label}</strong><small>{permission.description}</small></span></label>)}</div></section>)}
       <div className="permission-always-on"><ShieldCheck /><p><strong>Controle centralizado</strong>Essa alteração afeta o acesso do usuário dentro da empresa selecionada, sem expor dados internos das outras empresas.</p></div>

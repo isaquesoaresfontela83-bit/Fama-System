@@ -34,7 +34,7 @@ export function answerWithCopilot(message, data, source, now, settings, context)
     const entity = draftEntityForSource(source);
     if (creating && entity) {
         if (!settings.allowCreate)
-            return { source, title: 'Cadastro não disponível pela assistente', text: 'A abertura de formulários está desativada pelo Fama Control.', actions: [] };
+            return { source, title: 'Cadastro não disponível pela assistente', text: 'A abertura de formulários está desativada pelo Water Control.', actions: [] };
         const definition = assistantDraftDefinitions[entity];
         const fields = {};
         const aliases = { cliente: 'clientName', nome: 'name', compromisso: 'title', titulo: 'title', tecnico: 'technician', endereco: 'address', telefone: 'phone', email: 'email', servico: 'service', descricao: 'description', valor: 'amount', vencimento: 'dueDate', categoria: 'category', inicio: 'startDate', termino: 'endDate', mensalidade: 'monthly', frequencia: 'frequency', observacoes: 'notes', interesse: 'interest', origem: 'source', 'proxima acao': 'nextAction', 'mao de obra': 'labor', deslocamento: 'travel', desconto: 'discount', urgencia: 'urgency', validade: 'validUntil', 'condicao de pagamento': 'paymentTerms', duracao: 'duration', tipo: 'type', 'data e hora': entity === 'appointments' ? 'startAt' : 'scheduledAt', condicoes: 'terms', 'dia de pagamento': 'paymentDay', 'valor estimado': 'estimatedValue' };

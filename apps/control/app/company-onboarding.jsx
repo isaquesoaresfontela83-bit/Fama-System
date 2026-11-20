@@ -35,7 +35,7 @@ export function CompanyOnboarding({ displayName, email, signOutPath }) {
       <div className="onboarding-head">
         <div className="onboarding-brand">
           <span className="brand-mark" aria-hidden="true"><img src="/fama-piscinas-mark.png" alt=""/></span>
-          <div><strong>Fama System</strong><small>Fama Piscinas · Gestão inteligente</small></div>
+          <div><strong>Water System</strong><small>Fama Piscinas · Gestão inteligente</small></div>
         </div>
         <ThemeToggle />
       </div>

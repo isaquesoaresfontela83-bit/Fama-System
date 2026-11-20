@@ -20,7 +20,7 @@ export function PlansView({plans}){
  const rows=expanded?fullRows:fullRows.slice(0,7);
  return el('main',{className:'fp-page',id:'conteudo'},
   el('header',{className:'fp-header'},el('div',{className:'fp-shell fp-header-inner'},
-   el('a',{href:'/',className:'fp-brand','aria-label':'Fama System — início'},el('img',{src:'/fama-piscinas-mark.png',alt:'',width:34,height:34}),el('span',null,'Fama',el('span',{className:'fp-brand-light'},'System'))),
+   el('a',{href:'/',className:'fp-brand','aria-label':'Water System — início'},el('img',{src:'/fama-piscinas-mark.png',alt:'',width:34,height:34}),el('span',null,'Fama',el('span',{className:'fp-brand-light'},'System'))),
    el('nav',{'aria-label':'Navegação principal'},el('a',{href:'#recursos'},'Recursos'),el('a',{href:'#planos','aria-current':'page'},'Planos'),el('a',{href:'/manual'},'Manual')),
    el('a',{href:'/entrar',className:'fp-login'},'Acessar sistema'))),
   el('section',{className:'fp-intro fp-shell','aria-labelledby':'fp-title'},
@@ -43,12 +43,12 @@ export function PlansView({plans}){
   el('section',{className:'fp-compare fp-shell',id:'recursos','aria-labelledby':'fp-compare-title'},
    el('div',{className:'fp-section-heading'},el('p',{className:'fp-eyebrow'},'O QUE ESTÁ INCLUÍDO'),el('h2',{id:'fp-compare-title'},'Compare os recursos.')),
    el('div',{className:'fp-table-scroll',tabIndex:0,'aria-label':'Comparação dos planos. Deslize para ver todas as colunas.'},
-    el('table',null,el('caption',{className:'fp-sr-only'},'Recursos e limites atuais dos planos Fama System'),el('thead',null,el('tr',null,el('th',{scope:'col'},'Recursos'),available.map(code=>el('th',{scope:'col',key:code},plans[code].name)))),el('tbody',null,
+    el('table',null,el('caption',{className:'fp-sr-only'},'Recursos e limites atuais dos planos Water System'),el('thead',null,el('tr',null,el('th',{scope:'col'},'Recursos'),available.map(code=>el('th',{scope:'col',key:code},plans[code].name)))),el('tbody',null,
      ['users','customers'].map(key=>el('tr',{key},el('th',{scope:'row'},key==='users'?'Usuários':'Clientes cadastrados'),available.map(code=>el('td',{key:code},number(plans[code].limits?.[key]||0))))),
      rows.map(feature=>el('tr',{key:feature},el('th',{scope:'row'},feature),available.map(code=>el('td',{key:code},effectiveFeatures(plans,code).includes(feature)?el('span',{className:'fp-table-yes','aria-label':'Incluído'},'✓'):el('span',{className:'fp-table-no','aria-label':'Não incluído'},'—')))))))),
    fullRows.length>7&&el('button',{type:'button',className:'fp-expand','aria-expanded':expanded,onClick:()=>setExpanded(!expanded)},expanded?'Recolher comparação':`Mostrar todos os ${fullRows.length} recursos`),
    el('p',{className:'fp-integration-note'},'Integrações financeiras e fiscais exigem configuração. O acesso a cada área também depende das permissões do usuário.')),
   el('section',{className:'fp-help'},el('div',{className:'fp-shell fp-help-inner'},el('div',null,el('h2',null,'Precisa de ajuda para escolher?'),el('p',null,'Conte como sua empresa trabalha. A gente ajuda a encontrar o plano.')),el('a',{href:contact,target:'_blank',rel:'noopener noreferrer',className:'fp-help-link'},'Conversar no WhatsApp'))),
-  el('footer',{className:'fp-shell fp-footer'},el('p',null,`© ${new Date().getFullYear()} Fama System`),el('nav',{'aria-label':'Informações legais'},el('a',{href:'/manual'},'Manual'),el('a',{href:'/termos'},'Termos de Uso'),el('a',{href:'/privacidade'},'Privacidade')))
+  el('footer',{className:'fp-shell fp-footer'},el('p',null,`© ${new Date().getFullYear()} Water System`),el('nav',{'aria-label':'Informações legais'},el('a',{href:'/manual'},'Manual'),el('a',{href:'/termos'},'Termos de Uso'),el('a',{href:'/privacidade'},'Privacidade')))
  );
 }

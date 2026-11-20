@@ -199,7 +199,7 @@ export function BillingCenter({ organization, currentUser }) {
         toast.success("Pix copia e cola copiado.");
     }
     if (billing.billingEnabled === false)
-        return <section className="billing-center"><div className="section-heading"><div><p className="eyebrow">MEU PLANO</p><h2>Acesso gratuito liberado</h2></div><Badge variant="secondary"><ShieldCheck /> Isenta de mensalidade</Badge></div><div className="panel" style={{ padding: 24, marginTop: 20 }}><h3>{organization.name}</h3><p>Esta empresa está liberada pela administração, sem mensalidade e sem prazo de teste.</p><p>Seus usuários podem utilizar os módulos permitidos. A cobrança e o bloqueio por vencimento só serão habilitados pelo Fama Control.</p><strong>Plano de recursos: {(state.plans ?? []).find(plan => plan.code === billing.plan)?.name ?? billing.plan}</strong></div></section>;
+        return <section className="billing-center"><div className="section-heading"><div><p className="eyebrow">MEU PLANO</p><h2>Acesso gratuito liberado</h2></div><Badge variant="secondary"><ShieldCheck /> Isenta de mensalidade</Badge></div><div className="panel" style={{ padding: 24, marginTop: 20 }}><h3>{organization.name}</h3><p>Esta empresa está liberada pela administração, sem mensalidade e sem prazo de teste.</p><p>Seus usuários podem utilizar os módulos permitidos. A cobrança e o bloqueio por vencimento só serão habilitados pelo Water Control.</p><strong>Plano de recursos: {(state.plans ?? []).find(plan => plan.code === billing.plan)?.name ?? billing.plan}</strong></div></section>;
     return (<div className="billing-layout">{state.planNotice && <section className="surface billing-plan-notice" role="status"><strong>Atualização do plano em {dateLabel(state.planNotice.effectiveAt)}</strong><p>{state.planNotice.notice}</p></section>}
       <section className="surface billing-hero">
         <div>
@@ -288,8 +288,8 @@ export function BillingCenter({ organization, currentUser }) {
               <Separator />
               <h3>{checkout.installments && checkout.installments > 1 ? `Link parcelado em ${checkout.installments}x` : "Pix gerado"}</h3>
               {checkout.provider === "manual_pix" && <div className="billing-warning"><ShieldCheck /><p>Pagamento manual de reserva. Após pagar, envie o comprovante pelo suporte para liberarmos o plano.</p></div>}
-              {checkout.qrImagePath && <img src={checkout.qrImagePath} alt="QR Code Pix manual do plano Fama System"/>}
-              {checkout.pixQrCode && <img src={`data:image/png;base64,${checkout.pixQrCode}`} alt="QR Code Pix do plano Fama System"/>}
+              {checkout.qrImagePath && <img src={checkout.qrImagePath} alt="QR Code Pix manual do plano Water System"/>}
+              {checkout.pixQrCode && <img src={`data:image/png;base64,${checkout.pixQrCode}`} alt="QR Code Pix do plano Water System"/>}
               {checkout.pixCopyPaste && <Button type="button" variant="outline" onClick={() => void copyPix()}><Copy />Copiar Pix copia e cola</Button>}
               {checkout.invoiceUrl && <a href={checkout.invoiceUrl} target="_blank" rel="noreferrer">Abrir cobrança da Asaas</a>}
               <p>Quando a Asaas confirmar o pagamento, o webhook muda o plano para ativo automaticamente.</p>

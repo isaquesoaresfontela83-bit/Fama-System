@@ -1,6 +1,6 @@
 # Gerenciar APIs
 
-O Fama Control possui uma aba `Gerenciar APIs` (`#apis`) com o inventário compartilhado de 41 integrações e serviços. A lista cobre infraestrutura, documentos, comunicação, segurança, administração, agenda, financeiro, consultas, clima, mapas, rotas, IA e digitalização local. As consultas da BrasilAPI estão agrupadas pelo provedor; os pontos de integração de cada serviço aparecem nos detalhes.
+O Water Control possui uma aba `Gerenciar APIs` (`#apis`) com o inventário compartilhado de 41 integrações e serviços. A lista cobre infraestrutura, documentos, comunicação, segurança, administração, agenda, financeiro, consultas, clima, mapas, rotas, IA e digitalização local. As consultas da BrasilAPI estão agrupadas pelo provedor; os pontos de integração de cada serviço aparecem nos detalhes.
 
 Cada entrada informa onde é usada, em quais sistemas existe e o status de cada instância. Busca, área e status podem ser combinados. Os botões de gerenciamento navegam para as telas internas de integrações, empresas, IA, financeiro, segurança ou saúde.
 

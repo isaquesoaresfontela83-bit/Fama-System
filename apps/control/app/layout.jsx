@@ -6,8 +6,8 @@ import "./control-apis.css";
 import "./professional.css";
 import "./readability.css";
 export const metadata = {
-    title: "Fama Control — Administração privada",
-    description: "Painel privado do proprietário para administrar o Fama System com segurança.",
+    title: "Water Control — Administração privada",
+    description: "Painel privado do proprietário para administrar o Water System com segurança.",
     robots: { index: false, follow: false, nocache: true },
     icons: {
         icon: [

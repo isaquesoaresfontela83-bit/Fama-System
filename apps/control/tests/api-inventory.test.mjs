@@ -18,8 +18,8 @@ beforeEach(() => {
     sql?.close(); f.reset(); f.runtime.DB = database(); f.runtime.FAMA_DATA_BRIDGE_SECRET = 'private-bridge-fixture'; f.runtime.PLATFORM_OWNER_EMAIL = f.user.email; mode = ''; external = [];
     f.runtime.FAMA_SYSTEM = { async fetch(url, init = {}) {
         if (mode === 'system-down') throw new Error('Fixture unavailable');
-        if (url.endsWith('/api/health')) return Response.json({ service: 'Fama System', version: FAMA_VERSION, releaseId: FAMA_RELEASE_ID });
-        assert.equal(url, 'https://famasystem.online/api/internal/api-status');
+        if (url.endsWith('/api/health')) return Response.json({ service: 'Water System', version: FAMA_VERSION, releaseId: FAMA_RELEASE_ID });
+        assert.equal(url, 'https://watersystem.online/api/internal/api-status');
         assert.equal(new Headers(init.headers).get('authorization'), 'Bearer private-bridge-fixture');
         if (mode === 'old-system') return new Response('Missing', { status: 404 });
         if (init.method === 'POST') { const { id } = JSON.parse(init.body); return Response.json({ id, scope: 'system', observation: { status: 'verified', detail: 'Consulta de leitura confirmada.', checkedAt: new Date().toISOString() }, secret: 'must-not-leak' }); }

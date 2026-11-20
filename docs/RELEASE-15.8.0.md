@@ -1,4 +1,4 @@
-# Fama System e Fama Control 15.8.0
+# Water System e Water Control 15.8.0
 
 Identificador conjunto: `2026-10-22-customers-agenda-01`. Fonte baseada na versão 15.7.2, preservando a execução de serviços, a edição dos cadastros e o frontend original.
 

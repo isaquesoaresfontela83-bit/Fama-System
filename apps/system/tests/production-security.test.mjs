@@ -59,7 +59,7 @@ for(const [method,path] of [['POST','/api/records'],['PATCH','/api/records/fixtu
 });
 
 test('reader refresh clears only cache and reopens a fresh document without deleting login or records',async()=>{
- const response=await worker.fetch(new Request('https://www.famasystem.online/atualizar-leitor'),env,ctx);
+ const response=await worker.fetch(new Request('https://www.watersystem.online/atualizar-leitor'),env,ctx);
  assert.equal(response.status,200);
  assert.equal(response.headers.get('clear-site-data'),'"cache"');
  assert.match(response.headers.get('cache-control'),/no-store/);

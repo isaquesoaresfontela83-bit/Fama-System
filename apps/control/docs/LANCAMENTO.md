@@ -1,6 +1,6 @@
-# Fama System e Fama Control — versão final v15.0
+# Water System e Water Control — versão final v15.0
 
-Versão final v15.0 de 3 de outubro de 2026, com estabilidade, IA local, WhatsApp e blocos por pessoa e empresa. Domínios: https://famasystem.online e https://control.famasystem.online. As conferências de serviços externos abaixo mantêm as datas em que foram realizadas. A bateria atual está registrada em [TESTES_2026-10-03.md](TESTES_2026-10-03.md): 209 testes no System, 169 no Control, 18 verificações históricas do WhatsApp e 15 verificações das regras de blocos no banco real, todos aprovados. A conexão a um número WhatsApp real depende da preparação na Meta.
+Versão final v15.0 de 3 de outubro de 2026, com estabilidade, IA local, WhatsApp e blocos por pessoa e empresa. Domínios: `https://famasystem.online` e `https://control.famasystem.online`. As conferências de serviços externos abaixo mantêm as datas em que foram realizadas. A bateria atual está registrada em [TESTES_2026-10-03.md](TESTES_2026-10-03.md): 209 testes no System, 169 no Control, 18 verificações históricas do WhatsApp e 15 verificações das regras de blocos no banco real, todos aprovados. A conexão a um número WhatsApp real depende da preparação na Meta.
 
 ## Evidências no ambiente real
 
@@ -51,7 +51,7 @@ Os testes desta revisão também verificam o bloqueio do modelo grande antes de 
 
 As verificações acima identificadas como pendentes ainda precisam ser concluídas para comprovar todos os cenários de lançamento.
 
-## Blocos do Fama System
+## Blocos do Water System
 
 Nova área no Control para adicionar, remover ou herdar 13 blocos, com regras gerais e exceções por empresa e pessoa, inclusive proprietários. Gravação com revisão e auditoria; controle no servidor, na navegação, na IA e no WhatsApp. Testes completos: 209 no System e 169 no Control, sem falhas. Mais 15 verificações de regras e isolamento no banco, com rollback e limpeza confirmada. Nenhuma regra real foi alterada durante a publicação.
 

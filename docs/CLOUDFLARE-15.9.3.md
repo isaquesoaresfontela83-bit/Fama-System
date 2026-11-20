@@ -1,11 +1,11 @@
 # Cloudflare — contas e visão geral 15.9.3 — 22/10/2026
 
-Fama System e Fama Control **15.9.3**, lançamento `2026-10-22-accounts-overview-01`, ativados e verificados nos dois domínios existentes.
+Water System e Water Control **15.9.3**, lançamento `2026-10-22-accounts-overview-01`, ativados e verificados nos dois domínios existentes.
 
 | Aplicação | Endereço | Versão Worker ativa | Implantação |
 | --- | --- | --- | --- |
-| System | https://famasystem.online/entrar | `a322281b-f3fc-4260-ba3e-978b143d595b` | `a9ad4e7b-3460-4ccc-8d7a-8f9042a21dba` |
-| Control | https://control.famasystem.online/ | `1441427f-90a9-4dff-9b70-035e4bbafb9e` | `b520b5a7-2cb7-4d77-a237-e75fdb5454d0` |
+| System | `https://famasystem.online/entrar` | `a322281b-f3fc-4260-ba3e-978b143d595b` | `a9ad4e7b-3460-4ccc-8d7a-8f9042a21dba` |
+| Control | `https://control.famasystem.online/` | `1441427f-90a9-4dff-9b70-035e4bbafb9e` | `b520b5a7-2cb7-4d77-a237-e75fdb5454d0` |
 
 ## Alterações e validação
 

@@ -1,9 +1,9 @@
 import assert from 'node:assert/strict';
 
 const systems = [
-  ['https://famasystem.online', 'https://fama-system-app.famasystem.workers.dev', 'Fama System'],
-  ['https://www.famasystem.online', 'https://fama-system-app.famasystem.workers.dev', 'Fama System'],
-  ['https://control.famasystem.online', 'https://fama-control-app.famasystem.workers.dev', 'Fama Control'],
+  ['https://watersystem.online', 'https://fama-system-app.famasystem.workers.dev', 'Water System'],
+  ['https://www.watersystem.online', 'https://fama-system-app.famasystem.workers.dev', 'Water System'],
+  ['https://control.watersystem.online', 'https://fama-control-app.famasystem.workers.dev', 'Water Control'],
 ];
 let checks = 0;
 async function request(origin, path, options = {}) {
@@ -34,7 +34,7 @@ for (const [origin, service, product] of systems) {
       check(response.status === 200, origin + path + ' failed to load');
     }));
   }
-  const protectedPath = product === 'Fama Control' ? '/api/admin/health' : '/api/bootstrap';
+  const protectedPath = product === 'Water Control' ? '/api/admin/health' : '/api/bootstrap';
   const protectedResponse = await request(origin, protectedPath);
   check(protectedResponse.status === 401, origin + protectedPath + ' accepts an unauthenticated caller');
   await protectedResponse.body?.cancel();
@@ -46,7 +46,7 @@ for (const [origin, service, product] of systems) {
     method: 'POST', headers: { 'Content-Type': 'application/json', Origin: 'https://foreign.example' }, body: '{}',
   });
   check(foreignOrigin.status === 403, origin + ' accepts a foreign mutation origin'); await foreignOrigin.body?.cancel();
-  if (product === 'Fama System') {
+  if (product === 'Water System') {
     const response = await request(origin, '/mcp', {
       method: 'POST', headers: { 'Content-Type': 'application/json', 'oai-authenticated-user-email': 'isaquesoaresfontela83@gmail.com' },
       body: JSON.stringify({ jsonrpc: '2.0', id: 1, method: 'tools/call', params: { name: 'integration_status', arguments: {} } }),

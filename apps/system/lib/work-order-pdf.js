@@ -61,7 +61,7 @@ export async function generateWorkOrderPdf(order, organizationName, download = t
     pdf.line(left, 282, right, 282);
     pdf.setTextColor(107, 127, 141);
     pdf.setFontSize(8);
-    pdf.text("Relatório gerado pelo Fama System", left, 288);
+    pdf.text("Relatório gerado pelo Water System", left, 288);
     if (download)
         pdf.save(`${order.osNumber.toLocaleLowerCase("pt-BR")}-relatorio.pdf`);
     return pdf.output("arraybuffer");

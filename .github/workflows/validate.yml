@@ -1,4 +1,4 @@
-name: Validar Fama System e Control
+name: Validar Water System e Control
 on:
   push:
   pull_request:

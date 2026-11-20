@@ -38,7 +38,7 @@ test('presentation retains public headers and protects embedded catalog data', a
  const app = withPresentation({ fetch: async () => new Response('<main class="fp-page">old</main>', {
   headers: { 'content-type': 'text/html', 'x-robots-tag': 'index, follow', 'content-security-policy': "default-src 'self'", 'set-cookie': 'existing=preserved' },
  }) }, 'system', resources, async () => Response.json(dangerous));
- const response = await app.fetch(new Request('https://famasystem.online/'));
+ const response = await app.fetch(new Request('https://watersystem.online/'));
  const text = await response.text();
  assert.match(text, /id="fama-public-catalog"/);
  assert.ok(!text.includes('</script><img'));
@@ -51,15 +51,15 @@ test('authenticated root, consent pages, checkout and APIs preserve response ide
  for (const [path, body] of [['/', '<main class="application">private</main>'], ['/assinar/inicial', 'checkout'], ['/api/orders', 'orders']]) {
   const original = new Response(body, { headers: { 'content-type': 'text/html', 'set-cookie': 'session=preserved' } });
   const app = withPresentation({ fetch: async () => original }, 'system', resources, () => { throw new Error('Catalog must not be called'); });
-  assert.equal(await app.fetch(new Request('https://famasystem.online' + path)), original);
+  assert.equal(await app.fetch(new Request('https://watersystem.online' + path)), original);
  }
 });
 
 test('catalog failures return the original commercial page and assets support HEAD', async () => {
  const original = new Response('<main class="fp-page">old</main>', { headers: { 'content-type': 'text/html' } });
  const app = withPresentation({ fetch: async () => original }, 'system', resources, async () => { throw new Error('offline'); });
- assert.equal(await app.fetch(new Request('https://famasystem.online/planos')), original);
- const asset = await app.fetch(new Request('https://famasystem.online' + PREFIX + 'theme.js', { method: 'HEAD' }));
+ assert.equal(await app.fetch(new Request('https://watersystem.online/planos')), original);
+ const asset = await app.fetch(new Request('https://watersystem.online' + PREFIX + 'theme.js', { method: 'HEAD' }));
  assert.equal(await asset.text(), '');
  assert.match(asset.headers.get('content-type'), /javascript/);
 });
@@ -81,7 +81,7 @@ test('production catalog uses the existing application handler and normalized li
   }
   return new Response('<main class="fp-page">old</main>', { headers: { 'Content-Type': 'text/html' } });
  } }, 'system', resources);
- const response = await app.fetch(new Request('https://famasystem.online/planos'), environment, context);
+ const response = await app.fetch(new Request('https://watersystem.online/planos'), environment, context);
  const text = await response.text();
  assert.match(text, /id="fama-public-catalog"/);
  assert.match(text, /"priceCents":10900/);
@@ -92,8 +92,8 @@ test('Control keeps operational routes and reports the same release without drop
  const original = new Response('control');
  const app = withPresentation({ fetch: async request => request.url.endsWith('/api/health') ?
   Response.json({ status: 'ok', diagnostics: { db: 'ok' } }) : original }, 'control', {});
- assert.equal(await app.fetch(new Request('https://control.famasystem.online/')), original);
- const response = await app.fetch(new Request('https://control.famasystem.online/api/health'));
+ assert.equal(await app.fetch(new Request('https://control.watersystem.online/')), original);
+ const response = await app.fetch(new Request('https://control.watersystem.online/api/health'));
  assert.deepEqual(await response.json(), { status: 'ok', diagnostics: { db: 'ok' }, version: VERSION, release: RELEASE, releaseId: RELEASE });
 });
 

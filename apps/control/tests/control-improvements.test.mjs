@@ -69,7 +69,7 @@ test("security overview never marks unverified, future or stale backups as prote
 });
 
 test("health uses the internal System service with server authentication",async()=>{
- const token="private-health-fixture-credential",binding={async fetch(url,init){assert.equal(this,binding);assert.equal(url,"https://famasystem.online/api/internal/operation-health");assert.equal(new Headers(init.headers).get("authorization"),"Bearer "+token);return Response.json({checkedAt:new Date().toISOString(),events:[],payments:{configured:false},fiscal:{invoices:[]}});}};
+ const token="private-health-fixture-credential",binding={async fetch(url,init){assert.equal(this,binding);assert.equal(url,"https://watersystem.online/api/internal/operation-health");assert.equal(new Headers(init.headers).get("authorization"),"Bearer "+token);return Response.json({checkedAt:new Date().toISOString(),events:[],payments:{configured:false},fiscal:{invoices:[]}});}};
  f.runtime.FAMA_SYSTEM=binding;f.runtime.FAMA_BACKUP_SERVICE_TOKEN=token;
  try{const data=await(await health.GET()).json();assert.equal(data.checks.find(item=>item.id==="system").state,"ok");assert.doesNotMatch(JSON.stringify(data),/private-health-fixture/);}
  finally{delete f.runtime.FAMA_SYSTEM;delete f.runtime.FAMA_BACKUP_SERVICE_TOKEN;}

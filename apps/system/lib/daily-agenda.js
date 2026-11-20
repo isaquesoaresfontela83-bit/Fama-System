@@ -90,5 +90,5 @@ export function buildTechnicianMessage(input) {
     const warrantyLines = input.warranties.map((item) => `• ${dateLabel(String(item.scheduledAt ?? ""))}\n${item.clientName ?? "Cliente"} — Garantia ${item.warrantyNumber ?? ""}\n${item.item ?? "Item coberto"}\nStatus: ${item.status ?? "agendada"}`);
     const orderLines = input.orders.map((item) => `• ${dateLabel(String(item.scheduledAt ?? ""))}\n${item.clientName ?? "Cliente"} — OS ${item.osNumber ?? ""}\n${item.service ?? "Serviço"}\nStatus: ${item.status ?? "aberta"}`);
     const details = [...appointmentLines, ...warrantyLines, ...orderLines];
-    return `Olá, ${name}. Hoje você tem ${summary}.\n\n${details.length ? details.join("\n\n") : "Sem itens para hoje."}\n\nConfira os detalhes no Fama System e me avise se precisar ajustar a rota.`;
+    return `Olá, ${name}. Hoje você tem ${summary}.\n\n${details.length ? details.join("\n\n") : "Sem itens para hoje."}\n\nConfira os detalhes no Water System e me avise se precisar ajustar a rota.`;
 }

@@ -5,11 +5,11 @@ const areas = [
     ["Empresas e usuários", "Crie empresas gratuitas, gerencie contas, prazos e mensalidades, ou suspenda e restaure um ambiente."],
     ["Blocos do sistema", "Adicione, remova ou herde 14 blocos, incluindo Chat, para todos, uma empresa ou uma pessoa, inclusive proprietários."],
     ["Fama IA", "Consulte os dados disponíveis no painel e prepare ações para revisão."],
-    ["Configurar IA", "Defina fontes, comandos e opções do assistente compartilhadas com o Fama System."],
+    ["Configurar IA", "Defina fontes, comandos e opções do assistente compartilhadas com o Water System."],
     ["Vendas", "Acompanhe os indicadores comerciais apresentados pelo painel."],
     ["Financeiro", "Confira os indicadores financeiros da plataforma."],
     ["Planos", "Acompanhe os planos e as condições de acesso das empresas."],
-    ["Suporte", "Leia os chamados enviados pelo Fama System e registre seu acompanhamento."],
+    ["Suporte", "Leia os chamados enviados pelo Water System e registre seu acompanhamento."],
     ["Alertas", "Confira as situações que precisam de atenção."],
     ["Orçamento", "Ajuste categorias, serviços, preços, campos e os acréscimos para urgência e emergência do catálogo compartilhado."],
     ["Usuários", "Revise empresa, perfil, situação e módulos permitidos de cada pessoa."],
@@ -27,14 +27,14 @@ export function ControlManual() {
     </nav>
     <section id="acesso" className="control-manual-panel">
       <small>1 · ENTRADA NO PAINEL</small><h2>Primeiro acesso e login</h2>
-      <p>O Fama Control é o painel administrativo do proprietário da plataforma. Abra o endereço oficial, confira o domínio e entre com o e-mail autorizado e a senha. No primeiro acesso, use <strong>Primeiro acesso do proprietário</strong> para criar a conta autorizada. Se a verificação em duas etapas estiver ativa, informe o código temporário do aplicativo autenticador.</p>
+      <p>O Water Control é o painel administrativo do proprietário da plataforma. Abra o endereço oficial, confira o domínio e entre com o e-mail autorizado e a senha. No primeiro acesso, use <strong>Primeiro acesso do proprietário</strong> para criar a conta autorizada. Se a verificação em duas etapas estiver ativa, informe o código temporário do aplicativo autenticador.</p>
       <div className="control-manual-callout"><KeyRound /><span><strong>Não consegue entrar?</strong> Confirme o e-mail autorizado e o código MFA. Não compartilhe senha ou código. Se o problema continuar, use o fluxo de suporte do proprietário.</span></div>
     </section>
     <section id="mapa" className="control-manual-panel">
       <small>2 · ORIENTAÇÃO DA TELA</small><h2>Mapa visual das áreas</h2>
       <p>O menu lateral leva às áreas principais. A prévia abaixo é ilustrativa, sem dados reais.</p>
       <figure className="control-manual-figure">
-        <div className="control-manual-screen-head"><span>Fama Control</span><small>PAINEL DO PROPRIETÁRIO</small></div>
+        <div className="control-manual-screen-head"><span>Water Control</span><small>PAINEL DO PROPRIETÁRIO</small></div>
         <div className="control-manual-screen">
           <nav><b>Visão geral</b><span>Empresas e usuários</span><span>Blocos do sistema</span><span>Fama IA</span><span>Configurar IA</span><span>Segurança</span><span>Auditoria</span></nav>
           <div><strong>Estado da plataforma</strong><div className="control-manual-screen-cards"><i>Empresas cadastradas</i><i>Usuários vinculados</i><i>Segurança</i></div><p>Blocos · Permissões · Auditoria · Recuperação</p></div>
@@ -51,9 +51,9 @@ export function ControlManual() {
         <li>Use <strong>Suspender</strong> para interromper temporariamente o acesso e <strong>Reativar</strong> para restaurá-lo.</li>
         <li><strong>Lixeira</strong> move a empresa para recuperação conforme as regras de retenção; use <strong>Restaurar</strong> para uma empresa removida.</li>
         <li>Em <strong>Orçamento</strong>, configure categorias, serviços, unidades, preços, margens, campos e percentuais de urgência e emergência.</li>
-        <li>Confira o catálogo e pressione <strong>Salvar alterações</strong> para aplicar a configuração compartilhada com o Fama System.</li>
+        <li>Confira o catálogo e pressione <strong>Salvar alterações</strong> para aplicar a configuração compartilhada com o Water System.</li>
       </ol>
-      <div className="control-manual-callout"><Building2 /><span>Os registros operacionais de cada negócio continuam separados no espaço da empresa dentro do Fama System.</span></div>
+      <div className="control-manual-callout"><Building2 /><span>Os registros operacionais de cada negócio continuam separados no espaço da empresa dentro do Water System.</span></div>
     </section>
     <section id="usuarios" className="control-manual-panel">
       <small>4 · ACESSO DA EQUIPE</small><h2>Configurar usuários e permissões</h2>
@@ -64,11 +64,11 @@ export function ControlManual() {
         <li>Libere os módulos necessários à função e retire acessos que deixaram de ser necessários.</li>
         <li>Pressione <strong>Salvar acessos</strong> e aguarde a confirmação da gravação no banco.</li>
       </ol>
-      <p>O perfil define o acesso inicial. As regras de <strong>Blocos do sistema</strong> também se aplicam, inclusive ao proprietário da empresa. O Fama System confere o acesso na navegação e no servidor; a tela se atualiza ao voltar à janela e a cada 30 segundos enquanto online.</p>
+      <p>O perfil define o acesso inicial. As regras de <strong>Blocos do sistema</strong> também se aplicam, inclusive ao proprietário da empresa. O Water System confere o acesso na navegação e no servidor; a tela se atualiza ao voltar à janela e a cada 30 segundos enquanto online.</p>
       <figure className="control-manual-figure"><div className="control-manual-permissions"><UserCog /><div><strong>Permissões por módulo</strong><span><CheckCircle2 /> Clientes e piscinas</span><span><CheckCircle2 /> Agenda e ordens de serviço</span><span>□ Financeiro</span><span>□ Usuários e empresas</span><b className="control-manual-button">Salvar acessos</b></div></div><figcaption>Exemplo de seleção por módulo. Confira a empresa e a pessoa antes de salvar.</figcaption></figure>
     </section>
     <section id="blocos" className="control-manual-panel">
-      <small>5 · CONFIGURAÇÃO DO FAMA SYSTEM</small><h2>Adicionar e remover blocos para qualquer empresa ou pessoa</h2>
+      <small>5 · CONFIGURAÇÃO DO WATER SYSTEM</small><h2>Adicionar e remover blocos para qualquer empresa ou pessoa</h2>
       <ol>
         <li>Abra <strong>Blocos do sistema</strong> e escolha o alcance: geral, empresa ou pessoa.</li>
         <li>Para empresa ou pessoa, selecione o destinatário e confira sua identificação. Proprietários de empresas também podem receber regras individuais.</li>
@@ -83,7 +83,7 @@ export function ControlManual() {
       <small>6 · ASSISTENTE E CONFIGURAÇÃO</small><h2>Usar e configurar a Fama IA</h2>
       <p>Em <strong>Fama IA</strong>, consulte os dados disponíveis no painel. O núcleo Fama responde sem depender de uma API externa de inferência. A preparação local reutiliza os arquivos salvos e baixa somente os ausentes quando autorizada; no celular, o assistente usa o modo leve.</p>
       <p>Em <strong>Configurar IA</strong>, revise as fontes, opções e comandos do assistente. Salve e aguarde a confirmação. Se outro administrador tiver alterado a configuração, recarregue antes de salvar novamente. As preferências não concedem acesso a registros que os blocos ou as permissões da pessoa restringem.</p>
-      <div className="control-manual-callout"><Sparkles /><span>Para conectar a IA ao WhatsApp, o responsável pela empresa usa <strong>Fama System → Configurações → Fama IA no WhatsApp</strong>. É necessário conectar e confirmar o número oficial na Meta e vincular os telefones da equipe a usuários ativos. O manual do System detalha a preparação.</span></div>
+      <div className="control-manual-callout"><Sparkles /><span>Para conectar a IA ao WhatsApp, o responsável pela empresa usa <strong>Water System → Configurações → Fama IA no WhatsApp</strong>. É necessário conectar e confirmar o número oficial na Meta e vincular os telefones da equipe a usuários ativos. O manual do System detalha a preparação.</span></div>
     </section>
     <section id="seguranca" className="control-manual-panel">
       <small>7 · PROTEÇÃO E ESTADO</small><h2>Conferir segurança</h2>
@@ -108,7 +108,7 @@ export function ControlManual() {
         <li>Confira se empresas, registros, usuários e anexos esperados foram contados.</li>
         <li>Use <strong>Baixar backup global</strong> e guarde a cópia em local privado, com acesso restrito.</li>
         <li>Para uma empresa na lixeira, abra <strong>Empresas e usuários</strong> e use <strong>Restaurar</strong>.</li>
-        <li>Após a recuperação, confira estado, usuários, blocos e acesso no Fama System.</li>
+        <li>Após a recuperação, confira estado, usuários, blocos e acesso no Water System.</li>
       </ol>
       <div className="control-manual-callout"><ArchiveRestore /><span>Backups contêm informações sensíveis. Mantenha proteção e retenção adequadas; não os disponibilize em links públicos.</span></div>
     </section>
@@ -122,7 +122,7 @@ export function ControlManual() {
         <p><CheckCircle2 /> Valide o backup e a possibilidade de restauração.</p>
         <p><CheckCircle2 /> Analise chamados, alertas e pedidos de privacidade.</p>
       </div>
-      <p className="control-manual-muted">Para operar CRM, agenda, clientes, serviços e financeiro da empresa, abra o <Link href="https://famasystem.online" target="_blank">Fama System</Link>.</p>
+      <p className="control-manual-muted">Para operar CRM, agenda, clientes, serviços e financeiro da empresa, abra o <Link href="https://watersystem.online" target="_blank">Water System</Link>.</p>
     </section>
   </div>;
 }

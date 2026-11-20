@@ -15,7 +15,7 @@ export function PlansView({ plans }) {
       <nav className="public-nav">
         <Link className="public-brand plans-brand" href="/">
           <span className="brand-mark" aria-hidden="true"><img src="/fama-piscinas-mark.png" alt=""/></span>
-          <div><strong>Fama System</strong><small>Planos para empresas de piscinas</small></div>
+          <div><strong>Water System</strong><small>Planos para empresas de piscinas</small></div>
         </Link>
         <div className="public-nav-actions">
           <a href="#demonstracao" className="public-manual-link">Conheça o sistema</a>
@@ -51,7 +51,7 @@ export function PlansView({ plans }) {
       <PlanConsultation className="plans-public-consultation"/>
 
       <div className="product-plans-heading product-section-heading"><span className="product-eyebrow">PLANOS PARA CADA MOMENTO</span><h2>Comece com 7 dias grátis.</h2><p>Selecione seu plano para experimentar. O teste não gera uma cobrança automática no cadastro.</p></div>
-      <section id="planos" className="plans-public-grid" aria-label="Planos do Fama System">
+      <section id="planos" className="plans-public-grid" aria-label="Planos do Water System">
         {!plans && <p role="status">Carregando os planos atuais…</p>}
         {planOrder.filter(code => plans?.[code]).map((code) => {
             const plan = plans[code];
@@ -82,9 +82,9 @@ export function PlansView({ plans }) {
         <ShieldCheck />
         <div>
           <strong>Recursos para toda a operação</strong>
-          <p>O Plus inclui tudo do Basic; o Pro inclui tudo do Plus. O financeiro está disponível a partir do Plus. Cada plano libera seus recursos e limites. As permissões da empresa e do Fama Control definem quem pode usar os recursos contratados.</p>
+          <p>O Plus inclui tudo do Basic; o Pro inclui tudo do Plus. O financeiro está disponível a partir do Plus. Cada plano libera seus recursos e limites. As permissões da empresa e do Water Control definem quem pode usar os recursos contratados.</p>
           <p>Integrações financeiras e fiscais dependem da configuração do provedor. A Fama IA se adapta à capacidade do aparelho.</p>
-          <p>O cliente cria a conta em teste grátis por 7 dias. Depois, o proprietário escolhe o plano e paga por Pix dentro do Fama System para continuar usando.</p>
+          <p>O cliente cria a conta em teste grátis por 7 dias. Depois, o proprietário escolhe o plano e paga por Pix dentro do Water System para continuar usando.</p>
         </div>
       </section>
 
@@ -95,6 +95,6 @@ export function PlansView({ plans }) {
         <details><summary>Posso escolher quem acessa cada área?</summary><p>Sim. Os acessos combinam o plano contratado, o vínculo com a empresa e as permissões atribuídas a cada usuário.</p></details>
         <details><summary>Onde encontro ajuda para começar?</summary><p>Consulte o <Link href="/manual">manual de uso</Link>, abra um chamado pelo sistema ou use o contato de consultoria acima para entender qual plano atende sua operação.</p></details>
       </section>
-      <footer className="product-public-footer"><span>© {new Date().getFullYear()} Fama System · Mais controle. Mais resultado. Mais Fama.</span><nav aria-label="Informações do Fama System"><Link href="/manual">Manual</Link><Link href="/termos">Termos de Uso</Link><Link href="/privacidade">Privacidade</Link><Link href="/entrar">Entrar</Link></nav></footer>
+      <footer className="product-public-footer"><span>© {new Date().getFullYear()} Water System · Mais controle. Mais resultado. Mais Fama.</span><nav aria-label="Informações do Water System"><Link href="/manual">Manual</Link><Link href="/termos">Termos de Uso</Link><Link href="/privacidade">Privacidade</Link><Link href="/entrar">Entrar</Link></nav></footer>
     </main>);
 }

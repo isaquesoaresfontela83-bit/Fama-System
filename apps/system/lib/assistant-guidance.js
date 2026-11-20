@@ -11,7 +11,7 @@ export function assistantGuidance(question, selected, settings) {
     if (!settings.sources[source])
         return null;
     const steps = topic.steps.map((description, index) => ({ id: `help-${topic.id}-${index}`, title: `Etapa ${index + 1}`, description, priority: 'normal', source }));
-    return { source, engine: 'internal', title: topic.title, narrative: 'Orientações do manual interno do Fama System.', text: [topic.title, ...topic.steps.map((step, index) => `${index + 1}. ${step}`), topic.note].filter(Boolean).join('\n'), steps, note: topic.note, actions: settings.allowNavigation ? [{ label: 'Abrir área relacionada', section: topic.section }] : [], suggestions: [{ label: 'Ver prioridades', question: 'Plano de ação da empresa', source: 'overview' }].filter(s => settings.sources[s.source]) };
+    return { source, engine: 'internal', title: topic.title, narrative: 'Orientações do manual interno do Water System.', text: [topic.title, ...topic.steps.map((step, index) => `${index + 1}. ${step}`), topic.note].filter(Boolean).join('\n'), steps, note: topic.note, actions: settings.allowNavigation ? [{ label: 'Abrir área relacionada', section: topic.section }] : [], suggestions: [{ label: 'Ver prioridades', question: 'Plano de ação da empresa', source: 'overview' }].filter(s => settings.sources[s.source]) };
 }
 /** Carry only a read-only query's date range into a short refinement. New dates and modules win. */
 export function contextualQuestion(question, history) {

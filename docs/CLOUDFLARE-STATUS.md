@@ -1,6 +1,6 @@
 # Apresentação e preços 15.23.8 — 19/11/2026 — publicado e verificado
 
-Lançamento conjunto `2026-11-19-premium-public-themes-01`, publicado pela conexão autenticada da Cloudflare nos Workers existentes. A apresentação premium está em https://famasystem.online/ e https://famasystem.online/planos, com temas claro/escuro e preferência persistente.
+Lançamento conjunto `2026-11-19-premium-public-themes-01`, publicado pela conexão autenticada da Cloudflare nos Workers existentes. A apresentação premium está em `https://famasystem.online/` e `https://famasystem.online/planos`, com temas claro/escuro e preferência persistente.
 
 | Aplicação | Versão Worker ativa | Implantação | Módulos | Bindings |
 | --- | --- | --- | --- | --- |
@@ -24,7 +24,7 @@ Lançamento conjunto `2026-11-15-seo-discovery-01` publicado em 15/11/2026, conf
 
 Preservados integralmente 131/64 módulos originais e 41/29 bindings; leitura de volta confirmou 133/66 módulos. 41 testes, sintaxe e verificação conjunta aprovados. Os dois endpoints de saúde retornam 15.23.4. As quatro páginas públicas responderam HTTP 200 com canonical e JSON-LD; sitemap e llms.txt responderam HTTP 200. Control mantém noindex e robots restritivo. Fluxos autenticados não foram reexecutados nesta atualização.
 
-Em 16/11/2026, após autorização explícita do proprietário, a conta isaquesoaresfontela83@gmail.com foi verificada como proprietária do domínio no Google Search Console via registro TXT adicionado ao DNS Cloudflare, sem alterar outros registros. O sitemap https://famasystem.online/sitemap.xml foi enviado e a interface confirmou **Processado**, com **4 páginas encontradas**. Isso confirma descoberta do sitemap, não a indexação de todas as páginas nem posicionamento nas buscas. Não remover o TXT de verificação.
+Em 16/11/2026, após autorização explícita do proprietário, a conta isaquesoaresfontela83@gmail.com foi verificada como proprietária do domínio no Google Search Console via registro TXT adicionado ao DNS Cloudflare, sem alterar outros registros. O sitemap `https://famasystem.online/sitemap`.xml foi enviado e a interface confirmou **Processado**, com **4 páginas encontradas**. Isso confirma descoberta do sitemap, não a indexação de todas as páginas nem posicionamento nas buscas. Não remover o TXT de verificação.
 
 # Contas e aprovação de colaborador — 15.23.3 — 09/11/2026
 
@@ -62,8 +62,8 @@ Versão conjunta `15.23.1`, lançamento `2026-11-06-all-module-shortcuts-01`, pu
 
 | Aplicação | Endereço | Versão Worker ativa | Implantação |
 | --- | --- | --- | --- |
-| System | https://famasystem.online/entrar | `01aa1076-cab8-44d2-9284-717bf21456cd` | `03480bd7-6bd4-444d-a2d6-4c488d77d5b4` |
-| Control | https://control.famasystem.online/ | `6e738e28-0630-40bd-8a8c-11f18f5b7823` | `e4d7deb7-3d55-487c-9716-f25beea4ee62` |
+| System | `https://famasystem.online/entrar` | `01aa1076-cab8-44d2-9284-717bf21456cd` | `03480bd7-6bd4-444d-a2d6-4c488d77d5b4` |
+| Control | `https://control.famasystem.online/` | `6e738e28-0630-40bd-8a8c-11f18f5b7823` | `e4d7deb7-3d55-487c-9716-f25beea4ee62` |
 
 ## Comportamento
 

@@ -1,6 +1,6 @@
 # WhatsApp Baileys do Fama
 
-Serviço para conectar um WhatsApp por empresa, gerar QR code localmente, receber conversas individuais e enviar texto pelo Fama System. É independente da integração Meta existente. Não importa conversas antigas nem envia campanhas automaticamente.
+Serviço para conectar um WhatsApp por empresa, gerar QR code localmente, receber conversas individuais e enviar texto pelo Water System. É independente da integração Meta existente. Não importa conversas antigas nem envia campanhas automaticamente.
 
 ## Instalação ativa na Cloudflare
 
@@ -17,8 +17,8 @@ Requer Node.js 22.13+, volume persistente e um endereço HTTPS. O Worker do site
 1. Execute `npm ci` nesta pasta.
 2. Gere **dois valores diferentes** com `node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"`: `BAILEYS_API_TOKEN` e `BAILEYS_ENCRYPTION_KEY`. Forneça-os pelo gerenciador de segredos do servidor. Preserve a chave de criptografia junto ao backup seguro; trocar ou perder a chave torna sessões e mensagens antigas ilegíveis.
 3. Execute `npm start` ou construa o Dockerfile, vinculando `/data` a um volume persistente. Configure um proxy HTTPS na frente da porta 3010. Não exponha a porta sem o proxy.
-4. Em **Fama Control → Integrações → WhatsApp Baileys**, cadastre a URL HTTPS e o token. A configuração só é salva após o servidor confirmar `/health`.
-5. No **Fama System → Chat → WhatsApp**, clique em **Conectar WhatsApp**. No celular, abra **Aparelhos conectados → Conectar aparelho** e escaneie o QR.
+4. Em **Water Control → Integrações → WhatsApp Baileys**, cadastre a URL HTTPS e o token. A configuração só é salva após o servidor confirmar `/health`.
+5. No **Water System → Chat → WhatsApp**, clique em **Conectar WhatsApp**. No celular, abra **Aparelhos conectados → Conectar aparelho** e escaneie o QR.
 
 As sessões retomam após reinício. Desconectar encerra a sessão e remove as chaves daquele WhatsApp; o histórico de texto permanece. Mensagens e credenciais são criptografadas em SQLite com AES-256-GCM. Cada empresa é isolada por UUID. Uma tentativa de envio sem confirmação não é repetida automaticamente. A interface sinaliza a pendência para conferência no celular.
 

@@ -60,11 +60,11 @@ test('internal bridge preserves authenticated requests and never follows redirec
     });
     await new Promise(resolve => server.listen(0, '127.0.0.1', resolve));
     try {
-        const bridge = localService('http://127.0.0.1:' + server.address().port, 'https://control.famasystem.online');
-        const result = await bridge.fetch('https://control.famasystem.online/api/internal/data?part=one', { method: 'POST', headers: { authorization: 'Bearer test-token', 'content-type': 'application/json' }, body: '{"operation":"read"}' });
+        const bridge = localService('http://127.0.0.1:' + server.address().port, 'https://control.watersystem.online');
+        const result = await bridge.fetch('https://control.watersystem.online/api/internal/data?part=one', { method: 'POST', headers: { authorization: 'Bearer test-token', 'content-type': 'application/json' }, body: '{"operation":"read"}' });
         assert.equal(result.status, 302);
-        assert.deepEqual(received, [{ url: '/api/internal/data?part=one', host: 'control.famasystem.online', authorization: 'Bearer test-token', body: '{"operation":"read"}' }]);
-        await bridge.fetch('https://control.famasystem.online//untrusted.invalid/escape');
+        assert.deepEqual(received, [{ url: '/api/internal/data?part=one', host: 'control.watersystem.online', authorization: 'Bearer test-token', body: '{"operation":"read"}' }]);
+        await bridge.fetch('https://control.watersystem.online//untrusted.invalid/escape');
         assert.equal(received[1].url, '//untrusted.invalid/escape');
         assert.throws(() => localService('http://user:secret@localhost/'), /inválido/);
     } finally { await new Promise(resolve => server.close(resolve)); }

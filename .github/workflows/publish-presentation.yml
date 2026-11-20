@@ -1,4 +1,4 @@
-name: Publicar apresentação Fama System
+name: Publicar apresentação Water System
 on:
   workflow_dispatch:
 permissions:

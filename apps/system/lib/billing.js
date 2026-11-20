@@ -123,7 +123,7 @@ export async function createAsaasPixCheckout(input) {
             billingType: installments > 1 ? "UNDEFINED" : "PIX",
             ...(installments > 1 ? { installmentCount: installments, totalValue } : { value: totalValue }),
             dueDate: todayInSaoPaulo(),
-            description: `Fama System — Plano ${plan.name} ${cycle.label}${installments > 1 ? ` em ${installments}x` : ""}`,
+            description: `Water System — Plano ${plan.name} ${cycle.label}${installments > 1 ? ` em ${installments}x` : ""}`,
             externalReference: `${input.organizationId}:${input.plan}:${billingCycle}:${installments}`,
         }),
     });

@@ -8,7 +8,7 @@ import { createServer } from 'vite';
 const root = new URL('..', import.meta.url).pathname, originalFetch = globalThis.fetch;
 const vite = await createServer({ configFile: false, root, resolve: { alias: { '@': root } }, server: { middlewareMode: true, hmr: false, ws: false } });
 const { ConsultationWorkspace } = await vite.ssrLoadModule('/app/consultation-workspace.jsx');
-const { FamaSystemApp, workspaceNavigationGroupsFor } = await vite.ssrLoadModule('/app/cloriva-app.jsx');
+const { WaterSystemApp, workspaceNavigationGroupsFor } = await vite.ssrLoadModule('/app/cloriva-app.jsx');
 globalThis.IS_REACT_ACT_ENVIRONMENT = true;
 let renderer, requests, upgraded;
 const text = node => node.children.map(child => typeof child === 'string' ? child : text(child)).join('');
@@ -32,7 +32,7 @@ after(async () => { globalThis.fetch = originalFetch; delete globalThis.IS_REACT
 
 test('menus reflect Basic, Plus and Pro even with legacy unrestricted owner permissions', () => {
   const organization = plan => ({ id: 'org-a', name: 'Empresa', role: 'owner', permissions: [], plan, planStatus: 'active', billingEnabled: false, blockOnExpiry: false });
-  const page = plan => renderToString(React.createElement(FamaSystemApp, {
+  const page = plan => renderToString(React.createElement(WaterSystemApp, {
     organizations: [organization(plan)],
     currentUser: { id: 'user-a', email: 'a@example.test', displayName: 'Owner', isPlatformAdmin: false }, signOutPath: '/api/auth/signout',
   }));

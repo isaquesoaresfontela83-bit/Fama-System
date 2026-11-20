@@ -72,7 +72,7 @@ async function providerJson(url, maxBytes = 64_000, cacheSeconds = 86400, before
     const cache = typeof caches === "undefined" ? undefined : caches.default;
     const endpoint = new URL(url);
     // Retire earlier entries, which could contain an empty or incomplete track.
-    const cacheKey = new Request("https://famasystem.online/__freight-provider/v2/" + encodeURIComponent(url));
+    const cacheKey = new Request("https://watersystem.online/__freight-provider/v2/" + encodeURIComponent(url));
     if (cache) {
         try {
             const stored = await cache.match(cacheKey);
@@ -85,7 +85,7 @@ async function providerJson(url, maxBytes = 64_000, cacheSeconds = 86400, before
         }
         catch { /* An invalid cache entry never prevents a fresh provider query. */ }
     }
-    const cooldownKey = new Request("https://famasystem.online/__freight-provider/cooldown/" + endpoint.hostname);
+    const cooldownKey = new Request("https://watersystem.online/__freight-provider/cooldown/" + endpoint.hostname);
     let until = providerCooldowns.get(endpoint.hostname) ?? 0;
     if (cache) {
         try {
@@ -101,7 +101,7 @@ async function providerJson(url, maxBytes = 64_000, cacheSeconds = 86400, before
         await beforeFetch();
     let response;
     const isXml = endpoint.hostname === "cep.awesomeapi.com.br" && endpoint.pathname.startsWith("/xml/");
-    const headers = { Accept: isXml ? "application/xml, text/xml" : "application/json", "User-Agent": "FamaSystem/1.0 (+https://famasystem.online)", Referer: "https://famasystem.online/" };
+    const headers = { Accept: isXml ? "application/xml, text/xml" : "application/json", "User-Agent": "WaterSystem/1.0 (+https://watersystem.online)", Referer: "https://watersystem.online/" };
     try {
         response = await fetch(url, { headers, cache: "no-store", redirect: "manual", signal: AbortSignal.timeout(timeoutMs) });
     }
@@ -224,7 +224,7 @@ async function drivingRoute(service, origin, destination) {
         const route = await providerJson(url.toString(), 2_000_000, 86400, async () => {
             // One shared bucket across every user and Worker; cached routes consume
             // no public-provider quota. No customer IP is sent to the route service.
-            const shared = new Request("https://famasystem.online");
+            const shared = new Request("https://watersystem.online");
             await assertRateLimit(shared, "freight_brouter_shared", "fama-system", 1, 3);
             await assertRateLimit(shared, "freight_brouter_daily", "fama-system", 1000, 86400);
         }, 20_000);

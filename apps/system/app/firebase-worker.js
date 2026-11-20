@@ -15,5 +15,5 @@ const config = Object.fromEntries(keys.map(key => [key, query.get(key) || '']));
 if (keys.every(key => config[key])) {
     const app = initializeApp(config);
     const messaging = getMessaging(app);
-    onBackgroundMessage(messaging, payload => { const data = payload.data || {}; return self.registration.showNotification(data.title || 'Fama System', { body: data.body || 'Você tem uma atualização no Fama.', icon: '/fama-piscinas-mark.png', tag: data.eventId || 'fama-update', data: { url: '/' } }); });
+    onBackgroundMessage(messaging, payload => { const data = payload.data || {}; return self.registration.showNotification(data.title || 'Water System', { body: data.body || 'Você tem uma atualização no Fama.', icon: '/fama-piscinas-mark.png', tag: data.eventId || 'fama-update', data: { url: '/' } }); });
 }

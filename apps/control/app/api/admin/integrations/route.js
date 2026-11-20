@@ -12,10 +12,10 @@ const headers = { 'Cache-Control': 'private,no-store' };
 
 async function systemRelease() {
     const send = env.FAMA_SYSTEM?.fetch ? env.FAMA_SYSTEM.fetch.bind(env.FAMA_SYSTEM) : fetch;
-    const response = await send('https://famasystem.online/api/health', { redirect: 'manual', cache: 'no-store', signal: AbortSignal.timeout(8000) });
+    const response = await send('https://watersystem.online/api/health', { redirect: 'manual', cache: 'no-store', signal: AbortSignal.timeout(8000) });
     if (!response.ok) throw new Error('System indisponível.');
     const data = JSON.parse(new TextDecoder().decode(await readLimitedBody(response, 16384, 8000)));
-    if (data.service !== 'Fama System' || typeof data.version !== 'string') throw new Error('Versão inválida.');
+    if (data.service !== 'Water System' || typeof data.version !== 'string') throw new Error('Versão inválida.');
     return { version: data.version.slice(0,40), releaseId: String(data.releaseId || '').slice(0,80) };
 }
 

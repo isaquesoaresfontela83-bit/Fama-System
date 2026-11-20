@@ -59,7 +59,7 @@ export function SupportCenter({ organization }) {
                 throw new Error(payload.error ?? "Não foi possível enviar.");
             setTickets((current) => [payload.ticket, ...current]);
             form.reset();
-            toast.success("Chamado enviado para o Fama Control.");
+            toast.success("Chamado enviado para o Water Control.");
         }
         catch (error) {
             toast.error(error instanceof Error ? error.message : "Não foi possível enviar.");
@@ -75,9 +75,9 @@ export function SupportCenter({ organization }) {
     return (<div className="support-layout">
       <section className="surface support-hero">
         <div>
-          <small>SUPORTE FAMA SYSTEM</small>
+          <small>SUPORTE WATER SYSTEM</small>
           <h2>Envie erros, melhorias e dúvidas com contexto</h2>
-          <p>Seu chamado chega direto no Fama Control com empresa, usuário, prioridade e histórico para análise.</p>
+          <p>Seu chamado chega direto no Water Control com empresa, usuário, prioridade e histórico para análise.</p>
         </div>
         <div className="support-hero-stats">
           <span><Clock3 /><strong>{openTickets}</strong><small>em andamento</small></span>

@@ -35,7 +35,7 @@
   ],
   "routes": [
     {
-      "pattern": "control.famasystem.online",
+      "pattern": "control.watersystem.online",
       "custom_domain": true
     }
   ],

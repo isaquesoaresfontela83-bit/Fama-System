@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import { ThemeToggle } from "@/app/theme-toggle";
 import { CheckoutClient } from "./checkout-client";
 import { getPlanSnapshot, isBillingCycle, isPlanCode } from "@/lib/plans";
-export const metadata = { title: "Assinar plano | Fama System" };
+export const metadata = { title: "Assinar plano | Water System" };
 export default async function SubscribePlanPage({ params, searchParams }) {
     if (!isPlanCode(params.plan))
         notFound();
@@ -13,7 +13,7 @@ export default async function SubscribePlanPage({ params, searchParams }) {
       <nav className="public-nav">
         <Link className="public-brand plans-brand" href="/planos">
           <span className="brand-mark" aria-hidden="true"><img src="/fama-piscinas-mark.png" alt=""/></span>
-          <div><strong>Fama System</strong><small>Assinatura com Pix</small></div>
+          <div><strong>Water System</strong><small>Assinatura com Pix</small></div>
         </Link>
         <div className="public-nav-actions">
           <Link href="/planos" className="public-manual-link">Voltar aos planos</Link>

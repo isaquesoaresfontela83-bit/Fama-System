@@ -98,7 +98,7 @@ test('System uses the protected Control bridge and merges central settings with 
  const calls=[];f.runtime.FAMA_CONTROL={async fetch(url,init){calls.push({url,init});assert.equal(new Headers(init.headers).get('authorization'),'Bearer '+secret);return Response.json({handled:true,integrations:[{provider:'drive',managed:true,configured:false},{provider:'resend',managed:false,configured:false}]});}};
  try {
   const response=await settings.GET(f.request('GET','/api/integrations'));assert.equal(response.status,200);const data=await response.json();
-  assert.equal(data.integrations.find(item=>item.provider==='drive').configured,false);assert.equal(data.integrations.some(item=>item.provider==='resend'),false);assert.equal(backend.length,1);assert.equal(calls.length,1);assert.equal(calls[0].url,'https://control.famasystem.online/api/internal/integrations');assert.doesNotMatch(JSON.stringify(data),/private-control|access-token/);
+  assert.equal(data.integrations.find(item=>item.provider==='drive').configured,false);assert.equal(data.integrations.some(item=>item.provider==='resend'),false);assert.equal(backend.length,1);assert.equal(calls.length,1);assert.equal(calls[0].url,'https://control.watersystem.online/api/internal/integrations');assert.doesNotMatch(JSON.stringify(data),/private-control|access-token/);
  } finally {delete f.runtime.FAMA_CONTROL;delete f.runtime.FAMA_DATA_BRIDGE_SECRET;}
 });
 test('a central operation replaces the legacy backend, while a paused central integration fails closed',async()=>{

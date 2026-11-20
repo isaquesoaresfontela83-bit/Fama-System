@@ -16,13 +16,13 @@ import { RequestError } from './request-error';
 const systemSend = (...args) => env.FAMA_SYSTEM?.fetch ? env.FAMA_SYSTEM.fetch(...args) : fetch(...args);
 export async function systemApiSnapshot() {
     if (!env.FAMA_DATA_BRIDGE_SECRET) throw new Error('Bridge unavailable');
-    const value = await readApiJson('https://famasystem.online/api/internal/api-status', { headers: { Authorization: 'Bearer ' + env.FAMA_DATA_BRIDGE_SECRET } }, systemSend);
+    const value = await readApiJson('https://watersystem.online/api/internal/api-status', { headers: { Authorization: 'Bearer ' + env.FAMA_DATA_BRIDGE_SECRET } }, systemSend);
     if (value.scope !== 'system' || typeof value.version !== 'string' || typeof value.releaseId !== 'string' || !value.observations || typeof value.observations !== 'object') throw new Error('Invalid snapshot');
     return { observations: normalizeApiObservations('system', value.observations), version: value.version.slice(0,40), releaseId: value.releaseId.slice(0,80) };
 }
 async function systemRelease() {
-    const value = await readApiJson('https://famasystem.online/api/health', {}, systemSend);
-    if (value.service !== 'Fama System' || typeof value.version !== 'string' || typeof value.releaseId !== 'string') throw new Error('Invalid release');
+    const value = await readApiJson('https://watersystem.online/api/health', {}, systemSend);
+    if (value.service !== 'Water System' || typeof value.version !== 'string' || typeof value.releaseId !== 'string') throw new Error('Invalid release');
     return { version: value.version.slice(0,40), releaseId: value.releaseId.slice(0,80) };
 }
 export async function controlApiStatus() {
@@ -35,8 +35,8 @@ export async function controlApiStatus() {
     else if (result['supabase-functions'].status !== 'unconfigured') result['supabase-functions'] = observation('unavailable', 'A função anterior não confirmou a consulta. As conexões gerenciadas no Control possuem status próprios.', new Date().toISOString());
     for (const provider of integrationProviders) {
         const local = central.status === 'fulfilled' ? central.value.find(item => item.provider === provider.id) : null;
-        if (local?.managed && !local.enabled) result[provider.id] = observation('paused', 'Integração pausada na central do Fama Control.');
-        else if (local?.managed && local.configured) result[provider.id] = observation(['github','ipinfo'].includes(provider.id) && !local.present.token ? 'public' : 'configured', 'Configuração gerenciada no Fama Control. A resposta do provedor ainda não foi testada.');
+        if (local?.managed && !local.enabled) result[provider.id] = observation('paused', 'Integração pausada na central do Water Control.');
+        else if (local?.managed && local.configured) result[provider.id] = observation(['github','ipinfo'].includes(provider.id) && !local.present.token ? 'public' : 'configured', 'Configuração gerenciada no Water Control. A resposta do provedor ainda não foi testada.');
         else if (data) {
             const configured = data[provider.statusKey]?.configured === true;
             const publicMode = provider.id === 'github' && data.github_rest?.available === true || provider.id === 'ipinfo' && data.ipinfo?.available === true;
@@ -106,7 +106,7 @@ export async function probeApi(id, scope) {
         if (scope === 'control') value = await probeControlApi(id);
         else {
             if (!env.FAMA_DATA_BRIDGE_SECRET) throw new Error('Missing bridge');
-            const result = await readApiJson('https://famasystem.online/api/internal/api-status', { method: 'POST', headers: { Authorization: 'Bearer ' + env.FAMA_DATA_BRIDGE_SECRET, 'Content-Type': 'application/json' }, body: JSON.stringify({ id }) }, systemSend);
+            const result = await readApiJson('https://watersystem.online/api/internal/api-status', { method: 'POST', headers: { Authorization: 'Bearer ' + env.FAMA_DATA_BRIDGE_SECRET, 'Content-Type': 'application/json' }, body: JSON.stringify({ id }) }, systemSend);
             if (result.id !== id || result.scope !== 'system') throw new Error('Invalid check');
             value = normalizeApiObservations('system', { [id]: result.observation })[id];
         }

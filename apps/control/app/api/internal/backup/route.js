@@ -8,6 +8,6 @@ export async function POST(request) {
         return Response.json(run ? backupSummary(run) : { status: 'waiting' }, { headers: { 'Cache-Control': 'private, no-store' } });
     }
     catch {
-        return Response.json({ error: 'O backup completo não foi concluído. Consulte o Fama Control.' }, { status: 503 });
+        return Response.json({ error: 'O backup completo não foi concluído. Consulte o Water Control.' }, { status: 503 });
     }
 }

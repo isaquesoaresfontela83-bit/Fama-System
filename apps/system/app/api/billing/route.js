@@ -152,7 +152,7 @@ export async function POST(request) {
             return Response.json({ billing });
         }
         if (organization.billingEnabled === false)
-            return Response.json({ error: "Esta empresa está isenta. Somente o Fama Control pode habilitar a cobrança." }, { status: 409 });
+            return Response.json({ error: "Esta empresa está isenta. Somente o Water Control pode habilitar a cobrança." }, { status: 409 });
         const plan = optionalText(body.plan);
         if (!isPlanCode(plan))
             return Response.json({ error: "Escolha um plano válido." }, { status: 400 });

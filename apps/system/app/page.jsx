@@ -1,4 +1,4 @@
-import { FamaSystemApp } from "./cloriva-app";
+import { WaterSystemApp } from "./cloriva-app";
 import { CompanyOnboarding } from "./company-onboarding";
 import { appSignOutPath, getFamaUser } from "./system-auth";
 import { LegalConsentGate } from "./legal-consent-gate";
@@ -24,5 +24,5 @@ export default async function Home(props) {
         const intent = onboardingIntent(await searchParams ?? {});
         return <CompanyOnboarding currentUser={currentUser} displayName={user.displayName} email={user.email} signOutPath={signOutPath} plans={await getPlanCatalog()} initialPlan={intent.plan} initialCheckoutId={intent.checkout}/>;
     }
-    return <FamaSystemApp organizations={organizations} currentUser={currentUser} signOutPath={signOutPath}/>;
+    return <WaterSystemApp organizations={organizations} currentUser={currentUser} signOutPath={signOutPath}/>;
 }

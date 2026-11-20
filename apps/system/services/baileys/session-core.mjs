@@ -47,7 +47,7 @@ export class Sessions {
             }).filter(([,value]) => value!==null)),
             set:async data => { if(!current())return; for (const [type,values] of Object.entries(data)) for (const [id,value] of Object.entries(values)) this.store.setAuth(company,'key:'+type+':'+id,value); },
         };
-        const sock=(makeWASocket || defaultSocket)({ auth:{creds,keys}, logger, browser:['Fama System','Chrome','1.0.0'], markOnlineOnConnect:false, syncFullHistory:false,
+        const sock=(makeWASocket || defaultSocket)({ auth:{creds,keys}, logger, browser:['Water System','Chrome','1.0.0'], markOnlineOnConnect:false, syncFullHistory:false,
             shouldSyncHistoryMessage:message=>{const types=proto.HistorySync?.HistorySyncType;return Boolean(types && [types.INITIAL_BOOTSTRAP,types.PUSH_NAME].includes(message.syncType));},
             getMessage:async()=>undefined, connectTimeoutMs:20000, defaultQueryTimeoutMs:20000 });
         item.socket=sock;
