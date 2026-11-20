@@ -11,12 +11,15 @@
    const opening = document.createElement('div');
    opening.className = 'water-opening';
    opening.setAttribute('aria-hidden', 'true');
+   const lockup = document.createElement('div');
+   lockup.className = 'water-opening-lockup';
    const logo = document.createElement('img');
    logo.src = asset;
    logo.alt = '';
    const name = document.createElement('span');
-   name.textContent = 'Water System';
-   opening.append(logo, name);
+   name.textContent = 'ater System';
+   lockup.append(logo, name);
+   opening.append(lockup);
    document.body.append(opening);
    opening.addEventListener('animationend', event => {
     if (event.target === opening) opening.remove();

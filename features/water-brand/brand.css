@@ -38,30 +38,35 @@
   animation: water-opening-exit var(--water-opening-duration) ease-in-out both;
 }
 
-.water-opening > img {
-  grid-area: 1 / 1;
-  width: clamp(64px, 20vw, 86px);
-  height: auto;
-  filter: invert(.83) hue-rotate(180deg) saturate(1.25);
-  animation: water-opening-mark var(--water-opening-duration) cubic-bezier(.3, 0, .2, 1) both;
+.water-opening-lockup {
+  --water-opening-mark-width: clamp(64px, 20vw, 86px);
+  display: flex;
+  align-items: center;
+  animation: water-opening-lockup var(--water-opening-duration) cubic-bezier(.3, 0, .2, 1) both;
 }
 
-.water-opening > span {
-  grid-area: 1 / 1;
+.water-opening-lockup > img {
+  display: block;
+  width: var(--water-opening-mark-width);
+  height: auto;
+  filter: invert(.83) hue-rotate(180deg) saturate(1.25);
+}
+
+.water-opening-lockup > span {
   font: 700 clamp(20px, 7vw, 32px) / 1.1 system-ui, sans-serif;
   letter-spacing: -.035em;
   white-space: nowrap;
   animation: water-opening-name var(--water-opening-duration) cubic-bezier(.3, 0, .2, 1) both;
 }
 
-@keyframes water-opening-mark {
-  0%, 9%, 88%, 100% { transform: translateX(0); }
-  21%, 76% { transform: translateX(clamp(-92px, -21vw, -64px)) scale(.82); }
+@keyframes water-opening-lockup {
+  0%, 9%, 88%, 100% { transform: translateX(calc(50% - var(--water-opening-mark-width) / 2)); }
+  23%, 75% { transform: translateX(0); }
 }
 
 @keyframes water-opening-name {
-  0%, 9%, 87%, 100% { opacity: 0; transform: translateX(12px) scale(.92); clip-path: inset(0 100% 0 0); }
-  23%, 75% { opacity: 1; transform: translateX(24px); clip-path: inset(0); }
+  0%, 9%, 87%, 100% { opacity: 0; clip-path: inset(0 100% 0 0); }
+  23%, 75% { opacity: 1; clip-path: inset(0); }
 }
 
 @keyframes water-opening-exit {
