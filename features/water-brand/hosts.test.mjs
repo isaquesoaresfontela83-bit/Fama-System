@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 
-import { withWaterBrand } from './entry.mjs';
+import { CONTROL_BRAND, PREFIX, withWaterBrand } from './entry.mjs';
 import { migrateLegacyReferences, useWaterHosts } from './hosts.mjs';
 
 test('moves application hosts without rewriting unrelated services', () => {
@@ -52,4 +52,28 @@ test('public names and the repository move without changing storage and binding 
   'https://github.com/isaquesoaresfontela83-bit/Water-System · FAMA_SYSTEM · fama-system-theme-v2';
  assert.equal(migrateLegacyReferences(original), updated);
  assert.equal(migrateLegacyReferences(updated), updated);
+});
+
+test('Control uses its own brand mark and favicon while its opening keeps the original monogram', async () => {
+ const image = body => ({ body, type: 'image/webp' });
+ const resources = {
+  'icon.webp': image('original monogram'),
+  [CONTROL_BRAND + '-mark.webp']: image('Control logo'),
+  [CONTROL_BRAND + '-icon.webp']: image('Control favicon'),
+  [CONTROL_BRAND + '.js']: { body: '', type: 'application/javascript' },
+ };
+ const app = { fetch: () => assert.fail('Brand images should be handled by the extension') };
+ const routes = [
+  ['/fama-piscinas-mark.png', 'Control logo'],
+  ['/favicon.ico', 'Control favicon'],
+  [PREFIX + 'icon.webp', 'original monogram'],
+ ];
+ for (const product of ['control', 'system']) {
+  const worker = withWaterBrand(app, resources, product);
+  for (const [path, expected] of routes) {
+   const response = await worker.fetch(new Request('https://watersystem.online' + path));
+   assert.equal(response.headers.get('Content-Type'), 'image/webp');
+   assert.equal(await response.text(), product === 'control' ? expected : 'original monogram');
+  }
+ }
 });

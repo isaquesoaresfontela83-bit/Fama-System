@@ -1,6 +1,6 @@
 (() => {
  const script = document.currentScript;
- const asset = new URL('icon.webp', script.src).pathname;
+ const asset = new URL(script.dataset.waterMark || 'icon.webp', script.src).pathname;
  if (script.hasAttribute('data-water-opening') && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
   let firstLaunch = false;
   try {
