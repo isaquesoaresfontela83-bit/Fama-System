@@ -1,3 +1,18 @@
+# Water System e Water Control 15.23.21 — 19/11/2026
+
+Lançamento conjunto `2026-11-19-water-opening-domain-01`. Confira os dois aplicativos em [Water System](https://watersystem.online/) e [Water Control](https://control.watersystem.online/).
+
+| Aplicação | Versão ativa do Worker | Implantação | Módulos | Bindings |
+| --- | --- | --- | --- | --- |
+| Water System | `b185fc67-1dfe-45bc-b7bb-0c6eb27104c7` | `32682a87-ae9d-4b10-a039-f89bc980af21` | 144 | 41 |
+| Water Control | `c9475019-f9cc-414a-aa69-55b4b7b47b88` | `5f69deae-ebbe-4296-85d5-d7401a8381aa` | 77 | 29 |
+
+Os hashes dos módulos publicados conferem com os pacotes preparados. Os 62 testes, a verificação conjunta e a verificação de sintaxe passaram. O navegador confirmou o monograma centralizado na abertura de 320 px. As páginas públicas, as rotas de autenticação e os endpoints de saúde responderam no novo domínio.
+
+O Supabase passou a usar o novo endereço padrão e os três destinos para confirmação de cadastro e recuperação de senha. A migração `20261120003744_water_backup_origin.sql` atualizou o destino do backup. O backup de teste foi completo, válido e criptografado, e o agendamento confirmou execuções bem-sucedidas. As rotas, domínios personalizados e regras de redirecionamento dos três endereços antigos foram removidos e conferidos na Cloudflare.
+
+---
+
 # Apresentação e preços 15.23.8 — 19/11/2026 — publicado e verificado
 
 Lançamento conjunto `2026-11-19-premium-public-themes-01`, publicado pela conexão autenticada da Cloudflare nos Workers existentes. A apresentação premium está em `https://famasystem.online/` e `https://famasystem.online/planos`, com temas claro/escuro e preferência persistente.
