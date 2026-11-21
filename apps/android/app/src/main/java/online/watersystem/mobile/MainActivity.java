@@ -6,6 +6,7 @@ import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.pm.ApplicationInfo;
 import android.graphics.Color;
 import android.graphics.Insets;
 import android.net.Uri;
@@ -18,6 +19,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.WindowInsets;
 import android.webkit.CookieManager;
+import android.webkit.ConsoleMessage;
 import android.webkit.GeolocationPermissions;
 import android.webkit.JsPromptResult;
 import android.webkit.JsResult;
@@ -68,6 +70,10 @@ public final class MainActivity extends Activity {
     private String fileCookie;
     private String fileAgent;
     private boolean saving;
+
+    private boolean isTestBuild() {
+        return (getApplicationInfo().flags & ApplicationInfo.FLAG_DEBUGGABLE) != 0;
+    }
 
     @Override public void onCreate(Bundle state) {
         super.onCreate(state);
@@ -168,6 +174,15 @@ public final class MainActivity extends Activity {
         }
         @Override public void onPageStarted(WebView view, String url, android.graphics.Bitmap icon) {
             errorView.setVisibility(View.GONE);
+            if (isTestBuild()) Log.i("WaterWeb", "Página iniciada");
+        }
+        @Override public void onPageFinished(WebView view, String url) {
+            if (isTestBuild() && isTrusted(url)) {
+                Log.i("WaterWeb", "Página concluída");
+                view.postDelayed(() -> view.evaluateJavascript(
+                        "document.body ? document.body.innerText.length : -1",
+                        value -> Log.i("WaterWeb", "DOM visible text length " + value)), 10000);
+            }
         }
         @Override public void onReceivedError(WebView view, WebResourceRequest req, WebResourceError error) {
             if (req.isForMainFrame()) {
@@ -178,6 +193,12 @@ public final class MainActivity extends Activity {
     }
 
     private final class BrowserChrome extends WebChromeClient {
+        @Override public boolean onConsoleMessage(ConsoleMessage message) {
+            if (isTestBuild() && message.messageLevel() == ConsoleMessage.MessageLevel.ERROR) {
+                Log.w("WaterWeb", "Console: " + message.message());
+            }
+            return super.onConsoleMessage(message);
+        }
         @Override public boolean onJsAlert(WebView view, String url, String message, JsResult result) {
             if (!isTrusted(url)) { result.cancel(); return true; }
             new AlertDialog.Builder(MainActivity.this).setMessage(message)

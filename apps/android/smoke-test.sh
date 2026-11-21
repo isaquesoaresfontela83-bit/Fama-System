@@ -10,7 +10,7 @@ for item in 'system online.watersystem.app' 'control online.watersystem.control'
   read -r name package <<< "$item"
   adb logcat -c
   adb shell am start -W -n "$package/online.watersystem.mobile.MainActivity"
-  sleep 15
+  sleep 30
   adb shell pidof "$package" >/dev/null
   adb shell uiautomator dump /sdcard/water-window.xml >/dev/null
   adb shell cat /sdcard/water-window.xml > "android-test-screens/$name.xml"
@@ -19,6 +19,10 @@ for item in 'system online.watersystem.app' 'control online.watersystem.control'
   cat "android-test-screens/$name.log"
   if grep -q 'Não foi possível carregar o sistema' "android-test-screens/$name.xml"; then
     echo "A tela inicial não carregou: $name" >&2
+    failures=1
+  fi
+  if ! grep -Eq 'DOM visible text length [1-9][0-9]*' "android-test-screens/$name.log"; then
+    echo "O conteúdo da página não ficou visível: $name" >&2
     failures=1
   fi
   adb shell am force-stop "$package"
