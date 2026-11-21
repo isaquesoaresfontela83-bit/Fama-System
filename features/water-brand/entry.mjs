@@ -1,7 +1,7 @@
 import { migrateLegacyReferences, renameProducts } from './hosts.mjs';
 
-export const VERSION = '15.23.31';
-export const RELEASE = '2026-11-21-control-bottom-dock-01';
+export const VERSION = '15.23.32';
+export const RELEASE = '2026-11-21-control-ai-dock-clearance-01';
 export const PREFIX = '/assets/water-brand-15.23.21/';
 export const SYSTEM_BRAND_JS = 'brand-15.23.26.js';
 export const BRAND_CSS = 'brand-15.23.27.css';
@@ -12,7 +12,7 @@ export const DEMO_ACTION_CSS = 'demo-action-15.23.22.css';
 export const CONTROL_OPENING = 'control-opening-15.23.25-r2';
 export const CONTROL_BRAND = 'control-brand-15.23.25';
 export const CONTROL_BRAND_CSS = 'control-brand-15.23.25-r2.css';
-export const CONTROL_LAYOUT_CSS = 'control-system-layout-15.23.31.css';
+export const CONTROL_LAYOUT_CSS = 'control-system-layout-15.23.32.css';
 export const CONTROL_DOCK_JS = 'control-dock-15.23.31.mjs';
 
 const oldIcon = /^(?:\/favicon\.ico|\/apple-touch-icon(?:-\d+x\d+)?\.png|\/icon-(?:192|512)\.png)$/;

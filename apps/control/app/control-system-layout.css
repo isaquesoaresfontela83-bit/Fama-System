@@ -96,14 +96,14 @@
   box-shadow: 0 8px 24px #0003;
 }
 .control-shell .control-main { padding-bottom: calc(150px + env(safe-area-inset-bottom)); }
-.control-shell .premium-assistant-button { bottom: calc(110px + env(safe-area-inset-bottom)); }
+.control-shell .premium-assistant-button { bottom: calc(110px + env(safe-area-inset-bottom)) !important; }
 @media (max-width: 1250px) and (min-width: 761px) {
   .water-control-dock { left: calc(224px + (100vw - 224px) / 2); width: min(620px,calc(100vw - 256px)); }
 }
 @media (max-width: 760px) {
   .water-control-dock { left: 50%; bottom: max(10px,env(safe-area-inset-bottom)); width: calc(100vw - 20px); min-height: 70px; gap: 2px; }
   .water-control-dock > button { min-height: 54px; }
-  .control-shell .premium-assistant-button { bottom: calc(96px + env(safe-area-inset-bottom)); }
+  .control-shell .premium-assistant-button { bottom: calc(96px + env(safe-area-inset-bottom)) !important; }
 }
 @media (prefers-reduced-transparency: reduce) { .water-control-dock { background: var(--ops-panel); backdrop-filter: none; } }
 @media print { .water-control-dock { display: none; } }
