@@ -1,3 +1,16 @@
+# Water System e Water Control 15.23.27 — 20/11/2026
+
+Lançamento conjunto `2026-11-20-water-mobile-transparent-logo-01`. O fundo branco, a borda e o preenchimento foram removidos apenas do símbolo no cabeçalho móvel do System. O próprio monograma já tem transparência; o tema escuro recebe o mesmo ajuste de contraste usado na identidade existente. A folha de estilo tem um endereço novo para não reaproveitar o cache antigo.
+
+| Aplicação | Versão ativa do Worker | Implantação | Módulos | Bindings |
+| --- | --- | --- | --- | --- |
+| Water System | `1d0d211a-1b9f-4467-9964-d753a31cfffc` | `fbaaa652-b310-4337-8faf-b295b8beeae9` | 144 | 41 |
+| Water Control | `c32f2c11-bb1f-4fe3-88ad-c7224095522a` | `51b733f2-c1db-4902-a166-33e0229f535d` | 77 | 29 |
+
+Os 63 testes, a sintaxe, a verificação conjunta e a integridade dos módulos e bindings passaram. A folha nova carregou no navegador e os dois endpoints de saúde responderam com o lançamento. A tela autenticada não foi acessada nesta conferência.
+
+---
+
 # Water System e Water Control 15.23.26 — 20/11/2026
 
 Lançamento conjunto `2026-11-20-water-mobile-brand-01`. O nome na barra móvel foi corrigido para WATER SYSTEM; o rótulo fixo da IA ao lado dos módulos aparece como Water IA. Nomes de empresas e textos de clientes não são alterados. O script usa um novo endereço para não reaproveitar a versão antiga do cache.

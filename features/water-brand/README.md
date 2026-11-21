@@ -1,6 +1,6 @@
 # Water System e Water Control
 
-Versão conjunta 15.23.26. O cabeçalho móvel e o rótulo fixo da IA nos módulos usam a marca Water, preservando os nomes das empresas e os dados de clientes. A extensão roda sobre os Workers ativos e serve a marca Water, o favicon e o manifesto. Na abertura do System, o monograma começa centralizado e permanece como o W de Water quando o nome aparece. O enquadramento considera a área visível da imagem e as margens de segurança do celular. A preferência de movimento reduzido desativa a animação.
+Versão conjunta 15.23.27. O cabeçalho móvel usa o monograma transparente, sem fundo branco; no tema escuro, o símbolo recebe contraste. O rótulo fixo da IA nos módulos usa a marca Water, preservando os nomes das empresas e os dados de clientes. A extensão roda sobre os Workers ativos e serve a marca Water, o favicon e o manifesto. Na abertura do System, o monograma começa centralizado e permanece como o W de Water quando o nome aparece. O enquadramento considera a área visível da imagem e as margens de segurança do celular. A preferência de movimento reduzido desativa a animação.
 
 `deploy-connected.mjs` prepara ambos os Workers com os módulos ativos. A preparação registra os módulos cujos endereços serão migrados e confere a integridade dos demais. A ativação exige os hashes retornados na preparação. Os recursos estáticos com endereços antigos entram na lista de atualização por caminho e por aplicação. Valide as páginas públicas, o catálogo, a recuperação de conta e a aparência dentro de uma conta autenticada.
 

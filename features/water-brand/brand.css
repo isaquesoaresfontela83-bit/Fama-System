@@ -24,6 +24,18 @@
   filter: invert(.83) hue-rotate(180deg) saturate(1.25) !important;
 }
 
+/* The mobile header already uses a transparent logo; remove its white tile. */
+.application .ops-mobile-brand .brand-mark {
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+}
+
+.dark .application .ops-mobile-brand .brand-mark > img {
+  filter: invert(.83) hue-rotate(180deg) saturate(1.25);
+}
+
 .water-opening {
   --water-opening-duration: 3.6s;
   position: fixed;
