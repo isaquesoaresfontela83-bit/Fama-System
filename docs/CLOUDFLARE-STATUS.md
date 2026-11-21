@@ -1,3 +1,16 @@
+# Water System e Water Control 15.23.30 — 21/11/2026
+
+Lançamento conjunto `2026-11-21-control-system-layout-02`. O Control passou a usar a mesma folha de layout do System, com ajustes para a tela de acesso, legibilidade, cartões, menu e cores nos temas claro e escuro. A folha `control-system-layout-15.23.30.css` é servida somente no Control. As telas e operações existentes foram preservadas, assim como os recursos de gestão de verificação em duas etapas da versão 15.23.28.
+
+| Aplicação | Versão ativa do Worker | Implantação | Módulos | Bindings |
+| --- | --- | --- | --- | --- |
+| Water System | `a8a29779-030d-4494-916b-2dbc9667a490` | `666c421e-a4f8-462c-b41b-c1f880ba3146` | 144 | 41 |
+| Water Control | `1ba4295d-0acb-4926-bd70-10822e73e113` | `801a2c4a-17d7-4880-af4f-ba044613138c` | 77 | 29 |
+
+Os 69 testes, a sintaxe, a construção da prévia e a verificação conjunta passaram. As versões ativas, os hashes dos módulos preservados e os nomes e tipos dos bindings foram conferidos após a publicação. Os dois endpoints de saúde responderam na mesma versão. No navegador, a tela de acesso do Control abriu, a alternância claro/escuro e a mudança entre login e primeiro acesso funcionaram, e a folha nova carregou. A tela autenticada e a apresentação em celular não foram conferidas visualmente.
+
+---
+
 # Water System e Water Control 15.23.27 — 20/11/2026
 
 Lançamento conjunto `2026-11-20-water-mobile-transparent-logo-01`. O fundo branco, a borda e o preenchimento foram removidos apenas do símbolo no cabeçalho móvel do System. O próprio monograma já tem transparência; o tema escuro recebe o mesmo ajuste de contraste usado na identidade existente. A folha de estilo tem um endereço novo para não reaproveitar o cache antigo.

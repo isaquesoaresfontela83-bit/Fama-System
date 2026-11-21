@@ -1,3 +1,7 @@
+# Atualização de 21/11/2026 — layout conjunto 15.23.30
+
+Versão conjunta `15.23.30` / `2026-11-21-control-system-layout-02`, publicada e verificada nos dois Workers. O Control usa a folha de layout compartilhada com o System, acrescida de `apps/control/app/control-system-layout.css`. A extensão de produção fica em `features/control-layout/`; preserve os recursos de verificação em duas etapas da versão 15.23.28. Consulte `docs/CLOUDFLARE-STATUS.md`. A tela autenticada e a apresentação em celular ainda não tiveram conferência visual nesta atualização. As regras permanentes abaixo continuam válidas.
+
 # Atualização de 19/11/2026 — apresentação 15.23.8
 
 Versão conjunta vigente `15.23.8` / `2026-11-19-premium-public-themes-01`, publicada e verificada nos dois Workers. A apresentação pública e os temas estão em `features/pricing/premium/`. Consulte seu README, `deployment.json` e `docs/CLOUDFLARE-STATUS.md`. Recupere sempre a produção atual; preserve os 140/73 módulos anteriores e substitua somente os quatro módulos conhecidos da apresentação quando necessário. As autorizações e regras de preservação abaixo permanecem válidas.
