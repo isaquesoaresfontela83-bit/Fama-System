@@ -101,6 +101,8 @@ public final class MainActivity extends Activity {
         WebSettings settings = web.getSettings();
         settings.setJavaScriptEnabled(true);
         settings.setDomStorageEnabled(true);
+        settings.setUseWideViewPort(true);
+        settings.setLoadWithOverviewMode(true);
         settings.setJavaScriptCanOpenWindowsAutomatically(true);
         settings.setSupportMultipleWindows(true);
         settings.setAllowFileAccess(false);
@@ -202,7 +204,7 @@ public final class MainActivity extends Activity {
                         "document.body ? document.body.innerText.length : -1",
                         value -> Log.i("WaterWeb", "DOM visible text length " + value)), 10000);
                 if ("watersystem.online".equalsIgnoreCase(page.getHost()) && "/entrar".equals(page.getPath())) {
-                    view.postDelayed(() -> view.evaluateJavascript("(function(){var e=document.querySelector('.auth-card');return !!e&&e.getBoundingClientRect().top<innerHeight;})()",
+                    view.postDelayed(() -> view.evaluateJavascript("(function(){var e=document.querySelector('.auth-card');if(!e)return false;var r=e.getBoundingClientRect();return r.top<innerHeight&&r.bottom>0&&r.left>=0&&r.right<=innerWidth+2;})()",
                             value -> Log.i("WaterWeb", "System login visible " + value)), 10000);
                 }
             }
