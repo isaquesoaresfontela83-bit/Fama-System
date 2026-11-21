@@ -194,8 +194,9 @@ public final class MainActivity extends Activity {
             Uri page = Uri.parse(url);
             if (isTrusted(url) && "watersystem.online".equalsIgnoreCase(page.getHost())
                     && "/entrar".equals(page.getPath())) {
-                // The sign-in card follows the introduction on the mobile site.
-                view.evaluateJavascript("(function(){var n=0;function go(){var e=document.querySelector('.auth-card');"
+                // Keep the sign-in card usable on narrow screens in the Android shell.
+                view.evaluateJavascript("(function(){if(!document.getElementById('water-android-auth')){var s=document.createElement('style');s.id='water-android-auth';"
+                        + "s.textContent=\".public-page .public-hero-auth{display:flex!important;flex-direction:column!important;align-items:stretch!important;width:calc(100% - 32px)!important;max-width:480px!important;min-height:0!important;margin:0 auto!important;padding:16px 0 32px!important;gap:16px!important}.public-page .public-copy{display:none!important}.public-page .auth-card{box-sizing:border-box!important;min-width:0!important;width:100%!important;max-width:100%!important;margin:0!important;padding:20px!important}.public-page .auth-card input{box-sizing:border-box!important;min-width:0!important;max-width:100%!important}.public-page .auth-card form>button[type=submit]{background:#248be1!important;color:white!important}\";document.head.appendChild(s);}var n=0;function go(){var e=document.querySelector('.auth-card');"
                         + "if(e){e.scrollIntoView({block:'start',behavior:'auto'});}else if(++n<40)setTimeout(go,250);}go();})()", null);
             }
             if (isTestBuild() && isTrusted(url)) {
