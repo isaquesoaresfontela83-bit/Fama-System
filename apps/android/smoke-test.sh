@@ -25,6 +25,10 @@ for item in 'system online.watersystem.app' 'control online.watersystem.control'
     echo "O conteúdo da página não ficou visível: $name" >&2
     failures=1
   fi
+  if [[ "$name" == system ]] && ! grep -q 'System login visible true' "android-test-screens/$name.log"; then
+    echo "O formulário de entrada não ficou visível: $name" >&2
+    failures=1
+  fi
   adb shell am force-stop "$package"
 done
 exit "$failures"

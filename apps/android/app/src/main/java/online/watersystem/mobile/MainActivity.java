@@ -189,11 +189,22 @@ public final class MainActivity extends Activity {
             if (!documentStartSupported && isTrusted(url)) view.evaluateJavascript(COMPAT_SCRIPT, null);
         }
         @Override public void onPageFinished(WebView view, String url) {
+            Uri page = Uri.parse(url);
+            if (isTrusted(url) && "watersystem.online".equalsIgnoreCase(page.getHost())
+                    && "/entrar".equals(page.getPath())) {
+                // The sign-in card follows the introduction on the mobile site.
+                view.evaluateJavascript("(function(){var n=0;function go(){var e=document.querySelector('.auth-card');"
+                        + "if(e){e.scrollIntoView({block:'start',behavior:'auto'});}else if(++n<40)setTimeout(go,250);}go();})()", null);
+            }
             if (isTestBuild() && isTrusted(url)) {
                 Log.i("WaterWeb", "Página concluída");
                 view.postDelayed(() -> view.evaluateJavascript(
                         "document.body ? document.body.innerText.length : -1",
                         value -> Log.i("WaterWeb", "DOM visible text length " + value)), 10000);
+                if ("watersystem.online".equalsIgnoreCase(page.getHost()) && "/entrar".equals(page.getPath())) {
+                    view.postDelayed(() -> view.evaluateJavascript("(function(){var e=document.querySelector('.auth-card');return !!e&&e.getBoundingClientRect().top<innerHeight;})()",
+                            value -> Log.i("WaterWeb", "System login visible " + value)), 10000);
+                }
             }
         }
         @Override public void onReceivedError(WebView view, WebResourceRequest req, WebResourceError error) {
