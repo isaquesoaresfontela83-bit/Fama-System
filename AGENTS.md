@@ -1,3 +1,7 @@
+# Atualização de 21/11/2026 — botão da IA 15.23.32
+
+Versão conjunta `15.23.32` / `2026-11-21-control-ai-dock-clearance-01`, publicada nos dois Workers. A posição da assistente no Control tem prioridade sobre a regra antiga para não cobrir a barra. A folha compartilhada é `control-system-layout-15.23.32.css` e o cliente da barra permanece `control-dock-15.23.31.mjs`. Preserve ambos e os recursos da verificação em duas etapas. A posição final ainda requer conferência visual autenticada. Consulte `docs/CLOUDFLARE-STATUS.md`.
+
 # Atualização de 21/11/2026 — barra do Control 15.23.31
 
 Versão conjunta `15.23.31` / `2026-11-21-control-bottom-dock-01`, publicada nos dois Workers. A barra do Control está em `apps/control/app/control-dock.mjs` e seus estilos em `control-system-layout.css`; a publicação incremental fica em `features/control-layout/`. Ela usa a navegação existente e não amplia permissões. Preserve os recursos de verificação em duas etapas e a barra ao fazer novas publicações. Consulte `docs/CLOUDFLARE-STATUS.md`. A barra ainda não foi conferida em sessão autenticada real.

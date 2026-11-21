@@ -1,3 +1,16 @@
+# Water System e Water Control 15.23.32 — 21/11/2026
+
+Lançamento conjunto `2026-11-21-control-ai-dock-clearance-01`. O botão flutuante da IA do Control fica acima da barra inferior. A regra específica agora prevalece sobre a regra móvel antiga, que posicionava o botão sobre o atalho Mais.
+
+| Aplicação | Versão ativa do Worker | Implantação | Módulos | Bindings |
+| --- | --- | --- | --- | --- |
+| Water System | `f62876d1-7f13-4def-a23d-de4968390205` | `b353849f-f62e-4b82-b71a-b96a57d61fcb` | 144 | 41 |
+| Water Control | `02ef13ed-7fa5-4345-b5be-12571ff726ca` | `fd9f5227-1856-4cd6-a653-63352ce8d0a6` | 77 | 29 |
+
+Os 71 testes, a construção da prévia e o verificador conjunto passaram. A prioridade CSS e o espaço para a barra foram conferidos para celular, computador e diferentes áreas seguras. A folha publicada contém as duas regras com prioridade; os dois endpoints de saúde responderam na nova versão e os hashes e bindings foram conferidos. A posição final não foi conferida visualmente em uma sessão autenticada.
+
+---
+
 # Water System e Water Control 15.23.31 — 21/11/2026
 
 Lançamento conjunto `2026-11-21-control-bottom-dock-01`. O Water Control recebeu uma barra inferior com atalhos para Início, Empresas, Novo, Financeiro e Mais. Os atalhos reutilizam os comandos existentes; Novo abre o cadastro de empresa e Mais abre o menu administrativo. A barra só aparece com o painel autenticado montado. A assistente foi reposicionada acima dela.
