@@ -2,6 +2,7 @@ package online.watersystem.mobile;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -17,6 +18,8 @@ import android.view.View;
 import android.view.WindowInsets;
 import android.webkit.CookieManager;
 import android.webkit.GeolocationPermissions;
+import android.webkit.JsPromptResult;
+import android.webkit.JsResult;
 import android.webkit.PermissionRequest;
 import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
@@ -29,6 +32,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.webkit.URLUtil;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -66,7 +70,8 @@ public final class MainActivity extends Activity {
 
     @Override public void onCreate(Bundle state) {
         super.onCreate(state);
-        trustedOrigin = Uri.parse(getString(R.string.home_url));
+        Uri home = Uri.parse(getString(R.string.home_url));
+        trustedOrigin = Uri.parse(home.getScheme() + "://" + home.getHost());
         FrameLayout root = new FrameLayout(this);
         root.setBackgroundColor(Color.rgb(8, 23, 44));
         if (Build.VERSION.SDK_INT >= 35) {
@@ -169,6 +174,31 @@ public final class MainActivity extends Activity {
     }
 
     private final class BrowserChrome extends WebChromeClient {
+        @Override public boolean onJsAlert(WebView view, String url, String message, JsResult result) {
+            if (!isTrusted(url)) { result.cancel(); return true; }
+            new AlertDialog.Builder(MainActivity.this).setMessage(message)
+                    .setPositiveButton("OK", (dialog, which) -> result.confirm())
+                    .setOnCancelListener(dialog -> result.cancel()).show();
+            return true;
+        }
+        @Override public boolean onJsConfirm(WebView view, String url, String message, JsResult result) {
+            if (!isTrusted(url)) { result.cancel(); return true; }
+            new AlertDialog.Builder(MainActivity.this).setMessage(message)
+                    .setPositiveButton("Confirmar", (dialog, which) -> result.confirm())
+                    .setNegativeButton("Cancelar", (dialog, which) -> result.cancel())
+                    .setOnCancelListener(dialog -> result.cancel()).show();
+            return true;
+        }
+        @Override public boolean onJsPrompt(WebView view, String url, String message, String defaultValue, JsPromptResult result) {
+            if (!isTrusted(url)) { result.cancel(); return true; }
+            EditText input = new EditText(MainActivity.this);
+            input.setText(defaultValue);
+            new AlertDialog.Builder(MainActivity.this).setMessage(message).setView(input)
+                    .setPositiveButton("Confirmar", (dialog, which) -> result.confirm(input.getText().toString()))
+                    .setNegativeButton("Cancelar", (dialog, which) -> result.cancel())
+                    .setOnCancelListener(dialog -> result.cancel()).show();
+            return true;
+        }
         @Override public boolean onCreateWindow(WebView view, boolean dialog, boolean userGesture, Message result) {
             if (!userGesture) return false;
             WebView popup = new WebView(MainActivity.this);

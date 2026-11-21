@@ -19,7 +19,7 @@ android {
             dimension 'app'
             applicationId 'online.watersystem.app'
             resValue 'string', 'app_name', 'Water System'
-            resValue 'string', 'home_url', 'https://watersystem.online/'
+            resValue 'string', 'home_url', 'https://watersystem.online/entrar'
         }
         control {
             dimension 'app'
