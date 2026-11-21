@@ -1,3 +1,16 @@
+# Water System e Water Control 15.23.31 — 21/11/2026
+
+Lançamento conjunto `2026-11-21-control-bottom-dock-01`. O Water Control recebeu uma barra inferior com atalhos para Início, Empresas, Novo, Financeiro e Mais. Os atalhos reutilizam os comandos existentes; Novo abre o cadastro de empresa e Mais abre o menu administrativo. A barra só aparece com o painel autenticado montado. A assistente foi reposicionada acima dela.
+
+| Aplicação | Versão ativa do Worker | Implantação | Módulos | Bindings |
+| --- | --- | --- | --- | --- |
+| Water System | `ad0170eb-fa53-4018-bc75-448b473123f7` | `ef7e38c6-f62d-4069-8b72-175539a18079` | 144 | 41 |
+| Water Control | `51bf1eac-0a28-41d2-9744-8801b8e090ba` | `f44703ae-d665-4bf3-ae2f-e7cd64f706e2` | 77 | 29 |
+
+Os 71 testes, sintaxe, construção da prévia e verificador conjunto passaram. Testes de DOM simulado verificaram o aparecimento condicionado à sessão, os atalhos, o cadastro, o menu e a remoção ao sair. Após a publicação, hashes e bindings foram conferidos, os endpoints de saúde responderam na mesma versão e os novos recursos constam na página do Control. Não houve conferência visual ou teste dos atalhos em uma sessão autenticada real.
+
+---
+
 # Water System e Water Control 15.23.30 — 21/11/2026
 
 Lançamento conjunto `2026-11-21-control-system-layout-02`. O Control passou a usar a mesma folha de layout do System, com ajustes para a tela de acesso, legibilidade, cartões, menu e cores nos temas claro e escuro. A folha `control-system-layout-15.23.30.css` é servida somente no Control. As telas e operações existentes foram preservadas, assim como os recursos de gestão de verificação em duas etapas da versão 15.23.28.
