@@ -41,6 +41,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.webkit.WebViewCompat;
+import androidx.webkit.WebViewFeature;
+
 import org.json.JSONObject;
 
 import java.io.InputStream;
@@ -48,6 +51,7 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
@@ -58,6 +62,7 @@ public final class MainActivity extends Activity {
     private static final int MEDIA_PERMISSION = 103;
     private static final int LOCATION_PERMISSION = 104;
     private static final int MAX_BLOB_BYTES = 15 * 1024 * 1024;
+    private static final String COMPAT_SCRIPT = "if(!Object.hasOwn){Object.defineProperty(Object,'hasOwn',{value:function(o,p){return Object.prototype.hasOwnProperty.call(o,p);},writable:true,configurable:true});}";
     private WebView web;
     private View errorView;
     private Uri trustedOrigin;
@@ -70,6 +75,7 @@ public final class MainActivity extends Activity {
     private String fileCookie;
     private String fileAgent;
     private boolean saving;
+    private boolean documentStartSupported;
 
     private boolean isTestBuild() {
         return (getApplicationInfo().flags & ApplicationInfo.FLAG_DEBUGGABLE) != 0;
@@ -103,6 +109,11 @@ public final class MainActivity extends Activity {
         settings.setMixedContentMode(WebSettings.MIXED_CONTENT_NEVER_ALLOW);
         settings.setMediaPlaybackRequiresUserGesture(true);
         settings.setGeolocationEnabled(true);
+        documentStartSupported = WebViewFeature.isFeatureSupported(WebViewFeature.DOCUMENT_START_SCRIPT);
+        if (documentStartSupported) {
+            WebViewCompat.addDocumentStartJavaScript(web, COMPAT_SCRIPT, Collections.singleton(trustedOrigin.toString()));
+        }
+        if (isTestBuild()) Log.i("WaterWeb", "Document-start compatibility: " + documentStartSupported);
         CookieManager.getInstance().setAcceptCookie(true);
         CookieManager.getInstance().setAcceptThirdPartyCookies(web, false);
         web.setWebViewClient(new MainClient());
@@ -175,6 +186,7 @@ public final class MainActivity extends Activity {
         @Override public void onPageStarted(WebView view, String url, android.graphics.Bitmap icon) {
             errorView.setVisibility(View.GONE);
             if (isTestBuild()) Log.i("WaterWeb", "Página iniciada");
+            if (!documentStartSupported && isTrusted(url)) view.evaluateJavascript(COMPAT_SCRIPT, null);
         }
         @Override public void onPageFinished(WebView view, String url) {
             if (isTestBuild() && isTrusted(url)) {
