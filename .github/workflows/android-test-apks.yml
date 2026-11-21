@@ -11,7 +11,6 @@ jobs:
     timeout-minutes: 25
     env:
       # This disposable CI key is never used for distribution and is not uploaded.
-      WATER_ANDROID_KEYSTORE: ${{ runner.temp }}/water-signing-ci.jks
       WATER_ANDROID_KEYSTORE_PASSWORD: ci-only-temporary
       WATER_ANDROID_KEY_ALIAS: water-ci-test
       WATER_ANDROID_KEY_PASSWORD: ci-only-temporary
@@ -24,6 +23,8 @@ jobs:
       - uses: gradle/actions/setup-gradle@v4
         with:
           gradle-version: '8.11.1'
+      - name: Preparar caminho temporário
+        run: echo "WATER_ANDROID_KEYSTORE=$RUNNER_TEMP/water-signing-ci.jks" >> "$GITHUB_ENV"
       - name: Criar chave descartável para o teste
         run: |
           keytool -genkeypair -keyalg RSA -keysize 2048 -validity 2 \
