@@ -60,8 +60,12 @@ export async function deployControlLayout(cloudflare, accountId, input) {
    }
    const changed = ['water-brand-core.mjs'];
    if (role === 'control') {
-    if (Object.hasOwn(resources, input.layoutName)) throw new Error('Layout resource already exists');
-    resources[input.layoutName] = { body: input.layoutCss, type: 'text/css; charset=utf-8' };
+    const assets = input.controlAssets || {};
+    if (!Object.keys(assets).length) throw new Error('Control resources are required');
+    for (const [name, asset] of Object.entries(assets)) {
+     if (Object.hasOwn(resources, name)) throw new Error('Control resource already exists: ' + name);
+     resources[name] = asset;
+    }
     changed.push('water-brand-resources.mjs');
    }
    const preserved = parts.filter(part => !changed.includes(part.name));

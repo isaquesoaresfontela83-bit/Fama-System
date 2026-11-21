@@ -1,4 +1,5 @@
 "use client";
+import "./control-dock.mjs";
 import { ControlCommercial } from "./control-commercial";
 import { ControlHealth } from "./control-health";
 import { ControlSupport } from "./control-support";

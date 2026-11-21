@@ -25,6 +25,89 @@
   color: var(--ops-fg) !important;
 }
 
+/* Same floating navigation treatment as Water System, using Control actions. */
+.water-control-dock {
+  position: fixed;
+  z-index: 35;
+  left: calc(248px + (100vw - 248px) / 2);
+  bottom: max(16px,env(safe-area-inset-bottom));
+  transform: translateX(-50%);
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  gap: 8px;
+  width: min(620px,calc(100vw - 280px));
+  min-height: 78px;
+  padding: 7px 10px;
+  color: var(--ops-fg);
+  border: 1px solid var(--ops-line);
+  border-radius: 20px;
+  background: color-mix(in srgb,var(--ops-panel) 95%,transparent);
+  box-shadow: 0 8px 30px #0003;
+  -webkit-backdrop-filter: blur(18px) saturate(150%);
+  backdrop-filter: blur(18px) saturate(150%);
+}
+.water-control-dock > button {
+  flex: 1 1 0;
+  min-width: 0;
+  min-height: 58px;
+  display: grid;
+  justify-items: center;
+  align-content: center;
+  gap: 4px;
+  padding: 3px 4px;
+  border: 0;
+  border-radius: 12px;
+  background: transparent;
+  color: var(--ops-muted);
+  font: inherit;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.water-control-dock > button[hidden] { display: none; }
+.water-control-dock > button:hover,
+.water-control-dock > button[aria-current="page"] { background: var(--ops-panel-alt); color: var(--ops-cyan); }
+.water-control-dock > button:focus-visible { outline: 2px solid var(--ops-cyan); outline-offset: 2px; }
+.water-control-dock > button > svg,
+.water-control-dock-plus svg { width: 22px; height: 22px; }
+.water-control-dock-label { font-size: 11px; line-height: 1.2; white-space: nowrap; }
+.water-control-dock-plus {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: var(--fama-action,#246bea);
+  color: #fff;
+}
+.water-control-dock-status:not([hidden]) {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: calc(100% + 10px);
+  padding: 12px 15px;
+  border: 1px solid var(--ops-line);
+  border-radius: 10px;
+  background: var(--ops-panel);
+  color: var(--ops-fg);
+  font-size: 14px;
+  line-height: 1.4;
+  box-shadow: 0 8px 24px #0003;
+}
+.control-shell .control-main { padding-bottom: calc(150px + env(safe-area-inset-bottom)); }
+.control-shell .premium-assistant-button { bottom: calc(110px + env(safe-area-inset-bottom)); }
+@media (max-width: 1250px) and (min-width: 761px) {
+  .water-control-dock { left: calc(224px + (100vw - 224px) / 2); width: min(620px,calc(100vw - 256px)); }
+}
+@media (max-width: 760px) {
+  .water-control-dock { left: 50%; bottom: max(10px,env(safe-area-inset-bottom)); width: calc(100vw - 20px); min-height: 70px; gap: 2px; }
+  .water-control-dock > button { min-height: 54px; }
+  .control-shell .premium-assistant-button { bottom: calc(96px + env(safe-area-inset-bottom)); }
+}
+@media (prefers-reduced-transparency: reduce) { .water-control-dock { background: var(--ops-panel); backdrop-filter: none; } }
+@media print { .water-control-dock { display: none; } }
+
 /* The sign-in form follows the same centered, card-based composition. */
 .control-locked {
   grid-template-columns: minmax(0,1.1fr) minmax(340px,.9fr);
