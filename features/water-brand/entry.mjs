@@ -1,7 +1,7 @@
 import { migrateLegacyReferences, renameProducts } from './hosts.mjs';
 
-export const VERSION = '15.23.29';
-export const RELEASE = '2026-11-21-control-system-layout-01';
+export const VERSION = '15.23.30';
+export const RELEASE = '2026-11-21-control-system-layout-02';
 export const PREFIX = '/assets/water-brand-15.23.21/';
 export const SYSTEM_BRAND_JS = 'brand-15.23.26.js';
 export const BRAND_CSS = 'brand-15.23.27.css';
@@ -12,7 +12,7 @@ export const DEMO_ACTION_CSS = 'demo-action-15.23.22.css';
 export const CONTROL_OPENING = 'control-opening-15.23.25-r2';
 export const CONTROL_BRAND = 'control-brand-15.23.25';
 export const CONTROL_BRAND_CSS = 'control-brand-15.23.25-r2.css';
-export const CONTROL_LAYOUT_CSS = 'control-system-layout-15.23.29.css';
+export const CONTROL_LAYOUT_CSS = 'control-system-layout-15.23.30.css';
 
 const oldIcon = /^(?:\/favicon\.ico|\/apple-touch-icon(?:-\d+x\d+)?\.png|\/icon-(?:192|512)\.png)$/;
 const oldMark = '/fama-piscinas-mark.png';

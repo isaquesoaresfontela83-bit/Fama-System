@@ -8,6 +8,12 @@
   box-shadow: none;
 }
 .control-shell .premium-metric strong { white-space: normal; overflow-wrap: anywhere; }
+.control-shell .control-nav-item { min-height: 44px; font-size: 14px; }
+.control-shell .premium-subtitle,
+.control-shell .premium-search input,
+.control-shell .premium-metric small { font-size: 14px; }
+.control-shell .premium-metric p { font-size: 13px; }
+.control-shell .control-panel-heading h2 { font-size: 16px; }
 .control-shell :is(.control-plan-card,.control-permission-group,.control-quote-panel) {
   background: var(--ops-panel);
   border-color: var(--ops-line);
@@ -66,7 +72,14 @@
   box-shadow: 0 18px 55px #02091612;
 }
 .control-locked .control-login-back,
-.control-locked .control-login-manual { color: var(--primary); }
+.control-locked .control-login-manual { color: var(--primary); font-size: 14px; }
+.control-locked .control-kicker,
+.control-locked .control-showcase-copy>p { font-size: 12px; }
+.control-locked .control-login-intro,
+.control-locked .control-login-panel label { font-size: 14px; }
+.control-locked .control-login-submit { font-size: 14px; }
+.control-locked .control-login-panel footer { font-size: 13px; }
+.dark .control-locked :is(.control-kicker,.control-login-back,.control-login-manual,.control-showcase-copy>p) { color: #8ec4ff; }
 .control-locked .control-login-visual {
   border-color: var(--border);
   background: var(--card);
@@ -98,4 +111,5 @@
   .control-locked .control-login-mobile-head .control-login-brand { display: flex; }
   .control-locked .control-login-form-wrap { max-width: 450px; margin: 24px auto 0; }
   .control-locked .control-login-mobile-preview { display: none; }
+  .control-shell .premium-search input { font-size: 16px; }
 }
