@@ -1,0 +1,36 @@
+plugins {
+    id 'com.android.application'
+}
+
+android {
+    namespace 'online.watersystem.mobile'
+    compileSdk 35
+
+    defaultConfig {
+        minSdk 26
+        targetSdk 35
+        versionCode 1
+        versionName '1.0-test'
+    }
+
+    flavorDimensions += 'app'
+    productFlavors {
+        system {
+            dimension 'app'
+            applicationId 'online.watersystem.app'
+            resValue 'string', 'app_name', 'Water System'
+            resValue 'string', 'home_url', 'https://watersystem.online/'
+        }
+        control {
+            dimension 'app'
+            applicationId 'online.watersystem.control'
+            resValue 'string', 'app_name', 'Water Control'
+            resValue 'string', 'home_url', 'https://control.watersystem.online/'
+        }
+    }
+    buildTypes { release { minifyEnabled false } }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+}

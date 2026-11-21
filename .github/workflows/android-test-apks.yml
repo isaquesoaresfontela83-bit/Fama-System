@@ -1,0 +1,39 @@
+name: Gerar APKs de teste Android
+on:
+  push:
+    branches: ['android/apk-test-20261121']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  android:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.11.1'
+      - name: Compilar os aplicativos
+        working-directory: apps/android
+        run: gradle --no-daemon :app:assembleSystemDebug :app:assembleControlDebug
+      - name: Verificar os pacotes
+        run: |
+          mkdir -p android-artifacts
+          cp apps/android/app/build/outputs/apk/system/debug/app-system-debug.apk android-artifacts/Water-System-teste.apk
+          cp apps/android/app/build/outputs/apk/control/debug/app-control-debug.apk android-artifacts/Water-Control-teste.apk
+          for apk in android-artifacts/*.apk; do
+            "$ANDROID_HOME/build-tools/35.0.0/apksigner" verify --verbose --print-certs "$apk"
+            "$ANDROID_HOME/build-tools/35.0.0/aapt" dump badging "$apk" | sed -n '1,4p'
+          done
+          sha256sum android-artifacts/*.apk > android-artifacts/SHA256SUMS.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: water-android-test-apks
+          path: android-artifacts/
+          if-no-files-found: error
+          retention-days: 7
