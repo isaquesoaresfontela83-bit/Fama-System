@@ -13,6 +13,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Message;
 import android.util.Base64;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.WindowInsets;
@@ -169,7 +170,10 @@ public final class MainActivity extends Activity {
             errorView.setVisibility(View.GONE);
         }
         @Override public void onReceivedError(WebView view, WebResourceRequest req, WebResourceError error) {
-            if (req.isForMainFrame()) errorView.setVisibility(View.VISIBLE);
+            if (req.isForMainFrame()) {
+                Log.w("WaterWeb", "Falha ao carregar: " + error.getErrorCode() + " " + error.getDescription());
+                errorView.setVisibility(View.VISIBLE);
+            }
         }
     }
 
