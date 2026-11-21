@@ -17,3 +17,10 @@ features/pedidos/dist/
 features/*/dist/
 *.log
 .DS_Store
+
+# Android builds and signing keys
+apps/android/.gradle/
+apps/android/**/build/
+apps/android/local.properties
+*.jks
+*.keystore

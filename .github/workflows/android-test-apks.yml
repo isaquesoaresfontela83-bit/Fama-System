@@ -6,6 +6,44 @@ on:
 permissions:
   contents: read
 jobs:
+  signing-check:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    env:
+      # This disposable CI key is never used for distribution and is not uploaded.
+      WATER_ANDROID_KEYSTORE: ${{ runner.temp }}/water-signing-ci.jks
+      WATER_ANDROID_KEYSTORE_PASSWORD: ci-only-temporary
+      WATER_ANDROID_KEY_ALIAS: water-ci-test
+      WATER_ANDROID_KEY_PASSWORD: ci-only-temporary
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.11.1'
+      - name: Criar chave descartável para o teste
+        run: |
+          keytool -genkeypair -keyalg RSA -keysize 2048 -validity 2 \
+            -alias "$WATER_ANDROID_KEY_ALIAS" -keystore "$WATER_ANDROID_KEYSTORE" \
+            -storepass:env WATER_ANDROID_KEYSTORE_PASSWORD -keypass:env WATER_ANDROID_KEY_PASSWORD \
+            -dname 'CN=Water CI Test' -noprompt
+      - name: Gerar APK e AAB de teste assinados
+        working-directory: apps/android
+        run: |
+          gradle --no-daemon :app:assembleSystemRelease :app:assembleControlRelease \
+            :app:bundleSystemRelease :app:bundleControlRelease
+      - name: Verificar assinaturas
+        run: |
+          for apk in apps/android/app/build/outputs/apk/*/release/*.apk; do
+            "$ANDROID_HOME/build-tools/35.0.0/apksigner" verify --verbose "$apk"
+          done
+          for bundle in apps/android/app/build/outputs/bundle/*Release/*.aab; do
+            jarsigner -verify "$bundle" | tee "$RUNNER_TEMP/bundle-verification.txt"
+            grep -q 'jar verified' "$RUNNER_TEMP/bundle-verification.txt"
+          done
   android:
     runs-on: ubuntu-24.04
     timeout-minutes: 25

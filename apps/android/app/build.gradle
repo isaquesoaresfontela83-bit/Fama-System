@@ -2,6 +2,20 @@ plugins {
     id 'com.android.application'
 }
 
+// Release secrets are supplied by the owner's secure environment, never by Git.
+def releaseVariables = [
+    'WATER_ANDROID_KEYSTORE',
+    'WATER_ANDROID_KEYSTORE_PASSWORD',
+    'WATER_ANDROID_KEY_ALIAS',
+    'WATER_ANDROID_KEY_PASSWORD'
+]
+def releaseSecrets = releaseVariables.collectEntries { [(it): System.getenv(it)] }
+def suppliedCount = releaseSecrets.values().count { it != null && !it.isEmpty() }
+if (suppliedCount > 0 && suppliedCount != releaseVariables.size()) {
+    throw new GradleException('Configure todas as variáveis de assinatura Android ou nenhuma delas.')
+}
+def releaseSigningConfigured = suppliedCount == releaseVariables.size()
+
 android {
     namespace 'online.watersystem.mobile'
     compileSdk 35
@@ -10,7 +24,18 @@ android {
         minSdk 26
         targetSdk 35
         versionCode 1
-        versionName '1.0-test'
+        versionName '1.0.0'
+    }
+
+    signingConfigs {
+        release {
+            if (releaseSigningConfigured) {
+                storeFile file(releaseSecrets.WATER_ANDROID_KEYSTORE)
+                storePassword releaseSecrets.WATER_ANDROID_KEYSTORE_PASSWORD
+                keyAlias releaseSecrets.WATER_ANDROID_KEY_ALIAS
+                keyPassword releaseSecrets.WATER_ANDROID_KEY_PASSWORD
+            }
+        }
     }
 
     flavorDimensions += 'app'
@@ -28,7 +53,13 @@ android {
             resValue 'string', 'home_url', 'https://control.watersystem.online/'
         }
     }
-    buildTypes { release { minifyEnabled false } }
+    buildTypes {
+        debug { versionNameSuffix '-test' }
+        release {
+            minifyEnabled false
+            if (releaseSigningConfigured) signingConfig signingConfigs.release
+        }
+    }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_17
         targetCompatibility JavaVersion.VERSION_17
