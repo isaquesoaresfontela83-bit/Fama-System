@@ -37,3 +37,33 @@ jobs:
           path: android-artifacts/
           if-no-files-found: error
           retention-days: 7
+  smoke-test:
+    needs: android
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: water-android-test-apks
+          path: android-artifacts
+      - name: Habilitar aceleração do Android
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+      - name: Instalar e abrir em Android 12
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 31
+          target: google_apis
+          arch: x86_64
+          disable-animations: true
+          script: bash apps/android/smoke-test.sh
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: water-android-test-screens
+          path: android-test-screens/
+          if-no-files-found: ignore
+          retention-days: 7
