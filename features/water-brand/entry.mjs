@@ -1,14 +1,18 @@
 import { migrateLegacyReferences, renameProducts } from './hosts.mjs';
 
-export const VERSION = '15.23.27';
-export const RELEASE = '2026-11-20-water-mobile-transparent-logo-01';
+export const VERSION = '15.23.29';
+export const RELEASE = '2026-11-21-control-system-layout-01';
 export const PREFIX = '/assets/water-brand-15.23.21/';
 export const SYSTEM_BRAND_JS = 'brand-15.23.26.js';
 export const BRAND_CSS = 'brand-15.23.27.css';
+export const MFA_MANAGE_JS = 'mfa-management-15.23.28.mjs';
+export const MFA_MANAGE_CSS = 'mfa-management-15.23.28.css';
+export const MFA_MANAGE_FLOW = 'mfa-flow-15.23.28.mjs';
 export const DEMO_ACTION_CSS = 'demo-action-15.23.22.css';
 export const CONTROL_OPENING = 'control-opening-15.23.25-r2';
 export const CONTROL_BRAND = 'control-brand-15.23.25';
 export const CONTROL_BRAND_CSS = 'control-brand-15.23.25-r2.css';
+export const CONTROL_LAYOUT_CSS = 'control-system-layout-15.23.29.css';
 
 const oldIcon = /^(?:\/favicon\.ico|\/apple-touch-icon(?:-\d+x\d+)?\.png|\/icon-(?:192|512)\.png)$/;
 const oldMark = '/fama-piscinas-mark.png';
@@ -109,8 +113,15 @@ export function withWaterBrand(app, resources, product, migratedAssetPaths = [])
    rewriter.on('head', {
     element(element) {
      element.append('<link rel="stylesheet" href="' + PREFIX + BRAND_CSS + '">', { html: true });
+     if ([MFA_MANAGE_JS, MFA_MANAGE_CSS, MFA_MANAGE_FLOW].every(name => Object.hasOwn(resources, name))) {
+      element.append('<link rel="stylesheet" href="' + PREFIX + MFA_MANAGE_CSS + '">', { html: true });
+      element.append('<script type="module" src="' + PREFIX + MFA_MANAGE_JS + '"></script>', { html: true });
+     }
      if (hasControlBrand && Object.hasOwn(resources, CONTROL_BRAND_CSS)) {
       element.append('<link rel="stylesheet" href="' + PREFIX + CONTROL_BRAND_CSS + '">', { html: true });
+     }
+     if (product === 'control' && Object.hasOwn(resources, CONTROL_LAYOUT_CSS)) {
+      element.append('<link rel="stylesheet" href="' + PREFIX + CONTROL_LAYOUT_CSS + '">', { html: true });
      }
      if (product === 'system' && Object.hasOwn(resources, DEMO_ACTION_CSS)) {
       element.append('<link rel="stylesheet" href="' + PREFIX + DEMO_ACTION_CSS + '">', { html: true });

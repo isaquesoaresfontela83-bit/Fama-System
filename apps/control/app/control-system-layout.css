@@ -1,0 +1,101 @@
+/* Align the Control workspace with the Water System product surface. */
+.control-shell .premium-metric:is(.metric-1,.metric-2,.metric-3) {
+  border-color: var(--ops-line);
+}
+.control-shell .premium-metric:is(.metric-1,.metric-2,.metric-3)>span {
+  background: color-mix(in srgb,var(--ops-cyan) 12%,var(--ops-panel));
+  color: var(--ops-cyan);
+  box-shadow: none;
+}
+.control-shell .premium-metric strong { white-space: normal; overflow-wrap: anywhere; }
+.control-shell :is(.control-plan-card,.control-permission-group,.control-quote-panel) {
+  background: var(--ops-panel);
+  border-color: var(--ops-line);
+  color: var(--ops-fg);
+}
+.control-shell .control-plan-card :is(input,textarea) {
+  background: var(--ops-panel-alt);
+  border-color: var(--ops-line);
+  color: var(--ops-fg) !important;
+}
+
+/* The sign-in form follows the same centered, card-based composition. */
+.control-locked {
+  grid-template-columns: minmax(0,1.1fr) minmax(340px,.9fr);
+  gap: clamp(32px,6vw,86px);
+  padding: 0 max(32px,calc((100vw - 1172px) / 2));
+}
+.control-locked .control-login-showcase {
+  padding: 36px 0 48px;
+  background: transparent;
+  border: 0;
+  color: var(--foreground);
+}
+.control-locked .control-login-brand-light strong { color: var(--foreground) !important; }
+.control-locked .control-login-brand-light small { color: var(--primary) !important; }
+:root:not(.dark) .control-login-brand-light { --water-control-logo-filter: none; }
+.control-locked .control-showcase-copy { margin-top: clamp(48px,8vh,86px); }
+.control-locked .control-showcase-copy h2 { color: var(--foreground); }
+.control-locked .control-showcase-copy>p { color: var(--primary); }
+.control-locked .control-showcase-copy>span { color: var(--muted-foreground); }
+.control-locked .control-login-showcase ul { color: var(--muted-foreground); }
+.control-locked .control-login-showcase li svg { color: var(--primary); }
+.control-locked .control-login-panel {
+  position: relative;
+  min-width: 0;
+  padding: 80px 0;
+  background: transparent;
+}
+.control-locked .control-login-mobile-head {
+  display: flex;
+  position: absolute;
+  top: 36px;
+  right: 0;
+  width: auto;
+  padding: 0;
+}
+.control-locked .control-login-mobile-head .control-login-brand { display: none; }
+.control-locked .control-login-form-wrap {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 450px;
+  padding: clamp(24px,3vw,32px);
+  border: 1px solid var(--border);
+  border-radius: 17px;
+  background: var(--card);
+  box-shadow: 0 18px 55px #02091612;
+}
+.control-locked .control-login-back,
+.control-locked .control-login-manual { color: var(--primary); }
+.control-locked .control-login-visual {
+  border-color: var(--border);
+  background: var(--card);
+  color: var(--foreground);
+  box-shadow: var(--fama-shadow);
+}
+.control-locked .control-login-visual-top,
+.control-locked .control-login-visual>p,
+.control-locked .control-login-visual-body nav { border-color: var(--border); color: var(--muted-foreground); }
+.control-locked .control-login-visual-top strong,
+.control-locked .control-login-visual-cards b { color: var(--foreground); }
+.control-locked .control-login-visual-body nav b { background: var(--secondary); color: var(--primary); }
+.control-locked .control-login-visual :is(article,.control-login-visual-row) {
+  border-color: var(--border);
+  background: var(--muted);
+  color: var(--foreground);
+}
+.control-locked .control-login-visual :is(small,article span) { color: var(--muted-foreground); }
+
+@media (max-width: 820px) {
+  .control-locked { display: block; padding: 0 20px 32px; }
+  .control-locked .control-login-showcase { display: none; }
+  .control-locked .control-login-panel { display: block; min-height: 100svh; padding: 0; }
+  .control-locked .control-login-mobile-head {
+    position: static;
+    width: 100%;
+    padding: 24px 0 20px;
+  }
+  .control-locked .control-login-mobile-head .control-login-brand { display: flex; }
+  .control-locked .control-login-form-wrap { max-width: 450px; margin: 24px auto 0; }
+  .control-locked .control-login-mobile-preview { display: none; }
+}

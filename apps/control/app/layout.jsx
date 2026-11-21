@@ -5,6 +5,8 @@ import "./control-integrations.css";
 import "./control-apis.css";
 import "./professional.css";
 import "./readability.css";
+import "./professional-layout.css";
+import "./control-system-layout.css";
 export const metadata = {
     title: "Water Control — Administração privada",
     description: "Painel privado do proprietário para administrar o Water System com segurança.",

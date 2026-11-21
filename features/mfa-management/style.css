@@ -1,0 +1,25 @@
+.water-mfa-disable-button {
+  min-height: 36px; padding: 8px 14px; border: 1px solid var(--border, #7e93aa);
+  border-radius: 10px; background: transparent; color: inherit; font: inherit;
+  font-size: 13px; font-weight: 650; cursor: pointer;
+}
+.water-mfa-disable-button:hover { border-color: var(--primary, #1274c9); }
+.water-mfa-disable-button:focus-visible, .water-mfa-dialog :is(button,input,select):focus-visible {
+  outline: 3px solid #21a7dc; outline-offset: 2px;
+}
+.water-mfa-disable-button:disabled, .water-mfa-dialog button:disabled { opacity: .55; cursor: wait; }
+.water-mfa-dialog {
+  width: min(440px, calc(100% - 32px)); max-height: calc(100% - 32px); box-sizing: border-box;
+  overflow: auto; border: 1px solid var(--border, #cbd5e1); border-radius: 18px;
+  background: var(--card, #fff); color: var(--foreground, #102d4a); padding: 24px;
+  box-shadow: 0 22px 80px #0006; font: 15px/1.5 system-ui, sans-serif;
+}
+.water-mfa-dialog::backdrop { background: #03101ed9; }
+.water-mfa-dialog h2 { margin: 0; font-size: 21px; line-height: 1.25; }
+.water-mfa-dialog p { margin: 12px 0 18px; }
+.water-mfa-dialog label { display: block; margin: 14px 0 6px; font-weight: 650; }
+.water-mfa-dialog :is(input,select) { box-sizing: border-box; width: 100%; min-height: 44px; border: 1px solid var(--border, #9aaac0); border-radius: 10px; background: var(--background, #fff); color: inherit; padding: 8px 12px; font: inherit; }
+.water-mfa-dialog .water-mfa-error { color: #dd504c; margin: 10px 0; }
+.water-mfa-actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 10px; margin-top: 20px; }
+.water-mfa-actions button { min-height: 42px; padding: 9px 14px; border: 1px solid var(--border, #9aaac0); border-radius: 10px; background: transparent; color: inherit; font: inherit; font-weight: 650; cursor: pointer; }
+.water-mfa-actions [data-submit] { border-color: #0c78b9; background: #0c78b9; color: #fff; }
